@@ -1,11 +1,11 @@
 {
   "check": "tier 1: the --settings overlay env wins per variable over the folder's settings env, and an endpoint launch clears ambient credentials (design note v0.2 §7.5)",
-  "at": "2026-10-22T14:05:10.332Z",
+  "at": "2026-10-24T10:02:35.829Z",
   "evidence": {
     "harness": "2.1.307 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "70390e4a9ba23de569b3e410f55eb798b1b9885f"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "launch_spec": {
     "argv": [
@@ -26,7 +26,7 @@
         "CLAUDE_CODE_USE_ANTHROPIC_AWS": "",
         "ANTHROPIC_DEFAULT_HAIKU_MODEL": "bench-small",
         "CLAUDE_CODE_SUBAGENT_MODEL": "bench-subagent",
-        "ANTHROPIC_BASE_URL": "http://127.0.0.1:39749"
+        "ANTHROPIC_BASE_URL": "http://127.0.0.1:33987"
       }
     },
     "env_unset": [
@@ -56,7 +56,6 @@
       ]
     },
     "unverified": [
-      "on macOS the login may also sit in the login keychain, in an item keyed to this folder [CC §7]; hs never queries the keychain, so a folder that was ever logged in to claude.ai must not be used for an endpoint launch",
       "project and local settings in the working directory, and managed settings, can also set a credential variable in env, which outranks the one the caller fills; hs reads only the folder's settings.json at launch-spec"
     ]
   },

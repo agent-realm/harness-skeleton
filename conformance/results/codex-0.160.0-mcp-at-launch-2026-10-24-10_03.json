@@ -1,11 +1,11 @@
 {
-  "check": "tier 1: MCP servers at launch on Codex, through -c mcp_servers under a launch receipt (design note v0.2 \u00a75.5, \u00a77.5)",
-  "at": "2026-10-23T01:45:50.313Z",
+  "check": "tier 1: MCP servers at launch on Codex, through -c mcp_servers under a launch receipt (design note v0.2 §5.5, §7.5)",
+  "at": "2026-10-24T10:03:03.891Z",
   "evidence": {
     "harness": "codex-cli 0.160.0",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "4e4d00c"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "runs": {
     "control": {

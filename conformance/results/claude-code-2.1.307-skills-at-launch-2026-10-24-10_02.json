@@ -1,11 +1,11 @@
 {
   "check": "tier 1: a skill at launch, through --plugin-dir under a launch receipt (design note v0.2 §7.5)",
-  "at": "2026-10-22T16:01:45.250Z",
+  "at": "2026-10-24T10:02:43.544Z",
   "evidence": {
     "harness": "2.1.307 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "0b0d8d81d7d7c6db4b475242f7a335177f68936a"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "runs": {
     "control": {
@@ -70,7 +70,7 @@
       }
     ]
   },
-  "launch_digest": "sha256:085fe22e3aa382086784c1a9f351ab4cc2cdd6cfd883403b42ac983668f1398a",
+  "launch_digest": "sha256:0ddd0ecbcdbe8f267afbee84dd1df8453618a41769a8186221b2cdcc06a692e7",
   "folder_entries_after": [
     ".claude.json",
     "backups",

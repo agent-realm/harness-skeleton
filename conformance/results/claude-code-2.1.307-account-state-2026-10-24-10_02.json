@@ -1,11 +1,11 @@
 {
   "check": "tier 1: endpoint hygiene, the cached account state cleared one way and not written back (design note v0.2 §5.2, §7.2)",
-  "at": "2026-10-22T14:32:42.123Z",
+  "at": "2026-10-24T10:02:41.094Z",
   "evidence": {
     "harness": "2.1.307 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "e6c8f59444795d27a165145f5d55834079ec043c"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "runs": {
     "fresh-1": {

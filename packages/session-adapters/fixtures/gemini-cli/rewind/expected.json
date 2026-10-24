@@ -1,0 +1,580 @@
+{
+  "56749748-df8f-4fdb-b00c-06c15b4d775f": [
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@1890#1",
+      "op": "edit",
+      "target": {
+        "message_id": "5a838710-c583-4ae7-96f2-fc251c7ff22b"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@3090#1",
+      "op": "rewind",
+      "target": {
+        "range": {
+          "from_id": "c55b4303-1790-44a6-9da6-30f464ebf577",
+          "through_id": "a65b8017-5286-412a-9896-4e099df9caa5"
+        }
+      },
+      "at": "a4c79de5-f3fc-4cb6-b61d-02973e2a7b84",
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@4442#1",
+      "op": "edit",
+      "target": {
+        "message_id": "25d03591-8348-48bf-8c4b-829821389f00"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@4442#2",
+      "op": "edit",
+      "target": {
+        "message_id": "7e929c11-82b6-4f7f-bad4-34667cc01db0"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@4442#3",
+      "op": "edit",
+      "target": {
+        "message_id": "56372429-f853-496b-88ad-31750f63240a"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl@4442#4",
+      "op": "edit",
+      "target": {
+        "message_id": "cd8fce5c-ae2f-4ef2-8c5d-23fea9b0bc40"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "063cc7c1-e204-495c-930d-17cfbbf044aa",
+      "parent_id": null,
+      "order": "000000002566",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:20:02.778Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "This request failed. Press F12 for diagnostics, or run /settings and change \"Error Verbosity\" to full for full details.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "20bc6d51-8575-4eb6-9f19-c87ee78d2ef9",
+      "parent_id": null,
+      "order": "000000005170",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-19T23:13:08.647Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Say resumed-ok and nothing else."
+        }
+      ],
+      "cmp_sha": "0799f109871afa935732296b268b53a0095c19ddc9cc30ed9b8972f691e0a454"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "25d03591-8348-48bf-8c4b-829821389f00",
+      "parent_id": null,
+      "order": "000000003195",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "error",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:21:08.403Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "error",
+          "error_kind": null,
+          "message": "The model returned an empty response with no text or thoughts. This may be a transient API issue; please try again.",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "56372429-f853-496b-88ad-31750f63240a",
+      "parent_id": null,
+      "order": "000000003760",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:21:19.152Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Conversation checkpoint saved with tag: cart-talk.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "bd95ba4a6cb7c9e9776a179c35cf7898fedfd824ae7740916663496d23c66ef0"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "5a838710-c583-4ae7-96f2-fc251c7ff22b",
+      "parent_id": null,
+      "order": "000000001515",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:19:38.174Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the bug in toyshop/cart.py total_cents so it accounts for qty (if already fixed, add a docstring instead). Then run: python3 -m pytest -q  and report the exact error. Then run: ls /nonexistent-dir"
+        }
+      ],
+      "cmp_sha": "6b11e185c2af29dac9d9065c13e17a437543b9a66d01edca4997d7af2673b09e"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "7e929c11-82b6-4f7f-bad4-34667cc01db0",
+      "parent_id": null,
+      "order": "000000003475",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:21:08.403Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "This request failed. Press F12 for diagnostics, or run /settings and change \"Error Verbosity\" to full for full details.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "87df5137-53a1-445c-979d-a8a6c4f5a9a6",
+      "parent_id": null,
+      "order": "000000000814",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:19:07.894Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What is in this repo. Two sentences."
+        }
+      ],
+      "cmp_sha": "7af5c20f8320a89b9b1944ec5d18655b74c1cb47f4b23186d2db94530a9195e1"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "a4c79de5-f3fc-4cb6-b61d-02973e2a7b84",
+      "parent_id": null,
+      "order": "000000001025",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:19:10.449Z",
+      "requested_model": "gateway/toy-model-d",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply d4f134. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy s"
+        }
+      ],
+      "cmp_sha": "7067d7129df87038dc2d0c686231a3fd32f62cade30752b04ed500158119ebc1"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "a65b8017-5286-412a-9896-4e099df9caa5",
+      "parent_id": null,
+      "order": "000000002851",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:20:52.649Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Explain in three sentences why carts multiply price by quantity."
+        }
+      ],
+      "cmp_sha": "0ed45e89061eebe4c0d7fb06f003f1d6d068158c16f1800124024eb5c880fb79"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "c55b4303-1790-44a6-9da6-30f464ebf577",
+      "parent_id": null,
+      "order": "000000002286",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "error",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:20:02.777Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "error",
+          "error_kind": null,
+          "message": "The model returned an empty response with no text or thoughts. This may be a transient API issue; please try again.",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "cd8fce5c-ae2f-4ef2-8c5d-23fea9b0bc40",
+      "parent_id": null,
+      "order": "000000003974",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "error",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:21:28.547Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "error",
+          "error_kind": null,
+          "message": "Failed to compress chat history: Failed to generate content: {\"error\":{\"message\":\"No active credentials for provider: gemini\",\"type\":\"invalid_request_error\",\"code\":\"model_not_found\"}}",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "4540aa0c3259be7697518155aea647a2c8b5c6cd961b4e2f11a6641f25fadf75"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "d04923d38bb0f6017037e74183378ef4",
+      "parent_id": null,
+      "order": "000000000228",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-19T22:18:58.744Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, October 20, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).…[cut]"
+        }
+      ],
+      "cmp_sha": "ad0a9cbcbd6b2cef63981bc3be13a922744410dbf7ebd2ce49a141bd30b49856"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "message_id": "f513fae5-8e19-4b14-b6f6-a96ef504782b",
+      "parent_id": null,
+      "order": "000000005377",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-19T23:13:11.176Z",
+      "requested_model": "gateway/toy-model-d",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic "
+        }
+      ],
+      "cmp_sha": "9df9a0efa7884aa6f199b7cbcd2658ac84051b7138512b5d3f83e6017da08a70"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-19T22:18:58.743Z",
+      "updated_at": "2026-10-19T23:13:11.176Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "ad0a9cbcbd6b2cef63981bc3be13a922744410dbf7ebd2ce49a141bd30b49856",
+          "7af5c20f8320a89b9b1944ec5d18655b74c1cb47f4b23186d2db94530a9195e1",
+          "7067d7129df87038dc2d0c686231a3fd32f62cade30752b04ed500158119ebc1",
+          "0799f109871afa935732296b268b53a0095c19ddc9cc30ed9b8972f691e0a454",
+          "9df9a0efa7884aa6f199b7cbcd2658ac84051b7138512b5d3f83e6017da08a70"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "usage_id": "a4c79de5-f3fc-4cb6-b61d-02973e2a7b84",
+      "anchor": {
+        "message_id": "a4c79de5-f3fc-4cb6-b61d-02973e2a7b84"
+      },
+      "input": 10318,
+      "output": 49,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-d"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "56749748-df8f-4fdb-b00c-06c15b4d775f",
+      "incarnation": "",
+      "usage_id": "f513fae5-8e19-4b14-b6f6-a96ef504782b",
+      "anchor": {
+        "message_id": "f513fae5-8e19-4b14-b6f6-a96ef504782b"
+      },
+      "input": 10379,
+      "output": 2,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-d"
+    }
+  ]
+}

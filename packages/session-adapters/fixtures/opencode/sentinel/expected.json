@@ -1,0 +1,273 @@
+{
+  "ses_15e9c27ca0012O5Xkk1XwSaj8j": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c2bb2001iQFav0x9ezQe8i",
+      "order": "1|0001792588655538|msg_15e9c2bb2001iQFav0x9ezQe8i",
+      "ts": "2026-10-21T13:17:35.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2bb20024RvxfN9exRFEYQ",
+          "kind": "text",
+          "text": "Deploy with the key OCSENTINEL-free-text-1 please."
+        },
+        {
+          "part_id": "prt_15e9c2bb3003apopGDEGUT7P4W",
+          "kind": "attachment",
+          "media_type": "application/pdf",
+          "inline": null,
+          "ref": "https://files.example.com/<redacted len=65>",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c2bb4004pe8pl3C0wuL7ER",
+          "kind": "attachment",
+          "media_type": "text/plain",
+          "inline": null,
+          "ref": "<redacted len=35>",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c2bb5005FutiVl3E8uuCeU",
+          "kind": "attachment",
+          "media_type": "text/plain",
+          "inline": null,
+          "ref": "C:\\work\\toyshop\\cart.py",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c2bb6006Hye8bOSU8MAW2S",
+          "kind": "attachment",
+          "media_type": "text/markdown",
+          "inline": null,
+          "ref": "docs/spec.md",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c2bb7007l6c6yxlgzoS6qd",
+          "kind": "attachment",
+          "media_type": "text/plain",
+          "inline": null,
+          "ref": "/home/user/work/toyshop/notes.txt",
+          "bytes_len": null
+        }
+      ],
+      "cmp_sha": "55d9746527ceb2a5e9aa9411dd311273fa6cddf8f6da184d212659a3aa5ebf4e"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb2001iQFav0x9ezQe8i",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "error",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c2f9a0019QKr990UmtTgJo",
+      "aliases": [],
+      "message_id": "msg_15e9c2f9a0019QKr990UmtTgJo",
+      "order": "1|0001792588656538|msg_15e9c2f9a0019QKr990UmtTgJo",
+      "ts": "2026-10-21T13:17:36.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "error",
+          "kind": "error",
+          "error_kind": "APIError",
+          "message": "fake invalid api credentials",
+          "http_status": 401
+        }
+      ],
+      "cmp_sha": "f2b679d061229c3e60e4994f5bd09e7c6d87ce824f3b8d7980f116fb99ceea1c"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c3382001QCZbwXFLap462x",
+      "order": "1|0001792588657538|msg_15e9c3382001QCZbwXFLap462x",
+      "ts": "2026-10-21T13:17:37.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c3382008gRQxxLZTV2MH4S",
+          "kind": "text",
+          "text": "Read the label image from the docs site."
+        }
+      ],
+      "cmp_sha": "db2709c7411e6beac77f5b5d9e95a00bd7426c54fc107cb7812a52ae8874658a"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "parent_id": "msg_15e9c3382001QCZbwXFLap462x",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c376a001KMYT52oMF9PI1N",
+      "aliases": [],
+      "message_id": "msg_15e9c376a001KMYT52oMF9PI1N",
+      "order": "1|0001792588658538|msg_15e9c376a001KMYT52oMF9PI1N",
+      "ts": "2026-10-21T13:17:38.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c376b0090WhCCU6ckNMJ9i",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c377500anv996LgwNilyVn",
+          "kind": "notice",
+          "text": "APIError: rate limited",
+          "level": null,
+          "native_type": "retry"
+        },
+        {
+          "part_id": "prt_15e9c377f00b5Ace5ke20kt3zP:call",
+          "kind": "tool_call",
+          "call_id": "call_fake_scn_fetch_1_0",
+          "name": "webfetch",
+          "args": {
+            "url": "https://docs.example.com/label.png"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c377f00b5Ace5ke20kt3zP:result",
+          "kind": "tool_result",
+          "call_id": "call_fake_scn_fetch_1_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "Fetched label.png",
+          "output_ref": null,
+          "output_len": 17,
+          "truncated": false,
+          "exit_code": null
+        },
+        {
+          "part_id": "prt_15e9c377f009ZnGGCdPDkvPhdq",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": null,
+          "ref": "https://cdn.example.com/<redacted len=68>",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c378900c9kJhcwho41gx64",
+          "kind": "text",
+          "text": "The label is fetched."
+        },
+        {
+          "part_id": "prt_15e9c379300dZB5azQwZP8LJpW",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "d46b8ff38a992a2965dcd488e4042d09e713524c3ee24e9fb177b5c175976462"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Sentinel work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:34.538Z",
+      "updated_at": "2026-10-21T13:17:38.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "55d9746527ceb2a5e9aa9411dd311273fa6cddf8f6da184d212659a3aa5ebf4e",
+          "f2b679d061229c3e60e4994f5bd09e7c6d87ce824f3b8d7980f116fb99ceea1c",
+          "db2709c7411e6beac77f5b5d9e95a00bd7426c54fc107cb7812a52ae8874658a",
+          "d46b8ff38a992a2965dcd488e4042d09e713524c3ee24e9fb177b5c175976462"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0012O5Xkk1XwSaj8j",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c376a001KMYT52oMF9PI1N#1",
+      "anchor": {
+        "message_id": "msg_15e9c376a001KMYT52oMF9PI1N"
+      },
+      "input": 900,
+      "output": 10,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ]
+}

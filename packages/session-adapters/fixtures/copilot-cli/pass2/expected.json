@@ -1,0 +1,988 @@
+{
+  "1c5a3d81-1fd7-4fe1-b497-10f1a281b323": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "lifecycle_id": "10ec492c-85ab-430a-8652-6cd53858d4ca",
+      "op": "compaction",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-20T09:56:59.612Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "message_id": "10ec492c-85ab-430a-8652-6cd53858d4ca",
+      "parent_id": "2536b60c-b068-4980-aaf3-fb4e54f71521",
+      "order": "000000009837",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:56:59.612Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "Synthetic reply b3865e. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text ",
+          "replaces": {
+            "count": 22
+          }
+        }
+      ],
+      "cmp_sha": "ed7e5e8623b2ac1cf032db4b19919fdc4567117120b7806b67b2c34d4191c8b8"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "message_id": "5d5c6f37-f430-4977-bb53-5390fcf7a3ea",
+      "parent_id": "aba79129-d0b9-4d5e-b2c3-46c12b6626b3",
+      "order": "000000000910",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:54:31.829Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "24e2b93b-83db-4321-9b6f-bb0e97b6e96a",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Read README.md, toyshop/cart.py, toyshop/coupons.py and tests/test_cart.py, then print each file's full contents back to me verbatim in code blocks."
+        }
+      ],
+      "cmp_sha": "fb413bf9bae7ca6b1237525b78b825e7a5e3fb124eb2262a0ab865a9e578388a"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "message_id": "b7651c8c-fe3f-4375-a7e3-ca95042eec4a",
+      "parent_id": "11f31bdf-b316-4c75-af97-7ec4b27f6143",
+      "order": "000000004107",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:54:35.999Z",
+      "requested_model": "gateway/toy-model-b",
+      "served_model": "gateway/toy-model-b",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00032",
+      "aliases": [
+        {
+          "id": "53a46d5e-9645-4982-bfa9-1191389aeda7",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00031",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/README.md"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00033",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00034",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/toyshop/coupons.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "3",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00035",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/tests/test_cart.py"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "53a1c2a93c3219f299a736705eb42dd9dd1452166350df122b18eb11c398ffac"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "message_id": "ea7bde6e-8ec7-45eb-b7be-1bf3b64e71a7",
+      "parent_id": "a0d22615-5b2a-453a-b76c-ec2c750c95a4",
+      "order": "000000006066",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:54:36.129Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00031",
+          "is_error": false,
+          "status": "completed",
+          "output": "# toyshop\nA tiny synthetic shop model used to exercise coding agents. Nothing real here.\n",
+          "output_len": 89,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "f8c106cb2a8c316f9dd53d2ab52b7fa9e48a77da1085a361f5e23a01ec0a245f"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "engine": null,
+      "client": null,
+      "harness_version": "1.0.100",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/cp2/toyshop",
+      "last_cwd": "/home/user/work/cp2/toyshop",
+      "created_at": "2026-10-20T09:54:22.277Z",
+      "updated_at": "2026-10-20T09:57:25.077Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "fb413bf9bae7ca6b1237525b78b825e7a5e3fb124eb2262a0ab865a9e578388a",
+          "53a1c2a93c3219f299a736705eb42dd9dd1452166350df122b18eb11c398ffac",
+          "f8c106cb2a8c316f9dd53d2ab52b7fa9e48a77da1085a361f5e23a01ec0a245f",
+          "ed7e5e8623b2ac1cf032db4b19919fdc4567117120b7806b67b2c34d4191c8b8"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "usage_id": "chatcmpl-FixtureFixt00032",
+      "anchor": {
+        "response_id": "chatcmpl-FixtureFixt00032"
+      },
+      "input": 14111,
+      "output": 183,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 30,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-b",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "1c5a3d81-1fd7-4fe1-b497-10f1a281b323",
+      "incarnation": "2694ebcd-711f-4823-9d12-83b25db175e0",
+      "usage_id": "compaction:10ec492c-85ab-430a-8652-6cd53858d4ca#1",
+      "anchor": {
+        "compaction": "10ec492c-85ab-430a-8652-6cd53858d4ca"
+      },
+      "input": 21292,
+      "output": 1445,
+      "cache_read": 14400,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-b",
+      "tool_prompt": null
+    }
+  ],
+  "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf": [
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf",
+      "incarnation": "5bf75106-c5ed-4f85-981f-2c61c47a9dcd",
+      "message_id": "59844acd-c596-4b52-abd9-b294422f40b7",
+      "parent_id": "ceed0ab3-1561-4cb6-90cb-1c3fa6ad4c84",
+      "order": "000000004154",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:58:04.073Z",
+      "requested_model": "gateway/toy-model-b",
+      "served_model": "gateway/toy-model-b",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00036",
+      "aliases": [
+        {
+          "id": "a6a6d09a-a18b-4ebc-8bdc-62186066a0e3",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00037",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/inventory-cli/src/cli.js"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "1dde00c64bb585b3cc383c25e2bd46fe088c96546a3d444ca810b6a7814be5a8"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf",
+      "incarnation": "5bf75106-c5ed-4f85-981f-2c61c47a9dcd",
+      "message_id": "6a803843-4e1a-43ec-a041-700c710df138",
+      "parent_id": "0f3d2c42-ae6f-423c-bfb3-0451210b3c24",
+      "order": "000000005312",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:58:04.131Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00037",
+          "is_error": false,
+          "status": "completed",
+          "output": "#!/usr/bin/env node\n// Synthetic inventory CLI for agent exercises.\nconst stock = { \"A-1\": 4, \"B-2\": 0 };\nconst [cmd, sku] = process.argv.slice(2);\nif (cmd === \"get\") console.log(stock[sku] ?? \"unknown sku\");\nelse console.log(\"usage: inv get <sku>\");\n",
+          "output_len": 251,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "31113b81c6a5ee5fe94a72640fa81d4c5543c20d05eb5acde50249e8d43a689f"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf",
+      "incarnation": "5bf75106-c5ed-4f85-981f-2c61c47a9dcd",
+      "message_id": "82c26d81-2002-43db-8d06-0365ff75fcc7",
+      "parent_id": "0e1725cc-0432-415c-bbec-d33dc56e9dc2",
+      "order": "000000001195",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:58:00.535Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "48a9c5ac-1874-42a4-ae1e-4db4ef04c8e0",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Audit the stock now."
+        }
+      ],
+      "cmp_sha": "2c7532b6b7d384d795a9b0adb46cdf1aca8d1b89273c4ed4aa8d901bb1844509"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf",
+      "incarnation": "5bf75106-c5ed-4f85-981f-2c61c47a9dcd",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.100",
+      "title": "Audit the stock now.",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/cp2/inventory-cli",
+      "last_cwd": "/home/user/work/cp2/toyshop",
+      "created_at": "2026-10-20T09:57:29.981Z",
+      "updated_at": "2026-10-20T10:01:44.496Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "2c7532b6b7d384d795a9b0adb46cdf1aca8d1b89273c4ed4aa8d901bb1844509",
+          "1dde00c64bb585b3cc383c25e2bd46fe088c96546a3d444ca810b6a7814be5a8",
+          "31113b81c6a5ee5fe94a72640fa81d4c5543c20d05eb5acde50249e8d43a689f"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "4d5b21da-8d23-449f-9e2f-fdd59eb3eacf",
+      "incarnation": "5bf75106-c5ed-4f85-981f-2c61c47a9dcd",
+      "usage_id": "chatcmpl-FixtureFixt00036",
+      "anchor": {
+        "response_id": "chatcmpl-FixtureFixt00036"
+      },
+      "input": 3898,
+      "output": 81,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 43,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-b",
+      "tool_prompt": null
+    }
+  ],
+  "d010f90c-95c3-42d8-9551-6b3e655097d5": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "lifecycle_id": "1d73b053-5295-4bf0-a99e-a437109d568b",
+      "op": "compaction",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-20T09:54:46.867Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "1d73b053-5295-4bf0-a99e-a437109d568b",
+      "parent_id": "1f347530-f2b7-4cbd-b340-57785ffd4b66",
+      "order": "000000036495",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:54:46.867Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "Synthetic reply 76746a. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply tex",
+          "replaces": {
+            "count": 46
+          }
+        }
+      ],
+      "cmp_sha": "a993ea03092f04fa39058f96a297239cd8f3d982fa8173111cc17640cf8d1ca4"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "30f71236-6e8b-4351-9919-d846784fb3f5",
+      "parent_id": "46aa1a8f-5443-41a1-922f-c1c6813c453b",
+      "order": "000000009636",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:06:39.114Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00038",
+          "is_error": false,
+          "status": "completed",
+          "output": "# toyshop\nA tiny synthetic shop model used to exercise coding agents. Nothing real here.\n",
+          "output_len": 89,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "f8c106cb2a8c316f9dd53d2ab52b7fa9e48a77da1085a361f5e23a01ec0a245f"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "5b306d69-f26b-44b5-8f18-2e6d7d7b4315",
+      "parent_id": "341c5a5e-5279-4db3-bd37-531bcf45dcf0",
+      "order": "000000008245",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:06:39.030Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model-a",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00040",
+      "aliases": [
+        {
+          "id": "0851f17b-bb19-4b41-8233-7b2f8fcb43a8",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00038",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/README.md"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00041",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/toyshop"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "9c3c51c709d87e324056a7ee84f04c7662f914cff543b70ad8b16b8c775bcfd8"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "ade8a20d-f969-4f47-b631-54c1f511a674",
+      "parent_id": "1d77584d-86aa-40ac-858b-a5f2c4f1f9fc",
+      "order": "000000011100",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:09:32.224Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "234b6739-f144-4fee-bcef-8d67884fb7ef",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Follow-up: which line exactly has the qty bug? Just the line number."
+        }
+      ],
+      "cmp_sha": "136c9ec805132666be59e1293635e597fbd9143636dfa4b7ff699bfe33f73c6d"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "c0d3fe1e-2258-4df9-b4f1-5df9ba51b969",
+      "parent_id": "e86eaac6-9c39-48a7-b82f-d6ba78038224",
+      "order": "000000004234",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:04:59.464Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model-a",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00042",
+      "aliases": [
+        {
+          "id": "1bee909c-e2b3-452b-8372-b475a7300877",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00039",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "eef23a40963533a8616c62a5caacf2c9134d66ef2204e0520585475a2b50af68"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "e8c13932-e5f2-4ad4-afb0-0c3a9c22d88f",
+      "parent_id": "e5180333-a0cd-4cfe-9f39-e47315fc8df0",
+      "order": "000000001196",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:04:20.663Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "44aba1f3-28ce-4cf9-9794-b91bdaaf9d6e",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this toyshop project do? Answer in three short bullets."
+        }
+      ],
+      "cmp_sha": "1f9dc79082c607edf5347ae08a11f6aac005dc7fc3ca6b1c49b5983c5ce9ecef"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "message_id": "f21e9838-2c2f-4bfd-910a-f90ce89eaef0",
+      "parent_id": "4007e177-0713-4452-bb3b-5fab0935e0ae",
+      "order": "000000005341",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:04:59.528Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00039",
+          "is_error": false,
+          "status": "completed",
+          "output": ".git\nREADME.md\nlabel.png\ntests\ntoyshop",
+          "output_len": 38,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "34fc057c5d9c8dc4ae0952e0d1339faf4fb22917eb105f9bfe6893479d2ed13b"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.100",
+      "title": "What does this toyshop project do? Answer in three short bullets.",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/cp2/toyshop",
+      "last_cwd": "/home/user/work/cp2/toyshop",
+      "created_at": "2026-10-20T09:03:53.617Z",
+      "updated_at": "2026-10-20T10:01:44.787Z",
+      "state": "active",
+      "pinned": null,
+      "mode": "autopilot",
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "1f9dc79082c607edf5347ae08a11f6aac005dc7fc3ca6b1c49b5983c5ce9ecef",
+          "eef23a40963533a8616c62a5caacf2c9134d66ef2204e0520585475a2b50af68",
+          "34fc057c5d9c8dc4ae0952e0d1339faf4fb22917eb105f9bfe6893479d2ed13b",
+          "9c3c51c709d87e324056a7ee84f04c7662f914cff543b70ad8b16b8c775bcfd8",
+          "f8c106cb2a8c316f9dd53d2ab52b7fa9e48a77da1085a361f5e23a01ec0a245f",
+          "136c9ec805132666be59e1293635e597fbd9143636dfa4b7ff699bfe33f73c6d",
+          "a993ea03092f04fa39058f96a297239cd8f3d982fa8173111cc17640cf8d1ca4"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "usage_id": "chatcmpl-FixtureFixt00040",
+      "anchor": {
+        "response_id": "chatcmpl-FixtureFixt00040"
+      },
+      "input": 13462,
+      "output": 44,
+      "cache_read": 12800,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-a",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "usage_id": "chatcmpl-FixtureFixt00042",
+      "anchor": {
+        "response_id": "chatcmpl-FixtureFixt00042"
+      },
+      "input": 13426,
+      "output": 43,
+      "cache_read": 1536,
+      "cache_write": 0,
+      "reasoning": 23,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-a",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "d010f90c-95c3-42d8-9551-6b3e655097d5",
+      "incarnation": "83985613-3a09-499d-a07e-14f47304b80d",
+      "usage_id": "compaction:1d73b053-5295-4bf0-a99e-a437109d568b#1",
+      "anchor": {
+        "compaction": "1d73b053-5295-4bf0-a99e-a437109d568b"
+      },
+      "input": 11006,
+      "output": 2423,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-b",
+      "tool_prompt": null
+    }
+  ],
+  "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3": [
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3",
+      "incarnation": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "message_id": "ae880d17-9c31-41fa-94ac-621326ee0a13",
+      "parent_id": "cfd0ec4e-61e3-40bd-81ec-34aa4cf58d28",
+      "order": "000000003677",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:02:44.052Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model-a",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00043",
+      "aliases": [
+        {
+          "id": "36762c77-1cf9-40fb-bdc2-f9f6f19c033f",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00044",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/cp2/toyshop/cart.py"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "5bea8f02826bf4b78e452df3e3c7502898f9fd26abd739cd399c6e939b2fabf0"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3",
+      "incarnation": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "message_id": "f254c1b7-09d5-4580-bde9-d196ebd7a2a8",
+      "parent_id": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "order": "000000000586",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:02:28.242Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "09656dcc-52da-4cc6-83e5-02ea2836c030",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Read toyshop/cart.py and tell me in two sentences what total_cents does and whether it handles qty."
+        }
+      ],
+      "cmp_sha": "6e339e3cdfce26528a8d1806f304d8ec66992b12e5774f2f6a5ffc48b1d4093b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3",
+      "incarnation": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "message_id": "fc5a45f3-a67e-4110-8bb9-ffecbf930c32",
+      "parent_id": "2fd7013a-bdc5-4954-84c3-6ddf9ad2e8cd",
+      "order": "000000004808",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:02:44.079Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00044",
+          "is_error": true,
+          "status": "completed",
+          "output": "Path does not exist",
+          "output_len": 19,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "bc7e0c49248db53ae21c3bd2b1033b09b0d7181cbb18c758a3efe8ff04bf6a3f"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3",
+      "incarnation": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "engine": null,
+      "client": null,
+      "harness_version": "1.0.100",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/cp2/toyshop",
+      "last_cwd": "/home/user/work/cp2/toyshop",
+      "created_at": "2026-10-20T09:02:27.541Z",
+      "updated_at": "2026-10-20T09:03:20.513Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6e339e3cdfce26528a8d1806f304d8ec66992b12e5774f2f6a5ffc48b1d4093b",
+          "5bea8f02826bf4b78e452df3e3c7502898f9fd26abd739cd399c6e939b2fabf0",
+          "bc7e0c49248db53ae21c3bd2b1033b09b0d7181cbb18c758a3efe8ff04bf6a3f"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "d1b02815-fd6b-45ee-bb2c-f2f47b2e43f3",
+      "incarnation": "ac905c23-913f-4e00-b7e8-770ee2c2d49d",
+      "usage_id": "chatcmpl-FixtureFixt00043",
+      "anchor": {
+        "response_id": "chatcmpl-FixtureFixt00043"
+      },
+      "input": 11155,
+      "output": 54,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 32,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-a",
+      "tool_prompt": null
+    }
+  ]
+}

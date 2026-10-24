@@ -1,0 +1,126 @@
+{
+  "ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9": [
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9",
+      "incarnation": "80797e76-f7a4-4f25-b73e-272e54d1e5b7",
+      "message_id": "e2000000-0000-4000-8000-000000000001",
+      "parent_id": "80797e76-f7a4-4f25-b73e-272e54d1e5b7",
+      "order": "000000000551",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:42:40.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000029",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with exactly: second life"
+        }
+      ],
+      "cmp_sha": "71c94842ddd8860105fe44dd80f45c2fa95bfdec410d46192b73f216a812046e"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9",
+      "incarnation": "80797e76-f7a4-4f25-b73e-272e54d1e5b7",
+      "message_id": "e2000000-0000-4000-8000-000000000004",
+      "parent_id": "e2000000-0000-4000-8000-000000000003",
+      "order": "000000001802",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:42:41.200Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-second",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000030",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "second life"
+        }
+      ],
+      "cmp_sha": "0efa0309f53bcae25523adf175d89046f38bda1d62cb710d341bf6324b2e7823"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9",
+      "incarnation": "80797e76-f7a4-4f25-b73e-272e54d1e5b7",
+      "engine": null,
+      "client": null,
+      "harness_version": "1.0.101",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/cp3/toyshop",
+      "last_cwd": "/home/user/work/cp3/toyshop",
+      "created_at": "2026-10-21T22:42:38.450Z",
+      "updated_at": "2026-10-21T22:42:42.300Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "71c94842ddd8860105fe44dd80f45c2fa95bfdec410d46192b73f216a812046e",
+          "0efa0309f53bcae25523adf175d89046f38bda1d62cb710d341bf6324b2e7823"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9",
+      "incarnation": "80797e76-f7a4-4f25-b73e-272e54d1e5b7",
+      "usage_id": "api-second",
+      "anchor": {
+        "response_id": "api-second"
+      },
+      "input": 500,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

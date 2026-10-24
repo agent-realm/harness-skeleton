@@ -1,0 +1,3417 @@
+{
+  "20261020_14": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_14",
+      "incarnation": "2026-10-20 09:36:07",
+      "message_id": "gen-1792489179-toyTermReply0001",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:36:19.000Z",
+      "requested_model": "gateway/toy-model-c",
+      "served_model": "toy/toy-model-c",
+      "effort": null,
+      "response_id": "gen-1792489179-toyTermReply0001",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Read the history block.",
+          "signature_len": 12
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "node src/cli.js list, then git status --short."
+        }
+      ],
+      "cmp_sha": "b860e7839aca2e88b6336eca6472818ecd36867ba8fa15902d9a3cfe1a4da0cd"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_14",
+      "incarnation": "2026-10-20 09:36:07",
+      "message_id": "msg_bdf5f251-5601-4c42-b16a-287d1751c6c1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:36:17.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<shell_history>\nnode src/cli.js list\ngit status --short\n</shell_history>\n\nWhich two shell commands did I just run? One line."
+        }
+      ],
+      "cmp_sha": "2836999b13e845c8d6116515e2d39854a1242316b99d77b0d047123c81ed85eb"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_14",
+      "incarnation": "2026-10-20 09:36:07",
+      "message_id": "msg_befc7038-a835-43df-a240-dae19fe2ceb1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:36:18.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<turn-context>\n<current-time>2026-10-20 09:36:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
+        }
+      ],
+      "cmp_sha": "d903c19e161475d9ef999dabe95aee81c1a1d722af059cdfc3cdc5f2b1ca8198"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261020_14",
+      "incarnation": "2026-10-20 09:36:07",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "Goose Term Session",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-20T09:36:07.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "terminal",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "2836999b13e845c8d6116515e2d39854a1242316b99d77b0d047123c81ed85eb",
+          "d903c19e161475d9ef999dabe95aee81c1a1d722af059cdfc3cdc5f2b1ca8198",
+          "b860e7839aca2e88b6336eca6472818ecd36867ba8fa15902d9a3cfe1a4da0cd"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261020_14",
+      "incarnation": "2026-10-20 09:36:07",
+      "usage_id": "35",
+      "anchor": {
+        "message_id": "gen-1792489179-toyTermReply0001"
+      },
+      "input": 4413,
+      "output": 119,
+      "cache_read": 4096,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": 0.000131238,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "toy/toy-model-c",
+      "tool_prompt": null
+    }
+  ],
+  "20261020_5": [
+    {
+      "type": "link",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "goose",
+        "session_id": "20261020_6"
+      },
+      "origin": {
+        "harness": "goose",
+        "session_id": "20261020_5",
+        "incarnation": "2026-10-20 09:09:59"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "message_id": "chatcmpl-del",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:04.000Z",
+      "requested_model": "gateway/toy-model-c",
+      "served_model": "toy/toy-model-c",
+      "effort": null,
+      "response_id": "chatcmpl-del",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-del",
+          "name": "delegate",
+          "args": {
+            "source": "count_tests",
+            "instructions": "Count test functions in tests/"
+          },
+          "server": "summon"
+        }
+      ],
+      "cmp_sha": "146e2723211179cf9df6a4e23a156b673346f5b0d1ecab0b45f0f2f794ba44ad"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "message_id": "chatcmpl-pa",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:12.000Z",
+      "requested_model": "gateway/toy-model-c",
+      "served_model": "toy/toy-model-c",
+      "effort": null,
+      "response_id": "chatcmpl-pa",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "4 tests."
+        }
+      ],
+      "cmp_sha": "c27ac537263d2722a82e14f8b0fa971a8bd85f08d5a5b0d31ba3f976a3d5cedd"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "message_id": "msg_done",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Subagent 20261020_6 completed: {\"summary\":\"4\"}"
+        }
+      ],
+      "cmp_sha": "d4f9883ae0576e44e5ce98459726dffcfccc5da5a121764f497bb0f472dfd411"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "message_id": "msg_dr",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-del",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"summary\":\"4\"}",
+          "output_len": 15,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "7f2a0f4422d6d811c5230298e4789ab86618574bd21068a55b9c2a9975324665"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "message_id": "msg_pp",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Use the count_tests sub-recipe."
+        }
+      ],
+      "cmp_sha": "ebe7e40cc3cf3afd31bf8bc9c4e07a5357f5aaf5884a96440fdf58b629fe0450"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "gs2-recipe",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T09:09:59.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "ebe7e40cc3cf3afd31bf8bc9c4e07a5357f5aaf5884a96440fdf58b629fe0450",
+          "146e2723211179cf9df6a4e23a156b673346f5b0d1ecab0b45f0f2f794ba44ad",
+          "7f2a0f4422d6d811c5230298e4789ab86618574bd21068a55b9c2a9975324665",
+          "d4f9883ae0576e44e5ce98459726dffcfccc5da5a121764f497bb0f472dfd411",
+          "c27ac537263d2722a82e14f8b0fa971a8bd85f08d5a5b0d31ba3f976a3d5cedd"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "usage_id": "12",
+      "anchor": {
+        "message_id": "chatcmpl-del"
+      },
+      "input": 3490,
+      "output": 148,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": 0.000160716,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "toy/toy-model-c",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261020_5",
+      "incarnation": "2026-10-20 09:09:59",
+      "usage_id": "13",
+      "anchor": {
+        "message_id": "chatcmpl-pa"
+      },
+      "input": 3600,
+      "output": 3,
+      "cache_read": 3328,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "toy/toy-model-c",
+      "tool_prompt": null
+    }
+  ],
+  "20261020_6": [
+    {
+      "type": "link",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "kind": "subagent",
+      "stated_on": "child",
+      "child": {
+        "harness": "goose",
+        "session_id": "20261020_6",
+        "incarnation": "2026-10-20 09:10:05"
+      },
+      "origin": {
+        "harness": "goose",
+        "session_id": "20261020_5"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "message_id": "chatcmpl-fo",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:09.000Z",
+      "requested_model": "gateway/toy-model-c",
+      "served_model": "toy/toy-model-c",
+      "effort": null,
+      "response_id": "chatcmpl-fo",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-fo",
+          "name": "recipe__final_output",
+          "args": {
+            "summary": "4"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "502424e512de0078aeede8eacd3a186511dc61d6354a24d8267b39944f67b307"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "message_id": "msg_20261020_6_98200e64-0f8e-41b9-8106-2b7be88168bb",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:05.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Subagent ID: 20261020_6\n\nCount test functions in tests/"
+        }
+      ],
+      "cmp_sha": "fe20d8893cf2171604bc950c62ea9e7b44d33cd725a723414d6e1980694f0a51"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "message_id": "msg_for",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T09:10:09.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-fo",
+          "is_error": false,
+          "status": "completed",
+          "output": "Final output successfully collected.",
+          "output_len": 36,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "Synthetic titl",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T09:10:05.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "sub_agent",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "fe20d8893cf2171604bc950c62ea9e7b44d33cd725a723414d6e1980694f0a51",
+          "502424e512de0078aeede8eacd3a186511dc61d6354a24d8267b39944f67b307",
+          "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261020_6",
+      "incarnation": "2026-10-20 09:10:05",
+      "usage_id": "11",
+      "anchor": {
+        "message_id": "chatcmpl-fo"
+      },
+      "input": 3704,
+      "output": 59,
+      "cache_read": 3328,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "toy/toy-model-c",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_1": [
+    {
+      "type": "lifecycle",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "lifecycle_id": "chatcmpl-s1",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "msg_u1",
+          "through_id": "msg_c1"
+        }
+      },
+      "at": null,
+      "ts": "2026-10-21T13:02:05.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a1",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:03.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Run pytest first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "call-1",
+          "name": "shell",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": "developer"
+        }
+      ],
+      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a2",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:08.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a2",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "test_total_uses_qty fails: the total ignores qty."
+        }
+      ],
+      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a3",
+      "parent_id": null,
+      "order": "00000009",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:06.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a3",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-stock",
+          "name": "python3__stock_count",
+          "args": {
+            "sku": "TRAIN-42"
+          },
+          "server": "python3"
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "call-scan",
+          "name": "python3__broken_scanner",
+          "args": {
+            "code": "0042"
+          },
+          "server": "python3"
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_call",
+          "call_id": "call-label",
+          "name": "python3__label_preview",
+          "args": {},
+          "server": "python3"
+        }
+      ],
+      "cmp_sha": "29bbf345e9a08ca0e933a89f380ad87837dcf465fd6e98f96e11424b2130d0b7"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a4",
+      "parent_id": null,
+      "order": "00000011",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:12.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a4",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "TRAIN-42: 17 units; the scanner is offline."
+        }
+      ],
+      "cmp_sha": "f1f8a696ae9178446c309d52a83271d4964549f9e45b95364edd68300630b65c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a5",
+      "parent_id": null,
+      "order": "00000015",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:26.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a5",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "The label is on the toy CDN."
+        }
+      ],
+      "cmp_sha": "889e4fe56d079bbd92b5607e9ad950df60db14b8856363f3efa6e281093c73c4"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-a6",
+      "parent_id": null,
+      "order": "00000022",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:03:23.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-a6",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "You are welcome."
+        }
+      ],
+      "cmp_sha": "3c12e53e7c6defa5a681be94bc32f2e43cc9b99d6ef76ebfc39ee27ef117e68f"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-res",
+      "parent_id": null,
+      "order": "00000013",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:22.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-res",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-res",
+          "name": "python3__label_preview",
+          "args": {
+            "remote": true
+          },
+          "server": "python3"
+        }
+      ],
+      "cmp_sha": "602940e94bd6cdd65f4a7ef27223a97ab46238a427da208071efabb1269252f0"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "chatcmpl-s1",
+      "parent_id": null,
+      "order": "00000017",
+      "agent_id": "",
+      "role": "system",
+      "source": "automated",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:02:05.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "# Conversation Summary\n\n- test_total_uses_qty fails; TRAIN-42 has 17 units; the scanner is offline.",
+          "replaces": {
+            "flags": {
+              "agentVisible": false
+            }
+          }
+        }
+      ],
+      "cmp_sha": "201f1f1fb81e28d29c5dd3db23b8e3085354175f39b7004f5ccb6fd8e445f206"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_c1",
+      "parent_id": null,
+      "order": "00000016",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:02:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "/compact"
+        }
+      ],
+      "cmp_sha": "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_cc",
+      "parent_id": null,
+      "order": "00000019",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "system_notice",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:02:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Compaction complete"
+        }
+      ],
+      "cmp_sha": "59910d49a3ed8b4b5254343c2996e9b5570e6dcd83ab40ad89c8f956d1462942"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_cont",
+      "parent_id": null,
+      "order": "00000018",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:02:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Your context was compacted at the user's request. The previous message contains a summary of the conversation so far."
+        }
+      ],
+      "cmp_sha": "3b9007de54380ad2f39052aab32e7496a845cdf411724e80ae24a05048dd8092"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_el",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "system_notice",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:04.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "[elicitation] How many units of TRAIN-42 should be restocked?\n{\"type\":\"object\",\"properties\":{\"qty\":{\"type\":\"integer\",\"description\":\"units to order\"}},\"required\":[\"qty\"]}",
+          "level": null,
+          "native_type": "elicitation"
+        }
+      ],
+      "cmp_sha": "736c188e129a55628cc8ad3aae309e8ce4a391d4e60f78e5c6dd3d37c87260af"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_elr",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": false,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:04.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "[elicitationResponse] accept {\"qty\":25}",
+          "level": null,
+          "native_type": "elicitationResponse"
+        }
+      ],
+      "cmp_sha": "a904f63fc88dd7763dd39b5f112deb3051fae54cce6cbf8eff0334a09db26f64"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_r1",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:06.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-1",
+          "is_error": true,
+          "status": "completed",
+          "output": "1 failed, 2 passed\n\nCommand exited with code 1",
+          "output_len": 46,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_r2",
+      "parent_id": null,
+      "order": "00000010",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:09.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-label",
+          "is_error": false,
+          "status": "completed",
+          "output": "label preview follows\n[resource_link file:///home/user/work/toyshop/label.png]\nSKU-42 wooden train, price 12.50",
+          "output_len": 111,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "0:image:1",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "UE5HLVRPWS1MQUJFTC0yNDB4MTIw",
+          "bytes_len": 21
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_result",
+          "call_id": "call-stock",
+          "is_error": false,
+          "status": "completed",
+          "output": "SKU TRAIN-42: 17 units on 3 shelves",
+          "output_len": 35,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_result",
+          "call_id": "call-scan",
+          "is_error": true,
+          "status": "completed",
+          "output": "scanner offline: E_TOY_42",
+          "output_len": 25,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "9bd727806fa6f56a23aa58ee66c129a477944ec83d093176875191ce2e388019"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_rl",
+      "parent_id": null,
+      "order": "00000014",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:24.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-res",
+          "is_error": false,
+          "status": "completed",
+          "output": "[resource_link https://toy-cdn.example]\n[resource <redacted len=40>]\n[resource_link C:\\toys\\label.png]\n[resource_link toyshop/label.png]",
+          "output_len": 136,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "0:resource:1",
+          "kind": "attachment",
+          "media_type": "application/octet-stream",
+          "inline": "UE5HLVRPWS1MQUJFTC0yNDB4MTIw",
+          "bytes_len": 21
+        }
+      ],
+      "cmp_sha": "99e2465a174a26ad2b3a14e9dc783c2e5987cbf0675939d467d54b9b131ac42e"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_tc1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<turn-context>\n<current-time>2026-10-21 13:00:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
+        }
+      ],
+      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_tc2",
+      "parent_id": null,
+      "order": "00000008",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<turn-context>\n<current-time>2026-10-21 13:01:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
+        }
+      ],
+      "cmp_sha": "ac369ea235349dd59d0cbfecda6c3a56456fae37f2c28baadf3cbf524575734c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_tc4",
+      "parent_id": null,
+      "order": "00000021",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:03:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<turn-context>\n<current-time>2026-10-21 13:03:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
+        }
+      ],
+      "cmp_sha": "cb864d9b8dd5f30679beb7c5ece5a0ff72a207658a816cff0c6672368fdd0d2b"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_u1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the cart tests and tell me what fails."
+        }
+      ],
+      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_u2",
+      "parent_id": null,
+      "order": "00000007",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Check stock for TRAIN-42 with the toy tools."
+        }
+      ],
+      "cmp_sha": "8eb4b8ae4ea3d250bf73f926f3a2003fa76fee9e04b3fb0a65614939c44ca513"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_u3",
+      "parent_id": null,
+      "order": "00000012",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fetch the label from the toy CDN."
+        }
+      ],
+      "cmp_sha": "b7d80a91a418ea9b23fc460dc5abb449ba4a9f76b351a50c578f1e614f6bbf0c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "message_id": "msg_u4",
+      "parent_id": null,
+      "order": "00000020",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:03:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Thanks."
+        }
+      ],
+      "cmp_sha": "1d0217d38bf8a476a449c7a90e211705080d5a3cb2e2c8e666bcecdb0707e770"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "cart tests",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T12:59:58.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392",
+          "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84",
+          "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5",
+          "a904f63fc88dd7763dd39b5f112deb3051fae54cce6cbf8eff0334a09db26f64",
+          "736c188e129a55628cc8ad3aae309e8ce4a391d4e60f78e5c6dd3d37c87260af",
+          "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf",
+          "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561",
+          "8eb4b8ae4ea3d250bf73f926f3a2003fa76fee9e04b3fb0a65614939c44ca513",
+          "ac369ea235349dd59d0cbfecda6c3a56456fae37f2c28baadf3cbf524575734c",
+          "29bbf345e9a08ca0e933a89f380ad87837dcf465fd6e98f96e11424b2130d0b7",
+          "9bd727806fa6f56a23aa58ee66c129a477944ec83d093176875191ce2e388019",
+          "f1f8a696ae9178446c309d52a83271d4964549f9e45b95364edd68300630b65c",
+          "b7d80a91a418ea9b23fc460dc5abb449ba4a9f76b351a50c578f1e614f6bbf0c",
+          "602940e94bd6cdd65f4a7ef27223a97ab46238a427da208071efabb1269252f0",
+          "99e2465a174a26ad2b3a14e9dc783c2e5987cbf0675939d467d54b9b131ac42e",
+          "889e4fe56d079bbd92b5607e9ad950df60db14b8856363f3efa6e281093c73c4",
+          "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d",
+          "201f1f1fb81e28d29c5dd3db23b8e3085354175f39b7004f5ccb6fd8e445f206",
+          "3b9007de54380ad2f39052aab32e7496a845cdf411724e80ae24a05048dd8092",
+          "59910d49a3ed8b4b5254343c2996e9b5570e6dcd83ab40ad89c8f956d1462942",
+          "1d0217d38bf8a476a449c7a90e211705080d5a3cb2e2c8e666bcecdb0707e770",
+          "cb864d9b8dd5f30679beb7c5ece5a0ff72a207658a816cff0c6672368fdd0d2b",
+          "3c12e53e7c6defa5a681be94bc32f2e43cc9b99d6ef76ebfc39ee27ef117e68f"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "14",
+      "anchor": {
+        "message_id": "chatcmpl-a1"
+      },
+      "input": 5790,
+      "output": 50,
+      "cache_read": 5120,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "15",
+      "anchor": {
+        "message_id": "chatcmpl-a2"
+      },
+      "input": 5905,
+      "output": 71,
+      "cache_read": 5120,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "16",
+      "anchor": {
+        "message_id": "chatcmpl-a3"
+      },
+      "input": 4871,
+      "output": 175,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "17",
+      "anchor": {
+        "message_id": "chatcmpl-a4"
+      },
+      "input": 5200,
+      "output": 20,
+      "cache_read": 4096,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "18",
+      "anchor": {
+        "message_id": "chatcmpl-res"
+      },
+      "input": 100,
+      "output": 1,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "19",
+      "anchor": {
+        "message_id": "chatcmpl-a5"
+      },
+      "input": 130,
+      "output": 8,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "20",
+      "anchor": {
+        "compaction": "chatcmpl-s1"
+      },
+      "input": 766,
+      "output": 3043,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_1",
+      "incarnation": "2026-10-21 12:59:58",
+      "usage_id": "21",
+      "anchor": {
+        "message_id": "chatcmpl-a6"
+      },
+      "input": 900,
+      "output": 5,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_2": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-b1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:02.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-b1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-rm",
+          "name": "shell",
+          "args": {
+            "command": "rm README.md"
+          },
+          "server": "developer"
+        }
+      ],
+      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-b2",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:32.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-b2",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Not deleted."
+        }
+      ],
+      "cmp_sha": "e93912daef7bcec9a65b50260282ed1969d083bc384f3ad9b2e793586b7ea594"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-b3",
+      "parent_id": null,
+      "order": "00000007",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:02.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-b3",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-sleep",
+          "name": "shell",
+          "args": {
+            "command": "sleep 90; echo late",
+            "timeout_secs": 150
+          },
+          "server": "developer"
+        }
+      ],
+      "cmp_sha": "be38bd6bf6fb43477d7a74b0f02e45b4aabbeba323ed34d3b55ac28a6fcb5fe4"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-b4",
+      "parent_id": null,
+      "order": "00000010",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:22.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-b4",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call-rm2",
+          "name": "shell",
+          "args": {
+            "command": "rm README.md"
+          },
+          "server": "developer"
+        }
+      ],
+      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-otl",
+      "parent_id": null,
+      "order": "00000017",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": false,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:52.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-otl",
+      "aliases": [],
+      "parts": [],
+      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "chatcmpl-part",
+      "parent_id": null,
+      "order": "00000015",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:45.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": "chatcmpl-part",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Once upon a time, on the top shelf"
+        }
+      ],
+      "cmp_sha": "9aa4c112740bf2dc23c56aa9b78d464c8e1a59186ffa9ec14cfc971120851841"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_20261021_2_35db50cf-7cdf-4c69-9d18-eed5b840014b",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": false,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "[toolConfirmationResponse] deny_once",
+          "level": null,
+          "native_type": "toolConfirmationResponse"
+        }
+      ],
+      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_20261021_2_6a1f0c2e-1d3b-4c5a-9e7f-0b1c2d3e4f50",
+      "parent_id": null,
+      "order": "00000011",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": false,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "[toolConfirmationResponse] deny_once",
+          "level": null,
+          "native_type": "toolConfirmationResponse"
+        }
+      ],
+      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_conf",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "system_notice",
+      "to_user": true,
+      "to_model": false,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:02.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "[toolConfirmation] shell {\"command\":\"rm README.md\"}",
+          "level": null,
+          "native_type": "toolConfirmation"
+        }
+      ],
+      "cmp_sha": "48c87abeb1cbefefd76e1232e2004fac85ecf3a472f13f052e1543361739c52b"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_err",
+      "parent_id": null,
+      "order": "00000013",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "system_notice",
+      "to_user": true,
+      "to_model": false,
+      "status": "error",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:35.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "error",
+          "error_kind": "other",
+          "message": "Ran into this error: Server error: Server error (503 Service Unavailable) at http://192.0.2.100/v1/chat/completions.",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "4a1f869bc5d931e36d83a2d0f724b1f0ed04dd70bb89049d1fbd43f399afeb47"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_p1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Delete README.md."
+        }
+      ],
+      "cmp_sha": "bad8917a455152ccfdbff3756bb7b6a325e2e2b761ca0c24f66ac10569772d06"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_p2",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run exactly this shell command: sleep 90; echo late"
+        }
+      ],
+      "cmp_sha": "f6ee94c857d0e5007cc4032d7160a117f51addcc5b714bcf309443bcc83e0325"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_p3",
+      "parent_id": null,
+      "order": "00000009",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Delete it again."
+        }
+      ],
+      "cmp_sha": "2012d5087648916d7bc5d668048a38bf9a7889eeb2a1279d9b58821ac315b26d"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_p4",
+      "parent_id": null,
+      "order": "00000014",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:40.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Write a long story about a wooden train."
+        }
+      ],
+      "cmp_sha": "f6334f8f5dd3c78af9e9619424b71d6944e1a5e50fa9a00c4dcf78674bbf90e8"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_p5",
+      "parent_id": null,
+      "order": "00000016",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:50.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "One word."
+        }
+      ],
+      "cmp_sha": "d473750696b7144bfa8f662820b4bbbdc17f986fa48ddd435de4a64a400abc56"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_ri",
+      "parent_id": null,
+      "order": "00000012",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-rm2",
+          "is_error": true,
+          "status": "cancelled",
+          "output": "Tool call was interrupted before completing.",
+          "output_len": 44,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "1e632546a2d3918426dba276a5bdc91f8d9b03e3d4684b4a3823feac5088ad78"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_rr",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:20:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-rm",
+          "is_error": true,
+          "status": "denied",
+          "output": "The user has declined to run this tool. DO NOT attempt to call this tool again.",
+          "output_len": 79,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "ff7ac3af5341f53d62d0db333761ef878890fdf718b887e577b96eabeb567650"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "message_id": "msg_rs",
+      "parent_id": null,
+      "order": "00000008",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:21:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-sleep",
+          "is_error": true,
+          "status": "cancelled",
+          "output": "(no output)",
+          "output_len": 11,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "statuses",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:19:58.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "bad8917a455152ccfdbff3756bb7b6a325e2e2b761ca0c24f66ac10569772d06",
+          "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
+          "48c87abeb1cbefefd76e1232e2004fac85ecf3a472f13f052e1543361739c52b",
+          "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
+          "ff7ac3af5341f53d62d0db333761ef878890fdf718b887e577b96eabeb567650",
+          "e93912daef7bcec9a65b50260282ed1969d083bc384f3ad9b2e793586b7ea594",
+          "f6ee94c857d0e5007cc4032d7160a117f51addcc5b714bcf309443bcc83e0325",
+          "be38bd6bf6fb43477d7a74b0f02e45b4aabbeba323ed34d3b55ac28a6fcb5fe4",
+          "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559",
+          "2012d5087648916d7bc5d668048a38bf9a7889eeb2a1279d9b58821ac315b26d",
+          "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
+          "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
+          "1e632546a2d3918426dba276a5bdc91f8d9b03e3d4684b4a3823feac5088ad78",
+          "4a1f869bc5d931e36d83a2d0f724b1f0ed04dd70bb89049d1fbd43f399afeb47",
+          "f6334f8f5dd3c78af9e9619424b71d6944e1a5e50fa9a00c4dcf78674bbf90e8",
+          "9aa4c112740bf2dc23c56aa9b78d464c8e1a59186ffa9ec14cfc971120851841",
+          "d473750696b7144bfa8f662820b4bbbdc17f986fa48ddd435de4a64a400abc56",
+          "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "usage_id": "22",
+      "anchor": {
+        "message_id": "chatcmpl-b1"
+      },
+      "input": 4162,
+      "output": 13,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "usage_id": "23",
+      "anchor": {
+        "message_id": "chatcmpl-b2"
+      },
+      "input": 4200,
+      "output": 5,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "usage_id": "24",
+      "anchor": {
+        "message_id": "chatcmpl-b3"
+      },
+      "input": 5905,
+      "output": 71,
+      "cache_read": 5120,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "usage_id": "25",
+      "anchor": {
+        "message_id": "chatcmpl-b4"
+      },
+      "input": 4300,
+      "output": 13,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_2",
+      "incarnation": "2026-10-21 13:19:58",
+      "usage_id": "26",
+      "anchor": {
+        "message_id": "chatcmpl-otl"
+      },
+      "input": 3953,
+      "output": 40,
+      "cache_read": 1536,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_3": [
+    {
+      "type": "lifecycle",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "lifecycle_id": "sessions/sessions.db#table:sessions@sessions/sessions.db#table:sessions#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:42:16.664Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "chatcmpl-g1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:35.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-g1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Done."
+        }
+      ],
+      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "chatcmpl-g2",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:40.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-g2",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "397 is prime. STEERED"
+        }
+      ],
+      "cmp_sha": "44625a427fb7a0bc3ed0f80577473ec8e36310ad2fca708c6e601c1f5827abce"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "msg_after",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:23:13.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Back again after the archive."
+        }
+      ],
+      "cmp_sha": "2ccd88127d39433d6659bf8625de0ca271764419c7eeb3c41ec7b5d14a29ce72"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "msg_g1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:33.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Start working toward this goal now:\n\n**Goal:** README.md mentions the word toyshop"
+        }
+      ],
+      "cmp_sha": "a47b8da5f7f1121a932c53648b48dedaa1169aca92949a83e2231fe269ef95d7"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "msg_g2",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:36.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Before finishing, check whether the following goal has been fully met:\n\n**Goal:** README.md mentions the word toyshop\n\nIf not, continue working toward it."
+        }
+      ],
+      "cmp_sha": "1e5baeab58cddc65f05157552c81863ef26b086b27a3fca5ea23cbad97187a1c"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "msg_replay",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:38.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And is 397 prime? One line."
+        }
+      ],
+      "cmp_sha": "d0a928d702ebb2f4c5a9abf6cfead09e0dadd22333614635b3027a62dac868c1"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "message_id": "steer_f446f645-132f-466d-bd9c-1966ddcccd88",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "steering",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:16:37.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Also add the word STEERED at the end of your reply."
+        }
+      ],
+      "cmp_sha": "76b6d37bfdd06c8e1bae66a5f3f7a07eaec88b3347e2fcc81c9fa0c16548c045"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "gs3-effort",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:16:32.000Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "smart_approve",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "a47b8da5f7f1121a932c53648b48dedaa1169aca92949a83e2231fe269ef95d7",
+          "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7",
+          "1e5baeab58cddc65f05157552c81863ef26b086b27a3fca5ea23cbad97187a1c",
+          "76b6d37bfdd06c8e1bae66a5f3f7a07eaec88b3347e2fcc81c9fa0c16548c045",
+          "d0a928d702ebb2f4c5a9abf6cfead09e0dadd22333614635b3027a62dac868c1",
+          "44625a427fb7a0bc3ed0f80577473ec8e36310ad2fca708c6e601c1f5827abce",
+          "2ccd88127d39433d6659bf8625de0ca271764419c7eeb3c41ec7b5d14a29ce72"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "usage_id": "27",
+      "anchor": {
+        "message_id": "chatcmpl-g1"
+      },
+      "input": 3000,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_3",
+      "incarnation": "2026-10-21 13:16:32",
+      "usage_id": "28",
+      "anchor": {
+        "message_id": "chatcmpl-g2"
+      },
+      "input": 3100,
+      "output": 9,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_4": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "message_id": "chatcmpl-t1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:00:03.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-t1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "TRAIN-42, DUCK-07."
+        }
+      ],
+      "cmp_sha": "0fb38d4eadd28231d58ca54732d25a1ce4ddd72270cd091f4f7a6e562f943273"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "message_id": "msg_t1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the toy SKUs."
+        }
+      ],
+      "cmp_sha": "432eafb00b4a93cdc51ffa1d670c63629f7e4799cdf7525381ad2e124c47a40e"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "message_id": "msg_t3",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:03:21.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Instead, show the stock of DUCK-07."
+        }
+      ],
+      "cmp_sha": "fff2d25e39f80ae04c0262dd90b811bc8a8f1d7ac7b7d982721f9e5a4079105a"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "ducks",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T14:00:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "acp",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "432eafb00b4a93cdc51ffa1d670c63629f7e4799cdf7525381ad2e124c47a40e",
+          "0fb38d4eadd28231d58ca54732d25a1ce4ddd72270cd091f4f7a6e562f943273",
+          "fff2d25e39f80ae04c0262dd90b811bc8a8f1d7ac7b7d982721f9e5a4079105a"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "usage_id": "30",
+      "anchor": {
+        "message_id": "chatcmpl-t1"
+      },
+      "input": 4000,
+      "output": 9,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "usage_id": "31",
+      "anchor": {
+        "session": true
+      },
+      "input": 4100,
+      "output": 20,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_4",
+      "incarnation": "2026-10-21 14:00:00",
+      "usage_id": "32",
+      "anchor": {
+        "session": true
+      },
+      "input": 4200,
+      "output": 4,
+      "cache_read": 3072,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_5": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_5",
+      "incarnation": "2026-10-21 15:00:00",
+      "message_id": "chatcmpl-ok",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T15:00:03.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-ok",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "ok"
+        }
+      ],
+      "cmp_sha": "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_5",
+      "incarnation": "2026-10-21 15:00:00",
+      "message_id": "msg_ok",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T15:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with exactly: ok"
+        }
+      ],
+      "cmp_sha": "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_5",
+      "incarnation": "2026-10-21 15:00:00",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "redaction",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T15:00:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89",
+          "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_5",
+      "incarnation": "2026-10-21 15:00:00",
+      "usage_id": "34",
+      "anchor": {
+        "message_id": "chatcmpl-ok"
+      },
+      "input": 3949,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_6": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_6",
+      "incarnation": "2026-10-21 13:39:25",
+      "message_id": "chatcmpl-img",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:39:33.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-img",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "The label reads SKU-0042."
+        }
+      ],
+      "cmp_sha": "de7a240f9d7ce5e6c559a915486afe752a2391f681fd8c6bf44c9aa74a35d80a"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_6",
+      "incarnation": "2026-10-21 13:39:25",
+      "message_id": "msg_76a1c7ac-c18d-4cc1-ad36-72078209764c",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:39:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Here is a toy label image. In one line: what text is on the label?"
+        },
+        {
+          "part_id": "1",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "UE5HLVRPWS1MQUJFTC0yNDB4MTIw",
+          "bytes_len": 21
+        }
+      ],
+      "cmp_sha": "851485561d42ef628399cca9fcfe0424a3cfa4cca50b8fa2f99254e5ef969f48"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_6",
+      "incarnation": "2026-10-21 13:39:25",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "New Chat",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:39:25.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "acp",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "851485561d42ef628399cca9fcfe0424a3cfa4cca50b8fa2f99254e5ef969f48",
+          "de7a240f9d7ce5e6c559a915486afe752a2391f681fd8c6bf44c9aa74a35d80a"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_6",
+      "incarnation": "2026-10-21 13:39:25",
+      "usage_id": "36",
+      "anchor": {
+        "message_id": "chatcmpl-img"
+      },
+      "input": 4843,
+      "output": 12,
+      "cache_read": 4096,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_8": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "chatcmpl-a1",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:03.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": "chatcmpl-a1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Run pytest first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "call-1",
+          "name": "shell",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": "developer"
+        }
+      ],
+      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "chatcmpl-a2",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:08.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": "chatcmpl-a2",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "test_total_uses_qty fails: the total ignores qty."
+        }
+      ],
+      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "chatcmpl-f1",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:05:03.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": "high",
+      "response_id": "chatcmpl-f1",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added test_coupon."
+        }
+      ],
+      "cmp_sha": "40d7fe62e32b133bd3a9f054699bde321e6369752bf995e0ef5da03ac49b83cf"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "msg_f1",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:05:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now add a coupon test."
+        }
+      ],
+      "cmp_sha": "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "msg_r1",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "role": "tool",
+      "source": null,
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:06.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call-1",
+          "is_error": true,
+          "status": "completed",
+          "output": "1 failed, 2 passed\n\nCommand exited with code 1",
+          "output_len": 46,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "msg_tc1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<turn-context>\n<current-time>2026-10-21 13:00:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
+        }
+      ],
+      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "message_id": "msg_u1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the cart tests and tell me what fails."
+        }
+      ],
+      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "cart tests (copy)",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:30:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392",
+          "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84",
+          "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5",
+          "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf",
+          "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561",
+          "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a",
+          "40d7fe62e32b133bd3a9f054699bde321e6369752bf995e0ef5da03ac49b83cf"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_8",
+      "incarnation": "2026-10-21 13:30:00",
+      "usage_id": "29",
+      "anchor": {
+        "message_id": "chatcmpl-f1"
+      },
+      "input": 6100,
+      "output": 30,
+      "cache_read": 5120,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

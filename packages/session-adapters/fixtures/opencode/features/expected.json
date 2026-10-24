@@ -1,0 +1,1513 @@
+{
+  "ses_15e9c27ca001E9t3WF4kjm2U21": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c2bb2001EI6Oo3AceMxjLe",
+      "order": "1|0001792588655538|msg_15e9c2bb2001EI6Oo3AceMxjLe",
+      "ts": "2026-10-21T13:17:35.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2bb20021pdC9xh3DvskhG",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py, then run the tests."
+        },
+        {
+          "part_id": "prt_15e9c2bb3003KHPpCXPOz3Nx8q",
+          "kind": "attachment",
+          "media_type": "text/plain",
+          "inline": null,
+          "ref": "/home/user/work/toyshop/README.md",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9c2bb4004Cge0v4F4sOSOKY",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgogc3ludGhldGljIGxhYmVsIGZvciB0aGUgdG95c2hvcCBjYXJ0",
+          "ref": null,
+          "bytes_len": 45
+        }
+      ],
+      "cmp_sha": "09d6dac07f3976c90161b9df1669bac4ec4232a2c4b785835e326115ce24cd24"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb2001EI6Oo3AceMxjLe",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": "high",
+      "response_id": "msg_15e9c2f9a001qQ1j42KF305TeS",
+      "aliases": [],
+      "message_id": "msg_15e9c2f9a001qQ1j42KF305TeS",
+      "order": "1|0001792588656538|msg_15e9c2f9a001qQ1j42KF305TeS",
+      "ts": "2026-10-21T13:17:36.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2f9b005OFJvnGma2D5pEA",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c2fa5006zptNfHEQb0ao5F",
+          "kind": "reasoning",
+          "text": "The total ignores qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "prt_15e9c2faf007rvlsQ6opVnvfPC:call",
+          "kind": "tool_call",
+          "call_id": "call_bc3a64f28f",
+          "name": "bash",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c2faf007rvlsQ6opVnvfPC:result",
+          "kind": "tool_result",
+          "call_id": "call_bc3a64f28f",
+          "is_error": false,
+          "status": "completed",
+          "output": "1 failed",
+          "output_ref": null,
+          "output_len": 8,
+          "truncated": false,
+          "exit_code": 1
+        },
+        {
+          "part_id": "prt_15e9c2fb90081M8iQ0qjTlIjNe",
+          "kind": "text",
+          "text": "Fixed: total multiplies by qty; one test still fails."
+        },
+        {
+          "part_id": "prt_15e9c2fc3009SnyWcD2qBcLmaA",
+          "kind": "notice",
+          "text": "/home/user/work/toyshop/cart.py",
+          "level": null,
+          "native_type": "patch"
+        },
+        {
+          "part_id": "prt_15e9c2fcd00a82ALI33yGTAJWP",
+          "kind": "notice",
+          "text": "tool-calls",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "6212f5ff7105592f5187ec3da3748b588a1c7f65d87e6c214eb58b8418e1bb36"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb2001EI6Oo3AceMxjLe",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": "high",
+      "response_id": "msg_15e9c3382001gJWk2guxrJwFKn",
+      "aliases": [],
+      "message_id": "msg_15e9c3382001gJWk2guxrJwFKn",
+      "order": "1|0001792588657538|msg_15e9c3382001gJWk2guxrJwFKn",
+      "ts": "2026-10-21T13:17:37.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c338300b8uyrqzGbOrE83k",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c338d00c5MEC3Jjap6XkQh:call",
+          "kind": "tool_call",
+          "call_id": "call_4b13d21247",
+          "name": "bash",
+          "args": {
+            "command": "seq 1 400 | sed s/$/_cart_line_qty_ok/"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c338d00c5MEC3Jjap6XkQh:result",
+          "kind": "tool_result",
+          "call_id": "call_4b13d21247",
+          "is_error": false,
+          "status": "completed",
+          "output": "...output truncated...\n\nFull output saved to: /home/user/.local/share/opencode/tool-output/tool_15e9c3391001I5vM3TXfPiKvJw\n\n399_cart_line_qty_ok\n400_cart_line_qty_ok\n",
+          "output_ref": {
+            "ref": "tool_15e9c3391001I5vM3TXfPiKvJw",
+            "sha256": "1041269e99c45ef62c4dd73e0933a1a45aa2dd1a4cd8c084d2d5b9c61d35d358",
+            "bytes": 8292
+          },
+          "output_len": 166,
+          "truncated": true,
+          "exit_code": 0
+        },
+        {
+          "part_id": "prt_15e9c339700d461Wq4ymyzJeS5:call",
+          "kind": "tool_call",
+          "call_id": "call_67a1ead95e",
+          "name": "bash",
+          "args": {
+            "command": "cat /etc/passwd"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c339700d461Wq4ymyzJeS5:result",
+          "kind": "tool_result",
+          "call_id": "call_67a1ead95e",
+          "is_error": false,
+          "status": "completed",
+          "output": "x",
+          "output_ref": null,
+          "output_len": 1,
+          "truncated": true,
+          "exit_code": 0
+        },
+        {
+          "part_id": "prt_15e9c33a100ekQpZkEnYJ2tiIk:call",
+          "kind": "tool_call",
+          "call_id": "call_fake_scn_readimg_1_0",
+          "name": "read",
+          "args": {
+            "filePath": "/home/user/work/toyshop/label.png"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c33a100ekQpZkEnYJ2tiIk:result",
+          "kind": "tool_result",
+          "call_id": "call_fake_scn_readimg_1_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "Image read successfully",
+          "output_ref": null,
+          "output_len": 23,
+          "truncated": false,
+          "exit_code": null
+        },
+        {
+          "part_id": "prt_15e9c33ab009O44nmt6wsS5SQz",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgogc3ludGhldGljIGxhYmVsIGZvciB0aGUgdG95c2hvcCBjYXJ0",
+          "ref": null,
+          "bytes_len": 45
+        },
+        {
+          "part_id": "prt_15e9c33ab00fhWieGILIybsZkQ:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00049",
+          "name": "read",
+          "args": {
+            "filePath": "/home/user/work/toyshop/carts.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c33ab00fhWieGILIybsZkQ:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00049",
+          "is_error": true,
+          "status": "completed",
+          "output": "File not found: /home/user/work/toyshop/carts.py",
+          "output_ref": null,
+          "output_len": 48,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "prt_15e9c33b5010Xz6j7JOUtfiRAO:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00050",
+          "name": "bash",
+          "args": {
+            "command": "python3 stock.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c33b5010Xz6j7JOUtfiRAO:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00050",
+          "is_error": true,
+          "status": "denied",
+          "output": "The user rejected permission to use this specific tool call.",
+          "output_ref": null,
+          "output_len": 60,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "prt_15e9c33bf011Z0jnmDXlmz8yfF",
+          "kind": "notice",
+          "text": "tool-calls",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "64edf15a6bafc6f7e75977974171a35b5c57ea548cbb981e4a76e40519cf39f7"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb2001EI6Oo3AceMxjLe",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": "high",
+      "response_id": "msg_15e9c376a001HRcPULCVCycgEZ",
+      "aliases": [],
+      "message_id": "msg_15e9c376a001HRcPULCVCycgEZ",
+      "order": "1|0001792588658538|msg_15e9c376a001HRcPULCVCycgEZ",
+      "ts": "2026-10-21T13:17:38.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c376b012hR8kHFuqFIOWwL",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c3775013a5Wz53E86NOLfH",
+          "kind": "text",
+          "text": "All tests pass now."
+        },
+        {
+          "part_id": "prt_15e9c377f0146NL4OwY2p2yaNi",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "fa43dab3dc07e96b070cb7f3e533fef04a7b88f688e998d4d6c76ce1cadbf0d0"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c3b52001fq0ippMIL2aBUZ",
+      "order": "1|0001792588659538|msg_15e9c3b52001fq0ippMIL2aBUZ",
+      "ts": "2026-10-21T13:17:39.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c3b52015qpykAQWSLNkYJO",
+          "kind": "text",
+          "text": "Also add a discount field."
+        }
+      ],
+      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": "msg_15e9c3b52001fq0ippMIL2aBUZ",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c3f3a001uOtDft3odSHOQM",
+      "aliases": [],
+      "message_id": "msg_15e9c3f3a001uOtDft3odSHOQM",
+      "order": "1|0001792588660538|msg_15e9c3f3a001uOtDft3odSHOQM",
+      "ts": "2026-10-21T13:17:40.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c3f3b016f400E3DSPtlaIn",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c3f45017kLslHML0NtBmpV",
+          "kind": "text",
+          "text": "Adding disc"
+        }
+      ],
+      "cmp_sha": "5ab0c70f9af19af9190ece22f76853fdf633e8fdc411e4c427c2fdd6779c59ef"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": "msg_15e9c3b52001fq0ippMIL2aBUZ",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c432200153203K6243R6z1",
+      "aliases": [],
+      "message_id": "msg_15e9c432200153203K6243R6z1",
+      "order": "1|0001792588661538|msg_15e9c432200153203K6243R6z1",
+      "ts": "2026-10-21T13:17:41.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c4323018up5eXsFo6P0ZCE",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c432d0194kn18ht3ZenCRi",
+          "kind": "text",
+          "text": "Added a discount field."
+        },
+        {
+          "part_id": "prt_15e9c433701a2XGGqW8r4NlbYl",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "fc634a114086d53cbce0e3c14c9f7dce1ff6b4a1fd36e480bd6eaa58a43833fe"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c470a001Am4iwUdgFGi3D1",
+      "order": "1|0001792588662538|msg_15e9c470a001Am4iwUdgFGi3D1",
+      "ts": "2026-10-21T13:17:42.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c470a01bxj9WKPbt90yMGO",
+          "kind": "text",
+          "text": "Now add a coupon code."
+        }
+      ],
+      "cmp_sha": "36120b2f846c60645958acb030a0e7b93b388716c28b4f02fd4e2f4d0bc7879e"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Toy cart work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:34.538Z",
+      "updated_at": "2026-10-21T13:17:42.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "09d6dac07f3976c90161b9df1669bac4ec4232a2c4b785835e326115ce24cd24",
+          "6212f5ff7105592f5187ec3da3748b588a1c7f65d87e6c214eb58b8418e1bb36",
+          "64edf15a6bafc6f7e75977974171a35b5c57ea548cbb981e4a76e40519cf39f7",
+          "fa43dab3dc07e96b070cb7f3e533fef04a7b88f688e998d4d6c76ce1cadbf0d0",
+          "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe",
+          "5ab0c70f9af19af9190ece22f76853fdf633e8fdc411e4c427c2fdd6779c59ef",
+          "fc634a114086d53cbce0e3c14c9f7dce1ff6b4a1fd36e480bd6eaa58a43833fe",
+          "36120b2f846c60645958acb030a0e7b93b388716c28b4f02fd4e2f4d0bc7879e"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c2f9a001qQ1j42KF305TeS#1",
+      "anchor": {
+        "message_id": "msg_15e9c2f9a001qQ1j42KF305TeS"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 17,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c3382001gJWk2guxrJwFKn#1",
+      "anchor": {
+        "message_id": "msg_15e9c3382001gJWk2guxrJwFKn"
+      },
+      "input": 1000,
+      "output": 40,
+      "cache_read": 400,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c376a001HRcPULCVCycgEZ#1",
+      "anchor": {
+        "message_id": "msg_15e9c376a001HRcPULCVCycgEZ"
+      },
+      "input": 1100,
+      "output": 12,
+      "cache_read": 500,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001E9t3WF4kjm2U21",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c432200153203K6243R6z1#1",
+      "anchor": {
+        "message_id": "msg_15e9c432200153203K6243R6z1"
+      },
+      "input": 1200,
+      "output": 15,
+      "cache_read": 600,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9c75ea001aF3AjM15syNKQ3": [
+    {
+      "type": "link",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "opencode",
+        "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH"
+      },
+      "origin": {
+        "harness": "opencode",
+        "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3"
+      },
+      "at": "01M5FA14606SC8K5NP9K6CTMED",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c79d2001w6PwQa5ZkRnhxJ",
+      "order": "1|0001792588675538|msg_15e9c79d2001w6PwQa5ZkRnhxJ",
+      "ts": "2026-10-21T13:17:55.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c79d201elXZpv51HjRnLRB",
+          "kind": "text",
+          "text": "Review cart.py for the qty bug."
+        }
+      ],
+      "cmp_sha": "6e883ae78e4257d6969b66965a69ff50ae0e8623bb3398594898a62f108cb052"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "parent_id": "msg_15e9c79d2001w6PwQa5ZkRnhxJ",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c7a360014vuBPSVH4l2zcw",
+      "aliases": [],
+      "message_id": "msg_15e9c7a360014vuBPSVH4l2zcw",
+      "order": "1|0001792588675638|msg_15e9c7a360014vuBPSVH4l2zcw",
+      "ts": "2026-10-21T13:17:55.638Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c7a3701fZJ1xX8vMm0NlYV:call",
+          "kind": "tool_call",
+          "call_id": "01M5FA14606SC8K5NP9K6CTMED",
+          "name": "task",
+          "args": {
+            "prompt": "Review cart.py for the qty bug.",
+            "description": "Review the cart in a subtask",
+            "subagent_type": "build",
+            "command": "review-sub"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9c7a3701fZJ1xX8vMm0NlYV:result",
+          "kind": "tool_result",
+          "call_id": "01M5FA14606SC8K5NP9K6CTMED",
+          "is_error": false,
+          "status": "completed",
+          "output": "<task id=\"ses_15e9c81a20016kUmgT3Q5hrPYH\" state=\"completed\">\n<task_result>\nqty is fine.\n</task_result>\n</task>",
+          "output_ref": null,
+          "output_len": 110,
+          "truncated": false,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "3415904ffc2c8427475ec6d540e8455b5f23f1cfe16dac8ffb28a77d144f93d4"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c858a001gh1eoOfphoqRQb",
+      "order": "1|0001792588678538|msg_15e9c858a001gh1eoOfphoqRQb",
+      "ts": "2026-10-21T13:17:58.538Z",
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "prt_15e9c858a024URLkCOdlUBt5hc",
+          "kind": "text",
+          "text": "Summarize the task tool output above and continue with your task.",
+          "source": "injected"
+        }
+      ],
+      "cmp_sha": "98008338bc685fe4c3abc9c5760b0de9bb7d3139d3f41559bc289df3fde65c57"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "parent_id": "msg_15e9c858a001gh1eoOfphoqRQb",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c85ee001ENcE2sIc2FPPf2",
+      "aliases": [],
+      "message_id": "msg_15e9c85ee001ENcE2sIc2FPPf2",
+      "order": "1|0001792588678638|msg_15e9c85ee001ENcE2sIc2FPPf2",
+      "ts": "2026-10-21T13:17:58.638Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c85ef025QwQf0h0vCzInp8",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c85f90267WL8W665fuVGGu",
+          "kind": "text",
+          "text": "The sub-agent found qty fine."
+        },
+        {
+          "part_id": "prt_15e9c8603027I72puQUPiA9Xbo",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "5fe3c26c7a44509fd706b44224611657aa0cd8e63a22f5c56e52abef9d92da6c"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Review the cart",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:54.538Z",
+      "updated_at": "2026-10-21T13:17:58.638Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6e883ae78e4257d6969b66965a69ff50ae0e8623bb3398594898a62f108cb052",
+          "3415904ffc2c8427475ec6d540e8455b5f23f1cfe16dac8ffb28a77d144f93d4",
+          "98008338bc685fe4c3abc9c5760b0de9bb7d3139d3f41559bc289df3fde65c57",
+          "5fe3c26c7a44509fd706b44224611657aa0cd8e63a22f5c56e52abef9d92da6c"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c85ee001ENcE2sIc2FPPf2#1",
+      "anchor": {
+        "message_id": "msg_15e9c85ee001ENcE2sIc2FPPf2"
+      },
+      "input": 900,
+      "output": 20,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9c81a20016kUmgT3Q5hrPYH": [
+    {
+      "type": "link",
+      "harness": "opencode",
+      "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "child",
+      "child": {
+        "harness": "opencode",
+        "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH"
+      },
+      "origin": {
+        "harness": "opencode",
+        "session_id": "ses_15e9c75ea001aF3AjM15syNKQ3"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c8206001RGhq6mNqzdQlg1",
+      "order": "1|0001792588677638|msg_15e9c8206001RGhq6mNqzdQlg1",
+      "ts": "2026-10-21T13:17:57.638Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c8206020FOoyb5sOHV54Lt",
+          "kind": "text",
+          "text": "Review cart.py for the qty bug."
+        }
+      ],
+      "cmp_sha": "6e883ae78e4257d6969b66965a69ff50ae0e8623bb3398594898a62f108cb052"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH",
+      "incarnation": "",
+      "parent_id": "msg_15e9c8206001RGhq6mNqzdQlg1",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c85ee001WXsPShyuTg3UpB",
+      "aliases": [],
+      "message_id": "msg_15e9c85ee001WXsPShyuTg3UpB",
+      "order": "1|0001792588678638|msg_15e9c85ee001WXsPShyuTg3UpB",
+      "ts": "2026-10-21T13:17:58.638Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c85ef021P54UxAQTOgLkfZ",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c85f9022yCvp3Bv63sv8yL",
+          "kind": "text",
+          "text": "qty is fine."
+        },
+        {
+          "part_id": "prt_15e9c8603023zbzxunNLWg4Uwh",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "db6fc8a010897dfdfe4cd7064261c921883f19652e3c312e288d1cbb5b89e174"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Review the cart in a subtask (@build subagent)",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:57.538Z",
+      "updated_at": "2026-10-21T13:17:58.638Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6e883ae78e4257d6969b66965a69ff50ae0e8623bb3398594898a62f108cb052",
+          "db6fc8a010897dfdfe4cd7064261c921883f19652e3c312e288d1cbb5b89e174"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c81a20016kUmgT3Q5hrPYH",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c85ee001WXsPShyuTg3UpB#1",
+      "anchor": {
+        "message_id": "msg_15e9c85ee001WXsPShyuTg3UpB"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9c9cfa001oOS0A8aan23sSI": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9ca0e2001k2YLssqhr43hit",
+      "order": "1|0001792588685538|msg_15e9ca0e2001k2YLssqhr43hit",
+      "ts": "2026-10-21T13:18:05.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9ca0e2028CbhFbGHw3ECkSZ",
+          "kind": "text",
+          "text": "The following tool was executed by the user",
+          "source": "injected"
+        }
+      ],
+      "cmp_sha": "1c5164610776088fc519513806d411885554d743463b99ffd89efb5c08728d32"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "parent_id": "msg_15e9ca0e2001k2YLssqhr43hit",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9ca0ec001unO81VicN61JMX",
+      "aliases": [],
+      "message_id": "msg_15e9ca0ec001unO81VicN61JMX",
+      "order": "1|0001792588685548|msg_15e9ca0ec001unO81VicN61JMX",
+      "ts": "2026-10-21T13:18:05.548Z",
+      "role": "assistant",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9ca0ed02942QJ3uK8WDEu39:call",
+          "kind": "tool_call",
+          "call_id": "01M5FAEW4AEJ4QVFJMH093YG1S",
+          "name": "bash",
+          "args": {
+            "command": "echo tui-shell-mode"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9ca0ed02942QJ3uK8WDEu39:result",
+          "kind": "tool_result",
+          "call_id": "01M5FAEW4AEJ4QVFJMH093YG1S",
+          "is_error": false,
+          "status": "completed",
+          "output": "tui-shell-mode\n",
+          "output_ref": null,
+          "output_len": 15,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "4ee59f521010bd17d3e8a8907971b8f4dc416c6624e8c03dfaa007d472b7f017"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9ca4ca001ffqG7PQX7nA38V",
+      "order": "1|0001792588686538|msg_15e9ca4ca001ffqG7PQX7nA38V",
+      "ts": "2026-10-21T13:18:06.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9ca4ca02aDe9fhKDdsG1qvy",
+          "kind": "text",
+          "text": "@cart-reviewer check the totals"
+        },
+        {
+          "part_id": "prt_15e9ca4cb02bs4eiSEhIyQu3Sb",
+          "kind": "notice",
+          "text": "cart-reviewer",
+          "level": null,
+          "native_type": "agent"
+        },
+        {
+          "part_id": "prt_15e9ca4cc02czBChUF9UUfZD3H",
+          "kind": "text",
+          "text": " Use the above message and context to generate a prompt and call the task tool with subagent: cart-reviewer",
+          "source": "injected"
+        }
+      ],
+      "cmp_sha": "727adc01d03b38a626b15a625e0b820098bea75d45ad2d0e93f30edace0a3d78"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "parent_id": "msg_15e9ca4ca001ffqG7PQX7nA38V",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9ca52e001kogqI5uESe654I",
+      "aliases": [],
+      "message_id": "msg_15e9ca52e001kogqI5uESe654I",
+      "order": "1|0001792588686638|msg_15e9ca52e001kogqI5uESe654I",
+      "ts": "2026-10-21T13:18:06.638Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9ca52f02dz9ppx5JaiFSQGz",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9ca53902emyIr7o2ewm2Blx",
+          "kind": "text",
+          "text": "Totals look right."
+        },
+        {
+          "part_id": "prt_15e9ca54302fBeL6UePKdHiIj5",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "be662028cb2294de340522f466e247f5162cb0be1a2e020a907df6ea9b8fc1f2"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Shell and mentions",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:04.538Z",
+      "updated_at": "2026-10-21T13:18:06.638Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "1c5164610776088fc519513806d411885554d743463b99ffd89efb5c08728d32",
+          "4ee59f521010bd17d3e8a8907971b8f4dc416c6624e8c03dfaa007d472b7f017",
+          "727adc01d03b38a626b15a625e0b820098bea75d45ad2d0e93f30edace0a3d78",
+          "be662028cb2294de340522f466e247f5162cb0be1a2e020a907df6ea9b8fc1f2"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c9cfa001oOS0A8aan23sSI",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9ca52e001kogqI5uESe654I#1",
+      "anchor": {
+        "message_id": "msg_15e9ca52e001kogqI5uESe654I"
+      },
+      "input": 900,
+      "output": 20,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9d122a001nCI5cEiQy49Kg2": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d122a001nCI5cEiQy49Kg2",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9d122f0016LcqoasjaRXcLW",
+      "order": "1|0001792588655538|msg_15e9d122f0016LcqoasjaRXcLW",
+      "ts": "2026-10-21T13:17:35.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9d1234030mIYd1aECYf5sBo",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py, then run the tests."
+        },
+        {
+          "part_id": "prt_15e9d1235031xOtSbAumiNNRz1",
+          "kind": "attachment",
+          "media_type": "text/plain",
+          "inline": null,
+          "ref": "/home/user/work/toyshop/README.md",
+          "bytes_len": null
+        },
+        {
+          "part_id": "prt_15e9d12360320Vd9M5VaPYusbQ",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgogc3ludGhldGljIGxhYmVsIGZvciB0aGUgdG95c2hvcCBjYXJ0",
+          "ref": null,
+          "bytes_len": 45
+        }
+      ],
+      "cmp_sha": "09d6dac07f3976c90161b9df1669bac4ec4232a2c4b785835e326115ce24cd24"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9d122a001nCI5cEiQy49Kg2",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Toy cart work (fork #1)",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:34.538Z",
+      "updated_at": "2026-10-21T13:17:35.538Z",
+      "state": "archived",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "09d6dac07f3976c90161b9df1669bac4ec4232a2c4b785835e326115ce24cd24"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "ses_15e9d393a0016B9cRxhQ4qB6tG": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9d3d22001cRG4uNMr6Fb3pG",
+      "order": "2|0000000000000001|msg_15e9d3d22001cRG4uNMr6Fb3pG",
+      "ts": "2026-10-21T13:18:45.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Print every cart line."
+        }
+      ],
+      "cmp_sha": "4601a5e6e0b9ba70cd3c0496d92fbaf547ef6ac0b9d0ba4d6c7ad88775952ffa"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": "fake-1",
+      "effort": "high",
+      "response_id": "msg_15e9d410a0011NViuUnoT4tQ14",
+      "aliases": [],
+      "message_id": "msg_15e9d410a0011NViuUnoT4tQ14",
+      "order": "2|0000000000000002|msg_15e9d410a0011NViuUnoT4tQ14",
+      "ts": "2026-10-21T13:18:46.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "reasoning-0",
+          "kind": "reasoning",
+          "text": "Many lines: the output will spill.",
+          "signature_len": null
+        },
+        {
+          "part_id": "call_fake_scn_bigout_v2:call",
+          "kind": "tool_call",
+          "call_id": "call_fake_scn_bigout_v2",
+          "name": "bash",
+          "args": {
+            "command": "cat cart_lines.txt"
+          },
+          "server": null
+        },
+        {
+          "part_id": "call_fake_scn_bigout_v2:result",
+          "kind": "tool_result",
+          "call_id": "call_fake_scn_bigout_v2",
+          "is_error": false,
+          "status": "completed",
+          "output": "...output truncated...\nline 2 of the v2 spill\n",
+          "output_ref": {
+            "ref": "tool_15e9d411e001yDb5IQq1OulmJf",
+            "sha256": "5bc10d9e2db73cf84ce719ca2bf03b3cf799daebb1a8bf7d87d5f9773a6cef94",
+            "bytes": 46
+          },
+          "output_len": 46,
+          "truncated": true,
+          "exit_code": 0
+        },
+        {
+          "part_id": "text-0",
+          "kind": "text",
+          "text": "The lines are in the spilled output."
+        }
+      ],
+      "cmp_sha": "4a35ad2c2229d8e7bbc485a23482d08b3a005751c9179f30c2877a77573c5e42"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9d44f20014rOhHBToOCh3Oe",
+      "order": "2|0000000000000003|msg_15e9d44f20014rOhHBToOCh3Oe",
+      "ts": "2026-10-21T13:18:47.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now count them."
+        }
+      ],
+      "cmp_sha": "611d39944513fbf90552ebe1bfc80072305c501de088903b99a1198e3b995406"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "reverted",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9d48da001naSGRSLIIjrQMc",
+      "aliases": [],
+      "message_id": "msg_15e9d48da001naSGRSLIIjrQMc",
+      "order": "2|0000000000000004|msg_15e9d48da001naSGRSLIIjrQMc",
+      "ts": "2026-10-21T13:18:48.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "text-0",
+          "kind": "text",
+          "text": "400 lines."
+        }
+      ],
+      "cmp_sha": "83c7703e91733b0a0bcc068115733efa6283f725e02ca19abbabb8c59dde2ccc"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "engine": "v2",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "New session - 2026-10-21T13:18:44.538Z",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:44.538Z",
+      "updated_at": "2026-10-21T13:18:48.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "4601a5e6e0b9ba70cd3c0496d92fbaf547ef6ac0b9d0ba4d6c7ad88775952ffa",
+          "4a35ad2c2229d8e7bbc485a23482d08b3a005751c9179f30c2877a77573c5e42",
+          "611d39944513fbf90552ebe1bfc80072305c501de088903b99a1198e3b995406"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9d410a0011NViuUnoT4tQ14#1",
+      "anchor": {
+        "message_id": "msg_15e9d410a0011NViuUnoT4tQ14"
+      },
+      "input": 900,
+      "output": 40,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 12,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9d393a0016B9cRxhQ4qB6tG",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9d48da001naSGRSLIIjrQMc#1",
+      "anchor": {
+        "message_id": "msg_15e9d48da001naSGRSLIIjrQMc"
+      },
+      "input": 900,
+      "output": 5,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ]
+}

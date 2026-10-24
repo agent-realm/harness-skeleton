@@ -1,0 +1,123 @@
+{
+  "check": "tier 1: hooks at launch on Codex, through hs's hook shim, trusted by -c hooks.state under a launch receipt (design note v0.2 \u00a75.6, \u00a77.5)",
+  "at": "2026-10-23T01:45:55.029Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "4e4d00c"
+  },
+  "refusal": {
+    "code": "receipt_required",
+    "risks": [
+      {
+        "item": "hook.guard",
+        "risk": "runs-code",
+        "blocks": true
+      },
+      {
+        "item": "hook.guard",
+        "risk": "trust",
+        "gate": "codex hook trust (the /hooks review)"
+      },
+      {
+        "item": "hook.start",
+        "risk": "runs-code",
+        "blocks": false
+      },
+      {
+        "item": "hook.start",
+        "risk": "trust",
+        "gate": "codex hook trust (the /hooks review)"
+      }
+    ]
+  },
+  "runs": {
+    "untrusted": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "context_in_request": false,
+      "command_ran": true,
+      "tool_output": {
+        "reason": false,
+        "failing_closed": false
+      },
+      "start": null,
+      "guard": null,
+      "crash": null,
+      "folder_hook": true
+    },
+    "trusted": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "context_in_request": true,
+      "command_ran": false,
+      "tool_output": {
+        "reason": true,
+        "failing_closed": false
+      },
+      "start": {
+        "event": "SessionStart",
+        "source": "startup",
+        "session": true,
+        "native": "SessionStart",
+        "tool": null,
+        "env_ref": "match"
+      },
+      "guard": {
+        "event": "PreToolUse",
+        "source": null,
+        "session": true,
+        "native": "PreToolUse",
+        "tool": {
+          "class": "shell",
+          "name": "Bash",
+          "command": true
+        },
+        "env_ref": "unset"
+      },
+      "crash": null,
+      "folder_hook": true
+    },
+    "crash": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "context_in_request": false,
+      "command_ran": false,
+      "tool_output": {
+        "reason": false,
+        "failing_closed": true
+      },
+      "start": null,
+      "guard": null,
+      "crash": {
+        "event": "PreToolUse",
+        "source": null,
+        "session": true,
+        "native": "PreToolUse",
+        "tool": {
+          "class": "shell",
+          "name": "Bash",
+          "command": true
+        },
+        "env_ref": "unset"
+      },
+      "folder_hook": true
+    }
+  },
+  "checks": {
+    "without the trust table no spec hook runs, the command runs, and the folder's own PreToolUse hook runs (premise)": true,
+    "without a receipt launch-spec refuses: runs-code and trust for each hook": true,
+    "the launch trusts its hooks by -c hooks.state, never by the bypass flag": true,
+    "SessionStart got the envelope (event, source startup, session id) and its env ref": true,
+    "the SessionStart context reached the request": true,
+    "the PreToolUse guard got the shell call's envelope": true,
+    "the guard's deny kept the command from running, with its reason in the tool output": true,
+    "the folder's own PreToolUse hook still ran beside the launch's PreToolUse guard": true,
+    "a guard that crashes fails closed: the command did not run": true
+  },
+  "verdict": "pass"
+}

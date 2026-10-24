@@ -1,0 +1,316 @@
+{
+  "3148427e-5a7e-4000-8000-000000000008": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000241",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "3148427e-5a7e-4000-8000-000000000008",
+      "incarnation": "",
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000242",
+      "parent_id": null,
+      "order": "000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now add a coupon."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "3148427e-5a7e-4000-8000-000000000008",
+      "incarnation": "",
+      "cmp_sha": "211ca0899e522c7680a6bd9827df6fb5b91c8a83b904ebf8e47c14c8d93f3ff5"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000141:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fixed."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "3148427e-5a7e-4000-8000-000000000008",
+      "incarnation": "",
+      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000142:assistant",
+      "parent_id": null,
+      "order": "000003",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added SAVE10."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "3148427e-5a7e-4000-8000-000000000008",
+      "incarnation": "",
+      "cmp_sha": "c5256f6d64755e47fd877830e998e4ea6a9b509950a78173ff5bb3f4e6c3ecee"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "3148427e-5a7e-4000-8000-000000000008",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "coupon-work (forked)",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T15:00:12.390Z",
+      "updated_at": "2026-10-20T15:00:03.390Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+          "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95",
+          "211ca0899e522c7680a6bd9827df6fb5b91c8a83b904ebf8e47c14c8d93f3ff5",
+          "c5256f6d64755e47fd877830e998e4ea6a9b509950a78173ff5bb3f4e6c3ecee"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5d0c1f9e-5a7e-4000-8000-000000000007": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000241",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
+      "incarnation": "",
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000243",
+      "parent_id": null,
+      "order": "000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Instead, add a test."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
+      "incarnation": "",
+      "cmp_sha": "aa58cf956183feb62816cf32070eb59aaf54ee00bca88a79bbe7ef4251350842"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000141:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fixed."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
+      "incarnation": "",
+      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000143:assistant",
+      "parent_id": null,
+      "order": "000003",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added a test."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
+      "incarnation": "",
+      "cmp_sha": "a085f550f978cbade0713cc72798e183eb267d29c81313f9cf24c978a89dea19"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "coupon-work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-20T15:01:03.390Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+          "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95",
+          "aa58cf956183feb62816cf32070eb59aaf54ee00bca88a79bbe7ef4251350842",
+          "a085f550f978cbade0713cc72798e183eb267d29c81313f9cf24c978a89dea19"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

@@ -1,0 +1,1178 @@
+{
+  "ses_15e9c27ca0017uw8o5cZ4brzqt": [
+    {
+      "type": "lifecycle",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "lifecycle_id": "prt_15e9c4322007jq3MvaWta9Dznn",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "msg_15e9c2bb2001YVTs3PA64CDtEN",
+          "through_id": "msg_15e9c2f9a001HAfWcqFZUPJg1D"
+        }
+      },
+      "at": "msg_15e9c4322001Z7424i9EhM8jRH",
+      "ts": "2026-10-21T13:17:41.538Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c2bb2001YVTs3PA64CDtEN",
+      "order": "1|0001792588655538|msg_15e9c2bb2001YVTs3PA64CDtEN",
+      "ts": "2026-10-21T13:17:35.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2bb2002p4N51w9Y9cthT6",
+          "kind": "text",
+          "text": "Fix the qty bug."
+        }
+      ],
+      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb2001YVTs3PA64CDtEN",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c2f9a001HAfWcqFZUPJg1D",
+      "aliases": [],
+      "message_id": "msg_15e9c2f9a001HAfWcqFZUPJg1D",
+      "order": "1|0001792588656538|msg_15e9c2f9a001HAfWcqFZUPJg1D",
+      "ts": "2026-10-21T13:17:36.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2f9b003gFxjKOiifz8ye1",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c2fa5004Tm9iUQfT3vHDdf",
+          "kind": "text",
+          "text": "Fixed qty."
+        },
+        {
+          "part_id": "prt_15e9c2faf005YOAIJRrYuCIPrB",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c3b520016Vpf2216LPXO1D",
+      "order": "1|0001792588659538|msg_15e9c3b520016Vpf2216LPXO1D",
+      "ts": "2026-10-21T13:17:39.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c3b52006HE3vt1FT0OJ8wA",
+          "kind": "text",
+          "text": "Add a coupon code to the cart."
+        }
+      ],
+      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": "msg_15e9c3b520016Vpf2216LPXO1D",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c3f3a001LML1hii2Zn8AlS",
+      "aliases": [],
+      "message_id": "msg_15e9c3f3a001LML1hii2Zn8AlS",
+      "order": "1|0001792588660538|msg_15e9c3f3a001LML1hii2Zn8AlS",
+      "ts": "2026-10-21T13:17:40.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [],
+      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c4322001Z7424i9EhM8jRH",
+      "order": "1|0001792588661538|msg_15e9c4322001Z7424i9EhM8jRH",
+      "ts": "2026-10-21T13:17:41.538Z",
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "prt_15e9c4322007jq3MvaWta9Dznn",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "compaction"
+        }
+      ],
+      "cmp_sha": "6d628dcf360155e4c19a7d5ca1dcfe9e2b27fe72244d5ffc738079d1dce32983"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": "msg_15e9c4322001Z7424i9EhM8jRH",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c4386001R6eu8jsjfKUIpd",
+      "aliases": [],
+      "message_id": "msg_15e9c4386001R6eu8jsjfKUIpd",
+      "order": "1|0001792588661638|msg_15e9c4386001R6eu8jsjfKUIpd",
+      "ts": "2026-10-21T13:17:41.638Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c4387008Hz8VB7JhofyrC9",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c4391009302f3Jlr1JKN3V",
+          "kind": "summary",
+          "text": "Summary: qty fixed in cart.py; next, a coupon code.",
+          "replaces": {
+            "first_kept_id": "msg_15e9c3b520016Vpf2216LPXO1D"
+          }
+        },
+        {
+          "part_id": "prt_15e9c439b00ad4ro134EtEbvTi",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "d6d0c3f1a0ccca9e8198333b9976d1878e5afa5644e4aa76fd52980fc360204d"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c470a0016f56GwPVKJGBrf",
+      "order": "1|0001792588662538|msg_15e9c470a0016f56GwPVKJGBrf",
+      "ts": "2026-10-21T13:17:42.538Z",
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "prt_15e9c470a00bg6kCOXu3PJ7wTE",
+          "kind": "text",
+          "text": "Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.",
+          "source": "injected"
+        }
+      ],
+      "cmp_sha": "a5ca4b89bd9625f6e5aaa3ae6fe1012ec94b43458fb647204cf0d96d24f10597"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c476e0012NkaLGd5siefyt",
+      "order": "1|0001792588662638|msg_15e9c476e0012NkaLGd5siefyt",
+      "ts": "2026-10-21T13:17:42.638Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c476e00c4tD5m9XgGljgFx",
+          "kind": "text",
+          "text": "Add a coupon code to the cart."
+        }
+      ],
+      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "parent_id": "msg_15e9c476e0012NkaLGd5siefyt",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c4af20013lGHDy2RhFdW0i",
+      "aliases": [],
+      "message_id": "msg_15e9c4af20013lGHDy2RhFdW0i",
+      "order": "1|0001792588663538|msg_15e9c4af20013lGHDy2RhFdW0i",
+      "ts": "2026-10-21T13:17:43.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c4af300dK3L6ZgoyVeetEG",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c4afd00ewQczLRIAPzqgUE",
+          "kind": "text",
+          "text": "Added a coupon code."
+        },
+        {
+          "part_id": "prt_15e9c4b0700f4h3cCc4WGXMCo3",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Compaction work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:34.538Z",
+      "updated_at": "2026-10-21T13:17:43.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1",
+          "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745",
+          "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865",
+          "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615",
+          "6d628dcf360155e4c19a7d5ca1dcfe9e2b27fe72244d5ffc738079d1dce32983",
+          "d6d0c3f1a0ccca9e8198333b9976d1878e5afa5644e4aa76fd52980fc360204d",
+          "a5ca4b89bd9625f6e5aaa3ae6fe1012ec94b43458fb647204cf0d96d24f10597",
+          "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865",
+          "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c2f9a001HAfWcqFZUPJg1D#1",
+      "anchor": {
+        "message_id": "msg_15e9c2f9a001HAfWcqFZUPJg1D"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c4386001R6eu8jsjfKUIpd#1",
+      "anchor": {
+        "message_id": "msg_15e9c4386001R6eu8jsjfKUIpd"
+      },
+      "input": 900,
+      "output": 40,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca0017uw8o5cZ4brzqt",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c4af20013lGHDy2RhFdW0i#1",
+      "anchor": {
+        "message_id": "msg_15e9c4af20013lGHDy2RhFdW0i"
+      },
+      "input": 900,
+      "output": 30,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9c75ea00112OocjbWwkFUlY": [
+    {
+      "type": "lifecycle",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "lifecycle_id": "evt_15e9c9cfa002KR1gsFCJ03wFBH",
+      "op": "edit",
+      "target": {
+        "message_id": "msg_15e9c8972001aLh19UOz511rQq"
+      },
+      "at": "msg_15e9c7dba001EIyn7ips17RPRF",
+      "ts": "2026-10-21T13:18:04.538Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "lifecycle_id": "evt_15e9c9cfa003xUIB1l7A72zayN",
+      "op": "edit",
+      "target": {
+        "message_id": "msg_15e9c8d5a001vtgaMqFLPDKZmE"
+      },
+      "at": "msg_15e9c7dba001EIyn7ips17RPRF",
+      "ts": "2026-10-21T13:18:04.538Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c79d2001mANQDDNgw0eDFf",
+      "order": "1|0001792588675538|msg_15e9c79d2001mANQDDNgw0eDFf",
+      "ts": "2026-10-21T13:17:55.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c79d20102Eqv9Y3XT2aafB",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py."
+        }
+      ],
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "parent_id": "msg_15e9c79d2001mANQDDNgw0eDFf",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c7dba001EIyn7ips17RPRF",
+      "aliases": [],
+      "message_id": "msg_15e9c7dba001EIyn7ips17RPRF",
+      "order": "1|0001792588676538|msg_15e9c7dba001EIyn7ips17RPRF",
+      "ts": "2026-10-21T13:17:56.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c7dbb011IvLmEQ5sR7jXLT",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c7dc50124O5qwxKQh2CNWJ",
+          "kind": "text",
+          "text": "Fixed: total multiplies by qty."
+        },
+        {
+          "part_id": "prt_15e9c7dcf013iEDSd054Tb0wqQ",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "a665283bae9b77f3d19485bab8b57a625b8a093b589a37ed59dc27657dc8c33a"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c9d2c001jb6O908c92oMoq",
+      "order": "1|0001792588684588|msg_15e9c9d2c001jb6O908c92oMoq",
+      "ts": "2026-10-21T13:18:04.588Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c9d2c0185NsVMwGDnfFd5J",
+          "kind": "text",
+          "text": "Instead, add a coupon code."
+        }
+      ],
+      "cmp_sha": "879d345a8dbce3fd228359ba092ab88577e75714a97761643db9be21fc053c6c"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "parent_id": "msg_15e9c9d2c001jb6O908c92oMoq",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9ca114001rVfTH2qLWS3Wkl",
+      "aliases": [],
+      "message_id": "msg_15e9ca114001rVfTH2qLWS3Wkl",
+      "order": "1|0001792588685588|msg_15e9ca114001rVfTH2qLWS3Wkl",
+      "ts": "2026-10-21T13:18:05.588Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9ca115019fTt8AQ62dsDEcq",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9ca11f01amKESouAcP03tg1",
+          "kind": "text",
+          "text": "Added a coupon code."
+        },
+        {
+          "part_id": "prt_15e9ca12901bBWcvVjr7kbhQ3t",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Edit work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:54.538Z",
+      "updated_at": "2026-10-21T13:18:05.588Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+          "a665283bae9b77f3d19485bab8b57a625b8a093b589a37ed59dc27657dc8c33a",
+          "879d345a8dbce3fd228359ba092ab88577e75714a97761643db9be21fc053c6c",
+          "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c7dba001EIyn7ips17RPRF#1",
+      "anchor": {
+        "message_id": "msg_15e9c7dba001EIyn7ips17RPRF"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c75ea00112OocjbWwkFUlY",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9ca114001rVfTH2qLWS3Wkl#1",
+      "anchor": {
+        "message_id": "msg_15e9ca114001rVfTH2qLWS3Wkl"
+      },
+      "input": 1100,
+      "output": 25,
+      "cache_read": 450,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9cc40a001sY10RjvTKMKKsQ": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "order": "1|0001792588695538|msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "ts": "2026-10-21T13:18:15.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9cc7f201c3wjDC8H41tWfkM",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py, then run the tests."
+        }
+      ],
+      "cmp_sha": "8c397e127d67af3c1ea36c28145ea5a60da4709a4b0b360e4866d81d4db66013"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": "msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9ccbda001eXdiimEeVcf6X7",
+      "aliases": [],
+      "message_id": "msg_15e9ccbda001eXdiimEeVcf6X7",
+      "order": "1|0001792588696538|msg_15e9ccbda001eXdiimEeVcf6X7",
+      "ts": "2026-10-21T13:18:16.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9ccbdb01dNscaSEGpAF6hzL",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9ccbe501el9822dey0MH6d4",
+          "kind": "reasoning",
+          "text": "The total ignores qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "prt_15e9ccbef01foPKxr6yRPuyaku:call",
+          "kind": "tool_call",
+          "call_id": "call_439876716b",
+          "name": "bash",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null,
+          "state": "reverted"
+        },
+        {
+          "part_id": "prt_15e9ccbef01foPKxr6yRPuyaku:result",
+          "kind": "tool_result",
+          "call_id": "call_439876716b",
+          "is_error": false,
+          "status": "completed",
+          "output": "3 passed",
+          "output_ref": null,
+          "output_len": 8,
+          "truncated": false,
+          "exit_code": 0,
+          "state": "reverted"
+        },
+        {
+          "part_id": "prt_15e9ccbf9020QdM8GW8B05mDSH",
+          "kind": "text",
+          "text": "Fixed and tested.",
+          "state": "reverted"
+        },
+        {
+          "part_id": "prt_15e9ccc03021M2RJ2So9lSiMJ1",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish",
+          "state": "reverted"
+        }
+      ],
+      "cmp_sha": "2f1dd4e2f6910eaabe249014ec63900a59401cd8b03320d75c6cadb4e0d5c7cf"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "reverted",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9cd79200131yLyr6iJYU7sj",
+      "order": "1|0001792588699538|msg_15e9cd79200131yLyr6iJYU7sj",
+      "ts": "2026-10-21T13:18:19.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9cd792022R4Jp2yYlvUIl4s",
+          "kind": "text",
+          "text": "Also add a discount field."
+        }
+      ],
+      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": "msg_15e9cd79200131yLyr6iJYU7sj",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "reverted",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9cdb7a001Okh63SL5ZzC3tK",
+      "aliases": [],
+      "message_id": "msg_15e9cdb7a001Okh63SL5ZzC3tK",
+      "order": "1|0001792588700538|msg_15e9cdb7a001Okh63SL5ZzC3tK",
+      "ts": "2026-10-21T13:18:20.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9cdb7b0232qEfzodW7T8nR2",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9cdb850244fTBJLsR5sA6TW",
+          "kind": "text",
+          "text": "Added discount."
+        },
+        {
+          "part_id": "prt_15e9cdb8f025csQh1UrGy7SKvd",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Revert at a part",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:14.538Z",
+      "updated_at": "2026-10-21T13:18:20.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8c397e127d67af3c1ea36c28145ea5a60da4709a4b0b360e4866d81d4db66013",
+          "2f1dd4e2f6910eaabe249014ec63900a59401cd8b03320d75c6cadb4e0d5c7cf"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9ccbda001eXdiimEeVcf6X7#1",
+      "anchor": {
+        "message_id": "msg_15e9ccbda001eXdiimEeVcf6X7"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 17,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9cdb7a001Okh63SL5ZzC3tK#1",
+      "anchor": {
+        "message_id": "msg_15e9cdb7a001Okh63SL5ZzC3tK"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ],
+  "ses_15e9ceb1a001OWuneH3uegobVX": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9cef02001hbdw5G5l2GuJgq",
+      "order": "1|0001792588705538|msg_15e9cef02001hbdw5G5l2GuJgq",
+      "ts": "2026-10-21T13:18:25.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9cef02026jekjLcZ7mQ898K",
+          "kind": "text",
+          "text": "Fix the qty bug."
+        }
+      ],
+      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "parent_id": "msg_15e9cef02001hbdw5G5l2GuJgq",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9cf2ea00113pGEHcxszFSrl",
+      "aliases": [],
+      "message_id": "msg_15e9cf2ea00113pGEHcxszFSrl",
+      "order": "1|0001792588706538|msg_15e9cf2ea00113pGEHcxszFSrl",
+      "ts": "2026-10-21T13:18:26.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9cf2eb027Dv3CIsCkzHA1PA",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9cf2f5028mWggqveoOJxy7w",
+          "kind": "text",
+          "text": "Fixed qty."
+        },
+        {
+          "part_id": "prt_15e9cf2ff029d2szoZOw7YQZz7",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "reverted",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9cf6d2001qQUt2pOyV6VUxf",
+      "order": "1|0001792588707538|msg_15e9cf6d2001qQUt2pOyV6VUxf",
+      "ts": "2026-10-21T13:18:27.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9cf6d202aVIvdficJOqIlpx",
+          "kind": "text",
+          "text": "Also add a discount field."
+        }
+      ],
+      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "parent_id": "msg_15e9cf6d2001qQUt2pOyV6VUxf",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "reverted",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9cfaba001OIoHTDGMT3bMdG",
+      "aliases": [],
+      "message_id": "msg_15e9cfaba001OIoHTDGMT3bMdG",
+      "order": "1|0001792588708538|msg_15e9cfaba001OIoHTDGMT3bMdG",
+      "ts": "2026-10-21T13:18:28.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9cfabb02bLIWChvlN0YoBQR",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9cfac502cF6N9WCReDQdt0v",
+          "kind": "text",
+          "text": "Added discount."
+        },
+        {
+          "part_id": "prt_15e9cfacf02dPEDLZ5zUiHVfar",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Revert at a message",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:24.538Z",
+      "updated_at": "2026-10-21T13:18:28.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1",
+          "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9cf2ea00113pGEHcxszFSrl#1",
+      "anchor": {
+        "message_id": "msg_15e9cf2ea00113pGEHcxszFSrl"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9ceb1a001OWuneH3uegobVX",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9cfaba001OIoHTDGMT3bMdG#1",
+      "anchor": {
+        "message_id": "msg_15e9cfaba001OIoHTDGMT3bMdG"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ]
+}

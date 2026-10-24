@@ -1,0 +1,669 @@
+{
+  "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c": [
+    {
+      "type": "lifecycle",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "lifecycle_id": "00000000-0000-4000-a000-000000000012",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "00000000-0000-4000-a000-000000000001",
+          "through_id": "00000000-0000-4000-a000-000000000010"
+        }
+      },
+      "at": null,
+      "ts": "2026-01-05T10:00:11.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "lifecycle_id": "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl@4176#1",
+      "op": "rename",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000001",
+      "parent_id": null,
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "list the files in the toy repo"
+        }
+      ],
+      "cmp_sha": "0919747cb8e2917a48985e409a34da9974dccea595ad28965f1687c64b701419"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000002",
+      "parent_id": "00000000-0000-4000-a000-000000000001",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000000341",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<system-reminder>synthetic reminder</system-reminder>"
+        }
+      ],
+      "cmp_sha": "3b6b132375cd997979df5f585b8e458a26f3a978485739593bec7b7a51fe2429"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000003",
+      "parent_id": "00000000-0000-4000-a000-000000000002",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000000778",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:02.000Z",
+      "requested_model": null,
+      "served_model": "claude-opus-4-1",
+      "effort": null,
+      "response_id": "msg_feat_001",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "plan the listing",
+          "signature_len": 4
+        }
+      ],
+      "cmp_sha": "4292213bad43de1402d1ca59b124a3810557e97c1366a156d4abdc869b6be081"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000004",
+      "parent_id": "00000000-0000-4000-a000-000000000003",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000001355",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:03.000Z",
+      "requested_model": null,
+      "served_model": "claude-opus-4-1",
+      "effort": null,
+      "response_id": "msg_feat_001",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "toolu_feat_bash",
+          "name": "Bash",
+          "args": {
+            "command": "ls"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "toolu_feat_mcp",
+          "name": "mcp__toyserver__lookup",
+          "args": {
+            "q": "readme"
+          },
+          "server": "toyserver"
+        }
+      ],
+      "cmp_sha": "58d56a9db577b7e5fa842d0584c09c0f9f25e1d1d609255f96e67c51db0dffdd"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000005",
+      "parent_id": "00000000-0000-4000-a000-000000000004",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000002068",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:04.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "toolu_feat_bash",
+          "is_error": false,
+          "status": "completed",
+          "output": "README.md\nsrc",
+          "output_len": 13,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_result",
+          "call_id": "toolu_feat_mcp",
+          "is_error": true,
+          "status": "completed",
+          "output": "not found",
+          "output_len": 9,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "2d545354a2faa34e88a16d7a8064a58ac2b960dcbdbbf022289acce327d807c3"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000005+1",
+      "parent_id": "00000000-0000-4000-a000-000000000004",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000002068",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:04.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "2",
+          "kind": "text",
+          "text": "also show the image"
+        }
+      ],
+      "cmp_sha": "68aa4dc89a08b8ffb3ded09a708825461146e1ca07d104aa3afdbbe910b75ec2"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000006",
+      "parent_id": "00000000-0000-4000-a000-000000000005",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000002673",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:05.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAA=",
+          "bytes_len": 29
+        }
+      ],
+      "cmp_sha": "e9cec653fed9ac66513e45cb5487c5963c5b53be9059687939f5e3d8539d9771"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000007",
+      "parent_id": "00000000-0000-4000-a000-000000000006",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000003599",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "error",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:06.000Z",
+      "requested_model": null,
+      "served_model": "<synthetic>",
+      "effort": null,
+      "response_id": "msg_feat_err",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "error",
+          "error_kind": "api",
+          "message": "API Error: 529 overloaded",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "76c3597c2ee4778744eb123eaf5c85c84b7dd8fd44550201b81ed9ffdbd85eaa"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000008",
+      "parent_id": "00000000-0000-4000-a000-000000000007",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000004279",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:07.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "<command-name>/status</command-name>",
+          "level": "info",
+          "native_type": "local_command"
+        }
+      ],
+      "cmp_sha": "dbe77a76860137bcbcaafeb4e6f885e58e05b180965cb30d45078e49d15f809b"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000009",
+      "parent_id": "00000000-0000-4000-a000-000000000001",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000004677",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:08.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "actually, only count the files"
+        }
+      ],
+      "cmp_sha": "c3196ae359e3b94ef0beaae92307629df4bcb41a2e17824058d72e073ca40334"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000010",
+      "parent_id": "00000000-0000-4000-a000-000000000009",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000005052",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:09.000Z",
+      "requested_model": null,
+      "served_model": "claude-opus-4-1",
+      "effort": null,
+      "response_id": "msg_feat_002",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "there are two entries"
+        }
+      ],
+      "cmp_sha": "0ada190962de324f849617c70f84c2489f328aa85b8e6196dfa23ce70746b3a1"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000011",
+      "parent_id": null,
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000005632",
+      "agent_id": "afeat0001",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "sidechain prompt"
+        }
+      ],
+      "cmp_sha": "cf1e5b80edcce6e41af7cf0b8a666efcc561bac59c07d6dc02ef08fdadd7cecd"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000012",
+      "parent_id": null,
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000005980",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:11.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Conversation compacted",
+          "level": "info",
+          "native_type": "compact_boundary"
+        }
+      ],
+      "cmp_sha": "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000013",
+      "parent_id": "00000000-0000-4000-a000-000000000012",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000006448",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:11.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "Summary: the user asked to list and then count files.",
+          "replaces": {
+            "through_id": "00000000-0000-4000-a000-000000000010"
+          }
+        }
+      ],
+      "cmp_sha": "d2064a6a88cf6c897d38ef5ec5d2f2a779f8ec1614f2a0d9b50044c66f95e0da"
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-000000000014",
+      "parent_id": "00000000-0000-4000-a000-000000000013",
+      "order": "2026-01-05T10:00:01.000Z|projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl|000000006895",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-05T10:00:12.000Z",
+      "requested_model": null,
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "msg_feat_003",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "toolu_feat_gw",
+          "name": "web_search",
+          "args": {
+            "query": "toy repo layout"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_result",
+          "call_id": "toolu_feat_gw",
+          "is_error": false,
+          "status": "completed",
+          "output": "two results for the toy repo",
+          "output_len": 28,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2",
+          "kind": "text",
+          "text": "the toy repo holds a README and a src folder"
+        }
+      ],
+      "cmp_sha": "0d5362d45cd4aa49957da20fadac64016fbd27bfb78ebcdd6471f163d38e5378"
+    },
+    {
+      "type": "session",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "engine": null,
+      "client": "claude-code",
+      "harness_version": "2.1.9",
+      "title": "toy listing",
+      "title_set_by": "user",
+      "cwd": "/work/toy-repo",
+      "last_cwd": "/work/toy-repo",
+      "created_at": "2026-01-05T10:00:01.000Z",
+      "updated_at": "2026-01-05T10:00:12.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0919747cb8e2917a48985e409a34da9974dccea595ad28965f1687c64b701419",
+          "3b6b132375cd997979df5f585b8e458a26f3a978485739593bec7b7a51fe2429",
+          "4292213bad43de1402d1ca59b124a3810557e97c1366a156d4abdc869b6be081",
+          "58d56a9db577b7e5fa842d0584c09c0f9f25e1d1d609255f96e67c51db0dffdd",
+          "2d545354a2faa34e88a16d7a8064a58ac2b960dcbdbbf022289acce327d807c3",
+          "68aa4dc89a08b8ffb3ded09a708825461146e1ca07d104aa3afdbbe910b75ec2",
+          "e9cec653fed9ac66513e45cb5487c5963c5b53be9059687939f5e3d8539d9771",
+          "76c3597c2ee4778744eb123eaf5c85c84b7dd8fd44550201b81ed9ffdbd85eaa",
+          "dbe77a76860137bcbcaafeb4e6f885e58e05b180965cb30d45078e49d15f809b",
+          "c3196ae359e3b94ef0beaae92307629df4bcb41a2e17824058d72e073ca40334",
+          "0ada190962de324f849617c70f84c2489f328aa85b8e6196dfa23ce70746b3a1",
+          "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607",
+          "d2064a6a88cf6c897d38ef5ec5d2f2a779f8ec1614f2a0d9b50044c66f95e0da",
+          "0d5362d45cd4aa49957da20fadac64016fbd27bfb78ebcdd6471f163d38e5378"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "usage_id": "response:msg_feat_001#1",
+      "anchor": {
+        "response_id": "msg_feat_001"
+      },
+      "input": 10,
+      "output": 25,
+      "cache_read": 100,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": true,
+      "granularity": "per_response",
+      "model": "claude-opus-4-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "usage_id": "response:msg_feat_002#1",
+      "anchor": {
+        "response_id": "msg_feat_002"
+      },
+      "input": 12,
+      "output": 6,
+      "cache_read": 120,
+      "cache_write": 4,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": true,
+      "granularity": "per_response",
+      "model": "claude-opus-4-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "claude-code",
+      "session_id": "0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c",
+      "incarnation": "",
+      "usage_id": "response:msg_feat_003#1",
+      "anchor": {
+        "response_id": "msg_feat_003"
+      },
+      "input": 21,
+      "output": 14,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": true,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

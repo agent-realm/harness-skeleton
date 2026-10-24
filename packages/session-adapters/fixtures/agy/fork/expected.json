@@ -1,0 +1,719 @@
+{
+  "28d30145-9faf-4ea5-94d7-a38b5cc017fa": [
+    {
+      "type": "message",
+      "message_id": "04978e7d52ed47febf62f8115f161f35",
+      "parent_id": null,
+      "order": "000000000002",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:51.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_183812",
+          "is_error": false,
+          "status": "completed",
+          "output": "Command exited with code 0.\n\nCommand output:\ntotal 36\ndrwxrwxr-x 6 user user 4096 Oct 20 14:24 .\n-rw-rw-r-- 1 user user  812 Oct 20 14:24 cart.py\ndrwxrwxr-x 2 user user 4096 Oct 20 14:24 tests",
+          "output_len": 192,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7"
+    },
+    {
+      "type": "message",
+      "message_id": "05570899eeaa8bce42d5929377a7bf60",
+      "parent_id": null,
+      "order": "000000000004",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:02:45.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Which test checks the quantity?"
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760"
+    },
+    {
+      "type": "message",
+      "message_id": "2b9b47eda4818c82bff093441520f504",
+      "parent_id": null,
+      "order": "000000000001",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:50.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-01",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_183812",
+          "name": "run_command",
+          "args": {
+            "CommandLine": "ls -la",
+            "WaitMsBeforeAsync": 5000
+          },
+          "server": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534"
+    },
+    {
+      "type": "message",
+      "message_id": "34c82d72b2ec6d3e1c4a3cecd39a23fe",
+      "parent_id": null,
+      "order": "000000000003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:54.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-03",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "toyshop/ holds cart.py (a Cart whose total ignores qty) and tests/test_cart.py (three tests)."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec"
+    },
+    {
+      "type": "message",
+      "message_id": "d222cfaae27d67a37943fd163b952242",
+      "parent_id": null,
+      "order": "000000000005",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:02:47.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-05",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "test_total_uses_qty, in tests/test_cart.py."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
+    },
+    {
+      "type": "message",
+      "message_id": "d73f3a6b86234161ae0beecfccd94d99",
+      "parent_id": null,
+      "order": "000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:45.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What is in toyshop/? Briefly describe the cart module and the tests."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7"
+    },
+    {
+      "type": "session",
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "engine": null,
+      "client": "agy",
+      "harness_version": null,
+      "title": "Toyshop tour",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/ag2/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T15:01:35.000Z",
+      "updated_at": "2026-10-20T15:02:47.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7",
+          "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534",
+          "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7",
+          "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec",
+          "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760",
+          "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-01",
+      "anchor": {
+        "response_id": "resp-orig-01"
+      },
+      "input": 6100,
+      "output": 40,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-03",
+      "anchor": {
+        "response_id": "resp-orig-03"
+      },
+      "input": 6400,
+      "output": 52,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-05",
+      "anchor": {
+        "response_id": "resp-orig-05"
+      },
+      "input": 6600,
+      "output": 18,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
+      "incarnation": "",
+      "tool_prompt": null
+    }
+  ],
+  "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d": [
+    {
+      "type": "lifecycle",
+      "lifecycle_id": "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:parent_references@parent_references:0#1",
+      "op": "fork",
+      "target": {
+        "session": true
+      },
+      "at": "d222cfaae27d67a37943fd163b952242",
+      "ts": null,
+      "evidence": "explicit",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": ""
+    },
+    {
+      "type": "link",
+      "kind": "fork",
+      "stated_on": "child",
+      "child": {
+        "harness": "agy",
+        "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+        "incarnation": ""
+      },
+      "origin": {
+        "harness": "agy",
+        "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa"
+      },
+      "at": "d222cfaae27d67a37943fd163b952242",
+      "inherits": {
+        "through_message_id": "d222cfaae27d67a37943fd163b952242",
+        "ids_preserved": true,
+        "marked": true,
+        "usage_copied": true
+      },
+      "child_stored": true,
+      "evidence": "explicit",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": ""
+    },
+    {
+      "type": "message",
+      "message_id": "04978e7d52ed47febf62f8115f161f35",
+      "parent_id": null,
+      "order": "000000000002",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:51.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_183812",
+          "is_error": false,
+          "status": "completed",
+          "output": "Command exited with code 0.\n\nCommand output:\ntotal 36\ndrwxrwxr-x 6 user user 4096 Oct 20 14:24 .\n-rw-rw-r-- 1 user user  812 Oct 20 14:24 cart.py\ndrwxrwxr-x 2 user user 4096 Oct 20 14:24 tests",
+          "output_len": 192,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7"
+    },
+    {
+      "type": "message",
+      "message_id": "05570899eeaa8bce42d5929377a7bf60",
+      "parent_id": null,
+      "order": "000000000004",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:02:45.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Which test checks the quantity?"
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760"
+    },
+    {
+      "type": "message",
+      "message_id": "2b9b47eda4818c82bff093441520f504",
+      "parent_id": null,
+      "order": "000000000001",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:50.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-01",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_183812",
+          "name": "run_command",
+          "args": {
+            "CommandLine": "ls -la",
+            "WaitMsBeforeAsync": 5000
+          },
+          "server": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534"
+    },
+    {
+      "type": "message",
+      "message_id": "34c82d72b2ec6d3e1c4a3cecd39a23fe",
+      "parent_id": null,
+      "order": "000000000003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:54.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-03",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "toyshop/ holds cart.py (a Cart whose total ignores qty) and tests/test_cart.py (three tests)."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec"
+    },
+    {
+      "type": "message",
+      "message_id": "4ebada6a2af2bcba53ded1d7b414f081",
+      "parent_id": null,
+      "order": "000000000007",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:11:57.500Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-fork-07",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthe"
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+    },
+    {
+      "type": "message",
+      "message_id": "5fa8fd8b170efb73d331d89c549f80dd",
+      "parent_id": null,
+      "order": "000000000006",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:11:57.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "In the fork: reply with just the word forked."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "b44882b6a8f8d5e2c74fd1bfd35130bdddbd07b01dfde3ed8d2041620049976c"
+    },
+    {
+      "type": "message",
+      "message_id": "d222cfaae27d67a37943fd163b952242",
+      "parent_id": null,
+      "order": "000000000005",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:02:47.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-orig-05",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "test_total_uses_qty, in tests/test_cart.py."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
+    },
+    {
+      "type": "message",
+      "message_id": "d73f3a6b86234161ae0beecfccd94d99",
+      "parent_id": null,
+      "order": "000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:45.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What is in toyshop/? Briefly describe the cart module and the tests."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7"
+    },
+    {
+      "type": "session",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "engine": null,
+      "client": "agy",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/ag2/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T15:11:45.000Z",
+      "updated_at": "2026-10-20T15:11:57.500Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7",
+          "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534",
+          "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7",
+          "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec",
+          "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760",
+          "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526",
+          "b44882b6a8f8d5e2c74fd1bfd35130bdddbd07b01dfde3ed8d2041620049976c",
+          "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-fork-07",
+      "anchor": {
+        "response_id": "resp-fork-07"
+      },
+      "input": 66485,
+      "output": 6,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-01",
+      "anchor": {
+        "response_id": "resp-orig-01"
+      },
+      "input": 6100,
+      "output": 40,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-03",
+      "anchor": {
+        "response_id": "resp-orig-03"
+      },
+      "input": 6400,
+      "output": 52,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-orig-05",
+      "anchor": {
+        "response_id": "resp-orig-05"
+      },
+      "input": 6600,
+      "output": 18,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
+      "incarnation": "",
+      "tool_prompt": null
+    }
+  ]
+}

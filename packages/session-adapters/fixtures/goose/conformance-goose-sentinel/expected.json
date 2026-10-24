@@ -1,0 +1,230 @@
+{
+  "20261021_10": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_10",
+      "incarnation": "2026-10-21 22:44:20",
+      "message_id": "chatcmpl-FixtureFixt00068",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:44:26.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00068",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply 5e1d2a: the key `sentinel-0a1b2c3d4e5f-not-a-secret` is noted for the fixture."
+        }
+      ],
+      "cmp_sha": "0cf8fdcd1953bf1a8b23b7e528598433660d50bb5329ce13b0cd10bed0d68e8b"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_10",
+      "incarnation": "2026-10-21 22:44:20",
+      "message_id": "msg_4529c054-7cae-44c7-89b0-07890b209751",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:44:22.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Remember this fake key: sentinel-0a1b2c3d4e5f-not-a-secret, reply ok"
+        }
+      ],
+      "cmp_sha": "70bc97627c67b3144e50b8e37f13f9bcca85d6eac1a3b1ee274451c22de08eff"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_10",
+      "incarnation": "2026-10-21 22:44:20",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "Synthetic t",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/rf4/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T22:44:20.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "70bc97627c67b3144e50b8e37f13f9bcca85d6eac1a3b1ee274451c22de08eff",
+          "0cf8fdcd1953bf1a8b23b7e528598433660d50bb5329ce13b0cd10bed0d68e8b"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_10",
+      "incarnation": "2026-10-21 22:44:20",
+      "usage_id": "142",
+      "anchor": {
+        "message_id": "chatcmpl-FixtureFixt00068"
+      },
+      "input": 3968,
+      "output": 98,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "20261021_9": [
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_9",
+      "incarnation": "2026-10-21 22:44:00",
+      "message_id": "chatcmpl-FixtureFixt00067",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:44:02.000Z",
+      "requested_model": "gateway/toy-model-a",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "chatcmpl-FixtureFixt00067",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "ok"
+        }
+      ],
+      "cmp_sha": "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+    },
+    {
+      "type": "message",
+      "harness": "goose",
+      "session_id": "20261021_9",
+      "incarnation": "2026-10-21 22:44:00",
+      "message_id": "msg_b114b1ba-9dee-4f2d-a72f-a025db88e392",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T22:44:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with exactly: ok"
+        }
+      ],
+      "cmp_sha": "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89"
+    },
+    {
+      "type": "session",
+      "harness": "goose",
+      "session_id": "20261021_9",
+      "incarnation": "2026-10-21 22:44:00",
+      "engine": null,
+      "client": "goose",
+      "harness_version": null,
+      "title": "Synthetic t",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/rf4/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T22:44:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "auto",
+      "kind": "user",
+      "reuse": "undetectable",
+      "ts_source": "seconds",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89",
+          "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "goose",
+      "session_id": "20261021_9",
+      "incarnation": "2026-10-21 22:44:00",
+      "usage_id": "141",
+      "anchor": {
+        "message_id": "chatcmpl-FixtureFixt00067"
+      },
+      "input": 3949,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

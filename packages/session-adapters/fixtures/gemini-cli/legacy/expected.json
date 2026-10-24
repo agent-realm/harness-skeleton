@@ -1,0 +1,262 @@
+{
+  "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f": [
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000030",
+      "parent_id": null,
+      "order": "000000000000.000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2025-09-01T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does old-proj do?"
+        }
+      ],
+      "cmp_sha": "6d4bacaacea6c173a8940a8079b43940263f279da73ca8949b7afb81c74440dc"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000031",
+      "parent_id": null,
+      "order": "000000000000.000001",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2025-09-01T10:00:02.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "It prints a greeting."
+        }
+      ],
+      "cmp_sha": "4978b1059c2c02170cfa5caa0207c9cd79248087f7019ad4831efac64ac84855"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/old-proj",
+      "last_cwd": null,
+      "created_at": "2025-09-01T10:00:00.000Z",
+      "updated_at": "2025-09-01T10:00:02.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6d4bacaacea6c173a8940a8079b43940263f279da73ca8949b7afb81c74440dc",
+          "4978b1059c2c02170cfa5caa0207c9cd79248087f7019ad4831efac64ac84855"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000031",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000031"
+      },
+      "input": 900,
+      "output": 8,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ],
+  "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60": [
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000032",
+      "parent_id": null,
+      "order": "000000000228",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2025-09-02T11:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "hello"
+        }
+      ],
+      "cmp_sha": "291231320463af0dd2a1d7374acc033caef22d6bdafe98435b31f2b8fec1a52a"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000033",
+      "parent_id": null,
+      "order": "000000000356",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2025-09-02T11:00:02.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "hi"
+        }
+      ],
+      "cmp_sha": "6e1b8f0413d330335b17c5452a9743b8541574358b1e79a8b481434bd4bdf9bc"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000034",
+      "parent_id": null,
+      "order": "000000000592",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2025-09-02T11:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "resumed"
+        }
+      ],
+      "cmp_sha": "fbdeac09e86d145bef31602ffa9cdfaa18ade42950483dc663be19f057d18d83"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/old-proj",
+      "last_cwd": null,
+      "created_at": "2025-09-02T11:00:00.000Z",
+      "updated_at": "2025-09-02T11:01:00.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "291231320463af0dd2a1d7374acc033caef22d6bdafe98435b31f2b8fec1a52a",
+          "6e1b8f0413d330335b17c5452a9743b8541574358b1e79a8b481434bd4bdf9bc",
+          "fbdeac09e86d145bef31602ffa9cdfaa18ade42950483dc663be19f057d18d83"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000033",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000033"
+      },
+      "input": 700,
+      "output": 1,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ]
+}

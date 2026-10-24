@@ -1,0 +1,70 @@
+{
+  "check": "tier 1: retention holds between launches (design note v0.2 §10)",
+  "at": "2026-10-22T13:15:58.511Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "4581ca56464b008a189ddc51c1964a6a34628dd5"
+  },
+  "delivered": {
+    "A": 400,
+    "C": 400
+  },
+  "starts": {
+    "A": {
+      "exit": 143,
+      "signal": null,
+      "timed_out": true
+    },
+    "B": {
+      "exit": 143,
+      "signal": null,
+      "timed_out": true
+    },
+    "C": {
+      "exit": 143,
+      "signal": null,
+      "timed_out": true
+    }
+  },
+  "observed": {
+    "A": {
+      "value": 400,
+      "source": "folder"
+    },
+    "C": {
+      "value": 1,
+      "source": "project"
+    }
+  },
+  "result": {
+    "A_kept": true,
+    "A_500_day_kept": false,
+    "B_kept": false,
+    "C_kept": false
+  },
+  "expected": {
+    "delivered": {
+      "A": 400,
+      "C": 400
+    },
+    "observed": {
+      "A": {
+        "value": 400,
+        "source": "folder"
+      },
+      "C": {
+        "value": 1,
+        "source": "project"
+      }
+    },
+    "result": {
+      "A_kept": true,
+      "A_500_day_kept": false,
+      "B_kept": false,
+      "C_kept": false
+    }
+  },
+  "verdict": "pass"
+}

@@ -1,0 +1,738 @@
+{
+  "65a4e98a-a792-4f21-8b88-91971aa08c28": [
+    {
+      "type": "lifecycle",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "lifecycle_id": "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl@45319#1",
+      "op": "rewind",
+      "target": {
+        "range": {
+          "from_id": "00000000-0000-4000-9000-000000000005",
+          "through_id": "00000000-0000-4000-9000-00000000f005"
+        }
+      },
+      "at": "00000000-0000-4000-9000-00000000f004",
+      "ts": "2026-10-20T13:19:10.714Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "00000000-0000-4000-9000-000000000002",
+      "parent_id": null,
+      "order": "00000001:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:14:00.550Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Explain the duplicate-SKU fix in one sentence."
+        }
+      ],
+      "cmp_sha": "0696484db7b678fd8d8f0cb140be4f307830ad9985ea4302a72e622dbe38a662"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "00000000-0000-4000-9000-000000000003",
+      "parent_id": null,
+      "order": "00000002:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:14:00.550Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests again."
+        }
+      ],
+      "cmp_sha": "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "00000000-0000-4000-9000-000000000004",
+      "parent_id": null,
+      "order": "00000003:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:14:00.550Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with the single word RESTOK1."
+        }
+      ],
+      "cmp_sha": "4096142da50120e8d9ebd08863ac864144ccf2c152ba22c85a4da806ed430cec"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "retracted",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "00000000-0000-4000-9000-000000000005",
+      "parent_id": null,
+      "order": "00000004:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:14:00.550Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with the single word RESTOK."
+        }
+      ],
+      "cmp_sha": "66b7a44fb48d13b0c2a2415be194759499e0b5876020375dde45a6a8ddb2fae9"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "00000000-0000-4000-9000-00000000f002",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:05:25.294Z",
+      "message_id": "00000000-0000-4000-9000-00000000f002",
+      "parent_id": "00000000-0000-4000-9000-000000000002",
+      "order": "00000001:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthetic reply 1558fb. syntheti"
+        }
+      ],
+      "cmp_sha": "d7bba85befe210ae23a07329edd94b7d63633b3ca2a77d4842f063e4bbfe1f78"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "00000000-0000-4000-9000-00000000f003",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:07:05.294Z",
+      "message_id": "00000000-0000-4000-9000-00000000f003",
+      "parent_id": "00000000-0000-4000-9000-000000000003",
+      "order": "00000002:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthetic reply"
+        }
+      ],
+      "cmp_sha": "e463469359821b3ce7ca58b26bdbdc2c5e6d3611a66455ba5df1e027dc69eb11"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "00000000-0000-4000-9000-00000000f004",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:08:45.294Z",
+      "message_id": "00000000-0000-4000-9000-00000000f004",
+      "parent_id": "00000000-0000-4000-9000-000000000004",
+      "order": "00000003:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthet"
+        }
+      ],
+      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "retracted",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "00000000-0000-4000-9000-00000000f005",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:10:25.294Z",
+      "message_id": "00000000-0000-4000-9000-00000000f005",
+      "parent_id": "00000000-0000-4000-9000-000000000005",
+      "order": "00000004:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthe"
+        }
+      ],
+      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "5e1f0000-0000-4000-8000-000000000081",
+      "parent_id": null,
+      "order": "00000000:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:14:00.550Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now fix the qty bug in cart.py so adding the same SKU twice increments qty, then run python3 -m pytest -q and show the result."
+        }
+      ],
+      "cmp_sha": "17245de1d392b0805909a0ef1ad014dc8428923fe2aba7527acc71cd6948ff03"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "5e1f0000-0000-4000-8000-000000000082",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:02:05.294Z",
+      "message_id": "5e1f0000-0000-4000-8000-000000000082",
+      "parent_id": "5e1f0000-0000-4000-8000-000000000081",
+      "order": "00000000:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthetic reply c4f056. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop f"
+        },
+        {
+          "part_id": "2",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 408
+        },
+        {
+          "part_id": "4:call",
+          "kind": "tool_call",
+          "call_id": "call_fixture0094xxxxxxxxxxxxx",
+          "name": "read_file",
+          "args": {
+            "filePath": "/home/user/work/vs2/toyshop/tests/test_cart.py",
+            "startLine": 1,
+            "endLine": 220
+          },
+          "server": null
+        },
+        {
+          "part_id": "4:result",
+          "kind": "tool_result",
+          "call_id": "call_fixture0094xxxxxxxxxxxxx",
+          "is_error": false,
+          "status": "completed",
+          "output": "from toyshop.cart import Cart, Item\n\n\ndef test_total_uses_qty():\n    c = Cart()\n    c.add(Item(\"A-1\", 250, qty=3))\n    assert c.total_cents() == 750\n",
+          "output_len": 149,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "5",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 408
+        },
+        {
+          "part_id": "7:call",
+          "kind": "tool_call",
+          "call_id": "call_fixture0095xxxxxxxxxxxxx",
+          "name": "multi_replace_string_in_file",
+          "args": "{\"explanation\":\"Add a regression test covering repeated same-SKU adds so the quantity bug is reproduced before fixing it.\",\"replacements\":[{\"filePath\":\"/home/user/work/vs2/toyshop/tests/test_cart.py\",\"oldString\":\"from toyshop.cart import Cart, Item\\n\\n\\ndef test_total_uses_qty():\\n    c = Cart()\\n    c.add(Item(\\\"A-1\\\", 250, qty=3))\\n    assert c.total_cents() == 750\\n\",\"newString\":\"from toyshop.…[cut]",
+          "server": null
+        },
+        {
+          "part_id": "7:result",
+          "kind": "tool_result",
+          "call_id": "call_fixture0095xxxxxxxxxxxxx",
+          "is_error": false,
+          "status": "completed",
+          "output": "The following files were successfully edited:\n/home/user/work/vs2/toyshop/tests/test_cart.py\n",
+          "output_len": 93,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "d300029b6b5d69e86d2564fc81899fa1a53e88818dc25bc88b76e3ff21d3443a"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "request_5e1f0000-0000-4000-8000-000000000147",
+      "parent_id": null,
+      "order": "00000005:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T13:19:10.714Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with the single word RESTOK2."
+        }
+      ],
+      "cmp_sha": "3073d9d4c8e73e039ad79b03b75ff8c783912417c68a5636957aae241773e7bd"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "mai-code-1.1-flash",
+      "effort": null,
+      "response_id": "response_5e1f0000-0000-4000-8000-000000000148",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T13:19:10.714Z",
+      "message_id": "response_5e1f0000-0000-4000-8000-000000000148",
+      "parent_id": "request_5e1f0000-0000-4000-8000-000000000147",
+      "order": "00000005:0001",
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Synthet"
+        }
+      ],
+      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+    },
+    {
+      "type": "session",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "engine": "local",
+      "client": "vscode",
+      "harness_version": "0.70.0",
+      "title": "Synthetic reply 63891a. syn",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/vs2/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T13:14:00.549Z",
+      "updated_at": "2026-10-20T13:19:10.714Z",
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "17245de1d392b0805909a0ef1ad014dc8428923fe2aba7527acc71cd6948ff03",
+          "d300029b6b5d69e86d2564fc81899fa1a53e88818dc25bc88b76e3ff21d3443a",
+          "0696484db7b678fd8d8f0cb140be4f307830ad9985ea4302a72e622dbe38a662",
+          "d7bba85befe210ae23a07329edd94b7d63633b3ca2a77d4842f063e4bbfe1f78",
+          "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224",
+          "e463469359821b3ce7ca58b26bdbdc2c5e6d3611a66455ba5df1e027dc69eb11",
+          "4096142da50120e8d9ebd08863ac864144ccf2c152ba22c85a4da806ed430cec",
+          "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6",
+          "3073d9d4c8e73e039ad79b03b75ff8c783912417c68a5636957aae241773e7bd",
+          "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:00000000-0000-4000-9000-00000000f002#1",
+      "anchor": {
+        "response_id": "00000000-0000-4000-9000-00000000f002"
+      },
+      "input": 11002,
+      "output": 7,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:00000000-0000-4000-9000-00000000f003#1",
+      "anchor": {
+        "response_id": "00000000-0000-4000-9000-00000000f003"
+      },
+      "input": 11003,
+      "output": 8,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:00000000-0000-4000-9000-00000000f004#1",
+      "anchor": {
+        "response_id": "00000000-0000-4000-9000-00000000f004"
+      },
+      "input": 11004,
+      "output": 9,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:00000000-0000-4000-9000-00000000f005#1",
+      "anchor": {
+        "response_id": "00000000-0000-4000-9000-00000000f005"
+      },
+      "input": 11005,
+      "output": 10,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:5e1f0000-0000-4000-8000-000000000082#1",
+      "anchor": {
+        "response_id": "5e1f0000-0000-4000-8000-000000000082"
+      },
+      "input": 20822,
+      "output": 1258,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "65a4e98a-a792-4f21-8b88-91971aa08c28",
+      "incarnation": "",
+      "usage_id": "response:response_5e1f0000-0000-4000-8000-000000000148#1",
+      "anchor": {
+        "response_id": "response_5e1f0000-0000-4000-8000-000000000148"
+      },
+      "input": 11679,
+      "output": 7,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "mai-code-1.1-flash",
+      "tool_prompt": null
+    }
+  ],
+  "f0da568c-8ed3-4480-b0b4-787ca035cc3c": [
+    {
+      "type": "lifecycle",
+      "harness": "vscode",
+      "session_id": "f0da568c-8ed3-4480-b0b4-787ca035cc3c",
+      "incarnation": "",
+      "lifecycle_id": "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl@1891#1",
+      "op": "rename",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "f0da568c-8ed3-4480-b0b4-787ca035cc3c",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "request_5e1f0000-0000-4000-8000-000000000152",
+      "parent_id": null,
+      "order": "00000000:0000",
+      "role": "user",
+      "source": "user",
+      "status": "complete",
+      "ts": "2026-10-20T12:23:10.508Z",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reply with exactly: vscode-copilot-ok"
+        }
+      ],
+      "cmp_sha": "d5cd615e7e350da137599918ec7651bba7727f5e6dc5efe81db91eb4098f73ad"
+    },
+    {
+      "type": "message",
+      "harness": "vscode",
+      "session_id": "f0da568c-8ed3-4480-b0b4-787ca035cc3c",
+      "incarnation": "",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "copilot/auto",
+      "served_model": "gpt-6-luna",
+      "effort": null,
+      "response_id": "response_5e1f0000-0000-4000-8000-000000000153",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "status": "complete",
+      "ts": "2026-10-20T12:23:10.509Z",
+      "message_id": "response_5e1f0000-0000-4000-8000-000000000153",
+      "parent_id": "request_5e1f0000-0000-4000-8000-000000000152",
+      "order": "00000000:0001",
+      "parts": [
+        {
+          "part_id": "2",
+          "kind": "text",
+          "text": "Synthetic reply a"
+        }
+      ],
+      "cmp_sha": "d7b17ad4a36c312ad47b1728870ab2e74a5a981519f2ff19ba8ae243ab499c9b"
+    },
+    {
+      "type": "session",
+      "harness": "vscode",
+      "session_id": "f0da568c-8ed3-4480-b0b4-787ca035cc3c",
+      "incarnation": "",
+      "engine": "local",
+      "client": "vscode",
+      "harness_version": "0.70.0",
+      "title": "vscode copilot response",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-20T10:51:21.543Z",
+      "updated_at": "2026-10-20T12:23:10.509Z",
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d5cd615e7e350da137599918ec7651bba7727f5e6dc5efe81db91eb4098f73ad",
+          "d7b17ad4a36c312ad47b1728870ab2e74a5a981519f2ff19ba8ae243ab499c9b"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "vscode",
+      "session_id": "f0da568c-8ed3-4480-b0b4-787ca035cc3c",
+      "incarnation": "",
+      "usage_id": "response:response_5e1f0000-0000-4000-8000-000000000153#1",
+      "anchor": {
+        "response_id": "response_5e1f0000-0000-4000-8000-000000000153"
+      },
+      "input": 17234,
+      "output": 10,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": "gpt-6-luna",
+      "tool_prompt": null
+    }
+  ]
+}

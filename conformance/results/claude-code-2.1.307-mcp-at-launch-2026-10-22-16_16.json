@@ -1,0 +1,114 @@
+{
+  "check": "tier 1: MCP servers at launch, through --mcp-config under a launch receipt (design note v0.2 §5.5, §7.5)",
+  "at": "2026-10-22T16:16:11.696Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "62e7073f3a9f93c445ca3334420ef9bd1163bb0a"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "at_remote": []
+    },
+    "carried": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "mcp__local__hs_marker_tool"
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-mcp-marker-9d2b",
+            "mcp__local__hs_marker_tool"
+          ]
+        }
+      ],
+      "at_remote": [
+        {
+          "method": "POST",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "GET",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ]
+    }
+  },
+  "refusal": {
+    "code": "receipt_required",
+    "risks": [
+      {
+        "item": "mcp.local",
+        "risk": "runs-code",
+        "files": [
+          "server.mjs"
+        ]
+      },
+      {
+        "item": "mcp.remote",
+        "risk": "sends-data",
+        "destination": "<REMOTE>/mcp"
+      }
+    ]
+  },
+  "stdio_server_env_ref": "match",
+  "folder_mcp_servers": [],
+  "checks": {
+    "without servers no request names the tool, and the remote server gets nothing (premise)": true,
+    "without a receipt launch-spec refuses: runs-code for the stdio server, sends-data naming the remote one": true,
+    "with the receipt the launch carries --mcp-config": true,
+    "the stdio server starts and its tool reaches the request": true,
+    "the stdio server saw its env ref expanded to the dummy": true,
+    "the remote server got the bearer dummy in its header": true,
+    "no server is written into the data folder": true
+  },
+  "verdict": "pass"
+}

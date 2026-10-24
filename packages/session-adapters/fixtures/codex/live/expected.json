@@ -1,0 +1,486 @@
+{
+  "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b": [
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000009355",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:19:06.671Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "02524b55-6d2f-45c8-abea-d4fba9c0b9b0",
+      "aliases": [],
+      "message_id": "fc_call_822e65383eb44b94aca80c77",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_822e65383eb44b94aca80c77",
+          "name": "exec_command",
+          "args": {
+            "cmd": "python3 primes.py 2"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "fa7b1249d3d3457186b02371979597ed0514aa1d808f331c629d45eb9b66b189"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000002843",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:55.428Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "da5bb7fe-bafc-4018-ad58-47896c2facc0",
+      "aliases": [],
+      "message_id": "fc_call_99db388215b54698a2160515",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_99db388215b54698a2160515",
+          "name": "exec_command",
+          "args": {
+            "cmd": "python3 primes.py 1"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "bb10791096094b95542ebad2df7a192e076e5de65e73b5be56a274c8114a7752"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000004485",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:56.831Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "fco_6c192c21d55d4dc5abc33fad",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_99db388215b54698a2160515",
+          "is_error": null,
+          "status": "completed",
+          "output": "bravo delta archive naïve naïve cursor über kappa 漢字 cursor",
+          "output_len": 66,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "4e53bc621a89be524ac06e40c31c2302572b1d1270b341852708be30754f4b28"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000011014",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:19:08.939Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "fco_ac48d07cf9ae4394aa9fbfc1",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_822e65383eb44b94aca80c77",
+          "is_error": null,
+          "status": "completed",
+          "output": "archive テスト cursor kappa テスト sigma x x sigma 🚀",
+          "output_len": 61,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "188c7d9c603155bb76db5f723d798452b564168eeaa1f06ccec77721d5a3a325"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000005626",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:59.222Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "da5bb7fe-bafc-4018-ad58-47896c2facc0",
+      "aliases": [],
+      "message_id": "msg_28e877f62620491aa1a6a768",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "anchor gamma 🙂 x über replay anchor kappa buffer"
+        }
+      ],
+      "cmp_sha": "f26dfb1e8ec983ae74a652b96f3b53519e97f1f6e7155b8840d528ec71a2f406"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000000600",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:50.913Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_2bc9fff9efd54af6a92a84e0",
+      "role": "system",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<permissions> x replay gamma alpha gamma"
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "<skills> çalışma çalışma テスト naïve 漢字"
+        }
+      ],
+      "cmp_sha": "668b3199e52ceaf5b7f1cbd155892177a4f31dbbd26e19d58ab25693b2191b0b"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000000918",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:51.373Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_329a9b5f1f364768a4a07c57",
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<environment_context>テスト cursor bravo buffer</environment_context>"
+        }
+      ],
+      "cmp_sha": "7c4e6b410e8d227092e392cdf94d26530f0a63b166e41817120ffae2ffc3a4d2"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000001577",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:52.689Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_3c036f4929d04f51a07ad89d",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "x 🙂 🙂 vector vector sigma turn 1"
+        }
+      ],
+      "cmp_sha": "182a27dfc3735216dc94b1d2ccd8a85ba7eef99649471b04d880d0163ebdd500"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000008072",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:19:03.588Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_60f45c2628474c2baf5df26c",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "naïve çalışma delta naïve replay cursor turn 2"
+        }
+      ],
+      "cmp_sha": "33db28d593754b34867eb3a05b8b21dd36f6896b69a43705d507ab207dc6df8d"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000012143",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:19:10.441Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "02524b55-6d2f-45c8-abea-d4fba9c0b9b0",
+      "aliases": [],
+      "message_id": "msg_82f5665a05704e81a03c8c99",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "alpha ğüşıöç テスト gamma replay çalışma vector delta bravo"
+        }
+      ],
+      "cmp_sha": "38da8f10892e8d2a30e383f0add29e67aad509307c0c842aeaaf5f41f2550848"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000002595",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:18:54.423Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "da5bb7fe-bafc-4018-ad58-47896c2facc0",
+      "aliases": [],
+      "message_id": "rs_3aaf4b4d37ad4c1da3edbb61",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "x テスト alpha archive anchor",
+          "signature_len": null
+        }
+      ],
+      "cmp_sha": "8f346544d28170e8f0c4977bc68a707dce4bf6b55ef4e666f08238c86bf4a3b0"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-10-14T12:18:49.976Z|rollout-2026-10-14T12-18-49-b071c772-4831-4b7c-ae5b-4a8d80e4ec6b.jsonl|000000009108",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-14T12:19:05.499Z",
+      "requested_model": null,
+      "served_model": "toy-model-a",
+      "effort": "medium",
+      "response_id": "02524b55-6d2f-45c8-abea-d4fba9c0b9b0",
+      "aliases": [],
+      "message_id": "rs_adb0d1406c784cb5aa4a88c2",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "sigma x buffer kappa çalışma",
+          "signature_len": null
+        }
+      ],
+      "cmp_sha": "54a28b843d20229eb96d1168a53e28c6fb8f8eda094cbb2e7f57502a7ed8e997"
+    },
+    {
+      "type": "session",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "engine": null,
+      "client": "codex_exec",
+      "harness_version": "0.160.0",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/work/primes",
+      "last_cwd": "/work/primes",
+      "created_at": "2026-10-14T12:18:49.976Z",
+      "updated_at": "2026-10-14T12:19:12.361Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "668b3199e52ceaf5b7f1cbd155892177a4f31dbbd26e19d58ab25693b2191b0b",
+          "7c4e6b410e8d227092e392cdf94d26530f0a63b166e41817120ffae2ffc3a4d2",
+          "182a27dfc3735216dc94b1d2ccd8a85ba7eef99649471b04d880d0163ebdd500",
+          "8f346544d28170e8f0c4977bc68a707dce4bf6b55ef4e666f08238c86bf4a3b0",
+          "bb10791096094b95542ebad2df7a192e076e5de65e73b5be56a274c8114a7752",
+          "4e53bc621a89be524ac06e40c31c2302572b1d1270b341852708be30754f4b28",
+          "f26dfb1e8ec983ae74a652b96f3b53519e97f1f6e7155b8840d528ec71a2f406",
+          "33db28d593754b34867eb3a05b8b21dd36f6896b69a43705d507ab207dc6df8d",
+          "54a28b843d20229eb96d1168a53e28c6fb8f8eda094cbb2e7f57502a7ed8e997",
+          "fa7b1249d3d3457186b02371979597ed0514aa1d808f331c629d45eb9b66b189",
+          "188c7d9c603155bb76db5f723d798452b564168eeaa1f06ccec77721d5a3a325",
+          "38da8f10892e8d2a30e383f0add29e67aad509307c0c842aeaaf5f41f2550848"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "usage_id": "response:02524b55-6d2f-45c8-abea-d4fba9c0b9b0#1",
+      "anchor": {
+        "response_id": "02524b55-6d2f-45c8-abea-d4fba9c0b9b0"
+      },
+      "input": 3136,
+      "output": 444,
+      "cache_read": 1568,
+      "cache_write": null,
+      "reasoning": 148,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "toy-model-a",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "b071c772-4831-4b7c-ae5b-4a8d80e4ec6b",
+      "incarnation": "",
+      "usage_id": "response:da5bb7fe-bafc-4018-ad58-47896c2facc0#1",
+      "anchor": {
+        "response_id": "da5bb7fe-bafc-4018-ad58-47896c2facc0"
+      },
+      "input": 3128,
+      "output": 442,
+      "cache_read": 1563,
+      "cache_write": null,
+      "reasoning": 146,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "toy-model-a",
+      "tool_prompt": null
+    }
+  ]
+}

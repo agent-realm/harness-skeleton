@@ -1,0 +1,138 @@
+{
+  "check": "tier 1: endpoint hygiene, the cached account state cleared one way and not written back (design note v0.2 §5.2, §7.2)",
+  "at": "2026-10-22T14:32:42.123Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "e6c8f59444795d27a165145f5d55834079ec043c"
+  },
+  "runs": {
+    "fresh-1": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "account_keys_after": []
+    },
+    "fresh-2": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "account_keys_after": []
+    },
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "account_keys_before": [
+        "oauthAccount",
+        "cachedGrowthBookFeatures",
+        "cachedGrowthBookFeaturesAt"
+      ],
+      "launch_spec_note": ".claude.json holds cached claude.ai account state (oauthAccount, cachedGrowthBookFeatures, cachedGrowthBookFeaturesAt), which turns on tools a non-Anthropic backend may reject; plan and apply this spec to clear it",
+      "account_keys_after": [
+        "oauthAccount",
+        "cachedGrowthBookFeatures",
+        "cachedGrowthBookFeaturesAt"
+      ]
+    },
+    "cleared": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "plan_operations": [
+        "clear .claude.json#oauthAccount [clears-state]",
+        "clear .claude.json#cachedGrowthBookFeatures [clears-state]",
+        "clear .claude.json#cachedGrowthBookFeaturesAt [clears-state]"
+      ],
+      "account_keys_after_apply": [],
+      "launch_spec_note": null,
+      "account_keys_after": []
+    }
+  },
+  "checks": {
+    "no endpoint start writes account state back": true,
+    "launch-spec names the planted state": true,
+    "the plan clears every planted key, and nothing else": true,
+    "apply leaves no account state": true,
+    "launch-spec is silent after the clear": true,
+    "no planted id reaches the endpoint after the clear": true
+  },
+  "observations": {
+    "planted ids at the endpoint before the clear": [],
+    "account state keys the control start left in place": [
+      "oauthAccount",
+      "cachedGrowthBookFeatures",
+      "cachedGrowthBookFeaturesAt"
+    ]
+  },
+  "verdict": "pass"
+}

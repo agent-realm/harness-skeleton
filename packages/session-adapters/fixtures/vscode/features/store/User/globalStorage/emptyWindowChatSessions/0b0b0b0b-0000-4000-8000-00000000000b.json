@@ -1,0 +1,129 @@
+{
+ "version": 3,
+ "creationDate": 1767693799000,
+ "initialLocation": "panel",
+ "responderUsername": "",
+ "sessionId": "0b0b0b0b-0000-4000-8000-00000000000b",
+ "hasPendingEdits": false,
+ "requests": [
+  {
+   "requestId": "request_00000000-0000-4000-8000-000000000051",
+   "timestamp": 1767693800000,
+   "agent": {
+    "extensionId": {
+     "value": "GitHub.copilot-chat",
+     "_lower": "github.copilot-chat"
+    },
+    "extensionVersion": "0.70.0",
+    "id": "github.copilot.editsAgent",
+    "name": "agent"
+   },
+   "modelId": "copilot/auto",
+   "modelConfiguration": {
+    "tier": "balance",
+    "tierSource": "default"
+   },
+   "hiddenFromTranscript": false,
+   "responseId": "response_00000000-0000-4000-8000-000000000052",
+   "responseTimestamp": 1767693800001,
+   "modeInfo": {
+    "kind": "agent",
+    "isBuiltin": true,
+    "telemetryModeId": "agent",
+    "telemetryModeName": "agent",
+    "permissionLevel": "default"
+   },
+   "response": [
+    {
+     "value": "Hello.",
+     "supportThemeIcons": false,
+     "supportHtml": false,
+     "baseUri": {
+      "$mid": 1,
+      "path": "/home/user/work/toy shop/",
+      "scheme": "file"
+     }
+    }
+   ],
+   "message": {
+    "text": "Hello from an empty window.",
+    "parts": [
+     {
+      "range": {
+       "start": 0,
+       "endExclusive": 27
+      },
+      "text": "Hello from an empty window.",
+      "kind": "text"
+     }
+    ]
+   },
+   "variableData": {
+    "variables": []
+   },
+   "result": {
+    "timings": {
+     "firstProgress": 900,
+     "totalElapsed": 4000
+    },
+    "metadata": {
+     "codeBlocks": [],
+     "promptTokens": 21000,
+     "outputTokens": 102,
+     "toolCallRounds": [
+      {
+       "response": "Hello.",
+       "toolCalls": [],
+       "timestamp": 1767693800900
+      }
+     ],
+     "toolCallResults": {},
+     "resolvedModel": "gpt-6-luna",
+     "modelMessageId": "00000000-0000-4000-8000-000000000053",
+     "responseId": "00000000-0000-4000-8000-000000000054",
+     "sessionId": "00000000-0000-4000-8000-000000000055",
+     "agentId": "github.copilot.editsAgent"
+    },
+    "details": "MAI-Code-1.1-Flash • 0.6 credits"
+   },
+   "followups": [],
+   "modelState": {
+    "value": 1,
+    "completedAt": 1767693804000
+   },
+   "completionTokens": 15,
+   "promptTokens": 21000,
+   "copilotCredits": 0.6,
+   "elapsedMs": 4000
+  }
+ ],
+ "pendingRequests": [],
+ "inputState": {
+  "attachments": [],
+  "mode": {
+   "id": "agent",
+   "kind": "agent"
+  },
+  "selectedModel": {
+   "identifier": "copilot/auto",
+   "metadata": {
+    "id": "auto",
+    "vendor": "copilot",
+    "name": "Auto",
+    "family": "auto",
+    "maxInputTokens": 935793,
+    "auth": {
+     "providerLabel": "toy-provider",
+     "accountLabel": "toy-account-sentinel-5e1f"
+    },
+    "isUserSelectable": true
+   },
+   "modelConfiguration": {
+    "tier": "balance",
+    "tierSource": "default"
+   }
+  },
+  "inputText": ""
+ },
+ "customTitle": "empty window chat"
+}

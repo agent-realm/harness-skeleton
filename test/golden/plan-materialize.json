@@ -1,0 +1,77 @@
+{
+  "format": "hs-plan/0.2",
+  "protocol": "hs/0.2",
+  "harness": "claude-code",
+  "harness_version": "2.1.307",
+  "range": "compatible",
+  "host": "d1073ef8de4b1a552a089f5890c636a2",
+  "harness_path": "<ROOT>/claude-data",
+  "args": {
+    "layers": [
+      "<ROOT>/team"
+    ],
+    "local": "<ROOT>/local.toml",
+    "owner": "builder",
+    "mode": "materialize",
+    "prune": false,
+    "adopt": false,
+    "strict_version": false,
+    "no_persist_state": false,
+    "given_path": "<ROOT>/claude-data"
+  },
+  "ledger_sha256": "sha256:d4d7318d9cfedbddafdc41ab4ed16c4099e042a2e0e5c595f6ae0992fb16e4dc",
+  "operations": [
+    {
+      "id": "op-1",
+      "item": "skill.notes",
+      "handler": "tree",
+      "address": {
+        "path": "skills/notes"
+      },
+      "address_id": "skills/notes",
+      "class": "config",
+      "source": "<ROOT>/team/skills/notes",
+      "source_sha256": "f7fcb7a98182a1b9fcba73fd27fbb87d6985da364ab3ac59360793c857d89762",
+      "desired_sha256": "f7fcb7a98182a1b9fcba73fd27fbb87d6985da364ab3ac59360793c857d89762",
+      "precondition": {
+        "sha256": null
+      },
+      "risk": [
+        "runs-code"
+      ],
+      "action": "create",
+      "previous": {
+        "present": false
+      }
+    },
+    {
+      "id": "op-2",
+      "item": "state.retention_days",
+      "handler": "json-key",
+      "address": {
+        "file": "settings.json",
+        "key": "cleanupPeriodDays"
+      },
+      "address_id": "settings.json#cleanupPeriodDays",
+      "class": "config",
+      "value": 120,
+      "desired_sha256": "2abaca4911e68fa9bfbf3482ee797fd5b9045b841fdff7253557c5fe15de6477",
+      "precondition": {
+        "sha256": null
+      },
+      "risk": [],
+      "action": "create",
+      "previous": {
+        "present": false
+      }
+    }
+  ],
+  "skipped": [],
+  "launch_only": [],
+  "reduces_capture": [],
+  "overridden_by_managed": [],
+  "warnings": [
+    "uncertified_version: 2.1.307 is compatible, not certified"
+  ],
+  "unchanged": false
+}

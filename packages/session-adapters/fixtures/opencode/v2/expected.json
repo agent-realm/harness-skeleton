@@ -1,0 +1,329 @@
+{
+  "ses_ea15c4d34ffeSia58lxUnTL8ea": [
+    {
+      "type": "lifecycle",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "lifecycle_id": "evt_15ea478a4001rPfAqvD8lXIKF8",
+      "op": "rewind",
+      "target": {
+        "session": true
+      },
+      "at": "msg_15ea4352c001AH04W9dY8oFYMP",
+      "ts": "2026-10-21T13:26:39.523Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15ea3d19f001OJq1AqxanQPlXj",
+      "order": "2|0000000000000002|msg_15ea3d19f001OJq1AqxanQPlXj",
+      "ts": "2026-10-21T13:25:56.768Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "SCN_TOOL v2 engine run"
+        }
+      ],
+      "cmp_sha": "6b8cc5eb3d14fd5d43c8a75722df072a090a5e431a1b9a490777f3f32fb3f800"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15ea3d4bd001b7ZKvzPiw8sh8J",
+      "aliases": [],
+      "message_id": "msg_15ea3d4bd001b7ZKvzPiw8sh8J",
+      "order": "2|0000000000000003|msg_15ea3d4bd001b7ZKvzPiw8sh8J",
+      "ts": "2026-10-21T13:25:57.565Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "text-0",
+          "kind": "text",
+          "text": "Synthetic reply "
+        },
+        {
+          "part_id": "call_fake_scn_tool_4_0:call",
+          "kind": "tool_call",
+          "call_id": "call_fake_scn_tool_4_0",
+          "name": "bash",
+          "args": {
+            "command": "echo fake-tool-ok",
+            "description": "Echo a marker"
+          },
+          "server": null
+        },
+        {
+          "part_id": "call_fake_scn_tool_4_0:result",
+          "kind": "tool_result",
+          "call_id": "call_fake_scn_tool_4_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "fake-tool-ok\nCommand exited with code 0.",
+          "output_ref": null,
+          "output_len": 40,
+          "truncated": false,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "f7837f03e2e275fa407a6fe8adc9dafcb00c4f1f3c4fe4ca885bd1baf14bc7e0"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15ea3d85a001uDhDzL6ZoTtn61",
+      "aliases": [],
+      "message_id": "msg_15ea3d85a001uDhDzL6ZoTtn61",
+      "order": "2|0000000000000011|msg_15ea3d85a001uDhDzL6ZoTtn61",
+      "ts": "2026-10-21T13:25:58.491Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "text-0",
+          "kind": "text",
+          "text": "Synthetic reply bb9bff. synthetic reply te"
+        }
+      ],
+      "cmp_sha": "c5199cf677fb54d225077f42216c9fa0249db4cb268a8f874bcda7292b340800"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15ea42559001supOUDB0CEtv5Q",
+      "order": "2|0000000000000016|msg_15ea42559001supOUDB0CEtv5Q",
+      "ts": "2026-10-21T13:26:18.202Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "SCN_REASON v2 reasoning"
+        }
+      ],
+      "cmp_sha": "735c21f64d9d676d64d0d467ed1add8442ee969df18a74921b23f2ab5ed37948"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15ea42870001TjW50nVdZPZ5Ol",
+      "aliases": [],
+      "message_id": "msg_15ea42870001TjW50nVdZPZ5Ol",
+      "order": "2|0000000000000017|msg_15ea42870001TjW50nVdZPZ5Ol",
+      "ts": "2026-10-21T13:26:18.992Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "reasoning-0",
+          "kind": "reasoning",
+          "text": "Synthetic reply 74c38e. synthetic",
+          "signature_len": null
+        },
+        {
+          "part_id": "text-0",
+          "kind": "text",
+          "text": "Synthetic reply 090b53. synthetic reply text for"
+        }
+      ],
+      "cmp_sha": "d4770f0afca400326821054738cc8f8a34203e8e603cc1418a544da8772239fc"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15ea4352c001AH04W9dY8oFYMP",
+      "order": "2|0000000000000024|msg_15ea4352c001AH04W9dY8oFYMP",
+      "ts": "2026-10-21T13:26:22.253Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "SCN_FILTER v2 filter"
+        }
+      ],
+      "cmp_sha": "e434e56fd6a6aca4a21cbe3c6657b3d3e903204a506d619da0f5991f0809cc19"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "engine": "v2",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "New session - 2026-10-21T13:25:48.896Z",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/oc3/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:25:48.896Z",
+      "updated_at": "2026-10-21T13:26:22.253Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6b8cc5eb3d14fd5d43c8a75722df072a090a5e431a1b9a490777f3f32fb3f800",
+          "f7837f03e2e275fa407a6fe8adc9dafcb00c4f1f3c4fe4ca885bd1baf14bc7e0",
+          "c5199cf677fb54d225077f42216c9fa0249db4cb268a8f874bcda7292b340800",
+          "735c21f64d9d676d64d0d467ed1add8442ee969df18a74921b23f2ab5ed37948",
+          "d4770f0afca400326821054738cc8f8a34203e8e603cc1418a544da8772239fc",
+          "e434e56fd6a6aca4a21cbe3c6657b3d3e903204a506d619da0f5991f0809cc19"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "usage_id": "message:msg_15ea3d4bd001b7ZKvzPiw8sh8J#1",
+      "anchor": {
+        "message_id": "msg_15ea3d4bd001b7ZKvzPiw8sh8J"
+      },
+      "input": 900,
+      "output": 40,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "usage_id": "message:msg_15ea3d85a001uDhDzL6ZoTtn61#1",
+      "anchor": {
+        "message_id": "msg_15ea3d85a001uDhDzL6ZoTtn61"
+      },
+      "input": 900,
+      "output": 40,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_ea15c4d34ffeSia58lxUnTL8ea",
+      "incarnation": "",
+      "usage_id": "message:msg_15ea42870001TjW50nVdZPZ5Ol#1",
+      "anchor": {
+        "message_id": "msg_15ea42870001TjW50nVdZPZ5Ol"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 17,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ]
+}

@@ -1,0 +1,987 @@
+{
+  "8899d818-977d-46aa-a224-6692996dcc59": [
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000004882",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:02.563Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_1",
+      "aliases": [],
+      "message_id": "fc_4e187a83a4414e61a973106e",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_f735bb0b16c64fb1a120",
+          "name": "shell",
+          "args": {
+            "command": [
+              "bash",
+              "-lc",
+              "ls 漢字"
+            ]
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "2dc474de94f5c5d9e5eec407fe808a674852e8d666c6f8c53c4be8b38d3fc206"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000001537",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:20.169Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_0",
+      "aliases": [],
+      "message_id": "fc_e6ca14a7a3b54186a2dec06d",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_6480e4611b884189aef9",
+          "name": "shell",
+          "args": {
+            "command": [
+              "bash",
+              "-lc",
+              "ls bravo"
+            ]
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "283443651c583ed496399a9357634c169aec81fe0ea9bb9f3b05c2ed46fb644f"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000013316",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:22.256Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_4",
+      "aliases": [],
+      "message_id": "fc_fa44baf5510942caac62afb4",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_a61c28edf75e4bbda24a",
+          "name": "shell",
+          "args": {
+            "command": [
+              "bash",
+              "-lc",
+              "ls 🙂"
+            ]
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000006273",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:11.410Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_1",
+      "aliases": [],
+      "message_id": "msg_00680de3512046cca6d749aa",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "bravo çalışma delta çalışma kappa 漢字 über kappa x cursor buffer"
+        }
+      ],
+      "cmp_sha": "3f723e87c90c812cf238cb974bd7d4efbd192ccd7a2c9282644506aee8d318e3"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000008672",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:34.314Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_8ace361b52a442a3a3301058",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "cursor 漢字 gamma sigma 🚀 vector bravo turn 3"
+        }
+      ],
+      "cmp_sha": "c41c92b40cac284448a72b59e29dcd195026cfaed11c6b6e601f9deeb464f9a7"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000004007",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:47.094Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_8c4f2e7ef6764131a1e893e1",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "🙂 ğüşıöç archive x buffer anchor anchor turn 1"
+        }
+      ],
+      "cmp_sha": "c5612bcadc53a7bd0109aabc90fe9b71350d5c527ae4f6de7ed90bae76aab5a9"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000002923",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:30.651Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_0",
+      "aliases": [],
+      "message_id": "msg_95f473a58a0242d2ad3adbc1",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "über ğüşıöç über naïve cursor 漢字 kappa kappa delta çalışma alpha"
+        }
+      ],
+      "cmp_sha": "3f54adfeb24625aa49a80d103207010a5facd05a565fe1dabb99041013617c90"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000011292",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:57.438Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_3",
+      "aliases": [],
+      "message_id": "msg_bd6a739f315744cfa651b641",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "buffer cursor sigma gamma テスト kappa anchor bravo replay ğüşıöç über"
+        }
+      ],
+      "cmp_sha": "322fb1150f77d7ce7fe9678f85bad8bc4b414d9567e90c309b8bbc8f1827100d"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000012377",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:09.836Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_c9b8b046a6a94ad0abc89228",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "テスト delta gamma alpha ğüşıöç x naïve turn 4"
+        }
+      ],
+      "cmp_sha": "7c6eb3eb62c08dc8623dc740f87c6aeced6378fa45a62282f61ba0b5c5fbf2c5"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000010150",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:51.258Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@10150",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_5405de47666b4153af20",
+          "is_error": true,
+          "status": "completed",
+          "output": "çalışma ğüşıöç 漢字 sigma bravo cursor delta sigma cursor sigma delta 🙂 replay 🙂 über",
+          "output_len": 103,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "ca3b5271742b4ba7e2a7b09f9a083f41dfeabde2340cc8ed073af70d2c585424"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000013562",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:24.097Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@13562",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_a61c28edf75e4bbda24a",
+          "is_error": false,
+          "status": "completed",
+          "output": "x vector テスト replay archive 🙂 delta über ğüşıöç テスト vector gamma bravo naïve ğüşıöç",
+          "output_len": 112,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "59062dbb34010a6816c01ed3640e081f2209d00d7099f7c048e7d0e34e9f16bc"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000014715",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:31.439Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@14715",
+      "role": "user",
+      "source": "steering",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "steer 🙂 anchor çalışma"
+        }
+      ],
+      "cmp_sha": "7f8348e979dae50e99e1f8c87ea8cb6ed34cb371149981dbbfecf913bbe32353"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000015046",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:35.529Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_4",
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@15046",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "alpha anchor gamma",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 5
+        }
+      ],
+      "cmp_sha": "fc3149bb31c611e8314e36402bd33402ac21a3e201d333ff7b0b33d360c7bea1"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000015631",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:39.501Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_4",
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@15631",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "archive gamma alpha vector delta ğüşıöç 漢字 ğüşıöç bravo çalışma bravo"
+        }
+      ],
+      "cmp_sha": "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000001784",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:22.338Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@1784",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_6480e4611b884189aef9",
+          "is_error": true,
+          "status": "completed",
+          "output": "x ğüşıöç naïve テスト 🚀 x bravo gamma ğüşıöç cursor cursor anchor bravo bravo archive",
+          "output_len": 104,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "4bf478ce4b5416d3d4de80d1959a5f78b115746c6c05c2b8701a262b3b8d88b8"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000000256",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:02.230Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@256",
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<environment_context>\n  <cwd>/work/proj-beta</cwd>\n</environment_context>"
+        }
+      ],
+      "cmp_sha": "e3b20d52fa34c903cb25ed3358ddebe6aebd58934f4d9e73e4cb1f3512e41514"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000005130",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:03.968Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@5130",
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_f735bb0b16c64fb1a120",
+          "is_error": true,
+          "status": "completed",
+          "output": "çalışma x çalışma gamma bravo delta kappa テスト gamma delta bravo テスト über alpha buffer",
+          "output_len": 104,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "d3aa435c8df84ce71377f83099a1fa78470753305364b190e79ad04e87e28ba2"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000000625",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:06.765Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@625",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "vector gamma über buffer anchor ğüşıöç テスト turn 0"
+        }
+      ],
+      "cmp_sha": "456eed9f69e5321055e8584c998379a1cb8e795234f63ef42ea825e3dd4b4eb3"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000007352",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:20.458Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@7352",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "🙂 gamma 🚀 cursor anchor buffer buffer turn 2"
+        }
+      ],
+      "cmp_sha": "0d91a5673a909ae81344d93c8d22a16bae784e805f0def5d5f4f666fc7be355d"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000009939",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:48.688Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_3",
+      "aliases": [],
+      "message_id": "rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl@9939",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "call_5405de47666b4153af20",
+          "name": "shell",
+          "args": {
+            "command": [
+              "bash",
+              "-lc",
+              "ls 🙂"
+            ]
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000009768",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:01:45.082Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_3",
+      "aliases": [],
+      "message_id": "rs_0aba83efa15448cfa046f972",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 5
+        }
+      ],
+      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000001296",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:19.330Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_0",
+      "aliases": [],
+      "message_id": "rs_1d7848b1a07a4f67a50b6c48",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "🚀 テスト çalışma cursor 🚀",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 5
+        }
+      ],
+      "cmp_sha": "98a445b0e77dccaa4e24180c68f6a0b9a60b2e2eebd68a5672f2d95346ffec89"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000004711",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:00:59.231Z",
+      "requested_model": null,
+      "served_model": "gpt-5-codex",
+      "effort": "high",
+      "response_id": "turn_1",
+      "aliases": [],
+      "message_id": "rs_623a01b236c949a6ace5b128",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 5
+        }
+      ],
+      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe"
+    },
+    {
+      "type": "message",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "parent_id": null,
+      "order": "2026-01-03T14:00:01.506Z|rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl|000000013078",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-03T14:02:17.907Z",
+      "requested_model": null,
+      "served_model": "gpt-5",
+      "effort": "medium",
+      "response_id": "turn_4",
+      "aliases": [],
+      "message_id": "rs_e761a7f52e834348acf39b9f",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "vector naïve naïve cursor anchor",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 5
+        }
+      ],
+      "cmp_sha": "0a050cea5184c8f5bd06527140fb6d2b88ed90b9dc75d765d8da1e4eea531a3c"
+    },
+    {
+      "type": "session",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "engine": null,
+      "client": "codex_cli_rs",
+      "harness_version": "0.46.0",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/work/proj-beta",
+      "last_cwd": "/work/proj-beta",
+      "created_at": "2026-01-03T14:00:01.506Z",
+      "updated_at": "2026-01-03T14:02:44.498Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "e3b20d52fa34c903cb25ed3358ddebe6aebd58934f4d9e73e4cb1f3512e41514",
+          "456eed9f69e5321055e8584c998379a1cb8e795234f63ef42ea825e3dd4b4eb3",
+          "98a445b0e77dccaa4e24180c68f6a0b9a60b2e2eebd68a5672f2d95346ffec89",
+          "283443651c583ed496399a9357634c169aec81fe0ea9bb9f3b05c2ed46fb644f",
+          "4bf478ce4b5416d3d4de80d1959a5f78b115746c6c05c2b8701a262b3b8d88b8",
+          "3f54adfeb24625aa49a80d103207010a5facd05a565fe1dabb99041013617c90",
+          "c5612bcadc53a7bd0109aabc90fe9b71350d5c527ae4f6de7ed90bae76aab5a9",
+          "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
+          "2dc474de94f5c5d9e5eec407fe808a674852e8d666c6f8c53c4be8b38d3fc206",
+          "d3aa435c8df84ce71377f83099a1fa78470753305364b190e79ad04e87e28ba2",
+          "3f723e87c90c812cf238cb974bd7d4efbd192ccd7a2c9282644506aee8d318e3",
+          "0d91a5673a909ae81344d93c8d22a16bae784e805f0def5d5f4f666fc7be355d",
+          "c41c92b40cac284448a72b59e29dcd195026cfaed11c6b6e601f9deeb464f9a7",
+          "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
+          "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
+          "ca3b5271742b4ba7e2a7b09f9a083f41dfeabde2340cc8ed073af70d2c585424",
+          "322fb1150f77d7ce7fe9678f85bad8bc4b414d9567e90c309b8bbc8f1827100d",
+          "7c6eb3eb62c08dc8623dc740f87c6aeced6378fa45a62282f61ba0b5c5fbf2c5",
+          "0a050cea5184c8f5bd06527140fb6d2b88ed90b9dc75d765d8da1e4eea531a3c",
+          "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
+          "59062dbb34010a6816c01ed3640e081f2209d00d7099f7c048e7d0e34e9f16bc",
+          "7f8348e979dae50e99e1f8c87ea8cb6ed34cb371149981dbbfecf913bbe32353",
+          "fc3149bb31c611e8314e36402bd33402ac21a3e201d333ff7b0b33d360c7bea1",
+          "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "usage_id": "response:turn_0#1",
+      "anchor": {
+        "response_id": "turn_0"
+      },
+      "input": 1200,
+      "output": 120,
+      "cache_read": 750,
+      "cache_write": null,
+      "reasoning": 32,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "gpt-5",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "usage_id": "response:turn_1#1",
+      "anchor": {
+        "response_id": "turn_1"
+      },
+      "input": 1201,
+      "output": 120,
+      "cache_read": 750,
+      "cache_write": null,
+      "reasoning": 32,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "gpt-5-codex",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "usage_id": "response:turn_2#1",
+      "anchor": {
+        "response_id": "turn_2"
+      },
+      "input": 300,
+      "output": 5,
+      "cache_read": 100,
+      "cache_write": null,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "gpt-5",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "usage_id": "response:turn_3#1",
+      "anchor": {
+        "response_id": "turn_3"
+      },
+      "input": 1253,
+      "output": 121,
+      "cache_read": 750,
+      "cache_write": null,
+      "reasoning": 32,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "gpt-5-codex",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "codex",
+      "session_id": "8899d818-977d-46aa-a224-6692996dcc59",
+      "incarnation": "",
+      "usage_id": "response:turn_4#1",
+      "anchor": {
+        "response_id": "turn_4"
+      },
+      "input": 1274,
+      "output": 127,
+      "cache_read": 750,
+      "cache_write": null,
+      "reasoning": 32,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": true,
+      "granularity": "per_turn",
+      "model": "gpt-5",
+      "tool_prompt": null
+    }
+  ]
+}

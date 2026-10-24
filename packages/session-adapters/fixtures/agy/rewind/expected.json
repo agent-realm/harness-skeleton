@@ -1,0 +1,215 @@
+{
+  "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f": [
+    {
+      "type": "lifecycle",
+      "lifecycle_id": "brain/5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f/.system_generated/logs/transcript_full.jsonl@1908#1",
+      "op": "rewind",
+      "target": {
+        "session": true
+      },
+      "at": "1188325172d10b08e3a79bf5c7db0b9c",
+      "ts": null,
+      "evidence": "explicit",
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": ""
+    },
+    {
+      "type": "message",
+      "message_id": "1188325172d10b08e3a79bf5c7db0b9c",
+      "parent_id": null,
+      "order": "000000000001",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:10:03.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-rw-01",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fixed: the total multiplies by qty."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "cmp_sha": "aa95ee87d6f36c1c93377d172d6eb4764e287e409296e5567c28cca4141c963a"
+    },
+    {
+      "type": "message",
+      "message_id": "35655a29b1a436ba210e4ce7b90f1e40",
+      "parent_id": null,
+      "order": "000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:10:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+    },
+    {
+      "type": "message",
+      "message_id": "5b75c95df7f2c80aebad94c7bee41af5",
+      "parent_id": null,
+      "order": "000000000002",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:15:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Instead, add a coupon code TOY20."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "cmp_sha": "987957e97d7a70f11afe19f1bf31c61e5b21a842930053693bb19181a4acc4c2"
+    },
+    {
+      "type": "message",
+      "message_id": "cfe9c259ce83e0a9e20f224569401b40",
+      "parent_id": null,
+      "order": "000000000003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:15:02.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-rw-03b",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added TOY20."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "cmp_sha": "6b07128f59ee289662de1353e33c3b3a0798175e9269d48c3e8b9d0a1cebe029"
+    },
+    {
+      "type": "session",
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "engine": null,
+      "client": "agy",
+      "harness_version": null,
+      "title": "Coupon codes",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/ag3/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T15:09:57.000Z",
+      "updated_at": "2026-10-20T15:15:02.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+          "aa95ee87d6f36c1c93377d172d6eb4764e287e409296e5567c28cca4141c963a",
+          "987957e97d7a70f11afe19f1bf31c61e5b21a842930053693bb19181a4acc4c2",
+          "6b07128f59ee289662de1353e33c3b3a0798175e9269d48c3e8b9d0a1cebe029"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-rw-01",
+      "anchor": {
+        "response_id": "resp-rw-01"
+      },
+      "input": 6000,
+      "output": 20,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-rw-03b",
+      "anchor": {
+        "response_id": "resp-rw-03b"
+      },
+      "input": 9000,
+      "output": 20,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f",
+      "incarnation": "",
+      "tool_prompt": null
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "label": "after-restore",
+  "captured_at_utc": "2026-10-22T21:59:38.040076+00:00",
+  "source": {
+    "threads_db": "~/.local/share/zed/threads/threads.db (table threads; data zstd -> JSON)",
+    "sidebar_db": "~/.local/share/zed/db/0-stable/db.sqlite (table sidebar_threads)",
+    "zed_version": "1.24.3"
+  },
+  "threads": [
+    {
+      "id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "summary": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T21:57:45.370329256+00:00",
+      "data_type": "zstd",
+      "data": {
+        "title": "Synthetic title f9efa9 for the to",
+        "messages": [],
+        "updated_at": "2026-10-22T21:57:45.370329256Z",
+        "detailed_summary": null,
+        "initial_project_snapshot": {
+          "worktree_snapshots": [
+            {
+              "worktree_path": "/home/user/work/zed-a5",
+              "git_state": {
+                "remote_url": null,
+                "head_sha": "2341321709842e4cea31e07f1674d1b7bb236ab6",
+                "current_branch": "main",
+                "diff": ""
+              }
+            }
+          ],
+          "timestamp": "2026-10-22T21:54:53.980542584Z"
+        },
+        "cumulative_token_usage": {
+          "input_tokens": 129315,
+          "output_tokens": 531,
+          "cache_read_input_tokens": 83456
+        },
+        "request_token_usage": {},
+        "model": {
+          "provider": "gateway",
+          "model": "gateway/toy-model-a"
+        },
+        "profile": "write",
+        "subagent_context": null,
+        "speed": null,
+        "thinking_enabled": false,
+        "thinking_effort": null,
+        "draft_prompt": null,
+        "ui_scroll_position": {
+          "item_ix": 0,
+          "offset_in_item": 0
+        },
+        "sandboxed_terminal_temp_dir": null,
+        "sandbox_grants": {
+          "write_paths": [],
+          "network_hosts": [],
+          "network_any_host": false,
+          "allow_fs_write_all": false,
+          "unsandboxed": false,
+          "sandbox_fallback": false
+        },
+        "version": "0.3.0"
+      },
+      "parent_id": null,
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "created_at": "2026-10-22T21:54:53.598055212+00:00"
+    }
+  ],
+  "sidebar_threads": [
+    {
+      "thread_id": "9bf5f5db21b5477a916bb9ae75e719cc",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "agent_id": null,
+      "title": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T21:57:45.543687751+00:00",
+      "created_at": "2026-10-22T21:54:53.648936005+00:00",
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "archived": 0,
+      "main_worktree_paths": "/home/user/work/zed-a5",
+      "main_worktree_paths_order": "0",
+      "remote_connection": null,
+      "interacted_at": "2026-10-22T21:57:37.686479097+00:00",
+      "title_override": null
+    }
+  ]
+}

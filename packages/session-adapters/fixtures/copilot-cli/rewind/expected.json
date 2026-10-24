@@ -1,0 +1,140 @@
+{
+  "d0d0d0d0-0000-4000-8000-000000000005": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "d0d0d0d0-0000-4000-8000-000000000005",
+      "incarnation": "d0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "d1000000-0000-4000-8000-000000000002",
+      "op": "rewind",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T15:00:21.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d0d0d0d0-0000-4000-8000-000000000005",
+      "incarnation": "d0000000-0000-4000-8000-000000000001",
+      "message_id": "d0000000-0000-4000-8000-000000000002",
+      "parent_id": "d0000000-0000-4000-8000-000000000001",
+      "order": "000000000541",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T15:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000022",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What is in toyshop/cart.py?"
+        }
+      ],
+      "cmp_sha": "04f1c3cfec8406ba5e9de77dc3cc0f611f2834c75772f0c8a87be81dbe11a1bc"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "d0d0d0d0-0000-4000-8000-000000000005",
+      "incarnation": "d0000000-0000-4000-8000-000000000001",
+      "message_id": "d0000000-0000-4000-8000-000000000005",
+      "parent_id": "d0000000-0000-4000-8000-000000000004",
+      "order": "000000001783",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T15:00:04.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-rw-1",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000023",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "A Cart class."
+        }
+      ],
+      "cmp_sha": "2320a4011de2fac197846e95810ea62ae95720848346878be6344042ae49399f"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "d0d0d0d0-0000-4000-8000-000000000005",
+      "incarnation": "d0000000-0000-4000-8000-000000000001",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.101",
+      "title": "What is in toyshop/cart.py?",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-21T15:00:00.000Z",
+      "updated_at": "2026-10-21T15:00:21.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "04f1c3cfec8406ba5e9de77dc3cc0f611f2834c75772f0c8a87be81dbe11a1bc",
+          "2320a4011de2fac197846e95810ea62ae95720848346878be6344042ae49399f"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "d0d0d0d0-0000-4000-8000-000000000005",
+      "incarnation": "d0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-rw-1",
+      "anchor": {
+        "response_id": "api-rw-1"
+      },
+      "input": 800,
+      "output": 12,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

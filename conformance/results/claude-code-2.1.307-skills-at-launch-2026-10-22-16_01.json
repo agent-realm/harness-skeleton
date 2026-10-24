@@ -1,0 +1,89 @@
+{
+  "check": "tier 1: a skill at launch, through --plugin-dir under a launch receipt (design note v0.2 §7.5)",
+  "at": "2026-10-22T16:01:45.250Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "0b0d8d81d7d7c6db4b475242f7a335177f68936a"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ]
+    },
+    "carried": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-skill-marker-5c1e",
+            "hs:notes"
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-skill-marker-5c1e",
+            "hs:notes"
+          ]
+        }
+      ]
+    }
+  },
+  "refusal": {
+    "code": "receipt_required",
+    "risks": [
+      {
+        "item": "skill.notes",
+        "layer": "team",
+        "risk": "runs-code",
+        "sha256": "b8c36e1b4c3bb225745b450200d8c75b1c26628e73cbc80e156a82dfa048db0d"
+      }
+    ]
+  },
+  "launch_digest": "sha256:085fe22e3aa382086784c1a9f351ab4cc2cdd6cfd883403b42ac983668f1398a",
+  "folder_entries_after": [
+    ".claude.json",
+    "backups",
+    "projects",
+    "sessions"
+  ],
+  "checks": {
+    "without the plugin the skill reaches no request (premise)": true,
+    "without a receipt launch-spec refuses, naming the skill as runs-code": true,
+    "the refusal makes no temp dir": true,
+    "with the receipt the launch carries --plugin-dir and the same digest": true,
+    "the skill reaches the request, as hs:notes": true,
+    "nothing is copied into the data folder": true
+  },
+  "verdict": "pass"
+}

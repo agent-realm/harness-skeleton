@@ -1,0 +1,244 @@
+{
+  "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312": [
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "message_id": "8e22d526-7ca0-4e2b-9d54-e888c52b3227",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Add a test instead: create test_cart.py with a unittest for cart_total. Do not run anything."
+        }
+      ],
+      "cmp_sha": "8456145692a5ec159472a1b6e071a2d5e1d62590321f5e53fda4dc005f56ff65"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "message_id": "8e22d526-7ca0-4e2b-9d54-e888c52b3227+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply dad284. synthetic reply text for the toy shop fixture synthetic reply text for the"
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-00000000000a5008",
+          "name": "grep",
+          "args": {
+            "regex": "cart_total"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-00000000000a5008",
+          "is_error": null,
+          "status": "completed",
+          "output": "Found 2 matches:\n\n## Matches in zed-a5/cart.py\n\n### def cart_total › L1-6\n```\ndef cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price + qty\n    return total\n```\n\n### L9-10\n```\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n```\n",
+          "output_len": 329,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-00000000000a5009",
+          "name": "find_path",
+          "args": {
+            "glob": "*.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-00000000000a5009",
+          "is_error": null,
+          "status": "completed",
+          "output": "Found 1 total matches.\n/home/user/work/zed-a5/cart.py",
+          "output_len": 53,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "7378a534eb21a1f16f46cdd333f1120b9d098d0d6a72c73e6179095026331b95"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "message_id": "8e22d526-7ca0-4e2b-9d54-e888c52b3227+2",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply 6c143d. synthetic reply text for the toy shop fixture synthetic reply text for t"
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-00000000000a5010",
+          "name": "write_file",
+          "args": {
+            "content": "import unittest\n\nfrom cart import cart_total\n\n\nclass CartTotalTest(unittest.TestCase):\n    def test_single_item(self):\n        \"\"\"A single (price, qty) pair contributes price * qty.\"\"\"\n        self.assertEqual(cart_total([(10.0, 2)]), 20.0)\n\n    def test_multiple_items(self):\n        \"\"\"Totals sum across items: 2.5*4 + 10*1 = 20.0.\"\"\"\n        self.assertAlmostEqual(cart_total([(2.5, 4), (10.0, 1)]), 20.0)\n\n    def test_empty_cart(self):\n        self.assertEqual(cart_total([]), 0)\n\n    def test_zero_quantity(self):\n        \"\"\"A zero-quantity item contributes nothing.\"\"\"\n        self.assertEqual(cart_total([(5.0, 0)]), 0)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+            "path": "test_cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-00000000000a5010",
+          "is_error": null,
+          "status": "completed",
+          "output": "Edited test_cart.py successfully",
+          "output_len": 32,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "666f7d45a40b5c6798402d0aded78df1fbab46784efb2a9aebc296dbe1adf4df"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "message_id": "8e22d526-7ca0-4e2b-9d54-e888c52b3227+3",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply de9fcc. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthet"
+        }
+      ],
+      "cmp_sha": "36fa2e78fb6c37f8240879f73c1f37ddd51b2053bf32f6670560411d26c8ff74"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Synthetic title f9efa9 for the to",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/zed-a5",
+      "last_cwd": null,
+      "created_at": "2026-10-22T21:54:53.598Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "8456145692a5ec159472a1b6e071a2d5e1d62590321f5e53fda4dc005f56ff65",
+          "7378a534eb21a1f16f46cdd333f1120b9d098d0d6a72c73e6179095026331b95",
+          "666f7d45a40b5c6798402d0aded78df1fbab46784efb2a9aebc296dbe1adf4df",
+          "36fa2e78fb6c37f8240879f73c1f37ddd51b2053bf32f6670560411d26c8ff74"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "zed",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "incarnation": "",
+      "usage_id": "session#1",
+      "anchor": {
+        "session": true
+      },
+      "input": 171750,
+      "output": 2904,
+      "cache_read": 114176,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_session",
+      "model": null,
+      "tool_prompt": null
+    }
+  ]
+}

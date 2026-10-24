@@ -1,0 +1,159 @@
+{
+  "5a1e0000-0000-4000-8000-0000000000d1": [
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Name the cart module."
+        }
+      ],
+      "cmp_sha": "3b0813cdf61eab6b68a8c8d877bdb9ee1ab14d41884ed4f401d9ec3410f80088"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e1+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "toyshop/cart.py."
+        }
+      ],
+      "cmp_sha": "553f0d9d7bdd59e2e75af865452a6cc22b6ca364e0c656a53bfa88b046720ad9"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e4",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Add a qty check, with a test."
+        }
+      ],
+      "cmp_sha": "9a915454defc985b5a47ed50e6edbe074dacc30ecabe022073f9b8142943b423"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e4+1",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added the check and a test."
+        }
+      ],
+      "cmp_sha": "e2d5914ef989d6fdbd5e2285e046278443e9bd6a0c194853d9d710af701a3e47"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Cart qty check (renamed)",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "3b0813cdf61eab6b68a8c8d877bdb9ee1ab14d41884ed4f401d9ec3410f80088",
+          "553f0d9d7bdd59e2e75af865452a6cc22b6ca364e0c656a53bfa88b046720ad9",
+          "9a915454defc985b5a47ed50e6edbe074dacc30ecabe022073f9b8142943b423",
+          "e2d5914ef989d6fdbd5e2285e046278443e9bd6a0c194853d9d710af701a3e47"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

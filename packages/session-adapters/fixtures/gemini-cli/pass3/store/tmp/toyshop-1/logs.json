@@ -1,0 +1,30 @@
+[
+  {
+    "sessionId": "f6bae9cd-9a86-4c39-baa0-d90fd4e62d07",
+    "messageId": 2,
+    "type": "user",
+    "message": "add a toy helper.",
+    "timestamp": "2026-10-21T20:19:26.280Z"
+  },
+  {
+    "sessionId": "f6bae9cd-9a86-4c39-baa0-d90fd4e62d07",
+    "messageId": 3,
+    "type": "user",
+    "message": "/resume save point-one",
+    "timestamp": "2026-10-21T20:20:07.977Z"
+  },
+  {
+    "sessionId": "f6bae9cd-9a86-4c39-baa0-d90fd4e62d07",
+    "messageId": 4,
+    "type": "user",
+    "message": "/resume list",
+    "timestamp": "2026-10-21T20:20:26.178Z"
+  },
+  {
+    "sessionId": "f6bae9cd-9a86-4c39-baa0-d90fd4e62d07",
+    "messageId": 5,
+    "type": "user",
+    "message": "describe the toy",
+    "timestamp": "2026-10-21T20:20:34.351Z"
+  }
+]

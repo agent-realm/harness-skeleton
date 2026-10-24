@@ -1,0 +1,42 @@
+{
+  "check": "tier 1: hooks persisted by a plan under materialize, as settings.json elements beside the user's, run from hs-run copies, a guard failing closed with onFailure block (design note v0.2 \u00a75.4, \u00a77.5)",
+  "at": "2026-10-23T06:47:01.416Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "c936300"
+  },
+  "runs": {
+    "applied": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 2,
+      "context": true
+    },
+    "broken": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 0,
+      "context": false
+    }
+  },
+  "operations": [
+    "hs-run/hook-shim runs-code",
+    "hs-run/hook.gate runs-code",
+    "settings.json#hooks/UserPromptSubmit[hook.gate] runs-code",
+    "hs-run/hook.start runs-code",
+    "settings.json#hooks/SessionStart[hook.start] runs-code",
+    "settings.json#model "
+  ],
+  "checks": {
+    "the plan sets one element per hook, and copies the shim and each process": true,
+    "settings.json keeps the user's group and every key; the guard has onFailure block and names the way out": true,
+    "the user's bytes before the hooks object are untouched": true,
+    "launch-spec carries neither installed hook": true,
+    "the persisted SessionStart hook's context reached the request, and the guard let the prompt through": true,
+    "with the shim's copy gone, the guard cannot start and onFailure block keeps the prompt from the model": true,
+    "remove takes each element out; the user's bytes are kept, and only the two arrays the plan created stay, empty": true
+  },
+  "verdict": "pass"
+}

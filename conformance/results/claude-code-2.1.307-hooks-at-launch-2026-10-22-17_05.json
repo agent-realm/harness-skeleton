@@ -1,0 +1,109 @@
+{
+  "check": "tier 1: hooks at launch, through hs's hook shim under a launch receipt (design note v0.2 §5.6, §7.5)",
+  "at": "2026-10-22T17:05:37.567Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "e829f8d16d86fdb24e55dcfb4f5cfb26c06969b9"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "path": "/v1/messages",
+          "markers": [],
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "path": "/v1/messages",
+          "markers": [],
+          "credential": "bearer:bench-dummy"
+        }
+      ]
+    },
+    "allowed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": [
+        {
+          "path": "/v1/messages",
+          "markers": [
+            "hs-tier1-hook-context-4e7a"
+          ],
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "path": "/v1/messages",
+          "markers": [
+            "hs-tier1-hook-context-4e7a"
+          ],
+          "credential": "bearer:bench-dummy"
+        }
+      ]
+    },
+    "denied": {
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_endpoint": []
+    }
+  },
+  "session_start_envelope": {
+    "event": "SessionStart",
+    "source": "startup",
+    "session": true,
+    "native_event": "SessionStart",
+    "key": "match"
+  },
+  "tool_names": [
+    "Agent",
+    "Bash",
+    "CronCreate",
+    "CronDelete",
+    "CronList",
+    "DeferredToolPlaceholder",
+    "Edit",
+    "EnterWorktree",
+    "ExitWorktree",
+    "ListAgents",
+    "NotebookEdit",
+    "Read",
+    "ReportFindings",
+    "ScheduleWakeup",
+    "SendMessage",
+    "Skill",
+    "TaskStop",
+    "ToolSearch",
+    "WebFetch",
+    "WebSearch",
+    "Workflow",
+    "Write"
+  ],
+  "risks": [
+    {
+      "item": "hook.prompt",
+      "risk": "runs-code"
+    },
+    {
+      "item": "hook.start",
+      "risk": "runs-code"
+    }
+  ],
+  "checks": {
+    "without hooks no request carries the marker (premise)": true,
+    "without a receipt launch-spec refuses, runs-code for each hook": true,
+    "SessionStart got the envelope: the event, source startup, the session id, the native payload": true,
+    "SessionStart got its env ref through the shim": true,
+    "an allow with context reaches the model's request": true,
+    "a deny blocks the prompt: no request reaches the endpoint": true
+  },
+  "verdict": "pass"
+}

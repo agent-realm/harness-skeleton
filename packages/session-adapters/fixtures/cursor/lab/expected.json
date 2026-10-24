@@ -1,0 +1,509 @@
+{
+  "5a5a0006-0006-4000-8000-000000000006": [
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "5a5a0006-0006-4000-8000-000000000006",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-19T23:13:58.016Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "5a5a0007-0007-4000-8000-000000000007": [
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "5a5a0007-0007-4000-8000-000000000007",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Cursor IDE confirmation",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:25:23.778Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "5a5a0009-0009-4000-8000-000000000009": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "5a5a0009-0009-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "5a5a0012-0012-4000-8000-000000000012:assistant",
+      "parent_id": "5a5a0012-0012-4000-8000-000000000012",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:33:46.913Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "t:call-5a5a0015-0015-4000-8000-000000000015-4\nfc_5a5a0016-0016-4000-8000-000000000016_0:call",
+          "kind": "tool_call",
+          "call_id": "call-5a5a0015-0015-4000-8000-000000000015-4\nfc_5a5a0016-0016-4000-8000-000000000016_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/cu2/toyshop/tests/test_cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-5a5a0015-0015-4000-8000-000000000015-4\nfc_5a5a0016-0016-4000-8000-000000000016_0:result",
+          "kind": "tool_result",
+          "call_id": "call-5a5a0015-0015-4000-8000-000000000015-4\nfc_5a5a0016-0016-4000-8000-000000000016_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "t:call-5a5a0015-0015-4000-8000-000000000015-5\nfc_5a5a0016-0016-4000-8000-000000000016_1:call",
+          "kind": "tool_call",
+          "call_id": "call-5a5a0015-0015-4000-8000-000000000015-5\nfc_5a5a0016-0016-4000-8000-000000000016_1",
+          "name": "glob_file_search",
+          "args": {
+            "targetDirectory": "/home/user/work/cu2/toyshop",
+            "globPattern": "**/*"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-5a5a0015-0015-4000-8000-000000000015-5\nfc_5a5a0016-0016-4000-8000-000000000016_1:result",
+          "kind": "tool_result",
+          "call_id": "call-5a5a0015-0015-4000-8000-000000000015-5\nfc_5a5a0016-0016-4000-8000-000000000016_1",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"directories\":[{\"absPath\":\"/home/user/work/cu2/toyshop\",\"files\":[{\"relPath\":\"tests/test_cart.py\"},{\"relPath\":\"toyshop/__pycache__/__init__.cpython-312.pyc\"},{\"relPath\":\"toyshop/__pycache__/cart.cpython-312.pyc\"},{\"relPath\":\"label.png\"},{\"relPath\":\"README.md\"},{\"relPath\":\"toyshop/cart.py\"}],\"totalFiles\":6}]}",
+          "output_len": 309,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "t:call-5a5a0017-0017-4000-8000-000000000017-6\nfc_5a5a0018-0018-4000-8000-000000000018_0:call",
+          "kind": "tool_call",
+          "call_id": "call-5a5a0017-0017-4000-8000-000000000017-6\nfc_5a5a0018-0018-4000-8000-000000000018_0",
+          "name": "edit_file_v2",
+          "args": {
+            "relativeWorkspacePath": "/home/user/work/cu2/toyshop/toyshop/cart.py",
+            "noCodeblock": true,
+            "cloudAgentEdit": false
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-5a5a0017-0017-4000-8000-000000000017-6\nfc_5a5a0018-0018-4000-8000-000000000018_0:result",
+          "kind": "tool_result",
+          "call_id": "call-5a5a0017-0017-4000-8000-000000000017-6\nfc_5a5a0018-0018-4000-8000-000000000018_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"beforeContentId\":\"composer.content.5a5a000000000000000000000000000000000000000000000000000000000001\",\"afterContentId\":\"composer.content.5a5a000000000000000000000000000000000000000000000000000000000002\"}",
+          "output_len": 204,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "t:call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0:call",
+          "kind": "tool_call",
+          "call_id": "call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "python3 -m pytest -q",
+            "cwd": "/home/user/work/cu2/toyshop",
+            "options": {
+              "timeout": 30000
+            },
+            "parsingResult": {
+              "executableCommands": [
+                {
+                  "name": "python3",
+                  "args": [
+                    {
+                      "type": "word",
+                      "value": "-m"
+                    },
+                    {
+                      "type": "word",
+                      "value": "pytest"
+                    },
+                    {
+                      "type": "word",
+                      "value": "-q"
+                    }
+                  ],
+                  "fullText": "python3 -m pytest -q"
+                }
+              ]
+            },
+            "requestedSandboxPolicy": {
+              "type": "TYPE_WORKSPACE_READWRITE",
+              "networkAccess": false,
+              "additionalReadwritePaths": []
+            }
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0:result",
+          "kind": "tool_result",
+          "call_id": "call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0",
+          "is_error": true,
+          "status": "completed",
+          "output": "/usr/bin/python3: No module named pytest\n",
+          "output_len": 41,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "b8131fac0d2c0c362a76c383e3e181a3ed4771b8788def96a55e8ebc0d170652"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "5a5a0009-0009-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "5a5a0029-0029-4000-8000-000000000029",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:35:13.372Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run this exact command in the terminal and wait for it: for i in $(seq 1 90); do echo tick $i; sleep 1; done"
+        }
+      ],
+      "cmp_sha": "b55e435e245af87f7f969cc156b5ba75268f695d8e2ed114651bcab50c060f97"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "5a5a0009-0009-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "5a5a0029-0029-4000-8000-000000000029:assistant",
+      "parent_id": "5a5a0029-0029-4000-8000-000000000029",
+      "order": "00000006",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "cancelled",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:35:15.212Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Synthetic reply b749dd. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply ",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Synthetic reply b2d2a3. synthetic reply text for the to"
+        },
+        {
+          "part_id": "t:call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0:call",
+          "kind": "tool_call",
+          "call_id": "call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "for i in $(seq 1 90); do echo tick $i; sleep 1; done",
+            "cwd": "/home/user/work/cu2/toyshop",
+            "options": {
+              "timeout": 110000
+            },
+            "parsingResult": {
+              "executableCommands": [
+                {
+                  "name": "seq",
+                  "args": [
+                    {
+                      "type": "number",
+                      "value": "1"
+                    },
+                    {
+                      "type": "number",
+                      "value": "90"
+                    }
+                  ],
+                  "fullText": "seq 1 90"
+                },
+                {
+                  "name": "echo",
+                  "args": [
+                    {
+                      "type": "word",
+                      "value": "tick"
+                    },
+                    {
+                      "type": "simple_expansion",
+                      "value": "$i"
+                    }
+                  ],
+                  "fullText": "echo tick $i"
+                },
+                {
+                  "name": "sleep",
+                  "args": [
+                    {
+                      "type": "number",
+                      "value": "1"
+                    }
+                  ],
+                  "fullText": "sleep 1"
+                }
+              ]
+            }
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0:result",
+          "kind": "tool_result",
+          "call_id": "call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0",
+          "is_error": false,
+          "status": "cancelled",
+          "output": "tick 1\ntick 2\ntick 3\ntick 4\ntick 5\ntick 6\ntick 7\ntick 8\ntick 9\ntick 10\ntick 11\ntick 12\ntick 13\ntick 14\ntick 15\ntick 16\ntick 17\ntick 18\n",
+          "output_len": 135,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "448cdd7a38e29fa07badbed9db169fca4b83637dbbdf54695208e09b2ee2ccac"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "5a5a0009-0009-4000-8000-000000000009",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Total cents function analysis",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/cu2/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:32:53.023Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "b8131fac0d2c0c362a76c383e3e181a3ed4771b8788def96a55e8ebc0d170652",
+          "b55e435e245af87f7f969cc156b5ba75268f695d8e2ed114651bcab50c060f97",
+          "448cdd7a38e29fa07badbed9db169fca4b83637dbbdf54695208e09b2ee2ccac"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5a5a000b-000b-4000-8000-00000000000b": [
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "5a5a000b-000b-4000-8000-00000000000b",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "cu2 inventory renamed",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/cu2/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:38:56.451Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "5a5a000e-000e-4000-8000-00000000000e": [
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "5a5a000e-000e-4000-8000-00000000000e",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "CLI commands support",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/cu2/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:45:12.423Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "chat",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "empty-state-draft": [
+    {
+      "type": "lifecycle",
+      "harness": "cursor",
+      "session_id": "empty-state-draft",
+      "incarnation": "",
+      "lifecycle_id": "User/globalStorage/state.vscdb#table:composerHeaders@User/globalStorage/state.vscdb#table:composerHeaders#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "empty-state-draft",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": null,
+      "last_cwd": null,
+      "created_at": "2026-10-20T11:48:16.613Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "f01e1200-000d-4000-8000-00000000000d": [
+    {
+      "type": "lifecycle",
+      "harness": "cursor",
+      "session_id": "f01e1200-000d-4000-8000-00000000000d",
+      "incarnation": "",
+      "lifecycle_id": "User/globalStorage/state.vscdb#table:composerHeaders@User/globalStorage/state.vscdb#table:composerHeaders#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "f01e1200-000d-4000-8000-00000000000d",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "(1) cu2 inventory renamed",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/cu2/inventory-cli",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:43:27.741Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ]
+}

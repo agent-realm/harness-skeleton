@@ -1,0 +1,21 @@
+[spec]
+name = "tools"
+version = "1.0.0"
+format = "0.2"
+
+# A stdio MCP server, run with node from this layer.
+[mcp.notes]
+exec = "node"
+args = ["servers/notes.mjs"]
+env  = { NOTES_DIR = "/tmp" }
+
+# A guard before every shell command; exit 2 would block it.
+[hook.guard]
+event   = "PreToolUse"
+match   = { tool = ["shell"] }
+run     = { exec = "hooks/guard.sh" }
+timeout = 10
+
+# A status line.
+[statusline]
+run = { exec = "bin/status.sh" }

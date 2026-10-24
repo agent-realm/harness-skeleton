@@ -1,0 +1,46 @@
+{
+  "check": "tier 1: MCP servers persisted by a plan under materialize, in user scope, a stdio server bound by copy (design note v0.2 §5.4, §7.5)",
+  "at": "2026-10-22T21:52:40.340Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "e16159f"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 2,
+      "marker": false,
+      "at_remote": 0,
+      "header": false
+    },
+    "applied": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 2,
+      "marker": true,
+      "at_remote": 3,
+      "header": true
+    }
+  },
+  "operations": [
+    "hs-run/mcp.local runs-code",
+    ".claude.json#mcpServers/local runs-code",
+    ".claude.json#mcpServers/remote sends-data"
+  ],
+  "refusal": {
+    "code": "receipt_required"
+  },
+  "checks": {
+    "without servers no request carries the marker, and the remote server gets nothing (premise)": true,
+    "the plan writes the copy and both user-scope servers, each under the receipt": true,
+    "apply without the receipt is refused, and writes nothing": true,
+    ".claude.json holds both servers, and the copy is owner-only": true,
+    "launch-spec carries neither installed server: no --mcp-config": true,
+    "the stdio server started from its bound copy, and its tool reached the request": true,
+    "the remote server got its literal header": true
+  },
+  "verdict": "pass"
+}

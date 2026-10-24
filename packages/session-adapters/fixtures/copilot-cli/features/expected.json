@@ -1,0 +1,3067 @@
+{
+  "a0a0a0a0-0000-4000-8000-000000000001": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "a0000000-0000-4000-8000-000000000078",
+      "op": "compaction",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:01:17.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "a0000000-0000-4000-8000-000000000081",
+      "op": "fork",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:01:20.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "a0000000-0000-4000-8000-000000000082",
+      "op": "fork",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:01:21.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "kind": "fork",
+      "child": {
+        "harness": "copilot-cli",
+        "session_id": "c1c1c1c1-0000-4000-8000-000000000002"
+      },
+      "origin": {
+        "harness": "copilot-cli",
+        "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+        "incarnation": "a0000000-0000-4000-8000-000000000001"
+      },
+      "stated_on": "origin",
+      "at": "",
+      "inherits": {
+        "through_message_id": null,
+        "ids_preserved": true,
+        "marked": false,
+        "usage_copied": true
+      },
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "kind": "fork",
+      "child": {
+        "harness": "copilot-cli",
+        "session_id": "c2c2c2c2-0000-4000-8000-000000000003"
+      },
+      "origin": {
+        "harness": "copilot-cli",
+        "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+        "incarnation": "a0000000-0000-4000-8000-000000000001"
+      },
+      "stated_on": "origin",
+      "at": "",
+      "inherits": {
+        "through_message_id": null,
+        "ids_preserved": true,
+        "marked": false,
+        "usage_copied": true
+      },
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000004",
+      "parent_id": "a0000000-0000-4000-8000-000000000003",
+      "order": "000000001113",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:03.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000001",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files and summarise toyshop/cart.py."
+        }
+      ],
+      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000008",
+      "parent_id": "a0000000-0000-4000-8000-000000000007",
+      "order": "000000002642",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:07.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-1",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000002",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Delegate the listing to a sub-agent.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-task",
+          "name": "task",
+          "args": {
+            "name": "explore-repo",
+            "agent_type": "explore",
+            "prompt": "List the files and summarise cart.py."
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000011",
+      "parent_id": "a0000000-0000-4000-8000-000000000010",
+      "order": "000000003827",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000003",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files and summarise cart.py."
+        }
+      ],
+      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000014",
+      "parent_id": "a0000000-0000-4000-8000-000000000013",
+      "order": "000000005411",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:13.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": "low",
+      "response_id": "api-feat-2",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000004",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-ls",
+          "name": "bash",
+          "args": {
+            "command": "ls toyshop",
+            "description": "List files"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-view",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000016",
+      "parent_id": "a0000000-0000-4000-8000-000000000015",
+      "order": "000000006517",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:15.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-ls",
+          "is_error": false,
+          "status": "completed",
+          "output": "cart.py\n__init__.py\n<shellId: 0 completed with exit code 0>",
+          "output_len": 59,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000018",
+      "parent_id": "a0000000-0000-4000-8000-000000000017",
+      "order": "000000007375",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:17.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-view",
+          "is_error": false,
+          "status": "completed",
+          "output": "1. class Cart:\n2.     items: list",
+          "output_len": 33,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000021",
+      "parent_id": "a0000000-0000-4000-8000-000000000020",
+      "order": "000000008707",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:20.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-3",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000005",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "cart.py and __init__.py; Cart holds a list of items."
+        }
+      ],
+      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000024",
+      "parent_id": "a0000000-0000-4000-8000-000000000023",
+      "order": "000000009702",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:23.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-task",
+          "is_error": false,
+          "status": "completed",
+          "output": "cart.py and __init__.py; Cart holds a list of items.",
+          "output_len": 52,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000028",
+      "parent_id": "a0000000-0000-4000-8000-000000000027",
+      "order": "000000011066",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:27.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-4",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000006",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files; Cart holds a list of items."
+        }
+      ],
+      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000031",
+      "parent_id": "a0000000-0000-4000-8000-000000000030",
+      "order": "000000012033",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000007",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this label say? @label.png"
+        },
+        {
+          "part_id": "1",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAA=",
+          "bytes_len": 29
+        }
+      ],
+      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000034",
+      "parent_id": "a0000000-0000-4000-8000-000000000033",
+      "order": "000000013541",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:33.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-5",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000008",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "The image is one pixel.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "A blank one-pixel label."
+        }
+      ],
+      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000036",
+      "parent_id": "a0000000-0000-4000-8000-000000000035",
+      "order": "000000014174",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:35.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000009",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests, then look up TOY-1 in the stock server."
+        }
+      ],
+      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000039",
+      "parent_id": "a0000000-0000-4000-8000-000000000038",
+      "order": "000000015479",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:38.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-6",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000010",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-test",
+          "name": "bash",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000043",
+      "parent_id": "a0000000-0000-4000-8000-000000000042",
+      "order": "000000016788",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:42.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-test",
+          "is_error": true,
+          "status": "completed",
+          "output": "1 failed\n<shellId: 1 completed with exit code 1>",
+          "output_len": 48,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000047",
+      "parent_id": "a0000000-0000-4000-8000-000000000046",
+      "order": "000000018187",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:46.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-7",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000011",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-mcp",
+          "name": "skustock-sku_stock",
+          "args": {
+            "sku": "TOY-1"
+          },
+          "server": "skustock"
+        }
+      ],
+      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000049",
+      "parent_id": "a0000000-0000-4000-8000-000000000048",
+      "order": "000000019030",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:48.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-mcp",
+          "is_error": false,
+          "status": "completed",
+          "output": "TOY-1: 3 in stock",
+          "output_len": 17,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000053",
+      "parent_id": "a0000000-0000-4000-8000-000000000052",
+      "order": "000000020364",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:52.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-8",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000012",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-pip",
+          "name": "bash",
+          "args": {
+            "command": "pip install pytest"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000056",
+      "parent_id": "a0000000-0000-4000-8000-000000000055",
+      "order": "000000021422",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:55.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-pip",
+          "is_error": true,
+          "status": "denied",
+          "output": "The user rejected this tool call. User feedback: Do not install packages.",
+          "output_len": 73,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000060",
+      "parent_id": "a0000000-0000-4000-8000-000000000059",
+      "order": "000000022828",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:59.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-9",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000013",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-ask",
+          "name": "ask_user",
+          "args": {
+            "question": "Which SKU?",
+            "requestedSchema": "sku"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000061",
+      "parent_id": "a0000000-0000-4000-8000-000000000060",
+      "order": "000000023347",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-ask",
+          "is_error": true,
+          "status": "completed",
+          "output": "\"requestedSchema\": Expected object, received string",
+          "output_len": 51,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000065",
+      "parent_id": "a0000000-0000-4000-8000-000000000064",
+      "order": "000000024735",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:04.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-10",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000014",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Running both checks."
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-a",
+          "name": "bash",
+          "args": {
+            "command": "echo a"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-b",
+          "name": "bash",
+          "args": {
+            "command": "sleep 600"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000067",
+      "parent_id": "a0000000-0000-4000-8000-000000000066",
+      "order": "000000025607",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:06.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-a",
+          "is_error": false,
+          "status": "completed",
+          "output": "a\n<shellId: 2 completed with exit code 0>",
+          "output_len": 41,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000070",
+      "parent_id": "a0000000-0000-4000-8000-000000000069",
+      "order": "000000026453",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:09.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "<system_notification>\nShell command \"sleep 25\" (shellId: bg-1) has completed successfully.\n</system_notification>",
+          "level": null,
+          "native_type": "shell_completed"
+        }
+      ],
+      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000071",
+      "parent_id": "a0000000-0000-4000-8000-000000000070",
+      "order": "000000026820",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "shell_completed ok",
+          "level": null,
+          "native_type": "shell_completed"
+        }
+      ],
+      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000073",
+      "parent_id": "a0000000-0000-4000-8000-000000000072",
+      "order": "000000027322",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:12.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000015",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Write a very long essay about carts."
+        }
+      ],
+      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000078",
+      "parent_id": "a0000000-0000-4000-8000-000000000077",
+      "order": "000000029003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:17.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "<overview>\nThe user explored the toyshop repo and ran its tests.\n</overview>",
+          "replaces": {
+            "count": 12
+          }
+        }
+      ],
+      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.101",
+      "title": "toyshop features",
+      "title_set_by": "user",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop/toyshop",
+      "created_at": "2026-10-21T13:00:00.000Z",
+      "updated_at": "2026-10-21T13:01:23.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": "plan",
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26",
+          "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b",
+          "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b",
+          "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe",
+          "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a",
+          "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
+          "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
+          "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
+          "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532",
+          "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
+          "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
+          "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
+          "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35",
+          "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
+          "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
+          "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",
+          "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e",
+          "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d",
+          "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289",
+          "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552",
+          "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-1",
+      "anchor": {
+        "response_id": "api-feat-1"
+      },
+      "input": 1200,
+      "output": 30,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 5,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-10",
+      "anchor": {
+        "response_id": "api-feat-10"
+      },
+      "input": 1900,
+      "output": 16,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-11",
+      "anchor": {
+        "response_id": "api-feat-11"
+      },
+      "input": 2000,
+      "output": 16384,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-2",
+      "anchor": {
+        "response_id": "api-feat-2"
+      },
+      "input": 400,
+      "output": 20,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 3,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-3",
+      "anchor": {
+        "response_id": "api-feat-3"
+      },
+      "input": 520,
+      "output": 12,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-4",
+      "anchor": {
+        "response_id": "api-feat-4"
+      },
+      "input": 1300,
+      "output": 18,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-5",
+      "anchor": {
+        "response_id": "api-feat-5"
+      },
+      "input": 1400,
+      "output": 9,
+      "cache_read": 1000,
+      "cache_write": 0,
+      "reasoning": 7,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-6",
+      "anchor": {
+        "response_id": "api-feat-6"
+      },
+      "input": 1500,
+      "output": 15,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-7",
+      "anchor": {
+        "response_id": "api-feat-7"
+      },
+      "input": 1600,
+      "output": 11,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-8",
+      "anchor": {
+        "response_id": "api-feat-8"
+      },
+      "input": 1700,
+      "output": 13,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-9",
+      "anchor": {
+        "response_id": "api-feat-9"
+      },
+      "input": 1800,
+      "output": 14,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "compaction:a0000000-0000-4000-8000-000000000078#1",
+      "anchor": {
+        "compaction": "a0000000-0000-4000-8000-000000000078"
+      },
+      "input": 2100,
+      "output": 120,
+      "cache_read": 1800,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "b0b0b0b0-0000-4000-8000-000000000004": [
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "message_id": "b0000000-0000-4000-8000-000000000002",
+      "parent_id": "b0000000-0000-4000-8000-000000000001",
+      "order": "000000000541",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000018",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Explore the repo with a sub-agent."
+        }
+      ],
+      "cmp_sha": "4c86eb9c2dc19bd9a5e2fa5c70580844168dd247572e6fa6fa8b5a7ba3316bc8"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "message_id": "b0000000-0000-4000-8000-000000000007",
+      "parent_id": "b0000000-0000-4000-8000-000000000006",
+      "order": "000000002546",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000b6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:00:06.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000020",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Explore the repo."
+        }
+      ],
+      "cmp_sha": "6e2c8e403dd5d2830195645ac0db1580d9b696b7b0b876f3354749575dbf799e"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "message_id": "b0000000-0000-4000-8000-000000000009",
+      "parent_id": "b0000000-0000-4000-8000-000000000008",
+      "order": "000000003762",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000b6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:00:08.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-held-2",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000021",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "It holds cart.py."
+        }
+      ],
+      "cmp_sha": "a7777a6b7ce62b1c593d3f442f43ce3a6e64e95ffedc7eeb7833301d2f35e2cf"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "engine": null,
+      "client": null,
+      "harness_version": "1.0.101",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-21T14:00:00.000Z",
+      "updated_at": "2026-10-21T14:00:09.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "4c86eb9c2dc19bd9a5e2fa5c70580844168dd247572e6fa6fa8b5a7ba3316bc8"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-held-1",
+      "anchor": {
+        "response_id": "api-held-1"
+      },
+      "input": 900,
+      "output": 10,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "b0b0b0b0-0000-4000-8000-000000000004",
+      "incarnation": "b0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-held-2",
+      "anchor": {
+        "response_id": "api-held-2"
+      },
+      "input": 300,
+      "output": 8,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ],
+  "c2c2c2c2-0000-4000-8000-000000000003": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "a0000000-0000-4000-8000-000000000078",
+      "op": "compaction",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:01:17.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "lifecycle_id": "c2000000-0000-4000-8000-000000000002",
+      "op": "fork",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-21T13:01:21.010Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "kind": "fork",
+      "child": {
+        "harness": "copilot-cli",
+        "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+        "incarnation": "a0000000-0000-4000-8000-000000000001"
+      },
+      "origin": {
+        "harness": "copilot-cli",
+        "session_id": "a0a0a0a0-0000-4000-8000-000000000001"
+      },
+      "stated_on": "child",
+      "at": "",
+      "inherits": {
+        "through_message_id": null,
+        "ids_preserved": true,
+        "marked": false,
+        "usage_copied": true
+      },
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000004",
+      "parent_id": "a0000000-0000-4000-8000-000000000003",
+      "order": "000000001113",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:03.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000001",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files and summarise toyshop/cart.py."
+        }
+      ],
+      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000008",
+      "parent_id": "a0000000-0000-4000-8000-000000000007",
+      "order": "000000002642",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:07.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-1",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000002",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Delegate the listing to a sub-agent.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-task",
+          "name": "task",
+          "args": {
+            "name": "explore-repo",
+            "agent_type": "explore",
+            "prompt": "List the files and summarise cart.py."
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000011",
+      "parent_id": "a0000000-0000-4000-8000-000000000010",
+      "order": "000000003827",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000003",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files and summarise cart.py."
+        }
+      ],
+      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000014",
+      "parent_id": "a0000000-0000-4000-8000-000000000013",
+      "order": "000000005411",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:13.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": "low",
+      "response_id": "api-feat-2",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000004",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-ls",
+          "name": "bash",
+          "args": {
+            "command": "ls toyshop",
+            "description": "List files"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-view",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000016",
+      "parent_id": "a0000000-0000-4000-8000-000000000015",
+      "order": "000000006517",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:15.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-ls",
+          "is_error": false,
+          "status": "completed",
+          "output": "cart.py\n__init__.py\n<shellId: 0 completed with exit code 0>",
+          "output_len": 59,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000018",
+      "parent_id": "a0000000-0000-4000-8000-000000000017",
+      "order": "000000007375",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:17.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-view",
+          "is_error": false,
+          "status": "completed",
+          "output": "1. class Cart:\n2.     items: list",
+          "output_len": 33,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000021",
+      "parent_id": "a0000000-0000-4000-8000-000000000020",
+      "order": "000000008707",
+      "agent_id": "5ab0a6e0-0000-4000-8000-0000000000a6",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:20.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-3",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000005",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "cart.py and __init__.py; Cart holds a list of items."
+        }
+      ],
+      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000024",
+      "parent_id": "a0000000-0000-4000-8000-000000000023",
+      "order": "000000009702",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:23.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-task",
+          "is_error": false,
+          "status": "completed",
+          "output": "cart.py and __init__.py; Cart holds a list of items.",
+          "output_len": 52,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000028",
+      "parent_id": "a0000000-0000-4000-8000-000000000027",
+      "order": "000000011066",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:27.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-4",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000006",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files; Cart holds a list of items."
+        }
+      ],
+      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000031",
+      "parent_id": "a0000000-0000-4000-8000-000000000030",
+      "order": "000000012033",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:30.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000007",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this label say? @label.png"
+        },
+        {
+          "part_id": "1",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAA=",
+          "bytes_len": 29
+        }
+      ],
+      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000034",
+      "parent_id": "a0000000-0000-4000-8000-000000000033",
+      "order": "000000013541",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:33.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-5",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000008",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "The image is one pixel.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "A blank one-pixel label."
+        }
+      ],
+      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000036",
+      "parent_id": "a0000000-0000-4000-8000-000000000035",
+      "order": "000000014174",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:35.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000009",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests, then look up TOY-1 in the stock server."
+        }
+      ],
+      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000039",
+      "parent_id": "a0000000-0000-4000-8000-000000000038",
+      "order": "000000015479",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:38.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-6",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000010",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-test",
+          "name": "bash",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000043",
+      "parent_id": "a0000000-0000-4000-8000-000000000042",
+      "order": "000000016788",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:42.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-test",
+          "is_error": true,
+          "status": "completed",
+          "output": "1 failed\n<shellId: 1 completed with exit code 1>",
+          "output_len": 48,
+          "truncated": null,
+          "exit_code": 1
+        }
+      ],
+      "cmp_sha": "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000047",
+      "parent_id": "a0000000-0000-4000-8000-000000000046",
+      "order": "000000018187",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:46.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-7",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000011",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-mcp",
+          "name": "skustock-sku_stock",
+          "args": {
+            "sku": "TOY-1"
+          },
+          "server": "skustock"
+        }
+      ],
+      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000049",
+      "parent_id": "a0000000-0000-4000-8000-000000000048",
+      "order": "000000019030",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:48.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-mcp",
+          "is_error": false,
+          "status": "completed",
+          "output": "TOY-1: 3 in stock",
+          "output_len": 17,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000053",
+      "parent_id": "a0000000-0000-4000-8000-000000000052",
+      "order": "000000020364",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:52.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-8",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000012",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-pip",
+          "name": "bash",
+          "args": {
+            "command": "pip install pytest"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000056",
+      "parent_id": "a0000000-0000-4000-8000-000000000055",
+      "order": "000000021422",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:55.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-pip",
+          "is_error": true,
+          "status": "denied",
+          "output": "The user rejected this tool call. User feedback: Do not install packages.",
+          "output_len": 73,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000060",
+      "parent_id": "a0000000-0000-4000-8000-000000000059",
+      "order": "000000022828",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:00:59.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-9",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000013",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-ask",
+          "name": "ask_user",
+          "args": {
+            "question": "Which SKU?",
+            "requestedSchema": "sku"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000061",
+      "parent_id": "a0000000-0000-4000-8000-000000000060",
+      "order": "000000023347",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-ask",
+          "is_error": true,
+          "status": "completed",
+          "output": "\"requestedSchema\": Expected object, received string",
+          "output_len": 51,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000065",
+      "parent_id": "a0000000-0000-4000-8000-000000000064",
+      "order": "000000024735",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:04.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-feat-10",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000014",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Running both checks."
+        },
+        {
+          "part_id": "1",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-a",
+          "name": "bash",
+          "args": {
+            "command": "echo a"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-feat-b",
+          "name": "bash",
+          "args": {
+            "command": "sleep 600"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000067",
+      "parent_id": "a0000000-0000-4000-8000-000000000066",
+      "order": "000000025607",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:06.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-feat-a",
+          "is_error": false,
+          "status": "completed",
+          "output": "a\n<shellId: 2 completed with exit code 0>",
+          "output_len": 41,
+          "truncated": null,
+          "exit_code": 0
+        }
+      ],
+      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000070",
+      "parent_id": "a0000000-0000-4000-8000-000000000069",
+      "order": "000000026453",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:09.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "<system_notification>\nShell command \"sleep 25\" (shellId: bg-1) has completed successfully.\n</system_notification>",
+          "level": null,
+          "native_type": "shell_completed"
+        }
+      ],
+      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000071",
+      "parent_id": "a0000000-0000-4000-8000-000000000070",
+      "order": "000000026820",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "shell_completed ok",
+          "level": null,
+          "native_type": "shell_completed"
+        }
+      ],
+      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000073",
+      "parent_id": "a0000000-0000-4000-8000-000000000072",
+      "order": "000000027322",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:12.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000015",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Write a very long essay about carts."
+        }
+      ],
+      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "a0000000-0000-4000-8000-000000000078",
+      "parent_id": "a0000000-0000-4000-8000-000000000077",
+      "order": "000000029003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:17.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "<overview>\nThe user explored the toyshop repo and ran its tests.\n</overview>",
+          "replaces": {
+            "count": 12
+          }
+        }
+      ],
+      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "c2000000-0000-4000-8000-000000000003",
+      "parent_id": "c2000000-0000-4000-8000-000000000002",
+      "order": "000000030869",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:22.010Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000016",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now only count the files."
+        }
+      ],
+      "cmp_sha": "18217c20af56072b2cc132186249b32342dbeac4bc8fedb6de16c4c62a76e802"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "message_id": "c2000000-0000-4000-8000-000000000006",
+      "parent_id": "c2000000-0000-4000-8000-000000000005",
+      "order": "000000032109",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:01:25.010Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-fork-1",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000017",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.101",
+      "title": "toyshop features (fork 2)",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop/toyshop",
+      "created_at": "2026-10-21T13:01:20.980Z",
+      "updated_at": "2026-10-21T13:01:26.010Z",
+      "state": "active",
+      "pinned": null,
+      "mode": "plan",
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26",
+          "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b",
+          "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b",
+          "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe",
+          "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a",
+          "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
+          "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
+          "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
+          "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532",
+          "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
+          "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
+          "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
+          "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35",
+          "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
+          "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
+          "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",
+          "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e",
+          "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d",
+          "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289",
+          "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552",
+          "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b",
+          "18217c20af56072b2cc132186249b32342dbeac4bc8fedb6de16c4c62a76e802",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-1",
+      "anchor": {
+        "response_id": "api-feat-1"
+      },
+      "input": 1200,
+      "output": 30,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 5,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-10",
+      "anchor": {
+        "response_id": "api-feat-10"
+      },
+      "input": 1900,
+      "output": 16,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-11",
+      "anchor": {
+        "response_id": "api-feat-11"
+      },
+      "input": 2000,
+      "output": 16384,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-2",
+      "anchor": {
+        "response_id": "api-feat-2"
+      },
+      "input": 400,
+      "output": 20,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 3,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-3",
+      "anchor": {
+        "response_id": "api-feat-3"
+      },
+      "input": 520,
+      "output": 12,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-4",
+      "anchor": {
+        "response_id": "api-feat-4"
+      },
+      "input": 1300,
+      "output": 18,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-5",
+      "anchor": {
+        "response_id": "api-feat-5"
+      },
+      "input": 1400,
+      "output": 9,
+      "cache_read": 1000,
+      "cache_write": 0,
+      "reasoning": 7,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-6",
+      "anchor": {
+        "response_id": "api-feat-6"
+      },
+      "input": 1500,
+      "output": 15,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-7",
+      "anchor": {
+        "response_id": "api-feat-7"
+      },
+      "input": 1600,
+      "output": 11,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-8",
+      "anchor": {
+        "response_id": "api-feat-8"
+      },
+      "input": 1700,
+      "output": 13,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-feat-9",
+      "anchor": {
+        "response_id": "api-feat-9"
+      },
+      "input": 1800,
+      "output": 14,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "api-fork-1",
+      "anchor": {
+        "response_id": "api-fork-1"
+      },
+      "input": 2200,
+      "output": 6,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "c2c2c2c2-0000-4000-8000-000000000003",
+      "incarnation": "a0000000-0000-4000-8000-000000000001",
+      "usage_id": "compaction:a0000000-0000-4000-8000-000000000078#1",
+      "anchor": {
+        "compaction": "a0000000-0000-4000-8000-000000000078"
+      },
+      "input": 2100,
+      "output": 120,
+      "cache_read": 1800,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null
+    }
+  ]
+}

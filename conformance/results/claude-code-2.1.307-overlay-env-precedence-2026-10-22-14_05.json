@@ -1,0 +1,232 @@
+{
+  "check": "tier 1: the --settings overlay env wins per variable over the folder's settings env, and an endpoint launch clears ambient credentials (design note v0.2 §7.5)",
+  "at": "2026-10-22T14:05:10.332Z",
+  "evidence": {
+    "harness": "2.1.307 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "70390e4a9ba23de569b3e410f55eb798b1b9885f"
+  },
+  "launch_spec": {
+    "argv": [
+      "claude",
+      "--settings",
+      "<overlay settings.json>",
+      "--model",
+      "bench-primary",
+      "-p",
+      "--output-format",
+      "json"
+    ],
+    "overlay": {
+      "env": {
+        "CLAUDE_CODE_USE_BEDROCK": "",
+        "CLAUDE_CODE_USE_VERTEX": "",
+        "CLAUDE_CODE_USE_FOUNDRY": "",
+        "CLAUDE_CODE_USE_ANTHROPIC_AWS": "",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "bench-small",
+        "CLAUDE_CODE_SUBAGENT_MODEL": "bench-subagent",
+        "ANTHROPIC_BASE_URL": "http://127.0.0.1:39749"
+      }
+    },
+    "env_unset": [
+      "CLAUDE_CODE_PLUGIN_CACHE_DIR",
+      "CLAUDE_CODE_TMPDIR",
+      "ANTHROPIC_API_KEY",
+      "CLAUDE_CODE_OAUTH_TOKEN",
+      "ANTHROPIC_PROFILE",
+      "CLAUDE_CODE_USE_BEDROCK",
+      "CLAUDE_CODE_USE_VERTEX",
+      "CLAUDE_CODE_USE_FOUNDRY",
+      "CLAUDE_CODE_USE_ANTHROPIC_AWS",
+      "AWS_BEARER_TOKEN_BEDROCK",
+      "ANTHROPIC_BEDROCK_BASE_URL",
+      "CLAUDE_CODE_SKIP_BEDROCK_AUTH",
+      "ANTHROPIC_VERTEX_PROJECT_ID",
+      "ANTHROPIC_FOUNDRY_RESOURCE",
+      "ANTHROPIC_FOUNDRY_API_KEY",
+      "CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST"
+    ],
+    "env_from_refs": {
+      "check-a/b": [
+        "ANTHROPIC_AUTH_TOKEN"
+      ],
+      "check-c": [
+        "ANTHROPIC_API_KEY"
+      ]
+    },
+    "unverified": [
+      "on macOS the login may also sit in the login keychain, in an item keyed to this folder [CC §7]; hs never queries the keychain, so a folder that was ever logged in to claude.ai must not be used for an endpoint launch",
+      "project and local settings in the working directory, and managed settings, can also set a credential variable in env, which outranks the one the caller fills; hs reads only the folder's settings.json at launch-spec"
+    ]
+  },
+  "launches": {
+    "control-a": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        }
+      ],
+      "at_endpoint": []
+    },
+    "check-a": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [],
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        }
+      ]
+    },
+    "control-b": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [
+        {
+          "method": "GET",
+          "path": "/inference-profiles",
+          "model": null,
+          "credential": "none"
+        },
+        {
+          "method": "POST",
+          "path": "/model/bench-primary/invoke-with-response-stream",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/model/bench-primary/invoke-with-response-stream",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/model/bench-primary/invoke-with-response-stream",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/model/bench-primary/invoke-with-response-stream",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        }
+      ],
+      "at_endpoint": []
+    },
+    "check-b": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [],
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:bench-dummy"
+        }
+      ]
+    },
+    "control-c": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [],
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:ambient,x-api-key:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "bearer:ambient,x-api-key:bench-dummy"
+        }
+      ]
+    },
+    "check-c": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "at_folder": [],
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "x-api-key:bench-dummy"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/messages",
+          "model": "bench-primary",
+          "credential": "x-api-key:bench-dummy"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "ANTHROPIC_BASE_URL": "pass",
+    "CLAUDE_CODE_USE_BEDROCK": "pass",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": {
+      "verdict": "not observed: no request named a small model",
+      "control": []
+    },
+    "CLAUDE_CODE_SUBAGENT_MODEL": {
+      "verdict": "not observed: no request named a subagent model",
+      "control": []
+    },
+    "ANTHROPIC_AUTH_TOKEN (ambient, endpoint auth = \"x-api-key\")": "pass"
+  },
+  "endpoint_credentials_a_b": "every request at the endpoint carried the bench dummy as a bearer token",
+  "expected": {
+    "control-a": "at FOLDER only",
+    "check-a": "at ENDPOINT only, model bench-primary, bearer:bench-dummy",
+    "control-b": "at FOLDER only (Bedrock)",
+    "check-b": "at ENDPOINT only, bearer:bench-dummy",
+    "control-c": "at ENDPOINT, with bearer:ambient",
+    "check-c": "at ENDPOINT, with x-api-key:bench-dummy only"
+  },
+  "verdict": "pass"
+}

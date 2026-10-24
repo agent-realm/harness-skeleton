@@ -1,0 +1,7 @@
+#!/bin/sh
+# A stand-in for Claude Code, so the examples never start a real harness: it answers --version
+# and nothing else. Point --bin at a real claude only on a disposable machine.
+case "$1" in
+  --version) echo "2.1.307 (Claude Code)" ;;
+  *) echo "the examples' stand-in for claude: it answers --version only" >&2; exit 1 ;;
+esac

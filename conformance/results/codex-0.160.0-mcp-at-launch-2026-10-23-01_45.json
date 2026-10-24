@@ -1,0 +1,314 @@
+{
+  "check": "tier 1: MCP servers at launch on Codex, through -c mcp_servers under a launch receipt (design note v0.2 \u00a75.5, \u00a77.5)",
+  "at": "2026-10-23T01:45:50.313Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "4e4d00c"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        }
+      ],
+      "at_remote": []
+    },
+    "carried": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-codex-mcp-marker-3b8f"
+          ],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "list_mcp_resources",
+            "list_mcp_resource_templates",
+            "read_mcp_resource",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "mcp__local",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        }
+      ],
+      "at_remote": [
+        {
+          "method": "POST",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ]
+    },
+    "shell_stock": {
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-codex-mcp-marker-3b8f"
+          ],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "list_mcp_resources",
+            "list_mcp_resource_templates",
+            "read_mcp_resource",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "mcp__local",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-codex-mcp-marker-3b8f"
+          ],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "list_mcp_resources",
+            "list_mcp_resource_templates",
+            "read_mcp_resource",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "mcp__local",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        }
+      ],
+      "at_remote": [
+        {
+          "method": "POST",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "saw": {
+        "names": [
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+          "CODEX_CI",
+          "CODEX_HOME",
+          "CODEX_MANAGED_BY_NPM",
+          "CODEX_MANAGED_PACKAGE_ROOT",
+          "CODEX_SESSION_ID",
+          "CODEX_THREAD_ID",
+          "CODEX_VERSION",
+          "COLORTERM",
+          "DISABLE_AUTOUPDATER",
+          "GH_PAGER",
+          "GIT_PAGER",
+          "HOME",
+          "HS_BENCH_VISIBLE",
+          "HS_ENDPOINT_KEY",
+          "HS_SECRET_DB_PASSWORD",
+          "HS_SECRET_REMOTE_TOKEN",
+          "LANG",
+          "LC_ALL",
+          "LC_CTYPE",
+          "NO_COLOR",
+          "PAGER",
+          "PATH",
+          "PWD",
+          "SHLVL",
+          "TERM",
+          "TMPDIR",
+          "XDG_CACHE_HOME",
+          "XDG_CONFIG_HOME",
+          "XDG_DATA_DIRS",
+          "XDG_DATA_HOME",
+          "XDG_STATE_HOME",
+          "_"
+        ],
+        "visible": true,
+        "hs_secret": true,
+        "endpoint_key": true,
+        "dummy": true
+      }
+    },
+    "shell_forced": {
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "at_endpoint": [
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-codex-mcp-marker-3b8f"
+          ],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "list_mcp_resources",
+            "list_mcp_resource_templates",
+            "read_mcp_resource",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "mcp__local",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/v1/responses",
+          "credential": "bearer:bench-dummy",
+          "markers": [
+            "hs-tier1-codex-mcp-marker-3b8f"
+          ],
+          "tools": [
+            "exec_command",
+            "write_stdin",
+            "list_mcp_resources",
+            "list_mcp_resource_templates",
+            "read_mcp_resource",
+            "request_user_input",
+            "view_image",
+            "multi_agent_v1",
+            "mcp__local",
+            "get_goal",
+            "create_goal",
+            "update_goal",
+            "web_search"
+          ]
+        }
+      ],
+      "at_remote": [
+        {
+          "method": "POST",
+          "path": "/mcp",
+          "model": null,
+          "credential": "bearer:bench-dummy",
+          "markers": []
+        }
+      ],
+      "saw": {
+        "names": [
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+          "CODEX_CI",
+          "CODEX_HOME",
+          "CODEX_MANAGED_BY_NPM",
+          "CODEX_MANAGED_PACKAGE_ROOT",
+          "CODEX_SESSION_ID",
+          "CODEX_THREAD_ID",
+          "CODEX_VERSION",
+          "COLORTERM",
+          "DISABLE_AUTOUPDATER",
+          "GH_PAGER",
+          "GIT_PAGER",
+          "HOME",
+          "HS_BENCH_VISIBLE",
+          "LANG",
+          "LC_ALL",
+          "LC_CTYPE",
+          "NO_COLOR",
+          "PAGER",
+          "PATH",
+          "PWD",
+          "SHLVL",
+          "TERM",
+          "TMPDIR",
+          "XDG_CACHE_HOME",
+          "XDG_CONFIG_HOME",
+          "XDG_DATA_DIRS",
+          "XDG_DATA_HOME",
+          "XDG_STATE_HOME",
+          "_"
+        ],
+        "visible": true,
+        "hs_secret": false,
+        "endpoint_key": false,
+        "dummy": false
+      }
+    }
+  },
+  "refusal": {
+    "code": "receipt_required",
+    "risks": [
+      {
+        "item": "mcp.local",
+        "risk": "runs-code"
+      },
+      {
+        "item": "mcp.remote",
+        "risk": "sends-data"
+      }
+    ]
+  },
+  "stdio_server_env_ref": {
+    "db_pass": "match",
+    "derived": "absent"
+  },
+  "checks": {
+    "without servers no request carries the marker, and the remote server gets nothing (premise)": true,
+    "without a receipt launch-spec refuses: runs-code and sends-data": true,
+    "with the receipt the launch carries -c mcp_servers overrides": true,
+    "the stdio server starts and its tool reaches the request": true,
+    "the stdio server saw its env ref as the dummy, renamed from its derived variable": true,
+    "no derived variable reached the stdio server": true,
+    "the remote server got the bearer dummy": true,
+    "config.toml is not written": true,
+    "the launch carries the scrub flag": true,
+    "without the flag the shell tool sees the secret variables (premise: the 0.160.0 default)": true,
+    "with the flag, over a folder that turns the excludes off, the shell tool sees neither, and still sees a plain variable": true
+  },
+  "verdict": "pass"
+}

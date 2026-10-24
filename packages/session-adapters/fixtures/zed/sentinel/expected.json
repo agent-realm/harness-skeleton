@@ -1,0 +1,95 @@
+{
+  "5a1e0000-0000-4000-8000-0000000000f1": [
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000f1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000f2",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Remember this value for later: sentinel-0a1b2c3d4e5f-not-a-secret"
+        }
+      ],
+      "cmp_sha": "14ff92a50a7d8c5ac389d26900044a55e327f6d8c56e9035b7a234296df1c147"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000f1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000f2+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Noted."
+        }
+      ],
+      "cmp_sha": "f289401392d06f79cb26e7dad0c45abde6a6530a73ab0946b9b336f7ba1707f2"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000f1",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Sentinel",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "14ff92a50a7d8c5ac389d26900044a55e327f6d8c56e9035b7a234296df1c147",
+          "f289401392d06f79cb26e7dad0c45abde6a6530a73ab0946b9b336f7ba1707f2"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+#!/bin/sh
+# A stand-in for Codex, so the examples never start a real harness: it answers --version and
+# nothing else. Point --bin at a real codex only on a disposable machine.
+case "$1" in
+  --version) echo "codex-cli 0.160.0" ;;
+  *) echo "the examples' stand-in for codex: it answers --version only" >&2; exit 1 ;;
+esac

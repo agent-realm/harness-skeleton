@@ -1,0 +1,1687 @@
+{
+  "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e": [
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-04T09-00-5d6e7f80.jsonl@1294#1",
+      "op": "rewind",
+      "target": {
+        "range": {
+          "from_id": "d04923d38bb0f6017037e74183378ef4",
+          "through_id": "00000000-0000-4000-8000-000000000025"
+        }
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000024",
+      "parent_id": null,
+      "order": "000000000895",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-02-04T09:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "write notes.txt"
+        }
+      ],
+      "cmp_sha": "e49bba779f0153551fac1d59a64a08591f34b969f6dbb1d8a78d1dd3393e706b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000025",
+      "parent_id": null,
+      "order": "000000001033",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-02-04T09:00:02.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Done: notes.txt written."
+        }
+      ],
+      "cmp_sha": "0dc2aace7fd934bfb54617ff74e61e9a34d320089efc15f1f079e288edc1ea35"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000026",
+      "parent_id": null,
+      "order": "000000002010",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-04T09:00:03.002Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Start over: add a discount field."
+        }
+      ],
+      "cmp_sha": "a96d9901959d4ec1186f4aac623585eece65f141170182f1aea9884df7dba399"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000027",
+      "parent_id": null,
+      "order": "000000002166",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-04T09:00:04.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Starting over."
+        }
+      ],
+      "cmp_sha": "1016adadf104a55e4bf936284dcc9d9499c352d9ea5b757ae7ef56ff91ebca1d"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "message_id": "d04923d38bb0f6017037e74183378ef4",
+      "parent_id": null,
+      "order": "000000001395",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-04T09:00:03.001Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, February 3, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).\n\n/home/user/work/toyshop/\n├───cart.py\n└───tests/\n</session_context>"
+        }
+      ],
+      "cmp_sha": "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-02-04T09:00:00.000Z",
+      "updated_at": "2026-02-04T09:00:04.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0",
+          "a96d9901959d4ec1186f4aac623585eece65f141170182f1aea9884df7dba399",
+          "1016adadf104a55e4bf936284dcc9d9499c352d9ea5b757ae7ef56ff91ebca1d"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000025",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000025"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "5d6e7f80-91a2-4b3c-8d4e-5f6a7b8c9d0e",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000027",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000027"
+      },
+      "input": 1500,
+      "output": 4,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ],
+  "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f": [
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-05T09-00-6e7f8091.jsonl@2539#1",
+      "op": "edit",
+      "target": {
+        "message_id": "00000000-0000-4000-9000-000000000002"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-05T09-00-6e7f8091.jsonl@2539#2",
+      "op": "edit",
+      "target": {
+        "message_id": "00000000-0000-4000-9000-000000000004"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-9000-000000000001",
+      "parent_id": null,
+      "order": "000000000895",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-05T09:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        }
+      ],
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-9000-000000000002",
+      "parent_id": null,
+      "order": "000000001032",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-05T09:00:02.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "th:0",
+          "kind": "reasoning",
+          "text": "**Checking the suite** Run pytest before touching the cart.",
+          "signature_len": null
+        },
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Running the tests."
+        },
+        {
+          "part_id": "run_shell_command__run_shell_command_1770282002100_0:call",
+          "kind": "tool_call",
+          "call_id": "run_shell_command__run_shell_command_1770282002100_0",
+          "name": "run_shell_command",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        },
+        {
+          "part_id": "run_shell_command__run_shell_command_1770282002100_0:result",
+          "kind": "tool_result",
+          "call_id": "run_shell_command__run_shell_command_1770282002100_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "3 passed",
+          "output_len": 8,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "f376db063e8b84fa67e724a44d293131b56c16f0bb383a3b1c5e0268c6010265"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-9000-000000000004",
+      "parent_id": null,
+      "order": "000000002142",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-05T09:00:04.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "The suite passes.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "All green."
+        }
+      ],
+      "cmp_sha": "c81a75e11f4c5a2a5276cd9c174993b3e24581433c74b41e32db57fece86ce12"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "message_id": "d04923d38bb0f6017037e74183378ef4",
+      "parent_id": null,
+      "order": "000000000228",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-05T09:00:00.001Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, February 3, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).\n\n/home/user/work/toyshop/\n├───cart.py\n└───tests/\n</session_context>"
+        }
+      ],
+      "cmp_sha": "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-02-05T09:00:00.000Z",
+      "updated_at": "2026-02-05T09:00:04.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0",
+          "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+          "f376db063e8b84fa67e724a44d293131b56c16f0bb383a3b1c5e0268c6010265",
+          "c81a75e11f4c5a2a5276cd9c174993b3e24581433c74b41e32db57fece86ce12"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-9000-000000000002",
+      "anchor": {
+        "message_id": "00000000-0000-4000-9000-000000000002"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-9000-000000000004",
+      "anchor": {
+        "message_id": "00000000-0000-4000-9000-000000000004"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ],
+  "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f": [
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-03T10-00-7f3e9a10.jsonl@8535#1",
+      "op": "edit",
+      "target": {
+        "message_id": "00000000-0000-4000-8000-000000000010"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-03T10-00-7f3e9a10.jsonl@8535#2",
+      "op": "edit",
+      "target": {
+        "message_id": "00000000-0000-4000-8000-000000000006"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-03T10-00-7f3e9a10.jsonl@8535#3",
+      "op": "edit",
+      "target": {
+        "message_id": "00000000-0000-4000-8000-000000000002"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop/chats/session-2026-02-03T10-00-7f3e9a10.jsonl@9462#1",
+      "op": "rewind",
+      "target": {
+        "range": {
+          "from_id": "00000000-0000-4000-8000-000000000019",
+          "through_id": "00000000-0000-4000-8000-000000000020"
+        }
+      },
+      "at": "00000000-0000-4000-8000-000000000018",
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "gemini-cli",
+        "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01"
+      },
+      "origin": {
+        "harness": "gemini-cli",
+        "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f"
+      },
+      "at": "codebase_investigator__codebase_investigator_1770112815000_0",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "000000000895",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py, then run python3 -m pytest -q."
+        }
+      ],
+      "cmp_sha": "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "000000001128",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:02.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "th:0",
+          "kind": "reasoning",
+          "text": "**Reading the cart** The total ignores qty; check total_cents first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "I will read the cart first."
+        },
+        {
+          "part_id": "read_file__read_file_1770112802100_0:call",
+          "kind": "tool_call",
+          "call_id": "read_file__read_file_1770112802100_0",
+          "name": "read_file",
+          "args": {
+            "file_path": "toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "read_file__read_file_1770112802100_0:result",
+          "kind": "tool_result",
+          "call_id": "read_file__read_file_1770112802100_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "class Cart:\n    def total_cents(self):\n        return sum(i.price_cents * i.qty for i in self.items)\n",
+          "output_len": 101,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "f85e1e65fa6c9380b540ce1b61caac5e5113c0d82402deb2c033d1cb60bf2c65"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000004",
+      "parent_id": null,
+      "order": "000000002851",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:03.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "run_shell_command__run_shell_command_1770112804000_0:call",
+          "kind": "tool_call",
+          "call_id": "run_shell_command__run_shell_command_1770112804000_0",
+          "name": "run_shell_command",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        },
+        {
+          "part_id": "run_shell_command__run_shell_command_1770112804000_0:result",
+          "kind": "tool_result",
+          "call_id": "run_shell_command__run_shell_command_1770112804000_0",
+          "is_error": true,
+          "status": "completed",
+          "output": "Command exited with code 1: 1 failed",
+          "output_len": 36,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "write_file__write_file_1770112804000_1:call",
+          "kind": "tool_call",
+          "call_id": "write_file__write_file_1770112804000_1",
+          "name": "write_file",
+          "args": {
+            "file_path": "toyshop/cart.py",
+            "content": "x"
+          },
+          "server": null
+        },
+        {
+          "part_id": "write_file__write_file_1770112804000_1:result",
+          "kind": "tool_result",
+          "call_id": "write_file__write_file_1770112804000_1",
+          "is_error": false,
+          "status": "cancelled",
+          "output": "User cancelled the edit.",
+          "output_len": 24,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "b3e280b345d21ce00b1a1089eca1f5f54ac4068e51eeb53e4eb7020d002d0df2"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000006",
+      "parent_id": null,
+      "order": "000000004690",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:06.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fixed: total_cents multiplies price by qty."
+        }
+      ],
+      "cmp_sha": "55f0751e5d2f55c66d867d117ccf5f0bf5cdee3efced5e4ae18818e47c61c724"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000007",
+      "parent_id": null,
+      "order": "000000005222",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Describe @label.png"
+        },
+        {
+          "part_id": "1",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAA=",
+          "bytes_len": 29
+        }
+      ],
+      "cmp_sha": "0e4f435dd2f71029fa2a2909eb0f2f12b91d2166ea8e869edbb46e635497b56c"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000008",
+      "parent_id": null,
+      "order": "000000005454",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.100Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "lost_call_1",
+          "is_error": false,
+          "status": "completed",
+          "output": "tests/test_cart.py",
+          "output_len": 18,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "9194b9903b4f8eb48c0b0a83f6a89e7f740b575f2612450a2273dcbcc92d1c64"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000009",
+      "parent_id": null,
+      "order": "000000005669",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.200Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Here is what the earlier run printed."
+        }
+      ],
+      "cmp_sha": "426e411b35ebb855ca183b4a1ae275645aebd313356e3b62175d1ca175477867"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000009+1",
+      "parent_id": null,
+      "order": "000000005669",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.200Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "1",
+          "kind": "tool_result",
+          "call_id": "lost_call_2",
+          "is_error": false,
+          "status": "completed",
+          "output": "3 passed",
+          "output_len": 8,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "2976a80f22dee4b51fccb389dc2e9415235804f70d714dc2e8d110a351e8f79f"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000010",
+      "parent_id": null,
+      "order": "000000005931",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.300Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Approaching the context limit.",
+          "level": "warning",
+          "native_type": "warning"
+        }
+      ],
+      "cmp_sha": "c624e7d5d5ce4e3ebaec15c9968aed993d198794de29a7eb3715b6590e2ac54c"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000011",
+      "parent_id": null,
+      "order": "000000006076",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.400Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Summarise @cart.py"
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "\n--- cart.py ---\ndef total_cents(items): ..."
+        }
+      ],
+      "cmp_sha": "4e27289e15d6618d657a97c5f4d6326f8b29e41cb2f77dd908f2931732010103"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000012",
+      "parent_id": null,
+      "order": "000000006324",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.500Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "hook",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<hook_context>synthetic hook output: tests are in tests/</hook_context>"
+        }
+      ],
+      "cmp_sha": "fad577a5b77b0afb3d395ae46e73d73a454b2d423892f421cccfdd2af8581b35"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000013",
+      "parent_id": null,
+      "order": "000000006518",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:07.600Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Read the spec."
+        },
+        {
+          "part_id": "1",
+          "kind": "attachment",
+          "media_type": "application/pdf",
+          "ref": "https://example.com/spec.pdf",
+          "bytes_len": null
+        }
+      ],
+      "cmp_sha": "4bc4e6bca61e1f9e8ff67ea557f26500417121bf12f49d4de1368a33be1a12a9"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000014",
+      "parent_id": null,
+      "order": "000000006740",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Use a sub-agent to list the test files."
+        }
+      ],
+      "cmp_sha": "3075092bacb1360b0f44fbe9c1bbf6496df890244be384df30f4475d8aa1abfb"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000015",
+      "parent_id": null,
+      "order": "000000006902",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:11.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "codebase_investigator__codebase_investigator_1770112815000_0:call",
+          "kind": "tool_call",
+          "call_id": "codebase_investigator__codebase_investigator_1770112815000_0",
+          "name": "codebase_investigator",
+          "args": {
+            "objective": "list tests"
+          },
+          "server": null
+        },
+        {
+          "part_id": "codebase_investigator__codebase_investigator_1770112815000_0:result",
+          "kind": "tool_result",
+          "call_id": "codebase_investigator__codebase_investigator_1770112815000_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "tests/test_cart.py",
+          "output_len": 18,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "8106b1e2e018f6ff2b9994cb9ffb25cd308bbc648da270b5b104f36511e501a4"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000017",
+      "parent_id": null,
+      "order": "000000007961",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:18.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "run_shell_command__run_shell_command_1770112819000_0:call",
+          "kind": "tool_call",
+          "call_id": "run_shell_command__run_shell_command_1770112819000_0",
+          "name": "run_shell_command",
+          "args": {
+            "command": "sleep 99"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "35a26165164a873755bfc2eeb8a68a26e6d6d3e82dad3960f825329a86359c3e"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000018",
+      "parent_id": null,
+      "order": "000000008405",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:19.500Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Request cancelled.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "b41d45e7479d3c6ad122b1bdec8a33d431652bbf008365428090b09f02265a0b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000019",
+      "parent_id": null,
+      "order": "000000009058",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Add a discount field."
+        }
+      ],
+      "cmp_sha": "4014b40579faa7737eac63b79a6c4808e0faa72f937aacfb6c66785bd4e8e753"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000020",
+      "parent_id": null,
+      "order": "000000009202",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:21.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added a discount field."
+        }
+      ],
+      "cmp_sha": "294f6a6af99f1caf99caa09a43eb265b6761073026a3d04b8ae7bbab9315732e"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000021",
+      "parent_id": null,
+      "order": "000000009567",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:22.001Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Add a discount field, with a test."
+        }
+      ],
+      "cmp_sha": "20623296e6bc86b669840bb61ba070f9c1dac12a796386f7f14d126a02ca7a99"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000022",
+      "parent_id": null,
+      "order": "000000009724",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:23.000Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Added a discount field and a test."
+        }
+      ],
+      "cmp_sha": "e75e002acef188c68ea267039bce4410f5a8eb27d81435b08d213906a51c5cfa"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "message_id": "d04923d38bb0f6017037e74183378ef4",
+      "parent_id": null,
+      "order": "000000000228",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:00.001Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, February 3, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).\n\n/home/user/work/toyshop/\n├───cart.py\n└───tests/\n</session_context>"
+        }
+      ],
+      "cmp_sha": "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": "Fix the toy cart qty bug",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-02-03T10:00:00.000Z",
+      "updated_at": "2026-02-03T10:00:23.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0",
+          "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
+          "f85e1e65fa6c9380b540ce1b61caac5e5113c0d82402deb2c033d1cb60bf2c65",
+          "b3e280b345d21ce00b1a1089eca1f5f54ac4068e51eeb53e4eb7020d002d0df2",
+          "55f0751e5d2f55c66d867d117ccf5f0bf5cdee3efced5e4ae18818e47c61c724",
+          "0e4f435dd2f71029fa2a2909eb0f2f12b91d2166ea8e869edbb46e635497b56c",
+          "9194b9903b4f8eb48c0b0a83f6a89e7f740b575f2612450a2273dcbcc92d1c64",
+          "426e411b35ebb855ca183b4a1ae275645aebd313356e3b62175d1ca175477867",
+          "2976a80f22dee4b51fccb389dc2e9415235804f70d714dc2e8d110a351e8f79f",
+          "4e27289e15d6618d657a97c5f4d6326f8b29e41cb2f77dd908f2931732010103",
+          "fad577a5b77b0afb3d395ae46e73d73a454b2d423892f421cccfdd2af8581b35",
+          "4bc4e6bca61e1f9e8ff67ea557f26500417121bf12f49d4de1368a33be1a12a9",
+          "3075092bacb1360b0f44fbe9c1bbf6496df890244be384df30f4475d8aa1abfb",
+          "8106b1e2e018f6ff2b9994cb9ffb25cd308bbc648da270b5b104f36511e501a4",
+          "35a26165164a873755bfc2eeb8a68a26e6d6d3e82dad3960f825329a86359c3e",
+          "b41d45e7479d3c6ad122b1bdec8a33d431652bbf008365428090b09f02265a0b",
+          "20623296e6bc86b669840bb61ba070f9c1dac12a796386f7f14d126a02ca7a99",
+          "e75e002acef188c68ea267039bce4410f5a8eb27d81435b08d213906a51c5cfa"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000002",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000002"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": 900,
+      "cache_write": null,
+      "reasoning": 5,
+      "tool_prompt": 42,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000004",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000004"
+      },
+      "input": 2468,
+      "output": 34,
+      "cache_read": 1800,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000006",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000006"
+      },
+      "input": 3000,
+      "output": 12,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000015",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000015"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000017",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000017"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000020",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000020"
+      },
+      "input": 4000,
+      "output": 20,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000022",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000022"
+      },
+      "input": 4100,
+      "output": 25,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ],
+  "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01": [
+    {
+      "type": "link",
+      "harness": "gemini-cli",
+      "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "child",
+      "child": {
+        "harness": "gemini-cli",
+        "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01"
+      },
+      "origin": {
+        "harness": "gemini-cli",
+        "session_id": "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000028",
+      "parent_id": null,
+      "order": "000000000274",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:11.002Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Find the test files."
+        }
+      ],
+      "cmp_sha": "0dcd4f50d651d0eb4bb84430b5a21af74ef9da4a5d32e0a50afb95961dd7168b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-8000-000000000029",
+      "parent_id": null,
+      "order": "000000000417",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-02-03T10:00:13.001Z",
+      "requested_model": "gemini-3.5-flash",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "tests/test_cart.py"
+        }
+      ],
+      "cmp_sha": "ccc1d806f56f04c8fcfa1e8764cfe39498b74692b37608d277fb74e7a0120676"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-02-03T10:00:11.001Z",
+      "updated_at": "2026-02-03T10:00:13.001Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "subagent",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0dcd4f50d651d0eb4bb84430b5a21af74ef9da4a5d32e0a50afb95961dd7168b",
+          "ccc1d806f56f04c8fcfa1e8764cfe39498b74692b37608d277fb74e7a0120676"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01",
+      "incarnation": "",
+      "usage_id": "00000000-0000-4000-8000-000000000029",
+      "anchor": {
+        "message_id": "00000000-0000-4000-8000-000000000029"
+      },
+      "input": 800,
+      "output": 6,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gemini-3.5-flash"
+    }
+  ]
+}

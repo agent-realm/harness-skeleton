@@ -1,0 +1,26 @@
+{
+  "name": "@agent-realm/scripted-model",
+  "version": "0.0.1",
+  "description": "A scripted model endpoint for deterministic harness tests: Anthropic Messages, OpenAI Chat Completions and OpenAI Responses, from a script, on loopback only",
+  "license": "Apache-2.0",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "scripted-model": "./bin/scripted-model.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "test": "node --test 'test/*.test.js'"
+  }
+}

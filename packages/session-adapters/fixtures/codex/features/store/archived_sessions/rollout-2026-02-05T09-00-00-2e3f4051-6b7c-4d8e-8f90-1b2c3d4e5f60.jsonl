@@ -1,0 +1,6 @@
+{"timestamp":"2026-02-05T09:00:00.000Z","type":"session_meta","payload":{"id":"2e3f4051-6b7c-4d8e-8f90-1b2c3d4e5f60","timestamp":"2026-02-05T09:00:00.000Z","cwd":"/work/two-parts","originator":"codex_cli_rs","cli_version":"0.47.0"}}
+{"timestamp":"2026-02-05T09:00:01.000Z","type":"event_msg","payload":{"type":"task_started","turn_id":"turn_c1","model_context_window":200000}}
+{"timestamp":"2026-02-05T09:00:01.000Z","type":"turn_context","payload":{"turn_id":"turn_c1","cwd":"/work/two-parts","model":"gpt-5","effort":"medium","approval_policy":"never"}}
+{"timestamp":"2026-02-05T09:00:02.000Z","type":"response_item","payload":{"type":"message","role":"user","id":"msg_c1_u","content":[{"type":"input_text","text":"start the plan"}]}}
+{"timestamp":"2026-02-05T09:00:03.000Z","type":"response_item","payload":{"type":"message","role":"assistant","id":"msg_c1_a","content":[{"type":"output_text","text":"plan started"}]}}
+{"timestamp":"2026-02-05T09:00:03.000Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":700,"cached_input_tokens":100,"output_tokens":20,"reasoning_output_tokens":0,"total_tokens":720},"last_token_usage":{"input_tokens":700,"cached_input_tokens":100,"output_tokens":20,"reasoning_output_tokens":0,"total_tokens":720},"model_context_window":200000},"rate_limits":null}}

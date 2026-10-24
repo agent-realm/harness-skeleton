@@ -1,0 +1,30 @@
+[spec]
+name = "base"
+version = "2.0.0"
+format = "0.2"
+
+[model.roles]
+primary  = "claude-sonnet-5-5"
+small    = "claude-haiku-4-5"
+subagent = "claude-sonnet-5-5"
+
+# Secrets the spec needs, declared by name only; local.toml binds each to a reference.
+[refs.DOCS_TOKEN]
+description = "token for the docs MCP server"
+
+[mcp.docs]
+url        = "https://docs.example/mcp"
+bearer_ref = "DOCS_TOKEN"
+
+[mcp.notes]
+exec = "node"
+args = ["servers/notes.mjs"]
+
+[hook.guard]
+event   = "PreToolUse"
+match   = { tool = ["shell"] }
+run     = { exec = "hooks/guard.sh" }
+timeout = 10
+
+[statusline]
+run = { exec = "bin/status.sh" }

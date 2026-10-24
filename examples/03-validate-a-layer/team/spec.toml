@@ -1,0 +1,7 @@
+[spec]
+name = "team"
+version = "1.0.0"
+format = "0.2"
+
+[model.roles]
+primary = "claude-sonnet-5-5"

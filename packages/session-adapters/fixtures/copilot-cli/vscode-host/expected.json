@@ -1,0 +1,297 @@
+{
+  "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa": [
+    {
+      "type": "lifecycle",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "lifecycle_id": "56c8cc93-73a4-4b15-9f8f-980f090a03e2",
+      "op": "fork",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": "2026-10-20T13:16:55.895Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "kind": "fork",
+      "child": {
+        "harness": "copilot-cli",
+        "session_id": "d1753871-734e-4ca5-8026-75182b7e3002"
+      },
+      "origin": {
+        "harness": "copilot-cli",
+        "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+        "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633"
+      },
+      "stated_on": "origin",
+      "at": "",
+      "inherits": {
+        "through_message_id": null,
+        "ids_preserved": true,
+        "marked": false,
+        "usage_copied": true
+      },
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "message_id": "3b4f130a-d2b5-4179-be77-4f299fdd3087",
+      "parent_id": "7ea96ffb-0e46-44cd-8dd0-cb9a40caee39",
+      "order": "000000002295",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:52:30.466Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "3d7576f2-cfc4-4636-b53c-36d5df6d67a4",
+          "kind": "messageId"
+        }
+      ],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What commands does src/cli.js support, and what does get print for an unknown SKU? Two lines."
+        }
+      ],
+      "cmp_sha": "66167c17af01c17352a3ae88839b0386517ee529ad009ea3c8af458babdcc11c"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "message_id": "440992d9-0207-4786-ab88-f23a86b2cf7b",
+      "parent_id": "c6317ad0-9d53-41f1-af80-51c77e105d3a",
+      "order": "000000013704",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:52:35.773Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_FixtureFixtureFixtu00019",
+          "is_error": false,
+          "status": "completed",
+          "output": "#!/usr/bin/env node\n// Synthetic inventory CLI for agent exercises.\nconst stock = { \"A-1\": 4, \"B-2\": 0 };\nconst [cmd, sku] = process.argv.slice(2);\nif (cmd === \"get\") console.log(stock[sku] ?? \"unknown sku\");\nelse if (cmd === \"list\") for (const [s, qty] of Object.entries(stock)) console.log(`${s} ${qty}`);\nelse if (cmd === \"count\") console.log(Object.keys(stock).length);\nelse console.log(\"usage: i…[cut]",
+          "output_len": 408,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "aed6fbd0f0bd250978f9945700515ff45b50fab211df8e37cc1e42029a863a9d"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "message_id": "b579dd63-6108-43c3-bb5f-d8ec3723dc00",
+      "parent_id": "18030a93-75b6-48b6-a003-bdf36d99d15e",
+      "order": "000000022892",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:54:12.440Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "call_FixtureFixtureFixtu00018",
+          "is_error": true,
+          "status": "denied",
+          "output": "The user rejected this tool call. User feedback: The user denied permission.",
+          "output_len": 76,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "90cc7fbe02c518dde93486362718925a868170acbb07b7f11b2cd1a370d53b65"
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "message_id": "c1164d1d-ede2-4334-815a-f010ff95b4d5",
+      "parent_id": "ec111435-4820-473a-8d36-b4aa4a092e9b",
+      "order": "000000008109",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:52:35.528Z",
+      "requested_model": "gpt-6-luna",
+      "served_model": "GPT-6 Luna",
+      "effort": "medium",
+      "response_id": "U327Mz1ZpVaFWaOayhu+Gk2iHWvurQ+27iyIdPyPN2pm6W0/IuJjny/nnlQZ2PlR32zWac517Q2FJXV+gs0zbsduL2HVUX6vN4oFrhvIp8g4yUTz7IgZv6MT5Tj3UqTT9aHdGiBpbcXRWenQW8ueatqwN2HOL8FS5+RhaBMYepvTOrCs2F3GJqcwzklSb71NzVOpUsXp2NpaQXD2Z5ckAUSXaxpuPuvdbWSPmPpJNuFLejARBT1O+P2jM1BXDW3bv+a6gbRTTAeCozQZyDB17+Xl8J3zCdTLjFg2G/Nnzn6uBW5Oe/k+7zKVqovS0wpRm0ZmVKOS7ZinSIodK8yL9TAMUYApIjoEtFVYUuChhIdSydUlIqG1F0hRboeFWRS3CEcJfLz/C7l/Yq/X…[cut]",
+      "aliases": [
+        {
+          "id": "b1b7fd83-e9b1-475d-b751-366d459d8749",
+          "kind": "messageId"
+        }
+      ],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Synthetic reply 8ff9d8. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 408
+        },
+        {
+          "part_id": "2",
+          "kind": "tool_call",
+          "call_id": "call_FixtureFixtureFixtu00019",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/vs2/inventory-cli/src/cli.js"
+          },
+          "server": null
+        },
+        {
+          "part_id": "3",
+          "kind": "tool_call",
+          "call_id": "call_FixtureFixtureFixtu00020",
+          "name": "view",
+          "args": {
+            "path": "/home/user/work/vs2/inventory-cli/package.json"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "dacb5b7011f443cd81148519833269260573909f150e6266a3e2eb2d98ed9c88"
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "engine": null,
+      "client": "vscode",
+      "harness_version": "1.0.95-0.unstable.r38345923974.g3754b70",
+      "title": "What commands does src/cli.js support, and what does get print for an unknown SKU? Two lines.",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/vs2/inventory-cli",
+      "last_cwd": "/home/user/work/vs2/inventory-cli",
+      "created_at": "2026-10-20T12:52:26.707Z",
+      "updated_at": "2026-10-20T13:16:55.895Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "66167c17af01c17352a3ae88839b0386517ee529ad009ea3c8af458babdcc11c",
+          "dacb5b7011f443cd81148519833269260573909f150e6266a3e2eb2d98ed9c88",
+          "aed6fbd0f0bd250978f9945700515ff45b50fab211df8e37cc1e42029a863a9d",
+          "90cc7fbe02c518dde93486362718925a868170acbb07b7f11b2cd1a370d53b65"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "usage_id": "U327Mz1ZpVaFWaOayhu+Gk2iHWvurQ+27iyIdPyPN2pm6W0/IuJjny/nnlQZ2PlR32zWac517Q2FJXV+gs0zbsduL2HVUX6vN4oFrhvIp8g4yUTz7IgZv6MT5Tj3UqTT9aHdGiBpbcXRWenQW8ueatqwN2HOL8FS5+RhaBMYepvTOrCs2F3GJqcwzklSb71NzVOpUsXp2NpaQXD2Z5ckAUSXaxpuPuvdbWSPmPpJNuFLejARBT1O+P2jM1BXDW3bv+a6gbRTTAeCozQZyDB17+Xl8J3zCdTLjFg2G/Nnzn6uBW5Oe/k+7zKVqovS0wpRm0ZmVKOS7ZinSIodK8yL9TAMUYApIjoEtFVYUuChhIdSydUlIqG1F0hRboeFWRS3CEcJfLz/C7l/Yq/X…[cut]",
+      "anchor": {
+        "response_id": "U327Mz1ZpVaFWaOayhu+Gk2iHWvurQ+27iyIdPyPN2pm6W0/IuJjny/nnlQZ2PlR32zWac517Q2FJXV+gs0zbsduL2HVUX6vN4oFrhvIp8g4yUTz7IgZv6MT5Tj3UqTT9aHdGiBpbcXRWenQW8ueatqwN2HOL8FS5+RhaBMYepvTOrCs2F3GJqcwzklSb71NzVOpUsXp2NpaQXD2Z5ckAUSXaxpuPuvdbWSPmPpJNuFLejARBT1O+P2jM1BXDW3bv+a6gbRTTAeCozQZyDB17+Xl8J3zCdTLjFg2G/Nnzn6uBW5Oe/k+7zKVqovS0wpRm0ZmVKOS7ZinSIodK8yL9TAMUYApIjoEtFVYUuChhIdSydUlIqG1F0hRboeFWRS3CEcJfLz/C7l/Yq/X…[cut]"
+      },
+      "input": 14106,
+      "output": 151,
+      "cache_read": 0,
+      "cache_write": 14103,
+      "reasoning": 77,
+      "cost": 1,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "GPT-6 Luna",
+      "tool_prompt": null
+    }
+  ],
+  "d1753871-734e-4ca5-8026-75182b7e3002": [
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "d1753871-734e-4ca5-8026-75182b7e3002",
+      "incarnation": "24e8db33-8e77-4c68-b9d2-95cbdc227633",
+      "engine": null,
+      "client": "vscode",
+      "harness_version": "1.0.95-0.unstable.r38345923974.g3754b70",
+      "title": "What commands does src/cli.js support, and what does get print for an unknown SKU? Two lines. (fork)",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/vs2/inventory-cli",
+      "last_cwd": "/home/user/work/vs2/inventory-cli",
+      "created_at": "2026-10-20T13:16:55.873Z",
+      "updated_at": "2026-10-20T13:16:55.873Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ]
+}

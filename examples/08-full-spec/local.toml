@@ -1,0 +1,19 @@
+# This machine. Every secret is a reference, resolved by the caller at launch; never a value.
+[refs]
+DOCS_TOKEN = "env:DOCS_TOKEN"
+
+# An endpoint would go here too. This example leaves it out: before an endpoint launch, hs
+# checks that the folder holds no stored login, and on macOS that check asks the login keychain
+# whether an item exists (by name, output discarded), which a locked keychain may answer with a
+# dialog. The guide shows the form: docs/guides/launch-with-an-overlay.md.
+#
+# [endpoints.anthropic-messages]
+# base_url   = "https://gateway.example/anthropic"
+# credential = "env:GATEWAY_KEY"
+# auth       = "bearer"
+#
+# [login]
+# mode = "endpoint"
+
+[state]
+retention_days = 9999

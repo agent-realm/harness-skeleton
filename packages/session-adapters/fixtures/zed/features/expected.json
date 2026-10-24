@@ -1,0 +1,1577 @@
+{
+  "5a1e0000-0000-4000-8000-0000000000c1": [
+    {
+      "type": "lifecycle",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "lifecycle_id": "db/0-stable/db.sqlite#table:sidebar_threads@db/0-stable/db.sqlite#table:sidebar_threads#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a0",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this cart do? One sentence, no tools."
+        }
+      ],
+      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this cart do? One sentence, no tools."
+        }
+      ],
+      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a1+1",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Answer from the name alone.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "A toy shopping cart: items, qty, totals."
+        }
+      ],
+      "cmp_sha": "730686b0661748258654af4f170934f3f705f893f9be61c3fe04b305bb74267d"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a2",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix total_cents to use qty, then run: python3 -m pytest -q && exit 3"
+        }
+      ],
+      "cmp_sha": "84cd0abfde54dbad5be027c9b2201c97eae4dbfdf66febf3f0592156205ea1d7"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a2+1",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reading cart.py first."
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000001",
+          "name": "read_file",
+          "args": {
+            "path": "toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000001",
+          "is_error": null,
+          "status": "completed",
+          "output": "     1\tdef total_cents(items):\n     2\t    return sum(i.price for i in items)\n",
+          "output_len": 77,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "7d7093a583a43887a0c62bbbd38b97b3307eee3f004a3ed6753094957a7b18f9"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a2+2",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Now the fix:"
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000002",
+          "name": "edit_file",
+          "args": {
+            "edits": [
+              {
+                "new_text": "i.price * i.qty",
+                "old_text": "i.price"
+              }
+            ],
+            "path": "toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000002",
+          "is_error": null,
+          "status": "completed",
+          "output": "Edited toyshop/cart.py successfully",
+          "output_len": 35,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "84b39b5b1550272642b9035e55685899574f142e96a43e0fa1bb6dbc03de3533"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a2+3",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000003",
+          "name": "terminal",
+          "args": {
+            "cd": "/home/user/work/toyshop",
+            "command": "python3 -m pytest -q && exit 3"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000003",
+          "is_error": null,
+          "status": "completed",
+          "output": "Note: this command ran WITHOUT an OS sandbox because the user allowed unsandboxed execution for the rest of this thread.\n\nCommand \"python3 -m pytest -q && exit 3\" failed with exit code 3.\n\n```\n3 passed\n```",
+          "output_len": 205,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "69c7a6f7a0e2beb690475241b456de630a238d1a5371aa201f38863b7d2cfaa9"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a2+4",
+      "parent_id": null,
+      "order": "00000007",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 12
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Fixed: total_cents multiplies by qty; the tests pass, then the shell exits 3 as asked."
+        }
+      ],
+      "cmp_sha": "cbce2fde02b915ba85f0813ffdd4a5422e18e47a15e28671a3fedc321aaa8b17"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a3",
+      "parent_id": null,
+      "order": "00000008",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Wait 90 s, then clean the build."
+        }
+      ],
+      "cmp_sha": "d78bfbb731fab7dc6365953207883089c99aaeb27c13c6da069aa425a48e1f76"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a3+1",
+      "parent_id": null,
+      "order": "00000009",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000004",
+          "name": "terminal",
+          "args": {
+            "cd": "/home/user/work/toyshop",
+            "command": "sleep 90"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000004",
+          "is_error": true,
+          "status": "cancelled",
+          "output": "Tool canceled by user",
+          "output_len": 21,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000005",
+          "name": "terminal",
+          "args": {
+            "cd": "/home/user/work/toyshop",
+            "command": "rm -rf build"
+          },
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000005",
+          "is_error": true,
+          "status": "denied",
+          "output": "Permission to run tool denied by user",
+          "output_len": 37,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "8eaef31b566eff0843d6aa86b0bae5f357ddff39cee286d7e1e0c81290435e39"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a3+2",
+      "parent_id": null,
+      "order": "00000010",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": "high",
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Stopped: nothing ran."
+        }
+      ],
+      "cmp_sha": "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Toy cart qty fix (renamed)",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02",
+          "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02",
+          "730686b0661748258654af4f170934f3f705f893f9be61c3fe04b305bb74267d",
+          "84cd0abfde54dbad5be027c9b2201c97eae4dbfdf66febf3f0592156205ea1d7",
+          "7d7093a583a43887a0c62bbbd38b97b3307eee3f004a3ed6753094957a7b18f9",
+          "84b39b5b1550272642b9035e55685899574f142e96a43e0fa1bb6dbc03de3533",
+          "69c7a6f7a0e2beb690475241b456de630a238d1a5371aa201f38863b7d2cfaa9",
+          "cbce2fde02b915ba85f0813ffdd4a5422e18e47a15e28671a3fedc321aaa8b17",
+          "d78bfbb731fab7dc6365953207883089c99aaeb27c13c6da069aa425a48e1f76",
+          "8eaef31b566eff0843d6aa86b0bae5f357ddff39cee286d7e1e0c81290435e39",
+          "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c1",
+      "incarnation": "",
+      "usage_id": "session#1",
+      "anchor": {
+        "session": true
+      },
+      "input": 130477,
+      "output": 1319,
+      "cache_read": 73216,
+      "cache_write": 2048,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_session",
+      "model": null,
+      "tool_prompt": null
+    }
+  ],
+  "5a1e0000-0000-4000-8000-0000000000c2": [
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Look at this label and the notes file."
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "# Notes\nPrices are in cents.\n",
+          "source": "injected"
+        },
+        {
+          "part_id": "2",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "UE5HLVRPWS1MQUJFTC0yNDB4MTIw",
+          "ref": null,
+          "bytes_len": 21
+        }
+      ],
+      "cmp_sha": "cceb19405ae626bd73e75b426e63017da79d2540fa4c9eedb1d16499af49eb0a"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 12
+        },
+        {
+          "part_id": "1",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 8
+        },
+        {
+          "part_id": "2",
+          "kind": "text",
+          "text": "Done."
+        }
+      ],
+      "cmp_sha": "9d5725ccec4ec43d8fd1cedd70b4214a007751e05f03302069f233f256fdf78b"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4+2",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "reasoning_details",
+          "kind": "reasoning",
+          "text": "Provider-side reasoning.",
+          "signature_len": null
+        },
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Second."
+        }
+      ],
+      "cmp_sha": "2df3ca6bd8cb549a4baced1b60ceb8965399b817c97f02fae4ed63fc19407904"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4+3",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "reasoning_details",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": null
+        },
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Third."
+        }
+      ],
+      "cmp_sha": "e06c94d9f6817e693e02aa7b013adae6e4a1db613fc9a6d79b078b948503c88e"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4+4",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Own thinking.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Fourth."
+        }
+      ],
+      "cmp_sha": "d1561017a6b48b07a28be5d762049f18e49de59f4707abce5b9ecbf745e95e21"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a4+5",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fifth."
+        },
+        {
+          "part_id": "1",
+          "kind": "notice",
+          "text": "{\"Hologram\":{\"frames\":3}}",
+          "level": null,
+          "native_type": "Hologram"
+        }
+      ],
+      "cmp_sha": "70303f16aa947801bd14757bc84e7a1d6568c4db4c2f88a5f74d9d6bba0d9e0d"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c2",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Label and notes",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "cceb19405ae626bd73e75b426e63017da79d2540fa4c9eedb1d16499af49eb0a",
+          "9d5725ccec4ec43d8fd1cedd70b4214a007751e05f03302069f233f256fdf78b",
+          "2df3ca6bd8cb549a4baced1b60ceb8965399b817c97f02fae4ed63fc19407904",
+          "e06c94d9f6817e693e02aa7b013adae6e4a1db613fc9a6d79b078b948503c88e",
+          "d1561017a6b48b07a28be5d762049f18e49de59f4707abce5b9ecbf745e95e21",
+          "70303f16aa947801bd14757bc84e7a1d6568c4db4c2f88a5f74d9d6bba0d9e0d"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5a1e0000-0000-4000-8000-0000000000c3": [
+    {
+      "type": "lifecycle",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "lifecycle_id": "threads/threads.db#table:threads@threads/threads.db#table:threads#1",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "5a1e0000-0000-4000-8000-0000000000a5",
+          "through_id": "5a1e0000-0000-4000-8000-0000000000a5+3"
+        }
+      },
+      "at": "5a1e0000-0000-4000-8000-0000000000a5+4",
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "lifecycle_id": "threads/threads.db#table:threads@threads/threads.db#table:threads#2",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "5a1e0000-0000-4000-8000-0000000000a5",
+          "through_id": "5a1e0000-0000-4000-8000-0000000000a6"
+        }
+      },
+      "at": "5a1e0000-0000-4000-8000-0000000000a6+1",
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a5",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Refactor cart.py."
+        }
+      ],
+      "cmp_sha": "c1a2844d6abfedc39d3f1c7ef22242cfdaf084383c8757d99929bd69e7f62884"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a5+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Step one."
+        }
+      ],
+      "cmp_sha": "3c70ea5e11312dfce5584f74d16deff017c9540848880d39c19503d458f54196"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a5+2",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Resume",
+          "level": null,
+          "native_type": "Resume"
+        }
+      ],
+      "cmp_sha": "1d1d3aaf767eda919a63f693769b8927d357c0e8c684281e301be0d00e3b7c54"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a5+3",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Step two."
+        }
+      ],
+      "cmp_sha": "7c889451e15c96451679cc7cd2e3c481154d977c0a1d2a2fdeff7de5d8b2a955"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a5+4",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "Refactored cart.py in two steps.",
+          "replaces": {
+            "through_id": "5a1e0000-0000-4000-8000-0000000000a5+3"
+          }
+        }
+      ],
+      "cmp_sha": "24f0f38864af5d838c2e9fe0143923e1243e850ce45ddfd16ed76935220cc702"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a6",
+      "parent_id": null,
+      "order": "00000005",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Next?"
+        }
+      ],
+      "cmp_sha": "d46a6e34ff37fd7519df23db836c579d9dd4acdf133df9077ee87abc398965cd"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a6+1",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "automated",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": null,
+          "replaces": {
+            "through_id": "5a1e0000-0000-4000-8000-0000000000a6"
+          }
+        }
+      ],
+      "cmp_sha": "ddac55054210e3b459464a35372f87878bd034d3dc6acf204934128ce625260c"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a6+2",
+      "parent_id": null,
+      "order": "00000007",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "{\"SomethingNew\":{}}",
+          "level": null,
+          "native_type": "SomethingNew"
+        }
+      ],
+      "cmp_sha": "0ef43bf05406672fa9ff027ff73b735131fe28f3923be6b158d3386a8593e8de"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a6+3",
+      "parent_id": null,
+      "order": "00000008",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Done."
+        }
+      ],
+      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c3",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Cart refactor",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "c1a2844d6abfedc39d3f1c7ef22242cfdaf084383c8757d99929bd69e7f62884",
+          "3c70ea5e11312dfce5584f74d16deff017c9540848880d39c19503d458f54196",
+          "1d1d3aaf767eda919a63f693769b8927d357c0e8c684281e301be0d00e3b7c54",
+          "7c889451e15c96451679cc7cd2e3c481154d977c0a1d2a2fdeff7de5d8b2a955",
+          "24f0f38864af5d838c2e9fe0143923e1243e850ce45ddfd16ed76935220cc702",
+          "d46a6e34ff37fd7519df23db836c579d9dd4acdf133df9077ee87abc398965cd",
+          "ddac55054210e3b459464a35372f87878bd034d3dc6acf204934128ce625260c",
+          "0ef43bf05406672fa9ff027ff73b735131fe28f3923be6b158d3386a8593e8de",
+          "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5a1e0000-0000-4000-8000-0000000000c4": [
+    {
+      "type": "link",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c4",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "zed",
+        "session_id": "5a1e0000-0000-4000-8000-0000000000c5"
+      },
+      "origin": {
+        "harness": "zed",
+        "session_id": "5a1e0000-0000-4000-8000-0000000000c4"
+      },
+      "at": "toolu_toy_000000000000000006",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c4",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a7",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Use a sub-agent to list the files."
+        }
+      ],
+      "cmp_sha": "9c951aa6332ecd6b298a481d01dcbb09852673afa6b29191ab8ac2992f6f0b79"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c4",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a7+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000006",
+          "name": "spawn_agent",
+          "args": {
+            "label": "list files",
+            "message": "List the files in toyshop/."
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "toolu_toy_000000000000000006",
+          "is_error": null,
+          "status": "completed",
+          "output": "{\"session_id\":\"5a1e0000-0000-4000-8000-0000000000c5\",\"output\":\"cart.py, test_cart.py\"}",
+          "output_len": 86,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "676d197d1a39d6511ea5eda4ef800393a18e2ccb5587dc375a26d713335f9520"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c4",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a7+2",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c4",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Files via a sub-agent",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "9c951aa6332ecd6b298a481d01dcbb09852673afa6b29191ab8ac2992f6f0b79",
+          "676d197d1a39d6511ea5eda4ef800393a18e2ccb5587dc375a26d713335f9520",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5a1e0000-0000-4000-8000-0000000000c5": [
+    {
+      "type": "link",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c5",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "child",
+      "child": {
+        "harness": "zed",
+        "session_id": "5a1e0000-0000-4000-8000-0000000000c5"
+      },
+      "origin": {
+        "harness": "zed",
+        "session_id": "5a1e0000-0000-4000-8000-0000000000c4"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c5",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a8",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files in toyshop/."
+        }
+      ],
+      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c5",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a8+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "cart.py, test_cart.py"
+        }
+      ],
+      "cmp_sha": "cb4af4b447220b62282751e11af8a176ac8e7dd0e91e9b8c49caad1dc5dfafcc"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c5",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "List toyshop files",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:05:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": "subagent",
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e",
+          "cb4af4b447220b62282751e11af8a176ac8e7dd0e91e9b8c49caad1dc5dfafcc"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "5a1e0000-0000-4000-8000-0000000000c6": [
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c6",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a9",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Read cart.py."
+        }
+      ],
+      "cmp_sha": "ab870a1b0420e59e2a4d72e653ab695ba146d2b80424d30723dfaf88dfe38441"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c6",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000a9+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Reading."
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "toolu_toy_000000000000000007",
+          "name": "read_file",
+          "args": {
+            "path": "toyshop/cart.py"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "76f58fe492ad0039fc8d51f742c169406f02b2c9eaa08cbb955e9e07b4618f4f"
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c6",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000aa",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Never mind. Now run the tests."
+        }
+      ],
+      "cmp_sha": "f75434beb6a55024858e3d37f580b29ee8f5fbd66f0ca5634868f5d61bfa8bc7"
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000c6",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Run the tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "write",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "ab870a1b0420e59e2a4d72e653ab695ba146d2b80424d30723dfaf88dfe38441",
+          "76f58fe492ad0039fc8d51f742c169406f02b2c9eaa08cbb955e9e07b4618f4f",
+          "f75434beb6a55024858e3d37f580b29ee8f5fbd66f0ca5634868f5d61bfa8bc7"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

@@ -1,0 +1,1890 @@
+{
+  "c0c0a001-0000-4000-8000-000000000001": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:32:54.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:32:56.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:33:38.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        }
+      ],
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002:assistant",
+      "parent_id": "b0b0b002-0000-4000-8000-000000000002",
+      "order": "00000007",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:33:40.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Use pytest.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Running pytest."
+        },
+        {
+          "part_id": "t:call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0:call",
+          "kind": "tool_call",
+          "call_id": "call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "python3 -m pytest -q",
+            "cwd": "/home/user/work/toyshop",
+            "options": {
+              "timeout": 30000
+            }
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0:result",
+          "kind": "tool_result",
+          "call_id": "call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0",
+          "is_error": true,
+          "status": "completed",
+          "output": "/usr/bin/python3: No module named pytest\n",
+          "output_len": 41,
+          "truncated": null,
+          "exit_code": 1
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "pytest is not installed."
+        }
+      ],
+      "cmp_sha": "219a6f927ed185d7074a75835a6de43a7ffffc4f72779068a1cc26f33d8d17dd"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "b0b0b003-0000-4000-8000-000000000003",
+      "parent_id": null,
+      "order": "00000011",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:34:54.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run: for i in $(seq 1 90); do echo tick $i; sleep 1; done"
+        }
+      ],
+      "cmp_sha": "b8bf0bce3d718a99d1dadebe675b91b1e42604ffc7e482170aff6caf2eefdfcb"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "message_id": "b0b0b003-0000-4000-8000-000000000003:assistant",
+      "parent_id": "b0b0b003-0000-4000-8000-000000000003",
+      "order": "00000012",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "cancelled",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:34:55.800Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "A 90-second loop.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Running the loop and waiting."
+        },
+        {
+          "part_id": "t:call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0:call",
+          "kind": "tool_call",
+          "call_id": "call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "for i in $(seq 1 90); do echo tick $i; sleep 1; done",
+            "options": {
+              "timeout": 110000
+            }
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0:result",
+          "kind": "tool_result",
+          "call_id": "call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0",
+          "is_error": false,
+          "status": "cancelled",
+          "output": "tick 1\ntick 2\ntick 3\n",
+          "output_len": 21,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "47501f2647af20528e2aac4071130eb7b2c621e89e1e37632134ae49225fb25e"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a001-0000-4000-8000-000000000001",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Toy cart qty fix",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:32:52.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+          "219a6f927ed185d7074a75835a6de43a7ffffc4f72779068a1cc26f33d8d17dd",
+          "b8bf0bce3d718a99d1dadebe675b91b1e42604ffc7e482170aff6caf2eefdfcb",
+          "47501f2647af20528e2aac4071130eb7b2c621e89e1e37632134ae49225fb25e"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a002-0000-4000-8000-000000000002": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a002-0000-4000-8000-000000000002",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:49:34.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a002-0000-4000-8000-000000000002",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:49:36.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a002-0000-4000-8000-000000000002",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:50:18.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests with unittest instead."
+        }
+      ],
+      "cmp_sha": "490798a60434112667ac4836db889633f5854d8e78ed6c0ebe5d2306e48049a5"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a002-0000-4000-8000-000000000002",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002:assistant",
+      "parent_id": "b0b0b002-0000-4000-8000-000000000002",
+      "order": "00000007",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:52:54.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Use unittest.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Ran unittest: 3 tests OK."
+        }
+      ],
+      "cmp_sha": "8efe8aebd0edf8638065df187a2155f149236cc666a625965c5d3ddb77bf952e"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a002-0000-4000-8000-000000000002",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Toy cart tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:49:32.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "490798a60434112667ac4836db889633f5854d8e78ed6c0ebe5d2306e48049a5",
+          "8efe8aebd0edf8638065df187a2155f149236cc666a625965c5d3ddb77bf952e"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a003-0000-4000-8000-000000000003": [
+    {
+      "type": "lifecycle",
+      "harness": "cursor",
+      "session_id": "c0c0a003-0000-4000-8000-000000000003",
+      "incarnation": "",
+      "lifecycle_id": "User/globalStorage/state.vscdb#table:composerHeaders@User/globalStorage/state.vscdb#table:composerHeaders#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a003-0000-4000-8000-000000000003",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:32:54.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a003-0000-4000-8000-000000000003",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:32:56.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a003-0000-4000-8000-000000000003",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "(1) Toy cart qty fix",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:39:34.000Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a004-0000-4000-8000-000000000004": [
+    {
+      "type": "link",
+      "harness": "cursor",
+      "session_id": "c0c0a004-0000-4000-8000-000000000004",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "cursor",
+        "session_id": "c0c0a005-0000-4000-8000-000000000005"
+      },
+      "origin": {
+        "harness": "cursor",
+        "session_id": "c0c0a004-0000-4000-8000-000000000004"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "link",
+      "harness": "cursor",
+      "session_id": "c0c0a004-0000-4000-8000-000000000004",
+      "incarnation": "",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "cursor",
+        "session_id": "c0c0a013-0000-4000-8000-000000000013"
+      },
+      "origin": {
+        "harness": "cursor",
+        "session_id": "c0c0a004-0000-4000-8000-000000000004"
+      },
+      "at": "",
+      "inherits": null,
+      "child_stored": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a004-0000-4000-8000-000000000004",
+      "incarnation": "",
+      "message_id": "b0b0b041-0000-4000-8000-000000000041",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:41:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Explore toyshop/ with a sub-agent."
+        }
+      ],
+      "cmp_sha": "115944935b642ead014ce932ad61b72439377d9e9ada4a1a576bec176c013fdf"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a004-0000-4000-8000-000000000004",
+      "incarnation": "",
+      "message_id": "b0b0b041-0000-4000-8000-000000000041:assistant",
+      "parent_id": "b0b0b041-0000-4000-8000-000000000041",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:41:17.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "text",
+          "text": "The explorer found cart.py and tests/."
+        }
+      ],
+      "cmp_sha": "abcd723a6c743c19921c1cf6b86ec528a36eaaa3d0e0ccc1249646966ff0980e"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a004-0000-4000-8000-000000000004",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Explore toyshop",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:41:13.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "115944935b642ead014ce932ad61b72439377d9e9ada4a1a576bec176c013fdf",
+          "abcd723a6c743c19921c1cf6b86ec528a36eaaa3d0e0ccc1249646966ff0980e"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a005-0000-4000-8000-000000000005": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a005-0000-4000-8000-000000000005",
+      "incarnation": "",
+      "message_id": "b0b0b051-0000-4000-8000-000000000051",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:41:15.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files in toyshop/."
+        }
+      ],
+      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a005-0000-4000-8000-000000000005",
+      "incarnation": "",
+      "message_id": "b0b0b051-0000-4000-8000-000000000051:assistant",
+      "parent_id": "b0b0b051-0000-4000-8000-000000000051",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:41:16.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "text",
+          "text": "cart.py, __init__.py"
+        }
+      ],
+      "cmp_sha": "b1833d66e8a69def48458ac1495d00f78411160faeb12b9c0abecd15b6d509de"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a005-0000-4000-8000-000000000005",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "explore toyshop",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:41:14.900Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": "subagent",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e",
+          "b1833d66e8a69def48458ac1495d00f78411160faeb12b9c0abecd15b6d509de"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a006-0000-4000-8000-000000000006": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a006-0000-4000-8000-000000000006",
+      "incarnation": "",
+      "message_id": "a0a0a062-0000-4000-8000-000000000062",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:42:57.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "thinking",
+          "kind": "reasoning",
+          "text": "qty is ignored",
+          "signature_len": null
+        },
+        {
+          "part_id": "text",
+          "kind": "text",
+          "text": "Fixed qty."
+        }
+      ],
+      "cmp_sha": "b54e8a4e3e62309e8ac63364be046387304efd0fd5f9eb076e7121ccbfd235bc"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a006-0000-4000-8000-000000000006",
+      "incarnation": "",
+      "message_id": "b0b0b061-0000-4000-8000-000000000061",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:42:54.100Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix qty."
+        }
+      ],
+      "cmp_sha": "4094cea400377b9cb4f29fd7b8e2f3ff75e300a57ac8e6ca6343284c72e0352d"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a006-0000-4000-8000-000000000006",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Old format",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:42:54.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "4094cea400377b9cb4f29fd7b8e2f3ff75e300a57ac8e6ca6343284c72e0352d",
+          "b54e8a4e3e62309e8ac63364be046387304efd0fd5f9eb076e7121ccbfd235bc"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "cursor",
+      "session_id": "c0c0a006-0000-4000-8000-000000000006",
+      "incarnation": "",
+      "usage_id": "message:a0a0a062-0000-4000-8000-000000000062#1",
+      "anchor": {
+        "message_id": "a0a0a062-0000-4000-8000-000000000062"
+      },
+      "input": 900,
+      "output": 12,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": null,
+      "tool_prompt": null
+    }
+  ],
+  "c0c0a007-0000-4000-8000-000000000007": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "message_id": "b0b0b071-0000-4000-8000-000000000071",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:44:34.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Describe label.png. My note: sentinel-free-text-7c6b5a493827-not-a-secret"
+        },
+        {
+          "part_id": "img:1a1a1a1a-0000-4000-8000-000000000071",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": null,
+          "ref": "/home/user/work/toyshop/label.png",
+          "bytes_len": null
+        }
+      ],
+      "cmp_sha": "d1a1e17be193f61b7f219a55022d1a2da2700ebbf8d83b8eced98e98f0aaac87"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "message_id": "b0b0b071-0000-4000-8000-000000000071:assistant",
+      "parent_id": "b0b0b071-0000-4000-8000-000000000071",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:44:36.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "opaque": true,
+          "signature_len": 312
+        },
+        {
+          "part_id": "t:call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0:call",
+          "kind": "tool_call",
+          "call_id": "call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "rm -rf toyshop"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0:result",
+          "kind": "tool_result",
+          "call_id": "call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0",
+          "is_error": false,
+          "status": "denied",
+          "output": "{\"rejected\":true}",
+          "output_len": 17,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:2",
+          "kind": "text",
+          "text": "A price label reading 2.50."
+        }
+      ],
+      "cmp_sha": "22a15be136d2c56914b943637bdeb1c7ef795318c99629b5ad0366b205c1c9bb"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "message_id": "b0b0b072-0000-4000-8000-000000000072",
+      "parent_id": null,
+      "order": "00000004",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:44:38.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And the price?"
+        }
+      ],
+      "cmp_sha": "b0bfeecc25099214656f50762911ba6646f8a71661790975ca49c449ed893b47"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "message_id": "b0b0b072-0000-4000-8000-000000000072:assistant",
+      "parent_id": "b0b0b072-0000-4000-8000-000000000072",
+      "order": "00000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:44:39.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "text",
+          "text": "2.50."
+        }
+      ],
+      "cmp_sha": "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Label question",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:44:33.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "chat",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d1a1e17be193f61b7f219a55022d1a2da2700ebbf8d83b8eced98e98f0aaac87",
+          "22a15be136d2c56914b943637bdeb1c7ef795318c99629b5ad0366b205c1c9bb",
+          "b0bfeecc25099214656f50762911ba6646f8a71661790975ca49c449ed893b47",
+          "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "cursor",
+      "session_id": "c0c0a007-0000-4000-8000-000000000007",
+      "incarnation": "",
+      "usage_id": "message:b0b0b071-0000-4000-8000-000000000071:assistant#1",
+      "anchor": {
+        "message_id": "b0b0b071-0000-4000-8000-000000000071:assistant"
+      },
+      "input": 2700,
+      "output": 30,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_message",
+      "model": "grok-4.6",
+      "tool_prompt": null
+    }
+  ],
+  "c0c0a008-0000-4000-8000-000000000008": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a008-0000-4000-8000-000000000008",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:46:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a008-0000-4000-8000-000000000008",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:46:16.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a008-0000-4000-8000-000000000008",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:46:58.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        }
+      ],
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a008-0000-4000-8000-000000000008",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Still generating",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:46:12.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a009-0000-4000-8000-000000000009": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:47:54.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:47:56.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:48:38.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        }
+      ],
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Tool running",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:47:52.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a010-0000-4000-8000-000000000010": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:51:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:51:16.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:51:58.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        }
+      ],
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002:assistant",
+      "parent_id": "b0b0b002-0000-4000-8000-000000000002",
+      "order": "00000007",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:52:00.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Use pytest.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Running pytest."
+        },
+        {
+          "part_id": "t:call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0:call",
+          "kind": "tool_call",
+          "call_id": "call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0",
+          "name": "run_terminal_command_v2",
+          "args": {
+            "command": "python3 -m pytest -q"
+          },
+          "server": null
+        }
+      ],
+      "cmp_sha": "a3428ecab2fe4dc4741290e719b3f0ccb8b13932b52dbd69340ace14e23824d4"
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "message_id": "b0b0b003-0000-4000-8000-000000000003",
+      "parent_id": null,
+      "order": "00000010",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:56:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Never mind."
+        }
+      ],
+      "cmp_sha": "03dcffbb5d20a6ee465760d19344e67747122de63041dedb1442284f908cd860"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a010-0000-4000-8000-000000000010",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Tool interrupted",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:51:12.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+          "a3428ecab2fe4dc4741290e719b3f0ccb8b13932b52dbd69340ace14e23824d4",
+          "03dcffbb5d20a6ee465760d19344e67747122de63041dedb1442284f908cd860"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a011-0000-4000-8000-000000000011": [
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a011-0000-4000-8000-000000000011",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": null,
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:52:54.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "c0c0a012-0000-4000-8000-000000000012": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a012-0000-4000-8000-000000000012",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T12:54:34.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a012-0000-4000-8000-000000000012",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Torn view",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T12:54:32.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "agent",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

@@ -1,0 +1,606 @@
+{
+  "bcda44a6-7aee-4ac4-aede-10eb47e79153": [
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl@4191#1",
+      "op": "edit",
+      "target": {
+        "message_id": "beb7df0b-d0bc-42fa-9c90-24eccf88c683"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl@4191#2",
+      "op": "edit",
+      "target": {
+        "message_id": "c77ab2e9-bca4-4c56-b79d-cbb56439eea8"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl@4191#3",
+      "op": "edit",
+      "target": {
+        "message_id": "224ba9ff-ab86-49d0-8f58-dcb36cc321cf"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "lifecycle",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "lifecycle_id": "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl@4191#4",
+      "op": "edit",
+      "target": {
+        "message_id": "55cc788a-54de-4def-a348-3eff79e80783"
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "0b4c7e21-6a5d-4f38-9e12-3c4d5e6f7a80",
+      "parent_id": null,
+      "order": "000000000814",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T19:56:43.900Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Say ok please."
+        }
+      ],
+      "cmp_sha": "9e612edeb2e9ee5ce06da9db85703d60f86d4cdce9625add4c1d0fca47976fb0"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "1c5d8f32-7b6e-4049-8f23-4d5e6f7a8b91",
+      "parent_id": null,
+      "order": "000000001298",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:09:23.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "open toyshop/cart.py"
+        }
+      ],
+      "cmp_sha": "5b2c4639bc90e3c8b469897c58758d87e66e921c452ae0ccbbdf931f9e3f45a2"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "224ba9ff-ab86-49d0-8f58-dcb36cc321cf",
+      "parent_id": null,
+      "order": "000000003899",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:19:46.958Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Request cancelled.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "b41d45e7479d3c6ad122b1bdec8a33d431652bbf008365428090b09f02265a0b"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "23efd3c8-f4e1-4052-8424-0d63358bf9ef",
+      "parent_id": null,
+      "order": "000000001003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T19:56:44.531Z",
+      "requested_model": "gateway/toy-model-d",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "OK"
+        }
+      ],
+      "cmp_sha": "584079da69cd9a6281d24fe81118cd855d47725b4477b376f5d0b05d78b5ce2c"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "2d6e9043-8c7f-415a-9034-5e6f7a8b9ca2",
+      "parent_id": null,
+      "order": "000000003222",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:17:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "make notes-mock.txt."
+        }
+      ],
+      "cmp_sha": "6fc1dad3f1fdc2b9515b3eab2c3aff659ee08f339d859ad07322dc091f5a3f7f"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "3e7fa154-9d80-426b-a145-6f7a8b9cadb3",
+      "parent_id": null,
+      "order": "000000004434",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:20:34.351Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "describe the toy"
+        }
+      ],
+      "cmp_sha": "3d5e1d911be969b9a68b8ee0c3f17fd6ae037b680a9047e29382134187bd77f7"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "4f80b265-ae91-437c-b256-7a8b9cadbec4",
+      "parent_id": null,
+      "order": "000000004625",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:20:36.000Z",
+      "requested_model": "mock-model",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply 55d80b. synthetic reply text for the toy sh"
+        }
+      ],
+      "cmp_sha": "0a1ed2a6a6da51907cf994eee97fb628ad32dbc2e396440be51435a4f2613871"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "55cc788a-54de-4def-a348-3eff79e80783",
+      "parent_id": null,
+      "order": "000000003365",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:17:02.000Z",
+      "requested_model": "mock-model",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply 9"
+        }
+      ],
+      "cmp_sha": "4f55490db60159e7abfb58800b8877717a32989f4a88c714e98fd40af8afd554"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "a506aa6a-b306-4b91-987d-7615da50e143",
+      "parent_id": null,
+      "order": "000000004029",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:20:08.018Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "Conversation checkpoint saved with tag: point-one.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "83745d4fe15cb45b9682832f2af9c94ce0436771e4371816c8e8ca317c166bcc"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "beb7df0b-d0bc-42fa-9c90-24eccf88c683",
+      "parent_id": null,
+      "order": "000000003616",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:17:15.021Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "system",
+      "source": "system_notice",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "notice",
+          "text": "No restorable tool calls found.",
+          "level": "info",
+          "native_type": "info"
+        }
+      ],
+      "cmp_sha": "606ea59dde1dd0394e2e2dcef3b792fcb2e47d1518206bc2802adc4c54b6df50"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "c77ab2e9-bca4-4c56-b79d-cbb56439eea8",
+      "parent_id": null,
+      "order": "000000003759",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "retracted",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:19:26.280Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "add a toy helper."
+        }
+      ],
+      "cmp_sha": "45d421ec2e4f738ac5ab8747d34a4ea11bcc67f2a7a4ca332302ed425f9ae34c"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "d04923d38bb0f6017037e74183378ef4",
+      "parent_id": null,
+      "order": "000000000228",
+      "agent_id": "",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T19:56:42.341Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "injected",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Wednesday, October 21, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop-1\n- **Workspace Directories:**\n  - /home/user/work/gm3/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + f…[cut]"
+        }
+      ],
+      "cmp_sha": "346441df3003995e31f8009ac0243c4cb53d26e9c4e26423a6d09c9f05325e14"
+    },
+    {
+      "type": "message",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "message_id": "e543b85d-b03f-4701-8c6a-33589752205b",
+      "parent_id": null,
+      "order": "000000001441",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T20:09:24.232Z",
+      "requested_model": "mock-model",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "read_file__read_file_1792613364141_0:call",
+          "kind": "tool_call",
+          "call_id": "read_file__read_file_1792613364141_0",
+          "name": "read_file",
+          "args": {
+            "file_path": "toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "read_file__read_file_1792613364141_0:result",
+          "kind": "tool_result",
+          "call_id": "read_file__read_file_1792613364141_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "\"\"\"Shopping cart for the toyshop.\"\"\"\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Item:\n    sku: str\n    price_cents: int\n    qty: int = 1\n\n\n@dataclass\nclass Cart:\n    items: list = field(default_factory=list)\n\n    def add(self, item: Item) -> None:\n        self.items.append(item)\n\n    def total_cents(self) -> int:\n        return sum(i.price_cents * i.qty for i in self.items)\n\n    d…[cut]",
+          "output_len": 408,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "cmp_sha": "abc34e68baf9d604200d2a8dd5957abf425e1f22a7a564ec9a5dcc551cc078cd"
+    },
+    {
+      "type": "session",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "engine": null,
+      "client": "gemini-cli",
+      "harness_version": null,
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/home/user/work/gm3/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T19:56:42.340Z",
+      "updated_at": "2026-10-21T20:20:36.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "main",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "346441df3003995e31f8009ac0243c4cb53d26e9c4e26423a6d09c9f05325e14",
+          "9e612edeb2e9ee5ce06da9db85703d60f86d4cdce9625add4c1d0fca47976fb0",
+          "584079da69cd9a6281d24fe81118cd855d47725b4477b376f5d0b05d78b5ce2c",
+          "5b2c4639bc90e3c8b469897c58758d87e66e921c452ae0ccbbdf931f9e3f45a2",
+          "abc34e68baf9d604200d2a8dd5957abf425e1f22a7a564ec9a5dcc551cc078cd",
+          "6fc1dad3f1fdc2b9515b3eab2c3aff659ee08f339d859ad07322dc091f5a3f7f",
+          "4f55490db60159e7abfb58800b8877717a32989f4a88c714e98fd40af8afd554",
+          "83745d4fe15cb45b9682832f2af9c94ce0436771e4371816c8e8ca317c166bcc",
+          "3d5e1d911be969b9a68b8ee0c3f17fd6ae037b680a9047e29382134187bd77f7",
+          "0a1ed2a6a6da51907cf994eee97fb628ad32dbc2e396440be51435a4f2613871"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "usage_id": "23efd3c8-f4e1-4052-8424-0d63358bf9ef",
+      "anchor": {
+        "message_id": "23efd3c8-f4e1-4052-8424-0d63358bf9ef"
+      },
+      "input": 10313,
+      "output": 1,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "gateway/toy-model-d"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "usage_id": "4f80b265-ae91-437c-b256-7a8b9cadbec4",
+      "anchor": {
+        "message_id": "4f80b265-ae91-437c-b256-7a8b9cadbec4"
+      },
+      "input": 1301,
+      "output": 14,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "mock-model"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "usage_id": "55cc788a-54de-4def-a348-3eff79e80783",
+      "anchor": {
+        "message_id": "55cc788a-54de-4def-a348-3eff79e80783"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": 900,
+      "cache_write": null,
+      "reasoning": 5,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "mock-model"
+    },
+    {
+      "type": "usage",
+      "harness": "gemini-cli",
+      "session_id": "bcda44a6-7aee-4ac4-aede-10eb47e79153",
+      "incarnation": "",
+      "usage_id": "e543b85d-b03f-4701-8c6a-33589752205b",
+      "anchor": {
+        "message_id": "e543b85d-b03f-4701-8c6a-33589752205b"
+      },
+      "input": 1234,
+      "output": 17,
+      "cache_read": 900,
+      "cache_write": null,
+      "reasoning": null,
+      "tool_prompt": null,
+      "cost": null,
+      "input_includes_cache": true,
+      "output_includes_reasoning": false,
+      "granularity": "per_response",
+      "model": "mock-model"
+    }
+  ]
+}

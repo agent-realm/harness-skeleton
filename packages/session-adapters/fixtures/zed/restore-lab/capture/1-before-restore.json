@@ -1,0 +1,422 @@
+{
+  "label": "before-restore",
+  "captured_at_utc": "2026-10-22T21:58:58.376686+00:00",
+  "source": {
+    "threads_db": "~/.local/share/zed/threads/threads.db (table threads; data zstd -> JSON)",
+    "sidebar_db": "~/.local/share/zed/db/0-stable/db.sqlite (table sidebar_threads)",
+    "zed_version": "1.24.3"
+  },
+  "threads": [
+    {
+      "id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "summary": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T21:57:45.370329256+00:00",
+      "data_type": "zstd",
+      "data": {
+        "title": "Synthetic title f9efa9 for the to",
+        "messages": [
+          {
+            "User": {
+              "id": "e020753a-7d82-4565-9f06-5de532303b13",
+              "content": [
+                {
+                  "Text": "Fix the bug in cart.py: cart_total should multiply price by quantity. Edit the file directly."
+                }
+              ]
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5001",
+                    "name": "find_path",
+                    "raw_input": "{\"glob\": \"**/cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "glob": "**/cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5001": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5001",
+                  "tool_name": "find_path",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Found 1 total matches.\n/home/user/work/zed-a5/cart.py"
+                    }
+                  ],
+                  "output": {
+                    "offset": 0,
+                    "current_matches_page": [
+                      "/home/user/work/zed-a5/cart.py"
+                    ],
+                    "all_matches_len": 1
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5002",
+                    "name": "read_file",
+                    "raw_input": "{\"path\": \"cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "path": "cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5002": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5002",
+                  "tool_name": "read_file",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "     1\tdef cart_total(items):\n     2\t    \"\"\"Return the total price of a cart.\"\"\"\n     3\t    total = 0\n     4\t    for price, qty in items:\n     5\t        total += price + qty\n     6\t    return total\n     7\t\n     8\t\n     9\tif __name__ == \"__main__\":\n    10\t    print(cart_total([(2.5, 4), (10, 1)]))\n"
+                    }
+                  ],
+                  "output": {
+                    "Text": "     1\tdef cart_total(items):\n     2\t    \"\"\"Return the total price of a cart.\"\"\"\n     3\t    total = 0\n     4\t    for price, qty in items:\n     5\t        total += price + qty\n     6\t    return total\n     7\t\n     8\t\n     9\tif __name__ == \"__main__\":\n    10\t    print(cart_total([(2.5, 4), (10, 1)]))\n"
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply 4de7fe. synthetic reply text for the toy shop fixture synthetic reply text"
+                },
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5003",
+                    "name": "edit_file",
+                    "raw_input": "{\"edits\": [{\"new_text\": \"        total += price * qty\", \"old_text\": \"        total += price + qty\"}], \"path\": \"cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "edits": [
+                          {
+                            "new_text": "        total += price * qty",
+                            "old_text": "        total += price + qty"
+                          }
+                        ],
+                        "path": "cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5003": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5003",
+                  "tool_name": "edit_file",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Edited cart.py successfully"
+                    }
+                  ],
+                  "output": {
+                    "input_path": "cart.py",
+                    "new_text": "def cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price * qty\n    return total\n\n\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n",
+                    "old_text": "def cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price + qty\n    return total\n\n\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n",
+                    "diff": "@@ -2,7 +2,7 @@\n     \"\"\"Return the total price of a cart.\"\"\"\n     total = 0\n     for price, qty in items:\n-        total += price + qty\n+        total += price * qty\n     return total\n \n \n"
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5004",
+                    "name": "terminal",
+                    "raw_input": "{\"command\": \"python cart.py\", \"cd\": \"/home/user/work/zed-a5\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "command": "python cart.py",
+                        "cd": "/home/user/work/zed-a5"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5004": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5004",
+                  "tool_name": "terminal",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Note: this command ran WITHOUT an OS sandbox because one could not be created (`bwrap` is installed but couldn't create a sandbox, likely because unprivileged user namespaces are disabled on this system.).\n\nCommand \"python cart.py\" failed with exit code 127.\n\n```\n/bin/sh: 2: python: not found\n```"
+                    }
+                  ],
+                  "output": "Note: this command ran WITHOUT an OS sandbox because one could not be created (`bwrap` is installed but couldn't create a sandbox, likely because unprivileged user namespaces are disabled on this system.).\n\nCommand \"python cart.py\" failed with exit code 127.\n\n```\n/bin/sh: 2: python: not found\n```"
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5005",
+                    "name": "terminal",
+                    "raw_input": "{\"command\": \"python3 cart.py\", \"cd\": \"/home/user/work/zed-a5\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "command": "python3 cart.py",
+                        "cd": "/home/user/work/zed-a5"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5005": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5005",
+                  "tool_name": "terminal",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Note: this command ran WITHOUT an OS sandbox because one could not be created (`bwrap` is installed but couldn't create a sandbox, likely because unprivileged user namespaces are disabled on this system.).\n\n```\n20.0\n```"
+                    }
+                  ],
+                  "output": "Note: this command ran WITHOUT an OS sandbox because one could not be created (`bwrap` is installed but couldn't create a sandbox, likely because unprivileged user namespaces are disabled on this system.).\n\n```\n20.0\n```"
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply 12e527. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for"
+                }
+              ],
+              "tool_results": {},
+              "reasoning_details": null
+            }
+          },
+          {
+            "User": {
+              "id": "b34dd4f1-2f10-4ed2-a43c-8e92dac88e19",
+              "content": [
+                {
+                  "Text": "Add a docstring to cart_total that describes the items argument."
+                }
+              ]
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5006",
+                    "name": "read_file",
+                    "raw_input": "{\"path\": \"cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "path": "cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5006": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5006",
+                  "tool_name": "read_file",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "     1\tdef cart_total(items):\n     2\t    \"\"\"Return the total price of a cart.\"\"\"\n     3\t    total = 0\n     4\t    for price, qty in items:\n     5\t        total += price * qty\n     6\t    return total\n     7\t\n     8\t\n     9\tif __name__ == \"__main__\":\n    10\t    print(cart_total([(2.5, 4), (10, 1)]))\n"
+                    }
+                  ],
+                  "output": {
+                    "Text": "     1\tdef cart_total(items):\n     2\t    \"\"\"Return the total price of a cart.\"\"\"\n     3\t    total = 0\n     4\t    for price, qty in items:\n     5\t        total += price * qty\n     6\t    return total\n     7\t\n     8\t\n     9\tif __name__ == \"__main__\":\n    10\t    print(cart_total([(2.5, 4), (10, 1)]))\n"
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5007",
+                    "name": "edit_file",
+                    "raw_input": "{\"edits\": [{\"new_text\": \"    \\\"\\\"\\\"Return the total price of a cart.\\n\\n    Args:\\n        items: An iterable of (price, quantity) tuples, where price is a\\n            number and quantity is a non-negative int.\\n    \\\"\\\"\\\"\", \"old_text\": \"    \\\"\\\"\\\"Return the total price of a cart.\\\"\\\"\\\"\"}], \"path\": \"cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "edits": [
+                          {
+                            "new_text": "    \"\"\"Return the total price of a cart.\n\n    Args:\n        items: An iterable of (price, quantity) tuples, where price is a\n            number and quantity is a non-negative int.\n    \"\"\"",
+                            "old_text": "    \"\"\"Return the total price of a cart.\"\"\""
+                          }
+                        ],
+                        "path": "cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5007": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5007",
+                  "tool_name": "edit_file",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Edited cart.py successfully"
+                    }
+                  ],
+                  "output": {
+                    "input_path": "cart.py",
+                    "new_text": "def cart_total(items):\n    \"\"\"Return the total price of a cart.\n\n    Args:\n        items: An iterable of (price, quantity) tuples, where price is a\n            number and quantity is a non-negative int.\n    \"\"\"\n    total = 0\n    for price, qty in items:\n        total += price * qty\n    return total\n\n\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n",
+                    "old_text": "def cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price * qty\n    return total\n\n\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n",
+                    "diff": "@@ -1,5 +1,10 @@\n def cart_total(items):\n-    \"\"\"Return the total price of a cart.\"\"\"\n+    \"\"\"Return the total price of a cart.\n+\n+    Args:\n+        items: An iterable of (price, quantity) tuples, where price is a\n+            number and quantity is a non-negative int.\n+    \"\"\"\n     total = 0\n     for price, qty in items:\n         total += price * qty\n"
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply 8c5b68. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the "
+                }
+              ],
+              "tool_results": {},
+              "reasoning_details": null
+            }
+          }
+        ],
+        "updated_at": "2026-10-22T21:57:45.370329256Z",
+        "detailed_summary": null,
+        "initial_project_snapshot": {
+          "worktree_snapshots": [
+            {
+              "worktree_path": "/home/user/work/zed-a5",
+              "git_state": {
+                "remote_url": null,
+                "head_sha": "2341321709842e4cea31e07f1674d1b7bb236ab6",
+                "current_branch": "main",
+                "diff": ""
+              }
+            }
+          ],
+          "timestamp": "2026-10-22T21:54:53.980542584Z"
+        },
+        "cumulative_token_usage": {
+          "input_tokens": 129315,
+          "output_tokens": 531,
+          "cache_read_input_tokens": 83456
+        },
+        "request_token_usage": {
+          "e020753a-7d82-4565-9f06-5de532303b13": {
+            "input_tokens": 948,
+            "output_tokens": 86,
+            "cache_read_input_tokens": 10240
+          },
+          "b34dd4f1-2f10-4ed2-a43c-8e92dac88e19": {
+            "input_tokens": 758,
+            "output_tokens": 35,
+            "cache_read_input_tokens": 10752
+          }
+        },
+        "model": {
+          "provider": "gateway",
+          "model": "gateway/toy-model-a"
+        },
+        "profile": "write",
+        "subagent_context": null,
+        "speed": null,
+        "thinking_enabled": false,
+        "thinking_effort": null,
+        "draft_prompt": null,
+        "ui_scroll_position": null,
+        "sandboxed_terminal_temp_dir": null,
+        "sandbox_grants": {
+          "write_paths": [],
+          "network_hosts": [],
+          "network_any_host": false,
+          "allow_fs_write_all": false,
+          "unsandboxed": false,
+          "sandbox_fallback": false
+        },
+        "version": "0.3.0"
+      },
+      "parent_id": null,
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "created_at": "2026-10-22T21:54:53.598055212+00:00"
+    }
+  ],
+  "sidebar_threads": [
+    {
+      "thread_id": "9bf5f5db21b5477a916bb9ae75e719cc",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "agent_id": null,
+      "title": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T21:57:45.543687751+00:00",
+      "created_at": "2026-10-22T21:54:53.648936005+00:00",
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "archived": 0,
+      "main_worktree_paths": "/home/user/work/zed-a5",
+      "main_worktree_paths_order": "0",
+      "remote_connection": null,
+      "interacted_at": "2026-10-22T21:57:37.686479097+00:00",
+      "title_override": null
+    }
+  ]
+}

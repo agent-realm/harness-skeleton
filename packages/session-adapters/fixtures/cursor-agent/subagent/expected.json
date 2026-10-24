@@ -1,0 +1,253 @@
+{
+  "4924355d-5a7e-4000-8000-000000000006": [
+    {
+      "type": "link",
+      "kind": "subagent",
+      "stated_on": "child",
+      "child": {
+        "harness": "cursor-agent",
+        "session_id": "4924355d-5a7e-4000-8000-000000000006",
+        "incarnation": ""
+      },
+      "origin": {
+        "harness": "cursor-agent",
+        "session_id": "de1be1a9-5a7e-4000-8000-000000000005"
+      },
+      "at": "call-ce18c09b-5a7e-4000-8000-000000000401-33\nfc_synth33-0Synth-00000033-syn_th1_3",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit",
+      "harness": "cursor-agent",
+      "session_id": "4924355d-5a7e-4000-8000-000000000006",
+      "incarnation": ""
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000132:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.490Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "test_total_uses_qty"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "4924355d-5a7e-4000-8000-000000000006",
+      "incarnation": "",
+      "cmp_sha": "ab75201d8dd5a240c95eace217223b41e71ab700d391c16764c63a2fefbd500e"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000132:user",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.396Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the test functions under tests/."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "4924355d-5a7e-4000-8000-000000000006",
+      "incarnation": "",
+      "cmp_sha": "6eecc8eced643c749b762f0bec4a539690a93672bae0b5c48be387de85725aef"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "4924355d-5a7e-4000-8000-000000000006",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "New Agent",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T14:59:02.395Z",
+      "updated_at": "2026-10-20T14:59:02.490Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": "subagent",
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "6eecc8eced643c749b762f0bec4a539690a93672bae0b5c48be387de85725aef",
+          "ab75201d8dd5a240c95eace217223b41e71ab700d391c16764c63a2fefbd500e"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "de1be1a9-5a7e-4000-8000-000000000005": [
+    {
+      "type": "link",
+      "kind": "subagent",
+      "stated_on": "origin",
+      "child": {
+        "harness": "cursor-agent",
+        "session_id": "4924355d-5a7e-4000-8000-000000000006"
+      },
+      "origin": {
+        "harness": "cursor-agent",
+        "session_id": "de1be1a9-5a7e-4000-8000-000000000005",
+        "incarnation": ""
+      },
+      "at": "call-ce18c09b-5a7e-4000-8000-000000000401-33\nfc_synth33-0Synth-00000033-syn_th1_3",
+      "inherits": null,
+      "child_stored": true,
+      "evidence": "explicit",
+      "harness": "cursor-agent",
+      "session_id": "de1be1a9-5a7e-4000-8000-000000000005",
+      "incarnation": ""
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000231",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Use a subagent to list the tests."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "de1be1a9-5a7e-4000-8000-000000000005",
+      "incarnation": "",
+      "cmp_sha": "e08cf45ba0d47b17908abaf33e900c2af50d523c633f0cae485ffdc7707f4535"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000131:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.400Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "call-ce18c09b-5a7e-4000-8000-000000000401-33\nfc_synth33-0Synth-00000033-syn_th1_3",
+          "name": "Task",
+          "args": {
+            "description": "List test functions",
+            "prompt": "List every test function.",
+            "model": "default"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "call-ce18c09b-5a7e-4000-8000-000000000401-33\nfc_synth33-0Synth-00000033-syn_th1_3",
+          "is_error": false,
+          "status": "completed",
+          "output": "Found 4 tests.",
+          "output_len": 14,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Four tests."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "de1be1a9-5a7e-4000-8000-000000000005",
+      "incarnation": "",
+      "cmp_sha": "cc748c15d31922d456070f0f6b3119361fb5965efbce0ed7ed9b18e6b436e88b"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "de1be1a9-5a7e-4000-8000-000000000005",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "list-tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-20T14:59:02.400Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "e08cf45ba0d47b17908abaf33e900c2af50d523c633f0cae485ffdc7707f4535",
+          "cc748c15d31922d456070f0f6b3119361fb5965efbce0ed7ed9b18e6b436e88b"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

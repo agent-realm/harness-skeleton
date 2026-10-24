@@ -1,0 +1,29 @@
+{
+  "name": "@agent-realm/skeleton-spec",
+  "version": "0.0.1",
+  "description": "The harness-skeleton spec as code: spec layers and local.toml, resolved and validated (design note v0.2 \u00a75)",
+  "license": "Apache-2.0",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./layers": "./src/layers.js",
+    "./validate": "./src/validate.js",
+    "./files": "./src/files.js",
+    "./process": "./src/process-checks.js"
+  },
+  "files": [
+    "src/",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "test": "node --test 'test/*.test.js'"
+  },
+  "dependencies": {
+    "smol-toml": "1.9.1"
+  }
+}

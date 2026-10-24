@@ -1,0 +1,12 @@
+[spec]
+name = "team"
+version = "1.4.0"
+format = "0.2"
+
+# A later layer wins for a scalar: the team picks its own primary model.
+[model.roles]
+primary = "claude-opus-5-5"
+
+# And takes an item out of the layer below.
+[remove]
+items = ["mcp.notes"]

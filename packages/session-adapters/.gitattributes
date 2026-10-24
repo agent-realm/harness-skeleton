@@ -1,0 +1,2 @@
+# Private checks stay in the private repository: a `git archive` export leaves them out.
+test/private-* export-ignore

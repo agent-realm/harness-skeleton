@@ -1,0 +1,130 @@
+{
+  "ses_15e9c27ca001fgDUhM4LcmZ9Eh": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001fgDUhM4LcmZ9Eh",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9c2bb20011wxJZHi0PyqWnL",
+      "order": "1|0001792588655538|msg_15e9c2bb20011wxJZHi0PyqWnL",
+      "ts": "2026-10-21T13:17:35.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2bb20022v0BH3U1UsMheK",
+          "kind": "text",
+          "text": "List the cart files."
+        }
+      ],
+      "cmp_sha": "336ace6c91bf97ddaf65fce3f0d3c6ec75dabf3430131d0b2e888196b5e854cf"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001fgDUhM4LcmZ9Eh",
+      "incarnation": "",
+      "parent_id": "msg_15e9c2bb20011wxJZHi0PyqWnL",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9c2f9a001vFmVAnXLH4tCeV",
+      "aliases": [],
+      "message_id": "msg_15e9c2f9a001vFmVAnXLH4tCeV",
+      "order": "1|0001792588656538|msg_15e9c2f9a001vFmVAnXLH4tCeV",
+      "ts": "2026-10-21T13:17:36.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9c2f9b003qpBOggz2bAf4Z3",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9c2fa5004h6QGxA7O2Of1jW",
+          "kind": "text",
+          "text": "cart.py and test_cart.py."
+        },
+        {
+          "part_id": "prt_15e9c2faf005weGA4HYdEdVxMg",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "9d2ad28038f25c7ed4b3118494aba44982889f3a0949f262a96eb96689def94b"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001fgDUhM4LcmZ9Eh",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Default channel work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:17:34.538Z",
+      "updated_at": "2026-10-21T13:17:36.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "336ace6c91bf97ddaf65fce3f0d3c6ec75dabf3430131d0b2e888196b5e854cf",
+          "9d2ad28038f25c7ed4b3118494aba44982889f3a0949f262a96eb96689def94b"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9c27ca001fgDUhM4LcmZ9Eh",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9c2f9a001vFmVAnXLH4tCeV#1",
+      "anchor": {
+        "message_id": "msg_15e9c2f9a001vFmVAnXLH4tCeV"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null
+    }
+  ]
+}

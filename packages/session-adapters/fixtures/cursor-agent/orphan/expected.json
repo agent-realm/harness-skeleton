@@ -1,0 +1,95 @@
+{
+  "ac3cf5c2-5a7e-4000-8000-000000000009": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000251",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does this project do?"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "ac3cf5c2-5a7e-4000-8000-000000000009",
+      "incarnation": "",
+      "cmp_sha": "b75c29c1c06172841bdad8044d797184d3c2d5616d9e5a783edd6f9ece5db980"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000151:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.890Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Synthetic reply 8b5aa2."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "ac3cf5c2-5a7e-4000-8000-000000000009",
+      "incarnation": "",
+      "cmp_sha": "ca44eb9fe49dfbeeba57af07bb3514f39ba41eaf0e4653843bc22a595589adc8"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "ac3cf5c2-5a7e-4000-8000-000000000009",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "toyshop-summary",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-20T14:59:02.890Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "b75c29c1c06172841bdad8044d797184d3c2d5616d9e5a783edd6f9ece5db980",
+          "ca44eb9fe49dfbeeba57af07bb3514f39ba41eaf0e4653843bc22a595589adc8"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "history": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Wednesday, October 21, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop-1\n- **Workspace Directories:**\n  - /home/user/work/gm3/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + f…[cut]"
+        },
+        {
+          "text": "make notes-mock.txt."
+        }
+      ]
+    },
+    {
+      "role": "model",
+      "parts": [
+        {
+          "text": "Synthetic reply 9"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "add a toy helper."
+        }
+      ]
+    }
+  ],
+  "authType": "<redacted len=14>"
+}

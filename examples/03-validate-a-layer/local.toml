@@ -1,0 +1,3 @@
+# The install-local layer: what belongs to this machine, not to the team's layer.
+[state]
+retention_days = 9999

@@ -1,0 +1,231 @@
+{
+  "label": "after-regrow",
+  "captured_at_utc": "2026-10-22T22:03:40.287999+00:00",
+  "source": {
+    "threads_db": "~/.local/share/zed/threads/threads.db (table threads; data zstd -> JSON)",
+    "sidebar_db": "~/.local/share/zed/db/0-stable/db.sqlite (table sidebar_threads)",
+    "zed_version": "1.24.3"
+  },
+  "threads": [
+    {
+      "id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "summary": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T22:02:37.624258398+00:00",
+      "data_type": "zstd",
+      "data": {
+        "title": "Synthetic title f9efa9 for the to",
+        "messages": [
+          {
+            "User": {
+              "id": "8e22d526-7ca0-4e2b-9d54-e888c52b3227",
+              "content": [
+                {
+                  "Text": "Add a test instead: create test_cart.py with a unittest for cart_total. Do not run anything."
+                }
+              ]
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply dad284. synthetic reply text for the toy shop fixture synthetic reply text for the"
+                },
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5008",
+                    "name": "grep",
+                    "raw_input": "{\"regex\": \"cart_total\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "regex": "cart_total"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                },
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5009",
+                    "name": "find_path",
+                    "raw_input": "{\"glob\": \"*.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "glob": "*.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5009": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5009",
+                  "tool_name": "find_path",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Found 1 total matches.\n/home/user/work/zed-a5/cart.py"
+                    }
+                  ],
+                  "output": {
+                    "offset": 0,
+                    "current_matches_page": [
+                      "/home/user/work/zed-a5/cart.py"
+                    ],
+                    "all_matches_len": 1
+                  }
+                },
+                "chatcmpl-tool-00000000000a5008": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5008",
+                  "tool_name": "grep",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Found 2 matches:\n\n## Matches in zed-a5/cart.py\n\n### def cart_total › L1-6\n```\ndef cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price + qty\n    return total\n```\n\n### L9-10\n```\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n```\n"
+                    }
+                  ],
+                  "output": "Found 2 matches:\n\n## Matches in zed-a5/cart.py\n\n### def cart_total › L1-6\n```\ndef cart_total(items):\n    \"\"\"Return the total price of a cart.\"\"\"\n    total = 0\n    for price, qty in items:\n        total += price + qty\n    return total\n```\n\n### L9-10\n```\nif __name__ == \"__main__\":\n    print(cart_total([(2.5, 4), (10, 1)]))\n```\n"
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply 6c143d. synthetic reply text for the toy shop fixture synthetic reply text for t"
+                },
+                {
+                  "ToolUse": {
+                    "id": "chatcmpl-tool-00000000000a5010",
+                    "name": "write_file",
+                    "raw_input": "{\"content\": \"import unittest\\n\\nfrom cart import cart_total\\n\\n\\nclass CartTotalTest(unittest.TestCase):\\n    def test_single_item(self):\\n        \\\"\\\"\\\"A single (price, qty) pair contributes price * qty.\\\"\\\"\\\"\\n        self.assertEqual(cart_total([(10.0, 2)]), 20.0)\\n\\n    def test_multiple_items(self):\\n        \\\"\\\"\\\"Totals sum across items: 2.5*4 + 10*1 = 20.0.\\\"\\\"\\\"\\n        self.assertAlmostEqual(cart_total([(2.5, 4), (10.0, 1)]), 20.0)\\n\\n    def test_empty_cart(self):\\n        self.assertEqual(cart_total([]), 0)\\n\\n    def test_zero_quantity(self):\\n        \\\"\\\"\\\"A zero-quantity item contributes nothing.\\\"\\\"\\\"\\n        self.assertEqual(cart_total([(5.0, 0)]), 0)\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    unittest.main()\\n\", \"path\": \"test_cart.py\"}",
+                    "input": {
+                      "type": "json",
+                      "value": {
+                        "content": "import unittest\n\nfrom cart import cart_total\n\n\nclass CartTotalTest(unittest.TestCase):\n    def test_single_item(self):\n        \"\"\"A single (price, qty) pair contributes price * qty.\"\"\"\n        self.assertEqual(cart_total([(10.0, 2)]), 20.0)\n\n    def test_multiple_items(self):\n        \"\"\"Totals sum across items: 2.5*4 + 10*1 = 20.0.\"\"\"\n        self.assertAlmostEqual(cart_total([(2.5, 4), (10.0, 1)]), 20.0)\n\n    def test_empty_cart(self):\n        self.assertEqual(cart_total([]), 0)\n\n    def test_zero_quantity(self):\n        \"\"\"A zero-quantity item contributes nothing.\"\"\"\n        self.assertEqual(cart_total([(5.0, 0)]), 0)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+                        "path": "test_cart.py"
+                      }
+                    },
+                    "is_input_complete": true,
+                    "thought_signature": null
+                  }
+                }
+              ],
+              "tool_results": {
+                "chatcmpl-tool-00000000000a5010": {
+                  "tool_use_id": "chatcmpl-tool-00000000000a5010",
+                  "tool_name": "write_file",
+                  "is_error": false,
+                  "content": [
+                    {
+                      "Text": "Edited test_cart.py successfully"
+                    }
+                  ],
+                  "output": {
+                    "input_path": "test_cart.py",
+                    "new_text": "import unittest\n\nfrom cart import cart_total\n\n\nclass CartTotalTest(unittest.TestCase):\n    def test_single_item(self):\n        \"\"\"A single (price, qty) pair contributes price * qty.\"\"\"\n        self.assertEqual(cart_total([(10.0, 2)]), 20.0)\n\n    def test_multiple_items(self):\n        \"\"\"Totals sum across items: 2.5*4 + 10*1 = 20.0.\"\"\"\n        self.assertAlmostEqual(cart_total([(2.5, 4), (10.0, 1)]), 20.0)\n\n    def test_empty_cart(self):\n        self.assertEqual(cart_total([]), 0)\n\n    def test_zero_quantity(self):\n        \"\"\"A zero-quantity item contributes nothing.\"\"\"\n        self.assertEqual(cart_total([(5.0, 0)]), 0)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+                    "old_text": "",
+                    "diff": "@@ -1,0 +1,24 @@\n+import unittest\n+\n+from cart import cart_total\n+\n+\n+class CartTotalTest(unittest.TestCase):\n+    def test_single_item(self):\n+        \"\"\"A single (price, qty) pair contributes price * qty.\"\"\"\n+        self.assertEqual(cart_total([(10.0, 2)]), 20.0)\n+\n+    def test_multiple_items(self):\n+        \"\"\"Totals sum across items: 2.5*4 + 10*1 = 20.0.\"\"\"\n+        self.assertAlmostEqual(cart_total([(2.5, 4), (10.0, 1)]), 20.0)\n+\n+    def test_empty_cart(self):\n+        self.assertEqual(cart_total([]), 0)\n+\n+    def test_zero_quantity(self):\n+        \"\"\"A zero-quantity item contributes nothing.\"\"\"\n+        self.assertEqual(cart_total([(5.0, 0)]), 0)\n+\n+\n+if __name__ == \"__main__\":\n+    unittest.main()\n"
+                  }
+                }
+              },
+              "reasoning_details": null
+            }
+          },
+          {
+            "Agent": {
+              "content": [
+                {
+                  "Text": "Synthetic reply de9fcc. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthet"
+                }
+              ],
+              "tool_results": {},
+              "reasoning_details": null
+            }
+          }
+        ],
+        "updated_at": "2026-10-22T22:02:37.624258398Z",
+        "detailed_summary": null,
+        "initial_project_snapshot": {
+          "worktree_snapshots": [
+            {
+              "worktree_path": "/home/user/work/zed-a5",
+              "git_state": {
+                "remote_url": null,
+                "head_sha": "2341321709842e4cea31e07f1674d1b7bb236ab6",
+                "current_branch": "main",
+                "diff": ""
+              }
+            }
+          ],
+          "timestamp": "2026-10-22T21:54:53.980542584Z"
+        },
+        "cumulative_token_usage": {
+          "input_tokens": 171750,
+          "output_tokens": 2904,
+          "cache_read_input_tokens": 114176
+        },
+        "request_token_usage": {
+          "8e22d526-7ca0-4e2b-9d54-e888c52b3227": {
+            "input_tokens": 950,
+            "output_tokens": 382,
+            "cache_read_input_tokens": 10240
+          }
+        },
+        "model": {
+          "provider": "gateway",
+          "model": "gateway/toy-model-a"
+        },
+        "profile": "write",
+        "subagent_context": null,
+        "speed": null,
+        "thinking_enabled": false,
+        "thinking_effort": null,
+        "draft_prompt": null,
+        "ui_scroll_position": {
+          "item_ix": 0,
+          "offset_in_item": 0
+        },
+        "sandboxed_terminal_temp_dir": null,
+        "sandbox_grants": {
+          "write_paths": [],
+          "network_hosts": [],
+          "network_any_host": false,
+          "allow_fs_write_all": false,
+          "unsandboxed": false,
+          "sandbox_fallback": false
+        },
+        "version": "0.3.0"
+      },
+      "parent_id": null,
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "created_at": "2026-10-22T21:54:53.598055212+00:00"
+    }
+  ],
+  "sidebar_threads": [
+    {
+      "thread_id": "9bf5f5db21b5477a916bb9ae75e719cc",
+      "session_id": "d152a2ad-6c8a-4a8f-8e9e-31ed8bff4312",
+      "agent_id": null,
+      "title": "Synthetic title f9efa9 for the to",
+      "updated_at": "2026-10-22T22:02:37.790623535+00:00",
+      "created_at": "2026-10-22T21:54:53.648936005+00:00",
+      "folder_paths": "/home/user/work/zed-a5",
+      "folder_paths_order": "0",
+      "archived": 0,
+      "main_worktree_paths": "/home/user/work/zed-a5",
+      "main_worktree_paths_order": "0",
+      "remote_connection": null,
+      "interacted_at": "2026-10-22T21:59:53.192409510+00:00",
+      "title_override": null
+    }
+  ]
+}

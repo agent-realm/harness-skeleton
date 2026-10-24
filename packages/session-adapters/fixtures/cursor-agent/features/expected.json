@@ -1,0 +1,1267 @@
+{
+  "7a7a7a7a-5a7e-4000-8000-000000000004": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000221",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T17:12:22.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Say ok."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "7a7a7a7a-5a7e-4000-8000-000000000004",
+      "incarnation": "",
+      "cmp_sha": "d498b4d95033f604af22e472d642ef79bfed92d9cca10159bb10655a2748d34e"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000121:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T17:12:22.890Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "ok"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "7a7a7a7a-5a7e-4000-8000-000000000004",
+      "incarnation": "",
+      "cmp_sha": "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "7a7a7a7a-5a7e-4000-8000-000000000004",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "Okay Reply",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T17:12:22.390Z",
+      "updated_at": "2026-10-20T17:12:22.890Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d498b4d95033f604af22e472d642ef79bfed92d9cca10159bb10655a2748d34e",
+          "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "88d522e2-5a7e-4000-8000-000000000003": [
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "88d522e2-5a7e-4000-8000-000000000003",
+      "incarnation": "",
+      "engine": null,
+      "client": null,
+      "harness_version": null,
+      "title": "SKU List",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T16:59:02.390Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": []
+      },
+      "setup": null
+    }
+  ],
+  "c4a1e0de-5a7e-4000-8000-000000000001": [
+    {
+      "type": "lifecycle",
+      "lifecycle_id": "bfe6d9a0b302d77981b6fd514f2599b82320551b977fc75751dfa3a479a80c26",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "45c3fe3c-5a7e-4000-8000-000000000201",
+          "through_id": "fbef27ef-5a7e-4000-8000-000000000101:assistant"
+        }
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit",
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": ""
+    },
+    {
+      "type": "message",
+      "message_id": "1ff3b2549802c2a2540f7a9ce180e592bd2a22a571d5234ef1beb4378b1bab9b",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "system",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<system_reminder>Follow the workspace rules in AGENTS.md.</system_reminder>"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "deb65543fe70db6322a6a060f2d3d88e790bcd3972456e7e5fc3a79c66f4fc8d"
+    },
+    {
+      "type": "message",
+      "message_id": "45c3fe3c-5a7e-4000-8000-000000000201",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Fix the qty bug in cart.py."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000202",
+      "parent_id": null,
+      "order": "000004",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Show me cart.py."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "d828ded5ef6d399c4223428fa070b11cace00a83ee4e93ed298327d73f609f12"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000202+1",
+      "parent_id": null,
+      "order": "000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "@8b76b964-5a7e-4000-8000-000000000202+1:0",
+          "name": "Shell",
+          "args": {
+            "command": "python3 -c \"import sys; print(7); sys.exit(3)\""
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "@8b76b964-5a7e-4000-8000-000000000202+1:0",
+          "is_error": true,
+          "status": "completed",
+          "output": "7\n",
+          "output_len": 2,
+          "truncated": null,
+          "exit_code": 3
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "c297a4aa1591daf090cc0a786b8f0201898d7726931599a705fe5456cfa32d12"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000204",
+      "parent_id": null,
+      "order": "000007",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:32.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Clean the tree, search the docs, list the files."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "5b22619ab8cd8f8d8a027b2b95cb8f3de90ec5acf3cc6729e2ef375ee8513363"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000205",
+      "parent_id": null,
+      "order": "000009",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Set the key, log in, connect the repo."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "1f762a54be997fe82aedc8237f4e7bee3c495ee323b268e4eb0177fee52d62b0"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000206",
+      "parent_id": null,
+      "order": "000011",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:32.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Find apply_coupon, ask the toy box, show the label, list everything."
+        },
+        {
+          "part_id": "att:0",
+          "kind": "attachment",
+          "media_type": "image/png",
+          "inline": "UE5HIQ==",
+          "ref": null,
+          "bytes_len": 4
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "164f295d3bc31bc0d94c55cdb26e6e647e6a9e67de3d837319ec80597f89b72f"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000207",
+      "parent_id": null,
+      "order": "000014",
+      "agent_id": "",
+      "role": "user",
+      "source": "automated",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Implement the plan as specified."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "52917bdd340baf04fe5778e94a8a62f14570a75a95503a2079768e873e4714d7"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000208",
+      "parent_id": null,
+      "order": "000016",
+      "agent_id": "",
+      "role": "user",
+      "source": "injected",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:12.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Remember to commit your changes."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "1a0ec0b83c0d0d5e688c95b36062dab3ba240b36ca15a4b6baff63decf437de6"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000209",
+      "parent_id": null,
+      "order": "000018",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:22.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Also check tests/unit."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "4978c32fbbfcbdd8d6e2beb3cbbf95c2917566f00916250aa3d27a85e9786fb2"
+    },
+    {
+      "type": "message",
+      "message_id": "bfe6d9a0b302d77981b6fd514f2599b82320551b977fc75751dfa3a479a80c26",
+      "parent_id": null,
+      "order": "000003",
+      "agent_id": "",
+      "role": "system",
+      "source": "system_notice",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "Summary: the qty bug was found; one test fails.",
+          "replaces": {
+            "archive_ref": "bfe6d9a0b302d77981b6fd514f2599b82320551b977fc75751dfa3a479a80c26"
+          }
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "9edaedc851bddfb9f35a960aa59f6a086d48efa74d1f8feb27584a395031ca96"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000102:assistant",
+      "parent_id": null,
+      "order": "000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-3\nfc_synth03-0Synth-00000003-syn_th1_3",
+          "name": "Read",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-3\nfc_synth03-0Synth-00000003-syn_th1_3",
+          "is_error": false,
+          "status": "completed",
+          "output": "class Cart: ...",
+          "output_len": 15,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Here it is."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "069d51dd3720538b6a8dc408244905fee122a20b856d620076c0bd971b04ca5b"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000104:assistant",
+      "parent_id": null,
+      "order": "000008",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:00:33.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-4\nfc_synth04-0Synth-00000004-syn_th1_4",
+          "name": "Shell",
+          "args": {
+            "command": "git clean -fdx",
+            "working_directory": "/home/user/work/toyshop",
+            "description": "Run the tests",
+            "timeout": 30000
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-4\nfc_synth04-0Synth-00000004-syn_th1_4",
+          "is_error": true,
+          "status": "denied",
+          "output": "Denied: do not run git clean.",
+          "output_len": 29,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-5\nfc_synth05-0Synth-00000005-syn_th1_5",
+          "name": "WebSearch",
+          "args": {},
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-5\nfc_synth05-0Synth-00000005-syn_th1_5",
+          "is_error": false,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2:call",
+          "kind": "tool_call",
+          "call_id": "b6c2e9d4-5a7e-4000-8000-000000000301",
+          "name": "Shell",
+          "args": {
+            "command": "ls",
+            "working_directory": "/home/user/work/toyshop"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2:result",
+          "kind": "tool_result",
+          "call_id": "b6c2e9d4-5a7e-4000-8000-000000000301",
+          "is_error": false,
+          "status": "completed",
+          "output": "README.md\ntoyshop",
+          "output_len": 17,
+          "truncated": null,
+          "exit_code": 0
+        },
+        {
+          "part_id": "3",
+          "kind": "text",
+          "text": "Skipped the clean."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "0751c941b15db8c3b7fd41240f994529c15a9e914da6098e7f25743c6d7e4d2d"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000105:assistant",
+      "parent_id": null,
+      "order": "000010",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-21\nfc_synth21-0Synth-00000021-syn_th1_1",
+          "name": "ReplaceEnv",
+          "args": {
+            "name": "API_KEY"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-21\nfc_synth21-0Synth-00000021-syn_th1_1",
+          "is_error": false,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-22\nfc_synth22-0Synth-00000022-syn_th1_2",
+          "name": "McpLogin",
+          "args": {},
+          "server": null
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-22\nfc_synth22-0Synth-00000022-syn_th1_2",
+          "is_error": true,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-41\nfc_synth41-0Synth-00000041-syn_th1_1",
+          "name": "MCPLogin",
+          "args": {
+            "server": "https://example.com/toybox/login",
+            "names": [
+              "TOYBOX",
+              "TOYBOX_EU"
+            ]
+          },
+          "server": null
+        },
+        {
+          "part_id": "2:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-41\nfc_synth41-0Synth-00000041-syn_th1_1",
+          "is_error": false,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "3:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-42\nfc_synth42-0Synth-00000042-syn_th1_2",
+          "name": "ConnectSCM",
+          "args": {
+            "provider": "github",
+            "scm": [
+              "https://example.com/toybox.git"
+            ]
+          },
+          "server": null
+        },
+        {
+          "part_id": "3:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-42\nfc_synth42-0Synth-00000042-syn_th1_2",
+          "is_error": false,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "4",
+          "kind": "text",
+          "text": "Done."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "a50676f228508dd1d4fa5fef940c3e552e79a6b4a062730ea80a67cc4d29e3a1"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000106:assistant",
+      "parent_id": null,
+      "order": "000012",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:01:33.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-31\nfc_synth31-0Synth-00000031-syn_th1_1",
+          "name": "Grep",
+          "args": {
+            "pattern": "apply_coupon",
+            "output_mode": "content"
+          },
+          "server": null
+        },
+        {
+          "part_id": "0:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-31\nfc_synth31-0Synth-00000031-syn_th1_1",
+          "is_error": false,
+          "status": "completed",
+          "output": "./toyshop/cart.py:22:    def apply_coupon(self, code):\n./toyshop/cart.py:30:        return COUPONS[code]",
+          "output_len": 104,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "1:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-32\nfc_synth32-0Synth-00000032-syn_th1_2",
+          "name": "CallMcpTool",
+          "args": {
+            "server": "toybox",
+            "tool": "search_toys",
+            "args": {
+              "q": "robot"
+            }
+          },
+          "server": "toybox"
+        },
+        {
+          "part_id": "1:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-32\nfc_synth32-0Synth-00000032-syn_th1_2",
+          "is_error": false,
+          "status": "completed",
+          "output": "three robots\n[1 non-text content item]",
+          "output_len": 38,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "2:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-12\nfc_synth12-0Synth-00000012-syn_th1_2",
+          "name": "Read",
+          "args": {
+            "path": "/home/user/work/toyshop/label.png"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-12\nfc_synth12-0Synth-00000012-syn_th1_2",
+          "is_error": false,
+          "status": "completed",
+          "output": "<binary blob 7f47b756761a46e6d4a4d96f0d8a4448f8449235009d1f3ad1493f5c773c19e8>",
+          "output_len": 78,
+          "truncated": null,
+          "output_ref": {
+            "ref": "blob:7f47b756761a46e6d4a4d96f0d8a4448f8449235009d1f3ad1493f5c773c19e8",
+            "sha256": "7f47b756761a46e6d4a4d96f0d8a4448f8449235009d1f3ad1493f5c773c19e8",
+            "bytes": 11
+          },
+          "exit_code": null
+        },
+        {
+          "part_id": "3:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-13\nfc_synth13-0Synth-00000013-syn_th1_3",
+          "name": "Truncated",
+          "args": {},
+          "server": null
+        },
+        {
+          "part_id": "3:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-13\nfc_synth13-0Synth-00000013-syn_th1_3",
+          "is_error": false,
+          "status": "completed",
+          "output": null,
+          "output_len": null,
+          "truncated": true,
+          "output_ref": {
+            "ref": "blob:a489c4a53ff4dd37a5c2ea23cf9bf3039d3c72c51e526bb36a7a6b8780de4acf",
+            "sha256": "a489c4a53ff4dd37a5c2ea23cf9bf3039d3c72c51e526bb36a7a6b8780de4acf",
+            "bytes": 48213
+          },
+          "exit_code": null
+        },
+        {
+          "part_id": "4",
+          "kind": "text",
+          "text": "Found it."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "f57e92ec36fc168cfd3b402a0f7c382fca94223751cb425490e9fbebee12543f"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000107:assistant",
+      "parent_id": null,
+      "order": "000015",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:02.490Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Ok."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000108:assistant",
+      "parent_id": null,
+      "order": "000017",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:12.490Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Ok."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000109:assistant",
+      "parent_id": null,
+      "order": "000019",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:04:22.490Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Ok."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd"
+    },
+    {
+      "type": "message",
+      "message_id": "e8692605a9a9e39333a3eb49f035588d0c5b16cda02c216db5f2cc831fdeb47d",
+      "parent_id": null,
+      "order": "000013",
+      "agent_id": "",
+      "role": "system",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<system_reminder>Your response was cut off because it exceeded the output token limit.</system_reminder>"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "951611dcbc7f01fcefd20df23b1da0b60f3d1c2717b40562822442a630582063"
+    },
+    {
+      "type": "message",
+      "message_id": "fbef27ef-5a7e-4000-8000-000000000101:assistant",
+      "parent_id": null,
+      "order": "000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:03.390Z",
+      "requested_model": "default",
+      "served_model": "cursor-grok-4.5-high",
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "The total ignores qty; run the tests first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Running the tests first."
+        },
+        {
+          "part_id": "2:call",
+          "kind": "tool_call",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-2\nfc_synth02-0Synth-00000002-syn_th1_2",
+          "name": "Shell",
+          "args": {
+            "command": "python3 -m pytest -q",
+            "working_directory": "/home/user/work/toyshop",
+            "description": "Run the tests"
+          },
+          "server": null
+        },
+        {
+          "part_id": "2:result",
+          "kind": "tool_result",
+          "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-2\nfc_synth02-0Synth-00000002-syn_th1_2",
+          "is_error": true,
+          "status": "completed",
+          "output": "Exit code: 1\n\nCommand output:\n\n```\n1 failed, 2 passed\n```",
+          "output_len": 57,
+          "truncated": null,
+          "exit_code": 1
+        },
+        {
+          "part_id": "3",
+          "kind": "text",
+          "text": "One test fails: total ignores qty."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "cmp_sha": "80f1046de328230860991b7e3e6b9e341eb8789b5c6ada0c0a270ef65bca2657"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "coupon-work",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-20T15:04:22.490Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "deb65543fe70db6322a6a060f2d3d88e790bcd3972456e7e5fc3a79c66f4fc8d",
+          "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+          "80f1046de328230860991b7e3e6b9e341eb8789b5c6ada0c0a270ef65bca2657",
+          "9edaedc851bddfb9f35a960aa59f6a086d48efa74d1f8feb27584a395031ca96",
+          "d828ded5ef6d399c4223428fa070b11cace00a83ee4e93ed298327d73f609f12",
+          "069d51dd3720538b6a8dc408244905fee122a20b856d620076c0bd971b04ca5b",
+          "c297a4aa1591daf090cc0a786b8f0201898d7726931599a705fe5456cfa32d12",
+          "5b22619ab8cd8f8d8a027b2b95cb8f3de90ec5acf3cc6729e2ef375ee8513363",
+          "0751c941b15db8c3b7fd41240f994529c15a9e914da6098e7f25743c6d7e4d2d",
+          "1f762a54be997fe82aedc8237f4e7bee3c495ee323b268e4eb0177fee52d62b0",
+          "a50676f228508dd1d4fa5fef940c3e552e79a6b4a062730ea80a67cc4d29e3a1",
+          "164f295d3bc31bc0d94c55cdb26e6e647e6a9e67de3d837319ec80597f89b72f",
+          "f57e92ec36fc168cfd3b402a0f7c382fca94223751cb425490e9fbebee12543f",
+          "951611dcbc7f01fcefd20df23b1da0b60f3d1c2717b40562822442a630582063",
+          "52917bdd340baf04fe5778e94a8a62f14570a75a95503a2079768e873e4714d7",
+          "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd",
+          "1a0ec0b83c0d0d5e688c95b36062dab3ba240b36ca15a4b6baff63decf437de6",
+          "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd",
+          "4978c32fbbfcbdd8d6e2beb3cbbf95c2917566f00916250aa3d27a85e9786fb2",
+          "7f466d8cfcfd041f750328815cffbf847da4065f210bfa8961b040595bd7a3cd"
+        ]
+      },
+      "setup": null
+    }
+  ],
+  "c4a1e0de-5a7e-4000-8000-000000000002": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000211",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Name the toy shop."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000002",
+      "incarnation": "",
+      "cmp_sha": "d5d602ad497280116327e6de65f1f8e5c3f281f069f22fcfbb026affaa0c7da2"
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000212",
+      "parent_id": null,
+      "order": "000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T16:00:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests again."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000002",
+      "incarnation": "",
+      "cmp_sha": "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224"
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000111:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T15:59:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Toyshop."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000002",
+      "incarnation": "",
+      "cmp_sha": "9420d863f48bdb02b33a14c305a601138a7231dea779d57cdba80bfc023c6552"
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "c4a1e0de-5a7e-4000-8000-000000000002",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "held-run",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-20T16:00:02.390Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d5d602ad497280116327e6de65f1f8e5c3f281f069f22fcfbb026affaa0c7da2",
+          "9420d863f48bdb02b33a14c305a601138a7231dea779d57cdba80bfc023c6552",
+          "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224"
+        ]
+      },
+      "setup": null
+    }
+  ]
+}

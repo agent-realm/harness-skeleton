@@ -1,0 +1,40 @@
+{
+  "check": "tier 1: a skill materialized into $CODEX_HOME/skills reaches Codex (design note v0.2 \u00a77.5); fails loudly if Codex stops loading that deprecated root",
+  "at": "2026-10-23T06:47:06.568Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-146-generic x64",
+    "hs_commit": "c936300"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 1,
+      "skill_marker": false,
+      "skills_root": true
+    },
+    "applied": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 1,
+      "skill_marker": true,
+      "skills_root": true
+    }
+  },
+  "catalog_line": "- hs-bench-notes: Take bench notes. hs-tier1-codex-skill-marker-5e1a (file: r0/hs-bench-notes/SKILL.md)",
+  "refusal": {
+    "code": "receipt_required"
+  },
+  "checks": {
+    "before apply no request carries the skill (premise)": true,
+    "apply without a receipt for runs-code is refused, and writes nothing": true,
+    "the plan writes one tree, skills/<name>, runs-code": true,
+    "after apply the skill reaches the request: Codex loads $CODEX_HOME/skills": true,
+    "the catalog line names the skill's SKILL.md under a root alias, and the request names $CODEX_HOME/skills as a root": true,
+    "config.toml is byte for byte the user's": true,
+    "launch-spec skips the installed skill, and does not refuse it": true
+  },
+  "verdict": "pass"
+}

@@ -1,11 +1,11 @@
 {
-  "check": "tier 1: hooks at launch on Codex, through hs's hook shim, trusted by -c hooks.state under a launch receipt (design note v0.2 \u00a75.6, \u00a77.5)",
-  "at": "2026-10-23T01:45:55.029Z",
+  "check": "tier 1: hooks at launch on Codex, through hs's hook shim, trusted by -c hooks.state under a launch receipt (design note v0.2 §5.6, §7.5)",
+  "at": "2026-10-24T10:03:12.613Z",
   "evidence": {
     "harness": "codex-cli 0.160.0",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "4e4d00c"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "refusal": {
     "code": "receipt_required",

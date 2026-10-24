@@ -1,11 +1,11 @@
 {
   "check": "tier 1: MCP servers persisted by a plan under materialize, in user scope, a stdio server bound by copy (design note v0.2 §5.4, §7.5)",
-  "at": "2026-10-22T21:52:40.340Z",
+  "at": "2026-10-24T10:02:54.429Z",
   "evidence": {
     "harness": "2.1.307 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "e16159f"
+    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
   },
   "runs": {
     "control": {

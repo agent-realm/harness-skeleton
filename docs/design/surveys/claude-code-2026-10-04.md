@@ -49,13 +49,13 @@ Convention: `D-*` keys are **documented** (Anthropic docs). `L-*` keys are **obs
 | [AS-client] | https://agentskills.io/client-implementation/adding-skills-support (fetched 2026-10-04) |
 | [L-help] | local: `claude --help`, `claude <sub> --help`, `claude <sub> help <cmd>` @2.1.289 |
 | [L-fs] | local: entry names under `~/.claude`, `$HOME`, and a `$CLAUDE_CONFIG_DIR` other than the default; keychain item **existence** via `security find-generic-password -s <name>` with output discarded (exit code only) |
-| [B-overlay] | bench: `conformance/tier1/overlay-env-precedence.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-overlay-env-precedence-2026-10-22-14_05.json` |
-| [B-hooks-persisted] | bench: `conformance/tier1/hooks-persisted.mjs` @2.1.307 on Linux, 2026-10-23; report in `conformance/results/claude-code-2.1.307-hooks-persisted-2026-10-23-06_47.json` |
-| [B-hooks] | bench: `conformance/tier1/hooks-at-launch.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-hooks-at-launch-2026-10-22-17_05.json` |
-| [B-mcp-persisted] | bench: `conformance/tier1/mcp-persisted.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-mcp-persisted-2026-10-22-21_52.json` |
-| [B-mcp] | bench: `conformance/tier1/mcp-at-launch.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-mcp-at-launch-2026-10-22-16_16.json` |
-| [B-skills] | bench: `conformance/tier1/skills-at-launch.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-skills-at-launch-2026-10-22-16_01.json` |
-| [B-account] | bench: `conformance/tier1/account-state.mjs` @2.1.307 on Linux, 2026-10-22; report in `conformance/results/claude-code-2.1.307-account-state-2026-10-22-14_32.json` |
+| [B-overlay] | bench: `conformance/tier1/overlay-env-precedence.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-overlay-env-precedence-2026-10-24-10_02.json` |
+| [B-hooks-persisted] | bench: `conformance/tier1/hooks-persisted.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-hooks-persisted-2026-10-24-10_02.json` |
+| [B-hooks] | bench: `conformance/tier1/hooks-at-launch.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-hooks-at-launch-2026-10-24-10_02.json` |
+| [B-mcp-persisted] | bench: `conformance/tier1/mcp-persisted.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-mcp-persisted-2026-10-24-10_02.json` |
+| [B-mcp] | bench: `conformance/tier1/mcp-at-launch.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-mcp-at-launch-2026-10-24-10_02.json` |
+| [B-skills] | bench: `conformance/tier1/skills-at-launch.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-skills-at-launch-2026-10-24-10_02.json` |
+| [B-account] | bench: `conformance/tier1/account-state.mjs` @2.1.307 on Linux, 2026-10-24; report in `conformance/results/claude-code-2.1.307-account-state-2026-10-24-10_02.json` |
 | cpb §X | `SPEC.md` in github.com/ramazanpolat/claude-playbooks, section X |
 
 ## 1. Config root

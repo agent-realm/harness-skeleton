@@ -1,0 +1,44 @@
+# The publication guard on every pull request and every push to main (AGENTS.md, Testing).
+# GitHub-hosted runner only, no secrets, no dependencies: scripts/guard.mjs needs Node and git.
+name: guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # The check `main` should require is named `guard`.
+  guard:
+    name: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Self-test the guard
+        run: node scripts/guard.mjs --self-test
+      - name: Guard the tracked files and the commits
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            # The checkout is the merge commit: HEAD^1 is the base, HEAD^2 the pull request's head.
+            # The base's copy of the guard runs, so a change to the guard takes effect only after
+            # it is merged. Changes to this workflow itself still need review.
+            if git cat-file -e "HEAD^1:scripts/guard.mjs" 2>/dev/null; then
+              git show "HEAD^1:scripts/guard.mjs" > "$RUNNER_TEMP/guard.mjs"
+              guard="$RUNNER_TEMP/guard.mjs"
+            else
+              guard=scripts/guard.mjs
+            fi
+            node "$guard" --commits "HEAD^1..HEAD^2"
+          else
+            node scripts/guard.mjs --commits HEAD
+          fi

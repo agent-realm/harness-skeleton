@@ -492,6 +492,12 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `parts[3].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
     `sentinel` are unchanged.
+- **claude-code and codex: no change.** `cancelled` and `denied` come from a structured marker the
+  harness store writes, never from the output's text (sessions-model v1.x (#6), §2.3). No fixture
+  holds a Claude Code rejection or interrupt, or a Codex `aborted` call, and no structured marker
+  for either is known, so their results stay `completed` with the store's flag. `docs/live-check.md`
+  lists both as not established: what would establish each status, and the mapping that would
+  apply (`denied` for a rejection, `cancelled` for an interrupt or an abort, `is_error` null).
 - **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
   item (sessions-model v1.x (#6), §2.3): every `tool_result` copies the harness store's own flag,
   and is null where the store has none, where the flag says success beside a shell's non-zero

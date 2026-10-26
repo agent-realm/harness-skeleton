@@ -426,10 +426,11 @@ test('copilot-cli: a tool_result carries the stored shellExecution.exitCode; a n
   });
 });
 
-// Contract decision, to appear in sessions-model v1.x (refines §2.3, tool_result `is_error`):
-// `is_error` copies the stored `success` flag, and is null where the store says `success: true` but
-// the shell exited non-zero (a flag the exit code contradicts, as §2.3's Zed case); `exit_code`
-// carries the failure. It is never derived from the exit code or the text.
+// sessions-model v1.x (#6), §2.3 (tool_result `is_error`): `is_error` copies the stored `success`
+// flag. A flag that says success beside a shell's non-zero `exit_code` is unreliable for that
+// result (Copilot CLI and Codex store `success: true` so): that result's `is_error` is null,
+// `exit_code` carries the failure, and the other results keep the flag. It is never derived from
+// the exit code or the text.
 test('copilot-cli: is_error copies success; success true with a non-zero shell exit is null, and exit_code carries the failure', () => {
   const resultsOf = (dir, sid) => Object.fromEntries(messages(project(fullReplay(adapter, dir).views())[sid])
     .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]]));

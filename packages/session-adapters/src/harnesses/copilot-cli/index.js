@@ -511,11 +511,12 @@ function foldEvent(ctx, o, sk, unitKey) {
       const output = resultText(d);
       const exit = d.shellExecution && typeof d.shellExecution === 'object' ? num(d.shellExecution.exitCode) : null;
       const exitCode = Number.isInteger(exit) ? exit : null;
-      // `is_error` copies the stored `success` flag: false gives true, true gives false. Where the
-      // shell exited non-zero under `success: true`, the flag is contradicted, so `is_error` is null
-      // and `exit_code` carries the failure; without a flag it is null. Never derived from the exit
-      // code or the text (contract decision, to appear in sessions-model v1.x; refines §2.3, whose
-      // Zed case is the same unreliable flag).
+      // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): the stored
+      // `success` copied, false giving true and true giving false; without a flag it is null. A flag
+      // that says success beside a shell's non-zero `exit_code` is unreliable for that result, as
+      // §2.3 rules for Copilot CLI and Codex alike: that result's `is_error` is null, `exit_code`
+      // carries the failure, and the other results keep the flag. Never derived from the exit code
+      // or the text.
       const isError = d.success === false ? true : d.success === true ? (exitCode !== null && exitCode !== 0 ? null : false) : null;
       const denied = !!d.error && typeof d.error === 'object' && d.error.code === 'denied';
       // A tool result is written by the harness running the tool: no `source` value fits it.

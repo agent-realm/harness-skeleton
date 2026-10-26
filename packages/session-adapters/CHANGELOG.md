@@ -163,18 +163,19 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
 
 ### copilot-cli and codex: `is_error` is the stored flag only (adapter_ver 0.2.1 each)
 
-A contract decision, to appear in sessions-model v1.x, refining §2.3 (`tool_result.is_error`): an
-adapter copies the harness store's success or error flag and never derives `is_error` from the exit
-code or the text. Both adapters applied an exit-code rule inherited from an earlier reader.
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): an adapter copies the harness store's
+success or error flag and never derives `is_error` from the exit code or the text. A flag that says
+success beside a shell's non-zero `exit_code` is unreliable for that result (Copilot CLI and Codex
+store `success: true` so): that result's `is_error` is null, and the harness store's other results
+keep the flag. Both adapters applied an exit-code rule inherited from an earlier reader.
 
 - **copilot-cli:** `success: false` gives true and `success: true` gives false, except where the
-  shell exited non-zero under `success: true`. There the flag is contradicted, as in §2.3's Zed
-  case, so `is_error` is null and `exit_code` carries the failure. An event with no `success` gives
-  null.
+  shell exited non-zero under `success: true`: there `is_error` is null and `exit_code` carries the
+  failure. An event with no `success` gives null.
 - **codex:** a rollout's tool output keeps no success flag (an `{output, metadata}` string, or plain
   text), so `is_error` is null; `metadata.exit_code` stays in `exit_code`. Where an output does carry
-  `success`, it is copied, with the same rule for a contradicting non-zero exit code. No fixture
-  rollout carries one.
+  `success`, it is copied, with the same rule for `success: true` beside a non-zero exit code. No
+  fixture rollout carries one.
 - **Goldens:** `parts[0].is_error` changes on 14 tool results, and with it each message's
   `cmp_sha` (`is_error` is in its projection) and that entry of the session's
   `fingerprint.cmp_shas`. Nothing else moves.

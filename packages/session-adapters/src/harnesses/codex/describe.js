@@ -33,8 +33,9 @@ export const describe = Object.freeze({
     // is not kept, its `metadata.exit_code` is the tool_result's `exit_code`; a plain-text output
     // (fixture: live) has exit_code null, since the `item_completed` CommandExecution that carries
     // one names no call_id to join on; no fixture output carries a success flag, so `is_error` is
-    // null there, never derived from the exit code (contract decision, to appear in
-    // sessions-model v1.x; refines §2.3); an image given by URL rather than a data URL is not kept.
+    // null there, never derived from the exit code, and a stored success beside a non-zero exit
+    // code is null too (sessions-model v1.x (#6), §2.3); an image given by URL rather than a data
+    // URL is not kept.
     read: 'lossy',
     reuse: 'impossible',
     lifecycle: {

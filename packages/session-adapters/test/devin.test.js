@@ -441,13 +441,17 @@ test('devin: a dangling sub-agent head leaves a mode switch\'s old root alone: t
   });
 });
 
-test('devin: a torn read is inconsistent, never an empty or shorter session: main_chain_id, a compacted history, a sub-agent chain', () => {
+// sessions v1.x (#6), §2 `inconsistent`: only the main line itself tears a Devin read, its head and
+// the parent links along it (after a compaction or a mode switch, the re-rooted copies are that
+// line). A loop anywhere is no committed tree: damaged.
+test('devin: a torn main line is inconsistent, never an empty or shorter session: its head, a parent link along it; a loop is damaged', () => {
   withStore('features', (dir) => {
     const store = storeOf(adapter, dir);
+    const del = (sid, mid) => (w) => w.prepare('DELETE FROM message_nodes WHERE session_id = ? AND node_id = ?').run(sid, nodeOf(w, sid, ID(mid)));
     const cases = [
       ['amber-harbor', (w) => w.prepare("UPDATE sessions SET main_chain_id = 999 WHERE id = 'amber-harbor'").run()],
-      ['calm-orchard', (w) => w.prepare("DELETE FROM message_nodes WHERE session_id = 'calm-orchard' AND node_id = ?").run(nodeOf(w, 'calm-orchard', ID('co:r1')))],
-      ['dusty-lantern', (w) => w.prepare("DELETE FROM message_nodes WHERE session_id = 'dusty-lantern' AND node_id = ?").run(nodeOf(w, 'dusty-lantern', ID('dl:sr1')))],
+      ['brisk-meadow', del('brisk-meadow', 'bm:u3')],
+      ['calm-orchard', del('calm-orchard', 'co:rules')], // the re-rooted copy the line runs through
     ];
     for (const [sid, tear] of cases) {
       const w = writer(dir);
@@ -455,12 +459,75 @@ test('devin: a torn read is inconsistent, never an empty or shorter session: mai
       w.close();
       assert.throws(() => adapter.read(store, keyOf(store, sid), SOURCE), { code: 'inconsistent' }, sid);
     }
-    // A loop is no committed tree: damaged.
     const w = writer(dir);
     w.prepare("UPDATE message_nodes SET parent_node_id = node_id WHERE session_id = 'hollow-pine' AND node_id = 0").run();
+    // A loop in a sub-agent chain the main line only names.
+    w.prepare("UPDATE message_nodes SET parent_node_id = node_id WHERE session_id = 'dusty-lantern' AND node_id = ?").run(nodeOf(w, 'dusty-lantern', ID('dl:sr1')));
     w.close();
     assert.throws(() => adapter.read(store, keyOf(store, 'hollow-pine'), SOURCE), { code: 'damaged' });
+    assert.throws(() => adapter.read(store, keyOf(store, 'dusty-lantern'), SOURCE), { code: 'damaged' });
   });
+});
+
+// sessions v1.x (#6), §2 `inconsistent`: a node the main line only names (a compacted history's
+// prior nodes, a sub-agent chain a tool result names) that the read lacks tears nothing. derive
+// leaves out what it would have reached, the raw unit keeps the naming row, and a later read that
+// holds the node derives it. Each case removes the named node itself or an earlier node of its chain
+// (every row with that message id, so both streaming twins), from the fixture as it stands.
+function namedNodeMissing(sid, mid, leftOut) {
+  const byMid = 'FROM message_nodes WHERE session_id = ? AND json_extract(chat_message, \'$.message_id\') = ?';
+  const isLeftOut = (r) => (r.type === 'message' && leftOut.includes(r.message_id)) || (r.type === 'usage' && leftOut.includes(r.anchor?.message_id)) || r.type === 'lifecycle';
+  withStore('features', (dir) => {
+    const store = storeOf(adapter, dir);
+    const whole = deriveDir(dir, sid);
+    let w = writer(dir);
+    const rows = w.prepare(`SELECT * ${byMid}`).all(sid, mid);
+    assert.ok(rows.length > 0, mid);
+    w.prepare(`DELETE ${byMid}`).run(sid, mid);
+    w.close();
+    // read: no error, and the raw unit keeps the naming row.
+    const units = adapter.read(store, keyOf(store, sid), SOURCE).units;
+    assert.equal(units.length, 1);
+    // From an empty state: the main line, and nothing of the left-out piece, not even as an
+    // abandoned branch.
+    const t = deriveDir(dir, sid);
+    assert.deepEqual(t.changed.filter(isLeftOut).map((r) => [r.type, r.message_id ?? r.usage_id ?? r.lifecycle_id]), [], 'nothing of what the named node would have reached');
+    assert.ok(t.changed.filter((r) => r.type === 'message').every((m) => m.on_active_branch), 'nothing reads as an abandoned branch');
+    const line = whole.changed.filter((r) => r.type === 'message' && !isLeftOut(r)).map((r) => r.message_id).sort();
+    assert.deepEqual(t.live.message, line, 'the main line, whole');
+    assert.deepEqual(t.held, whole.held);
+    // From the whole read's state: what the whole read wrote of the piece is held, never tombstoned;
+    // what remains is only revised (an order or a fingerprint that moved), never new.
+    const tw = deriveDir(dir, sid, whole.state);
+    for (const type of ['session', 'message', 'usage', 'link', 'lifecycle']) {
+      const wrote = whole.live[type].filter((k) => !tw.live[type].includes(k));
+      assert.deepEqual(wrote.filter((k) => !tw.held[type].includes(k)), [], `${type}: in live or held`);
+    }
+    assert.deepEqual(tw.held.message, whole.changed.filter((r) => r.type === 'message' && isLeftOut(r)).map((r) => r.message_id).sort(), 'the left-out messages are held');
+    assert.ok(tw.changed.every((r) => !isLeftOut(r) && whole.state.emitted[r.type][recordKeyOf(r)] != null), 'a revision of a key the whole read wrote');
+    // The later read holds the node again: from either state, it folds to the whole read.
+    w = writer(dir);
+    const cols = Object.keys(rows[0]);
+    const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
+    for (const r of rows) ins.run(...cols.map((c) => r[c]));
+    w.close();
+    for (const [from, state] of [['the empty-state derive', t.state], ['the whole-state derive', tw.state]]) {
+      const later = deriveDir(dir, sid, state);
+      assert.deepEqual([later.live, later.held], [whole.live, whole.held], from);
+      assert.deepEqual(later.state.emitted, whole.state.emitted, `${from}: every key at the whole read's version`);
+    }
+  });
+}
+const recordKeyOf = (r) => (r.type === 'session' ? '' : r.type === 'message' ? r.message_id : r.type === 'usage' ? r.usage_id : r.type === 'lifecycle' ? r.lifecycle_id : null);
+
+test('devin: a compacted history the read does not hold whole is no torn read: derive leaves it out and holds what it wrote of it; a later read derives it', () => {
+  const history = ['co:u1', 'co:a1', 'co:r1', 'co:a2', 'co:summary'].map(ID);
+  for (const mid of ['co:a2', 'co:r1']) namedNodeMissing('calm-orchard', ID(mid), history);
+});
+
+test('devin: a sub-agent chain a tool result names that the read does not hold whole is no torn read: derive leaves it out and holds what it wrote of it; a later read derives it', () => {
+  const chain = ['dl:task', 'dl:sa1', 'dl:sr1', 'dl:sa2'].map(ID);
+  for (const mid of ['dl:sa2', 'dl:sr1']) namedNodeMissing('dusty-lantern', ID(mid), chain);
 });
 
 test('devin: list names every sessions row, hidden ones too, with its one source; the hint moves with this session only', () => {

@@ -227,39 +227,57 @@ adapter emitted no usage at all for such a thread.
   with `session` (`conformance/generic.js`); the matrix's M.usage cell for zed names the new test.
 - No key changes; consumers re-derive zed sessions.
 
-### devin: a dangling sub-agent head is no torn read (adapter_ver 0.2.1)
+### devin: only the main line tears a read (adapter_ver 0.2.1)
 
-A contract decision, to appear in sessions v1.x, refining §2 (`read` errors, `inconsistent`, whose
-Devin example is a `main_chain_id` naming a node not yet written): only the main chain's head makes
-a read inconsistent.
+sessions v1.x (#6), §2 (`read` errors, `inconsistent`, whose Devin example is a `main_chain_id`
+naming a node not yet written): only the main line itself tears a Devin read, its head and the
+parent links along it. A node the main line only names (a sub-agent head, a compacted history's
+prior nodes, a sub-agent chain a tool result names) that the read lacks does not: derive leaves out
+what it would have reached, the raw unit keeps the naming row, and a later read that holds the node
+derives it.
 
-- **`read`:** a `subagent_heads` row naming a node the read does not hold, or whose chain the read
-  does not hold whole, no longer throws `inconsistent`. The read returns the snapshot. A dangling
-  `main_chain_id`, and a compacted history or a finished sub-agent chain that the main line names,
-  still do. A loop in a head's chain is still `damaged`.
-- **`derive` leaves out what the dangling head would have reached.** Its head cannot be walked,
-  so its held nodes cannot be named as a sub-agent's. They would otherwise read as an abandoned
-  branch (messages with `on_active_branch: false`). While a head dangles, a node is left out only
-  when no valid head reaches its tree and no tree holding a main-line node contains it (sessions
-  v1.x (#6), §2). A tree is kept when it holds a node the plan reached from the main line or a
-  node of a valid sub-agent head's chain, or the original such a node names through
-  `compact/prior_node_ids`. So a sub-agent's task, a root of its own re-rooted under its prompt
-  (fixture `features`, session `dusty-lantern`), is left out with its chain. Off-line trees that
-  exist without the dangling head keep their normal treatment: a mode switch's old root, a valid
-  sub-agent's pre-copy task, and the abandoned branches in either. A later read that holds the node
-  derives the chain as usual, as a new rev.
-- **What a dangling read leaves out is held, not tombstoned.** While a head dangles, a key written
-  before (live or held in the state derive is given) and left out now goes to `held`: its last
-  written version stands (sessions §2, `held`). The next read that holds the node releases it, live
-  again, or drops it. Before, a read with a dangling head that followed a whole read left those keys
-  out of both `live` and `held`, so a consumer tombstoned them and the next whole read recreated
-  them: `dusty-lantern` at the head's last move, its node removed, tombstoned three messages (the
-  task and the streaming twins' siblings) and two usage records.
-- **Goldens:** none change. No fixture case ends with a sub-agent running. One test builds the
-  `features` store up to the head's last move and removes the head's node, or an earlier node of
-  its chain. Another adds a dangling head to `amber-harbor`, the mode-switch shape (the line runs
-  through prefix copies), with and without a turn abandoned in its old root: the records are the
-  same as without the head.
+- **`read`:** a dangling `main_chain_id`, or a parent link along the main line that the read cannot
+  follow (after a compaction or a mode switch, the re-rooted copies are that line), still throws
+  `inconsistent`. These no longer do, and the read returns the snapshot: a `subagent_heads` row
+  naming a node the read does not hold, or whose chain it does not hold whole; a compacted history
+  (`summarized_from`) the read does not hold whole; a sub-agent chain a tool result names
+  (`subagent/chain_node_id`) that it does not hold whole. A loop anywhere is still `damaged`.
+- **`derive` leaves out what the dangling node would have reached.** Its chain cannot be walked,
+  so its held nodes cannot be named. They would otherwise read as an abandoned branch (messages
+  with `on_active_branch: false`). While something dangles, a node is left out only when no valid
+  head reaches its tree and no tree holding a main-line node contains it. A tree is kept when it
+  holds a node the plan reached from the main line or a node of a valid sub-agent head's chain, or
+  the original such a node names through `compact/prior_node_ids`. So a sub-agent's task, a root
+  of its own re-rooted under its prompt (fixture `features`, session `dusty-lantern`), is left out
+  with its chain. Off-line trees that exist without the dangling node keep their normal treatment:
+  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either.
+- **A compacted history that tears is left out whole**, with its compaction record and summary
+  message. A compaction re-roots the line as a mode switch does, so the tree its history sits in is
+  named by the line's prefix copies; while that history tears, a tree named only that way is left
+  out with it. Its nodes above the gap cannot be told from an abandoned branch there.
+- **What the torn read still emits is revised, not new.** Leaving a piece out moves the `order` of
+  the line messages after it and the session's fingerprint, so those records are revised, and
+  revised back by the read that holds the node. `calm-orchard` without `co:a2` or `co:r1`:
+  `co:si` (its parent is now the copy's), `co:cont`, `co:u2`, `co:a3` and the session record.
+  `dusty-lantern` without `dl:sa2` or `dl:sr1`: `dl:res`, `dl:a2` and the session record.
+- **What a dangling read leaves out is held, not tombstoned.** While a node the main line names
+  dangles, a key written before (live or held in the state derive is given) and left out now goes
+  to `held`: its last written version stands (sessions §2, `held`). The next read that holds the
+  node releases it, live again, or drops it. Before, a read with a dangling head that followed a
+  whole read left those keys out of both `live` and `held`, so a consumer tombstoned them and the
+  next whole read recreated them: `dusty-lantern` at the head's last move, its node removed,
+  tombstoned three messages (the task and the streaming twins' siblings) and two usage records.
+- **Goldens:** none change. No fixture case has a dangling node. The tests:
+  - build the `features` store up to the head's last move and remove the head's node, or an
+    earlier node of its chain, deriving from an empty state and from the whole read's state;
+  - add a dangling head to `amber-harbor`, the mode-switch shape (the line runs through prefix
+    copies), with and without a turn abandoned in its old root: the records are the same as
+    without the head;
+  - remove the compacted history's named node (`co:a2`) or an earlier one (`co:r1`) from
+    `calm-orchard`, and the named sub-agent chain's node (`dl:sa2`) or an earlier one (`dl:sr1`)
+    from `dusty-lantern`. Each read succeeds, the piece is left out (and held from the whole read's
+    state), and the read that holds the node again folds to the whole read's state, from either
+    state.
 - No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
   `read` used to refuse.
 - `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.

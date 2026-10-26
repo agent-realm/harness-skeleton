@@ -49,9 +49,10 @@ export const describe = Object.freeze({
     // last_activity_at, tool_call_state.tool_call_json and subagent_heads.updated_at are not read;
     // chisel/undo, chisel/conversation_history, tool timings and an inline image's source path stay
     // in the unit and reach no record (a shell's `chisel/terminal_output.exit.exit_code` is the
-    // tool_result's `exit_code`); archive state lives in another store. A `subagent_heads` row
-    // naming a node the read does not hold is no torn read: that running sub-agent's chain is left
-    // out until a read holds it (contract decision, to appear in sessions v1.x).
+    // tool_result's `exit_code`); archive state lives in another store. A node the main line only
+    // names (a `subagent_heads` row's node, a compacted history's prior nodes, a sub-agent chain a
+    // tool result names) that the read does not hold is no torn read: what it would have reached is
+    // left out until a read holds it (sessions v1.x (#6), §2 `inconsistent`).
     read: 'lossy',
     // A two-word slug, reuse unverified, and no birth marker: incarnation '' (annex mapping row).
     reuse: 'undetectable',

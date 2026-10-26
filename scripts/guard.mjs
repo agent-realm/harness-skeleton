@@ -17,8 +17,9 @@
 // of short names can be reversed. The maintainer runs it before every push.
 //
 // Tests and fixtures carry stand-ins on purpose. These pass without an ALLOW entry:
-// - a secret-shaped value that says it is fake: a part starting with toy, dummy, fake, sentinel or
-//   placeholder, or the words not-a- or pasted-secret (`toy-…`, `sk-not-a-real-key…`);
+// - a secret-shaped value that says it is fake: it starts with toy, dummy, fake, sentinel or
+//   placeholder (lower case), has one of them as a whole part between separators, or has a part
+//   starting not-a- or pasted-secret (`toysig-…`, `hs-dummy-key1`, `sk-not-a-real-key…`);
 // - addresses and URL credentials on reserved names: example.com/.org/.net and any name under
 //   .example, .invalid, .test or .localhost (RFC 2606, RFC 6761).
 // Any other false positive goes into ALLOW (per check, a line pattern, optionally limited to one
@@ -27,8 +28,12 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-const SYNTHETIC = (v) => /(^|[^a-z0-9])(toy|dummy|fake|sentinel|placeholder)/.test(v.toLowerCase()) ||
-  /not-a-|pasted-secret/.test(v.toLowerCase());
+// A marker counts at the very start of the value (lower case, as the fixtures write it: `toysig-…`),
+// or as a whole part between separators (`…-dummy-…`), never inside a random part.
+const MARKERS = ['toy', 'dummy', 'fake', 'sentinel', 'placeholder'];
+const SYNTHETIC = (v) => MARKERS.some((m) => v.startsWith(m)) ||
+  v.toLowerCase().split(/[-_.]+/).some((p) => MARKERS.includes(p)) ||
+  /(^|[-_.])(not-a-|pasted-secret)/i.test(v);
 const RESERVED = (host) =>
   /^(localhost|([a-z0-9-]+\.)*(example|invalid|test|localhost)|([a-z0-9-]+\.)*example\.(com|org|net))$/i.test(host);
 
@@ -49,10 +54,11 @@ const CHECKS = {
     [...l.matchAll(/(password|passwd|token|api[_-]?key|secret)["']?\s*[=:]\s*["']?([A-Za-z0-9\/+_.-]{12,})/gi)]
       .some((m) => /\d/.test(m[2]) && /[A-Za-z]/.test(m[2]) && !SYNTHETIC(m[2])),
   'home path with a user name': (l) => {
-    // A path inside a URL with a host is not a home path. Only the URL token itself is set aside,
-    // so a home path elsewhere on the line (the next JSON value, say) is still checked. A URL with
-    // an empty host (unix:///…, sqlite:////…) and any scheme ending in "file" stay checked.
-    const rest = l.replace(/\b(?![A-Za-z0-9+.-]*file:)[A-Za-z][A-Za-z0-9+.-]+:\/\/[^\s\/"'<>()\[\]{},|`^][^\s"'<>()\[\]{},|`^]*/gi, ' ');
+    // A path inside a web URL (http, https, ws, wss) with a host is not a home path: it names a
+    // resource on a server. Only the URL token itself is set aside, so a home path elsewhere on the
+    // line (the next JSON value, say) is still checked. Every other scheme stays checked: ssh://,
+    // git+ssh://, rsync:// and file:// paths are paths on a real machine.
+    const rest = l.replace(/\b(https?|wss?):\/\/[^\s\/"'<>()\[\]{},|`^][^\s"'<>()\[\]{},|`^]*/gi, ' ');
     return /\/(Users|users|home)\/(?!user\b|me\b|you\b|runner\b)[A-Za-z0-9_]/.test(rest) ||
       /[A-Za-z]:\\+Users\\+(?!user\b|public\b)[A-Za-z0-9_]/i.test(rest);
   },
@@ -66,8 +72,8 @@ const CHECKS = {
   'process wording': (l) =>
     /\bpilot\b|\[via [^\]]+\]|\brelayed (via|by)\b|\bfirst-hand\b|\bcanon(?!ical)|\bumbrella\b|\bconstellation\b/i.test(l),
 };
-// noreply addresses, and the maintainer's public address (ramazanpolat@gmail.com).
-const EMAIL_OK = /^([0-9]+\+)?[A-Za-z0-9-]+@users\.noreply\.github\.com$|^noreply@(github|anthropic)\.com$|^ramazanpolat@gmail\.com$/;
+// noreply addresses.
+const EMAIL_OK = /^([0-9]+\+)?[A-Za-z0-9-]+@users\.noreply\.github\.com$|^noreply@(github|anthropic)\.com$/;
 
 // Per check: a line pattern, or { path, line } to limit it to one tracked file.
 const LEAK_TEST = 'packages/session-adapters/test/public-fixtures.test.js';   // tests a leak finder
@@ -103,7 +109,10 @@ const SELF_TEST = [
   ['C:/' + U + 'bob/x', 'home path with a user name', true],
   ['|https://example.com|' + H + 'alice|', 'home path with a user name', true],
   ['`https://example.com`' + H + 'alice', 'home path with a user name', true],
-  ['ssh://host' + H + 'alice', 'home path with a user name', false],
+  ['ssh://host' + H + 'alice', 'home path with a user name', true],
+  ['git+ssh://git' + AT + 'bench' + H + 'alice/repo.git', 'home path with a user name', true],
+  ['rsync://bench' + H + 'alice/data', 'home path with a user name', true],
+  ['wss://example.com' + H + 'alice/socket', 'home path with a user name', false],
   ['session-adapters' + AT + 'v1.1', 'e-mail address', false],
   // Stand-ins and reserved names pass; the same shapes with a real-looking value or host do not.
   ["const KEY = '" + SK + "not-a-real-key-but-treated-as-one'", 'credential shape', false],
@@ -115,6 +124,12 @@ const SELF_TEST = [
   ["'http://user:secret" + AT + "host.example:8443/x'", 'credential shape', false],
   ['account: bench' + AT + 'example.invalid', 'e-mail address', false],
   ['account: bench' + AT + 'university.edu', 'e-mail address', true],
+  // A marker inside a random part does not make a real token a stand-in.
+  ["token: 'gh" + "p_ToyAb3dE5gH7jK9mN1pQ3rS5tU7vW9xY1z'", 'credential shape', true],
+  ["token: 'gh" + "p_Ab3dE5gH7jK9mN1pQ3r_toyS5tU7vW9xY1z'", 'credential shape', true],
+  ["pass" + "word = 'ToyStory99secretX'", 'credential shape', true],
+  ["const ARG_TOK" + "EN = 'toyarg-7f3c9e2a51d84b06'", 'credential shape', false],
+  ["ANTHROPIC_API_K" + "EY: 'hs-tier1-dummy-not-a-key'", 'credential shape', false],
 ];
 
 const args = process.argv.slice(2);

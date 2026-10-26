@@ -411,3 +411,11 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     (`call_…00018`, message `b579dd63…`): `parts[0].is_error` `true` → `null`, with each message's
     `cmp_sha` and its entry of the session's `fingerprint.cmp_shas`. The fork's `cmp_shas` still
     match its origin's. Nothing else moves.
+- **cursor (adapter_ver 0.2.2, unchanged).** A denial (`rejected`, or a result that says
+  `rejected`: `denied`) and a cancel or an abort (`cancelled`) gave false, or true beside an `error`
+  status. They give null. A call that completed keeps its status as the flag.
+  - Goldens: three tool results, `parts[n].is_error` `false` → `null`, with each message's
+    `cmp_sha` and its entry of the session's `fingerprint.cmp_shas`: in `features`, the cancelled
+    loop (session `c0c0a001…`, message `b0b0b003…:assistant`) and the rejected tool (session
+    `c0c0a007…`, message `b0b0b071…:assistant`); in `lab`, the cancelled loop (message
+    `5a5a0029…:assistant`). Nothing else moves.

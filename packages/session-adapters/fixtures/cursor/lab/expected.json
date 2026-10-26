@@ -325,7 +325,7 @@
           "part_id": "t:call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0:result",
           "kind": "tool_result",
           "call_id": "call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0",
-          "is_error": false,
+          "is_error": null,
           "status": "cancelled",
           "output": "tick 1\ntick 2\ntick 3\ntick 4\ntick 5\ntick 6\ntick 7\ntick 8\ntick 9\ntick 10\ntick 11\ntick 12\ntick 13\ntick 14\ntick 15\ntick 16\ntick 17\ntick 18\n",
           "output_len": 135,
@@ -333,7 +333,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "448cdd7a38e29fa07badbed9db169fca4b83637dbbdf54695208e09b2ee2ccac"
+      "cmp_sha": "3aab9a524dfa35eeb06a76eecd2f4cf6cf842122e9390b48c7eb2030d1d05b1e"
     },
     {
       "type": "session",
@@ -360,7 +360,7 @@
         "cmp_shas": [
           "b8131fac0d2c0c362a76c383e3e181a3ed4771b8788def96a55e8ebc0d170652",
           "b55e435e245af87f7f969cc156b5ba75268f695d8e2ed114651bcab50c060f97",
-          "448cdd7a38e29fa07badbed9db169fca4b83637dbbdf54695208e09b2ee2ccac"
+          "3aab9a524dfa35eeb06a76eecd2f4cf6cf842122e9390b48c7eb2030d1d05b1e"
         ]
       },
       "setup": null

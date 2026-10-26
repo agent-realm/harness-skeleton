@@ -280,7 +280,7 @@
           "part_id": "t:call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0:result",
           "kind": "tool_result",
           "call_id": "call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0",
-          "is_error": false,
+          "is_error": null,
           "status": "cancelled",
           "output": "tick 1\ntick 2\ntick 3\n",
           "output_len": 21,
@@ -288,7 +288,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "47501f2647af20528e2aac4071130eb7b2c621e89e1e37632134ae49225fb25e"
+      "cmp_sha": "a78d10548a752cf6c81fb4f547d552aa7ce8403aaa6931f7546ba35d63ee733d"
     },
     {
       "type": "session",
@@ -318,7 +318,7 @@
           "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
           "219a6f927ed185d7074a75835a6de43a7ffffc4f72779068a1cc26f33d8d17dd",
           "b8bf0bce3d718a99d1dadebe675b91b1e42604ffc7e482170aff6caf2eefdfcb",
-          "47501f2647af20528e2aac4071130eb7b2c621e89e1e37632134ae49225fb25e"
+          "a78d10548a752cf6c81fb4f547d552aa7ce8403aaa6931f7546ba35d63ee733d"
         ]
       },
       "setup": null
@@ -1099,7 +1099,7 @@
           "part_id": "t:call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0:result",
           "kind": "tool_result",
           "call_id": "call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0",
-          "is_error": false,
+          "is_error": null,
           "status": "denied",
           "output": "{\"rejected\":true}",
           "output_len": 17,
@@ -1112,7 +1112,7 @@
           "text": "A price label reading 2.50."
         }
       ],
-      "cmp_sha": "22a15be136d2c56914b943637bdeb1c7ef795318c99629b5ad0366b205c1c9bb"
+      "cmp_sha": "9d9ceb673cdd9b9c24e7c0e6c6e094f81dfe3dbcb44b49b58e18b25082b38910"
     },
     {
       "type": "message",
@@ -1200,7 +1200,7 @@
       "fingerprint": {
         "cmp_shas": [
           "d1a1e17be193f61b7f219a55022d1a2da2700ebbf8d83b8eced98e98f0aaac87",
-          "22a15be136d2c56914b943637bdeb1c7ef795318c99629b5ad0366b205c1c9bb",
+          "9d9ceb673cdd9b9c24e7c0e6c6e094f81dfe3dbcb44b49b58e18b25082b38910",
           "b0bfeecc25099214656f50762911ba6646f8a71661790975ca49c449ed893b47",
           "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5"
         ]

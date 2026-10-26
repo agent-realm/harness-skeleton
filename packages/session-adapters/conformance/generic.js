@@ -50,7 +50,9 @@ export const USAGE_SHAPE = {
   agy: [['per_response'], ['response_id', 'message_id']],
   cursor: [['per_message'], ['message_id']],
   'cursor-agent': [[], []],
-  zed: [['per_session'], ['session']],
+  // per_turn from request_token_usage only where cumulative_token_usage is empty (a contract
+  // decision, to appear in sessions-model v1.x).
+  zed: [['per_session', 'per_turn'], ['session', 'message_id']],
   devin: [['per_response'], ['message_id']],
 };
 const OTHER_HOST = 'ffffffffffffffffffffffffffffffff';

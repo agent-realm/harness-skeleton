@@ -169,9 +169,38 @@ test('zed: a thread with both cumulative_token_usage and request_token_usage yie
     const u = adapter.read(store, keyOf(store, adapter.list(store).find((s) => s.session_id === LAB.PARENT)), MAIN).units[0];
     assert.equal(Object.keys(JSON.parse(u.body).data.request_token_usage).length, 3);
   });
-  // A thread with request_token_usage and no cumulative total has no usage record at all.
-  for (const sid of [T.HELD]) assert.deepEqual(only(golden('features')[sid]), []);
-  assert.deepEqual(only(golden('restore')[R.ID]), []);
+});
+
+// Contract decision, to appear in sessions-model v1.x (refines §2.4 "No overlap", whose one Zed
+// record assumes a total): where `cumulative_token_usage` is empty, the `request_token_usage`
+// entries are the usage. One record per entry, anchored to the User message the entry is keyed
+// by, per_turn, both flags null: not a zero record, and not "no usage". A non-empty cumulative
+// stays the one per_session total (above).
+test('zed: an empty cumulative_token_usage gives one per_turn usage record per request_token_usage entry, anchored to its User message', () => {
+  const only = (recs) => ofType(recs, 'usage').map(({ usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }) => (
+    { usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }));
+  const turn = (uid, input, output) => ({
+    usage_id: `message:${uid}#1`, anchor: { message_id: uid }, input, output, cache_read: null, cache_write: null, reasoning: null, cost: null, tool_prompt: null,
+    input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: null,
+  });
+  withStore('features', (dir) => {
+    const e = fullReplay(adapter, dir);
+    // The held thread: cumulative {} and two entries. U10's turn still runs a call, so its usage is
+    // held with the turn's reply (below); U9's is written.
+    assert.deepEqual(only(viewOf(e, T.HELD)), [turn(U.U9, 500, 20)]);
+    assert.deepEqual(lastDerive(e, T.HELD).held.usage, [`message:${U.U10}#1`]);
+    // Threads with neither (cumulative {}, request_token_usage {}): no usage, and no zero record.
+    for (const sid of [T.NOTES, T.COMPACT, T.PARENT, T.CHILD]) assert.deepEqual(only(viewOf(e, sid)), [], sid);
+    // A non-empty cumulative beside entries: the total only.
+    assert.deepEqual(only(viewOf(e, T.CART)).map((u) => [u.usage_id, u.granularity]), [['session#1', 'per_session']]);
+  });
+  withStore('restore', (dir) => {
+    // The last save: R1's entry kept, R4's for the regrown turn; each anchored to a live User message.
+    const recs = viewOf(fullReplay(adapter, dir), R.ID);
+    const byId = (a, b) => (a.usage_id < b.usage_id ? -1 : 1);
+    assert.deepEqual(only(recs).sort(byId), [turn(R.R1, 400, 9), turn(R.R4, 530, 16)].sort(byId));
+    for (const u of ofType(recs, 'usage')) assert.ok(msg(recs, u.anchor.message_id), `${u.usage_id} anchors a message of the thread`);
+  });
 });
 
 test('zed: statuses: is_error true kept, false is null; Zed\'s canned results are cancelled and denied', () => {
@@ -236,7 +265,12 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     e.pass();
     let out = lastDerive(e, T.HELD);
     assert.deepEqual(out.held.message, [A(U.U10, 1)]);
-    assert.deepEqual(out.held.usage, [], 'no per-turn usage to hold');
+    // The running turn's usage (cumulative {}, so its request_token_usage entry is a record) is
+    // held with its reply.
+    const u10 = `message:${U.U10}#1`;
+    const usage = (id) => ofType(viewOf(e, T.HELD), 'usage').find((u) => u.usage_id === id);
+    assert.deepEqual(out.held.usage, [u10]);
+    assert.ok(!out.live.usage.includes(u10) && !out.changed.some((r) => r.usage_id === u10));
     assert.ok(!out.live.message.includes(A(U.U10, 1)) && !out.changed.some((r) => r.message_id === A(U.U10, 1)));
     // An earlier turn's unanswered call is interrupted, not held.
     assert.equal(msg(viewOf(e, T.HELD), A(U.U9, 1)).status, 'interrupted');
@@ -245,7 +279,9 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     out = lastDerive(e, T.HELD);
     assert.deepEqual([out.held.message, out.held.usage], [[], []]);
     assert.ok(out.live.message.includes(A(U.U10, 1)) && out.live.message.includes(A(U.U10, 2)));
+    assert.deepEqual([usage(u10).input, usage(u10).output, usage(u10).granularity], [700, 12, 'per_turn'], 'released with the turn');
     const done = msg(viewOf(e, T.HELD), A(U.U10, 1));
+    const doneUsage = usage(u10);
     assert.equal(done.parts.find((p) => p.kind === 'tool_result').output, '```\n3 passed\n```');
     // Zed regenerating the reply: the call open again. Held, and the consumer keeps the done version.
     save(dir, T.HELD, heldThread());
@@ -254,6 +290,8 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     assert.deepEqual(out.held.message, [A(U.U10, 1)]);
     assert.ok(!out.changed.some((r) => r.message_id === A(U.U10, 1)));
     assert.deepEqual(msg(viewOf(e, T.HELD), A(U.U10, 1)), done);
+    assert.deepEqual(out.held.usage, [u10]);
+    assert.deepEqual(usage(u10), doneUsage, 'the turn\'s usage keeps its done version too');
     assert.ok(!msg(viewOf(e, T.HELD), A(U.U10, 2)), 'the later reply of the regenerated turn is gone');
     // A ToolUse whose input is still streaming is held even with a result.
     const streaming = thread('t', [user(U.U9, 'Read.'), agent([use(C.LOOK, 'read_file', { path: 'toy' }, { is_input_complete: false })], res(C.LOOK, 'read_file', ''))]);
@@ -275,6 +313,9 @@ test('zed/restore: an appended turn keeps every earlier key unchanged (positive 
     e.pass();
     const v1 = lastDerive(e, R.ID).live;
     assert.deepEqual(v1.message, [R.R1, A(R.R1, 1), R.R2, A(R.R2, 1), A(R.R2, 2)].sort());
+    // cumulative_token_usage is {} in every save: one per_turn record per request_token_usage entry.
+    const ukey = (uid) => `message:${uid}#1`;
+    assert.deepEqual(v1.usage, [ukey(R.R1), ukey(R.R2)].sort());
     // v2: a turn appended in place.
     buildDb(dir, db, 2);
     e.pass();
@@ -282,13 +323,17 @@ test('zed/restore: an appended turn keeps every earlier key unchanged (positive 
     assert.deepEqual(e.log.find((l) => l.session_id === R.ID).continuity, 'snapshot');
     for (const k of v1.message) assert.ok(out.live.message.includes(k), `${k} kept`);
     assert.deepEqual(out.changed.filter((r) => r.type === 'message').map((r) => r.message_id).sort(), [R.R3, A(R.R3, 1), A(R.R3, 2)].sort(), 'only the new messages changed');
-    assert.deepEqual(out.changed.filter((r) => r.type === 'usage'), [], 'request_token_usage alone makes no usage record');
+    for (const k of v1.usage) assert.ok(out.live.usage.includes(k), `${k} kept`);
+    assert.deepEqual(out.changed.filter((r) => r.type === 'usage').map((r) => r.usage_id), [ukey(R.R3)], 'only the new turn\'s usage changed');
     // v3: restore to before R2, regrown under a new User id. The cut keys vanish; no lifecycle record.
     buildDb(dir, db, 3);
     e.pass();
     out = lastDerive(e, R.ID);
     assert.deepEqual(out.live.message, [R.R1, A(R.R1, 1), R.R4, A(R.R4, 1)].sort());
     assert.deepEqual(out.live.lifecycle, [], 'the store keeps no trace of the restore');
+    // The cut turns' entries are gone from request_token_usage, so their usage keys vanish too.
+    assert.deepEqual(out.live.usage, [ukey(R.R1), ukey(R.R4)].sort());
+    assert.deepEqual(out.changed.filter((r) => r.type === 'usage').map((r) => r.usage_id), [ukey(R.R4)], 'the kept usage is unchanged');
     const ids = msgIds(viewOf(e, R.ID));
     for (const gone of [R.R2, A(R.R2, 1), A(R.R2, 2), R.R3, A(R.R3, 1), A(R.R3, 2)]) assert.ok(!ids.includes(gone), `${gone} tombstoned`);
     assert.deepEqual(out.changed.filter((r) => r.type === 'message').map((r) => r.message_id).sort(), [R.R4, A(R.R4, 1)].sort(), 'the kept messages are unchanged');

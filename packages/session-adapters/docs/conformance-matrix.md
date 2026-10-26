@@ -381,7 +381,7 @@ From sessions-model.
 | agy | generic<br>agy: “a turn: content ids, a call and its result, reasoning, usage and the served model”<br>agy: “is billed once, on its first step” |
 | cursor | generic<br>cursor: “tokens: {0,0} is unknown, so no usage record” |
 | cursor-agent | n/a: cursor-agent stores no usage (sessions-model §2.4 table); the turn test asserts no fixture yields a usage record |
-| zed | generic<br>zed: “a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record” |
+| zed | generic<br>zed: “a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record”<br>zed: “an empty cumulative_token_usage gives one per_turn usage record per request_token_usage entry” |
 | devin | generic<br>devin: “a turn: each message once (twins, prefix copies), context injected, tools as tool messages, reasoning, usage” |
 
 ## M.setup: Setup: null unless the harness store records it; hashes and names only

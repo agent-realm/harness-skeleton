@@ -15,8 +15,9 @@
 //   for want of a readable blob;
 // - records in the sessions-model shape: a ToolUse and its result are two parts, `<i>:call` and
 //   `<i>:result`, on the Agent message; usage as its own record, one per session from
-//   `cumulative_token_usage` (annex §4 finding 6: Zed is per_session only); the archive and
-//   compaction lifecycle records; the hold as derive `held`.
+//   `cumulative_token_usage` (annex §4 finding 6), or, where that is empty, one per turn from
+//   `request_token_usage` (a contract decision, to appear in sessions-model v1.x); the archive
+//   and compaction lifecycle records; the hold as derive `held`.
 //
 // Zed keeps no Agent message id and no timestamp at all: Agent messages are anchored to the
 // preceding User `id` (`<user id>+n`, sessions-model §1 rule 4), `order` is the array position and
@@ -546,6 +547,7 @@ function build(st, key) {
   let firstId = null;
   let prevId = null;
   let holding = false; // the last turn is still running: this message and every later one are held
+  let heldTurn = null; // the User id that anchors the held turn
   let lc = 0;
   const spawned = new Map(); // child thread id -> call id
   for (let i = 0; i < msgs.length; i++) {
@@ -567,7 +569,10 @@ function build(st, key) {
     } else if (k === 'Agent' && isObj(v)) {
       const a = agentParts(v, id);
       // An open call in the last turn: Zed is still running it (memhouse held back the rest too).
-      if (a.open && i > lastUser) holding = true;
+      if (a.open && i > lastUser && !holding) {
+        holding = true;
+        heldTurn = anchor;
+      }
       rec = message(id, i, {
         role: 'assistant', source: 'model', status: a.unanswered ? 'interrupted' : 'complete',
         requested_model: model, effort, parts: a.parts,
@@ -608,8 +613,23 @@ function build(st, key) {
   // holds only a turn's last request, overwritten by each request of the turn, and is part of
   // that total (annex §2: "The per-turn value is not a turn total"); a record of its own beside
   // the total would count those tokens twice. It stays in the raw unit.
+  // Where the cumulative is empty, the entries are all the usage the thread keeps: one record per
+  // entry, anchored to the User message it is keyed by, per_turn, both flags null; never a zero
+  // record, and not "no usage" (contract decision, to appear in sessions-model v1.x; refines §2.4
+  // "No overlap"). Fixtures: features (the held thread), restore. The held turn's usage is held
+  // with its reply. An entry whose User message the thread no longer holds is still spend, so it
+  // is still a record (not observed: restore-lab's restore cleared every entry).
   const total = usageFields(t.cumulative_token_usage);
   if (total) out.push({ type: 'usage', usage_id: 'session#1', anchor: { session: true }, ...total, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_session', model: null });
+  else if (isObj(t.request_token_usage)) {
+    for (const uid of Object.keys(t.request_token_usage).sort(cmpStr)) {
+      const turn = usageFields(t.request_token_usage[uid]);
+      if (!uid || !turn) continue;
+      const usageId = `message:${uid}#1`;
+      if (holding && uid === heldTurn) held.usage.push(usageId);
+      else out.push({ type: 'usage', usage_id: usageId, anchor: { message_id: uid }, ...turn, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: null });
+    }
+  }
 
   // Archive: a flag in each channel's sidebar, no time. One record per channel unit that says so.
   let archived = false;

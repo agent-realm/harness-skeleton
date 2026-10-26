@@ -229,7 +229,7 @@ export const MATRIX = {
     agy: [G, t('agy', 'a turn: content ids, a call and its result, reasoning, usage and the served model'), t('agy', 'is billed once, on its first step')],
     cursor: [G, t('cursor', 'tokens: {0,0} is unknown, so no usage record')],
     'cursor-agent': na('cursor-agent stores no usage (sessions-model §2.4 table); the turn test asserts no fixture yields a usage record'),
-    zed: [G, t('zed', 'a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record')],
+    zed: [G, t('zed', 'a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record'), t('zed', 'an empty cumulative_token_usage gives one per_turn usage record per request_token_usage entry')],
     devin: [G, t('devin', 'a turn: each message once (twins, prefix copies), context injected, tools as tool messages, reasoning, usage')],
   },
   'S.describe': each((h) => [DESCRIBE(h), t('describe', 'describe: every adapter states what its harness_path names')]),

@@ -154,6 +154,48 @@
         ]
       },
       "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "usage_id": "message:5a1e0000-0000-4000-8000-0000000000e1#1",
+      "anchor": {
+        "message_id": "5a1e0000-0000-4000-8000-0000000000e1"
+      },
+      "input": 400,
+      "output": 9,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": null,
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000d1",
+      "incarnation": "",
+      "usage_id": "message:5a1e0000-0000-4000-8000-0000000000e4#1",
+      "anchor": {
+        "message_id": "5a1e0000-0000-4000-8000-0000000000e4"
+      },
+      "input": 530,
+      "output": 16,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_turn",
+      "model": null,
+      "tool_prompt": null
     }
   ]
 }

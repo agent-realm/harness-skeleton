@@ -659,7 +659,10 @@ function build(st, key) {
     state: archived ? 'archived' : 'active',
     pinned: null,
     mode: str(c.unifiedMode || hv.unifiedMode) || null,
-    kind: hrow && Number(hrow.isSubagent) === 1 ? 'subagent' : null,
+    // `kind` is the native session type, and a flag is not a kind: the header's `isSubagent`
+    // leaves it null. The sub-agent fact is the parent's `subagent` link naming this chat (above;
+    // a child names no parent). sessions-model v1.x (#6), §2.1.
+    kind: null,
     reuse: 'impossible',
     ts_source: 'event',
     aliases: [],

@@ -246,9 +246,9 @@ From sessions-model.
 | goose | goose: “sub-agents: the child states its parent, the parent the child it was delivered” |
 | opencode | opencode: “describe states every facet”<br>opencode: “a fork copy that re-minted its ids has the origin prefix cmp_sha; it states no link” |
 | agy | agy: “lab case: a fork links to its origin at the fork point”<br>agy: “a sub-agent is linked from both sides” |
-| cursor | cursor: “sub-agents: the parent names them”<br>cursor: “fork: a new composer with identical bubble ids and times, no parent field: no link” |
-| cursor-agent | cursor-agent: “lab case: subagentInfo.parentAgentId”<br>cursor-agent: “fork: the blobs copied to a new chat id” |
-| zed | zed: “sub-agents: the child states its parent” |
+| cursor | cursor: “sub-agents: the parent names them”<br>cursor: “kind is null for every session, a header with isSubagent 1 included”<br>cursor: “fork: a new composer with identical bubble ids and times, no parent field: no link” |
+| cursor-agent | cursor-agent: “lab case: subagentInfo.parentAgentId”<br>cursor-agent: “kind is null for every session, a sub-agent included”<br>cursor-agent: “fork: the blobs copied to a new chat id” |
+| zed | zed: “sub-agents: the child states its parent”<br>zed: “kind is null for every session, a sub-agent included” |
 | devin | devin: “a sub-agent in the same tree” |
 
 ## M.cmp-sha: cmp_sha: a fork copy that re-minted ids has its origin's cmp_sha sequence

@@ -196,9 +196,9 @@ test('cursor-agent: lab case: subagentInfo.parentAgentId de1be1a9… + toolCallI
   assert.equal(ofType(recsOf('subagent', SUB), 'session')[0].kind, null, 'no kind field: the sub-agent fact is the link');
 });
 
-// Contract decision, to appear in sessions-model v1.x (refines §2.1 `kind`, the native session
-// type): cursor-agent stores no kind field, so a session's `kind` is null. A sub-agent stays a
-// sub-agent through the §2.5 link that meta.subagentInfo states.
+// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): cursor-agent stores no kind
+// field, and a flag or a parent reference is not a kind, so a session's `kind` is null. A sub-agent
+// stays a sub-agent through the §2.5 link that meta.subagentInfo states.
 test('cursor-agent: kind is null for every session, a sub-agent included; meta.subagentInfo stays the child-side subagent link', () => {
   for (const name of CASES) {
     withStore(name, (dir) => {

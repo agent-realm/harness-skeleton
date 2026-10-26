@@ -128,9 +128,9 @@ export const MATRIX = {
     goose: [t('goose', 'sub-agents: the child states its parent, the parent the child it was delivered')],
     opencode: [DESCRIBE('opencode'), t('opencode', 'a fork copy that re-minted its ids has the origin prefix cmp_sha; it states no link')],
     agy: [t('agy', 'lab case: a fork links to its origin at the fork point'), t('agy', 'a sub-agent is linked from both sides')],
-    cursor: [t('cursor', 'sub-agents: the parent names them'), t('cursor', 'fork: a new composer with identical bubble ids and times, no parent field: no link')],
-    'cursor-agent': [t('cursor-agent', 'lab case: subagentInfo.parentAgentId'), t('cursor-agent', 'fork: the blobs copied to a new chat id')],
-    zed: [t('zed', 'sub-agents: the child states its parent')],
+    cursor: [t('cursor', 'sub-agents: the parent names them'), t('cursor', 'kind is null for every session, a header with isSubagent 1 included'), t('cursor', 'fork: a new composer with identical bubble ids and times, no parent field: no link')],
+    'cursor-agent': [t('cursor-agent', 'lab case: subagentInfo.parentAgentId'), t('cursor-agent', 'kind is null for every session, a sub-agent included'), t('cursor-agent', 'fork: the blobs copied to a new chat id')],
+    zed: [t('zed', 'sub-agents: the child states its parent'), t('zed', 'kind is null for every session, a sub-agent included')],
     devin: [t('devin', 'a sub-agent in the same tree')],
   },
   'M.cmp-sha': {

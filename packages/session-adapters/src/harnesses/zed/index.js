@@ -669,7 +669,10 @@ function build(st, key) {
     state: archived ? 'archived' : 'active',
     pinned: null,
     mode: t.profile ? String(t.profile) : null,
-    kind: origin && origin !== sid ? 'subagent' : null,
+    // `kind` is the native session type, and a parent reference is not a kind: subagent_context and
+    // the row's parent_id leave it null. The sub-agent fact is the child-side `subagent` link above.
+    // sessions-model v1.x (#6), §2.1.
+    kind: null,
     reuse: 'impossible',
     ts_source: 'none',
     aliases: [],

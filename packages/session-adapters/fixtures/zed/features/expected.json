@@ -1426,7 +1426,7 @@
       "state": "active",
       "pinned": null,
       "mode": "write",
-      "kind": "subagent",
+      "kind": null,
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],

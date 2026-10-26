@@ -187,18 +187,31 @@ keep the flag. Both adapters applied an exit-code rule inherited from an earlier
 - No key changes; consumers re-derive copilot-cli and codex sessions. A reader that wants a shell's
   failure reads `exit_code`.
 
-### cursor-agent: a session's `kind` is null (adapter_ver 0.2.1)
+### cursor-agent, cursor and zed: a sub-agent session's `kind` is null (adapter_ver 0.2.1 each)
 
-A contract decision, to appear in sessions-model v1.x, refining §2.1 (`kind`, the native session
-type): cursor-agent stores no kind field, so `kind` is null for every session. The adapter wrote
-`'subagent'` for a chat whose `meta.subagentInfo` names a parent. That fact stays where §2.5 puts
-it: the child-side `subagent` link from `meta.subagentInfo`, and the parent-side link from its Task
-result, both unchanged.
+sessions-model v1.x (#6), §2.1 (`kind`, the native session type): an adapter never mints a `kind`
+the harness store does not write, and a flag or a parent reference is not a kind. cursor-agent's
+`subagentInfo`, Cursor IDE's `isSubagent` and Zed's `subagent_context` or `parent_id` leave `kind`
+null, and such a sub-agent session is told by its `subagent` link (§2.5). Each adapter wrote
+`'subagent'`.
 
-- **Goldens:** one field, `kind` `"subagent"` → `null` on the child session of the `subagent` case.
-  Nothing else moves.
-- No key changes; consumers re-derive cursor-agent sessions. A reader that wants to know whether a
-  session is a sub-agent reads its `subagent` link with `stated_on: child`.
+- **cursor-agent:** for a chat whose `meta.subagentInfo` names a parent. The fact stays the
+  child-side `subagent` link from `meta.subagentInfo`, and the parent-side link from its Task
+  result, both unchanged.
+- **cursor** (Cursor IDE): for a chat whose `composerHeaders` row has `isSubagent = 1`. A child
+  names no parent, so the fact is the parent's origin-side link from
+  `composerData.subagentComposerIds`, unchanged. `isSubagent` now reaches no record; it stays in
+  the raw unit.
+- **zed:** for a thread whose `subagent_context.parent_thread_id` or row `parent_id` names another
+  thread. The fact stays the child-side `subagent` link from either, unchanged.
+- **Goldens:** one field per sub-agent session, `kind` `"subagent"` → `null`; nothing else moves:
+  - cursor-agent: the `subagent` case's child session;
+  - cursor: `features`, the child chat `c0c0a005…`;
+  - zed: `features`, the child thread `…c5`, and `lab`, the child thread `865975e1…`.
+- **adapter_ver:** cursor 0.2.0 → 0.2.1. cursor-agent and zed stay at 0.2.1, the bump each already
+  carries in this unreleased change: a consumer re-derives once for it.
+- No key changes; consumers re-derive the three harnesses' sessions. A reader that wants to know
+  whether a session is a sub-agent reads its `subagent` links.
 
 ### zed: per-turn usage where the cumulative total is empty (adapter_ver 0.2.1)
 

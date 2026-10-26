@@ -13,7 +13,7 @@ import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance
 import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   CASES as GENERATED, LAB, T, U, C, R, S, SENTINEL,
-  heldThread, cartThread, thread, user, agent, use, res, restoreLabCapture, restoreThread,
+  heldThread, cartThread, childThread, thread, user, agent, use, res, restoreLabCapture, restoreThread,
 } from '../fixtures/zed/generate.js';
 
 const adapter = adapterFor('zed');
@@ -284,12 +284,41 @@ test('zed: sub-agents: the child states its parent; the parent\'s spawn_agent re
   const child = golden('features')[T.CHILD];
   const cl = ofType(child, 'link');
   assert.deepEqual(cl.map((l) => [l.kind, l.stated_on, l.origin, l.at, l.evidence]), [['subagent', 'child', { harness: 'zed', session_id: T.PARENT }, '', 'explicit']]);
-  assert.equal(ofType(child, 'session')[0].kind, 'subagent');
+  assert.equal(ofType(child, 'session')[0].kind, null, 'a parent reference is not a kind: the link is the fact');
   const parent = golden('features')[T.PARENT];
   assert.deepEqual(ofType(parent, 'link').map((l) => [l.stated_on, l.child, l.at]), [['origin', { harness: 'zed', session_id: T.CHILD }, C.SPAWN]]);
   // The lab child states its parent through subagent_context and the row's parent_id: one link.
   assert.equal(ofType(golden('lab')[LAB.CHILD], 'link').length, 1);
   assert.equal(ofType(golden('lab')[LAB.PARENT], 'link').length, 0, 'the lab parent has no spawn_agent call');
+});
+
+// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): a parent reference is not a
+// kind. A thread's subagent_context and its row's parent_id leave `kind` null, each on its own, and
+// the sub-agent is told by its child-side `subagent` link.
+test('zed: kind is null for every session, a sub-agent included, whether subagent_context or the row\'s parent_id names the parent; the child-side link carries it', () => {
+  for (const name of CASES) {
+    withStore(name, (dir) => {
+      for (const [sid, recs] of Object.entries(project(fullReplay(adapter, dir).views()))) assert.equal(ofType(recs, 'session')[0].kind, null, `${name} ${sid}`);
+    });
+  }
+  const childLink = (recs) => ofType(recs, 'link').filter((l) => l.stated_on === 'child').map((l) => [l.kind, l.origin.session_id, l.evidence]);
+  withStore('features', (dir) => {
+    // subagent_context only: the row's parent_id cleared.
+    let w = writer(dir);
+    w.prepare('UPDATE threads SET parent_id = NULL WHERE id = ?').run(T.CHILD);
+    w.close();
+    let recs = project(fullReplay(adapter, dir).views())[T.CHILD];
+    assert.deepEqual([ofType(recs, 'session')[0].kind, childLink(recs)], [null, [['subagent', T.PARENT, 'explicit']]], 'subagent_context');
+    // The row's parent_id only: the thread saved without subagent_context.
+    w = writer(dir);
+    w.prepare('UPDATE threads SET parent_id = ? WHERE id = ?').run(T.PARENT, T.CHILD);
+    w.close();
+    const t = childThread();
+    delete t.subagent_context;
+    save(dir, T.CHILD, t);
+    recs = project(fullReplay(adapter, dir).views())[T.CHILD];
+    assert.deepEqual([ofType(recs, 'session')[0].kind, childLink(recs)], [null, [['subagent', T.PARENT, 'explicit']]], 'parent_id');
+  });
 });
 
 test('zed: an open call in the last turn is held; the result releases it; held again, the view keeps its last version', () => {

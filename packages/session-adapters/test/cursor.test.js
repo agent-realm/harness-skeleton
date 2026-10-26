@@ -388,14 +388,33 @@ test('cursor: fork: a new composer with identical bubble ids and times, no paren
   assert.equal(ofType(golden('lab')['f01e1200-000d-4000-8000-00000000000d'], 'session')[0].state, 'archived', 'the lab fork, archived');
 });
 
-test('cursor: sub-agents: the parent names them (origin side, deduped, in stored order); the child is kind subagent and states no link', () => {
+test('cursor: sub-agents: the parent names them (origin side, deduped, in stored order); the child\'s kind is null and it states no link', () => {
   const g = golden('features');
   assert.deepEqual(ofType(g[CID(4)], 'link').map((l) => [l.kind, l.stated_on, l.child.session_id, l.origin.session_id, l.at, l.evidence]), [
     ['subagent', 'origin', CID(5), CID(4), '', 'explicit'],
     ['subagent', 'origin', CID(13), CID(4), '', 'explicit'],
   ]);
-  assert.deepEqual([ofType(g[CID(5)], 'session')[0].kind, ofType(g[CID(5)], 'link')], ['subagent', []]);
+  assert.deepEqual([ofType(g[CID(5)], 'session')[0].kind, ofType(g[CID(5)], 'link')], [null, []]);
   assert.ok(!g[CID(13)], 'the second child was never stored: only the statement exists');
+});
+
+// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): a flag is not a kind. The
+// header's `isSubagent` leaves `kind` null, and the sub-agent is told by its `subagent` link: for
+// Cursor, the parent's origin-side link (a child names no parent).
+test('cursor: kind is null for every session, a header with isSubagent 1 included; the parent\'s subagent link names that chat', () => {
+  for (const name of CASES) {
+    withStore(name, (dir) => {
+      const views = project(fullReplay(adapter, dir).views());
+      for (const [sid, recs] of Object.entries(views)) assert.equal(ofType(recs, 'session')[0].kind, null, `${name} ${sid}`);
+      if (name !== 'features') return;
+      const db = new DatabaseSync(path.join(dir, DB_REL), { readOnly: true });
+      const flagged = db.prepare('SELECT composerId FROM composerHeaders WHERE isSubagent = 1').all().map((r) => r.composerId);
+      db.close();
+      assert.deepEqual(flagged, [CID(5)], 'the store flags the child');
+      const links = Object.values(views).flat().filter((r) => r.type === 'link' && r.kind === 'subagent' && r.child.session_id === CID(5));
+      assert.deepEqual(links.map((l) => [l.stated_on, l.origin.session_id, l.evidence]), [['origin', CID(4), 'explicit']]);
+    });
+  }
 });
 
 test('cursor: older format: bubbles inline in composerData.conversation; a standalone assistant bubble keeps its own id', () => {

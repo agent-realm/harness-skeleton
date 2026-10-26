@@ -516,9 +516,10 @@ function foldEvent(ctx, o, sk, unitKey) {
       // that says success beside a shell's non-zero `exit_code` is unreliable for that result, as
       // §2.3 rules for Copilot CLI and Codex alike: that result's `is_error` is null, `exit_code`
       // carries the failure, and the other results keep the flag. Never derived from the exit code
-      // or the text.
-      const isError = d.success === false ? true : d.success === true ? (exitCode !== null && exitCode !== 0 ? null : false) : null;
+      // or the text. It describes a call that completed: a denied call's is null, and `denied`
+      // carries the fact.
       const denied = !!d.error && typeof d.error === 'object' && d.error.code === 'denied';
+      const isError = denied ? null : d.success === false ? true : d.success === true ? (exitCode !== null && exitCode !== 0 ? null : false) : null;
       // A tool result is written by the harness running the tool: no `source` value fits it.
       emitMessage(ctx, {
         ...base, role: 'tool', source: null,

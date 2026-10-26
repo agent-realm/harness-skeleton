@@ -140,7 +140,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_FixtureFixtureFixtu00018",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "The user rejected this tool call. User feedback: The user denied permission.",
           "output_len": 76,
@@ -148,7 +148,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "90cc7fbe02c518dde93486362718925a868170acbb07b7f11b2cd1a370d53b65"
+      "cmp_sha": "4d15b921aaaefab748db9446457a314572fd9ecefe64c474f07843d003f04a74"
     },
     {
       "type": "message",
@@ -239,7 +239,7 @@
           "66167c17af01c17352a3ae88839b0386517ee529ad009ea3c8af458babdcc11c",
           "dacb5b7011f443cd81148519833269260573909f150e6266a3e2eb2d98ed9c88",
           "aed6fbd0f0bd250978f9945700515ff45b50fab211df8e37cc1e42029a863a9d",
-          "90cc7fbe02c518dde93486362718925a868170acbb07b7f11b2cd1a370d53b65"
+          "4d15b921aaaefab748db9446457a314572fd9ecefe64c474f07843d003f04a74"
         ]
       },
       "setup": null

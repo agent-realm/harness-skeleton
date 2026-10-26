@@ -403,3 +403,11 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `call_213908`, CANCELED) `false` → `null`, and step G2 (message `d24bade1…`, `call_322814`,
     denied) `true` → `null`, with each message's `cmp_sha` and its entry of the session's
     `fingerprint.cmp_shas`. Nothing else moves.
+- **copilot-cli (adapter_ver 0.2.1 → 0.2.2).** A denied call (`error.code: denied`, `denied`) gave
+  true from its `success: false`. It gives null, whatever `success` says. A call that completed
+  keeps `success` as its flag.
+  - Goldens: three tool results, the denied call in `features` (`chatcmpl-tool-feat-pip`, message
+    `a0000000…056`) in session `a0a0a0a0…` and in its fork `c2c2c2c2…`, and in `vscode-host`
+    (`call_…00018`, message `b579dd63…`): `parts[0].is_error` `true` → `null`, with each message's
+    `cmp_sha` and its entry of the session's `fingerprint.cmp_shas`. The fork's `cmp_shas` still
+    match its origin's. Nothing else moves.

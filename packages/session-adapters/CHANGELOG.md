@@ -410,6 +410,19 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `call_213908`, CANCELED) `false` → `null`, and step G2 (message `d24bade1…`, `call_322814`,
     denied) `true` → `null`, with each message's `cmp_sha` and its entry of the session's
     `fingerprint.cmp_shas`. Nothing else moves.
+  - **The transcript reads a CANCELED or INTERRUPTED line as the database reads the step.** A
+    session with no conversation database read such a GENERIC line as `completed` with `false`
+    (`true` beside an `error`), in a `complete` (`error`) message. It is `cancelled` with
+    `is_error` null now, whatever error the line carries, in a `cancelled` or `interrupted`
+    message, as `doneStatus` gives a step; any other line with either status takes the same
+    message status. The status is the line's own field: `cancelled` and `denied` come from a
+    structured marker the harness store writes, never from the output's text (sessions-model v1.x
+    (#6), §2.3). No capture shows such a line.
+  - Goldens: none change; no captured transcript holds either status. One synthetic case is new,
+    `transcript-cancel` (a session with no database, `0b5e7c1a…`: a CANCELED, an INTERRUPTED and a
+    DONE result), with its own golden of 15 records. Its two cancelled results (messages `@552`
+    and `@1192`) are `cancelled`, `null`; the DONE one (`@1818`) is `completed`, `false`. The
+    matrix's M.is-error cell for agy names the new test.
 - **copilot-cli (adapter_ver 0.2.1 → 0.2.2).** A denied call (`error.code: denied`, `denied`) gave
   true from its `success: false`. It gives null, whatever `success` says. A call that completed
   keeps `success` as its flag.

@@ -60,6 +60,8 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 
 - Whether a rewind deletes `gen_metadata` and `executor_metadata` rows.
 - Whether a `response_id` is unique.
+- A transcript line whose `status` is CANCELED or INTERRUPTED: the `transcript-cancel` fixture is
+  synthetic. The adapter reads one as the database reads the step: `cancelled`, `is_error` null.
 
 ## Cursor IDE
 

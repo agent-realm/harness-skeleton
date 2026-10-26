@@ -102,7 +102,7 @@ export const MATRIX = {
     vscode: [G, t('vscode', 'is_error is the stored flag: done beside a non-zero terminal exit is null'), t('vscode', 'is_error is null where the call did not complete')],
     goose: [G, t('goose', 'is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null'), t('goose', 'is_error is null where the call did not complete')],
     opencode: [G, t('opencode', 'is_error is the state status: completed beside a non-zero exit is null'), t('opencode', 'is_error is null where the call did not complete')],
-    agy: [G, t('agy', 'is_error is the step status: DONE beside a non-zero exit is null'), t('agy', 'is_error is null where the call did not complete')],
+    agy: [G, t('agy', 'is_error is the step status: DONE beside a non-zero exit is null'), t('agy', 'is_error is null where the call did not complete'), t('agy', 'transcript only: a CANCELED or INTERRUPTED line is cancelled with is_error null')],
     cursor: [G, t('cursor', 'is_error is the stored status: completed beside a non-zero exit is null'), t('cursor', 'is_error is null where the call did not complete')],
     'cursor-agent': [G, t('cursor-agent', 'is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null'), t('cursor-agent', 'is_error is null where the call did not complete')],
     zed: [G, t('zed', 'is_error is null for Zed\'s canned cancel and denial; a completed call keeps a stored true'), t('zed', 'statuses: false is null')],

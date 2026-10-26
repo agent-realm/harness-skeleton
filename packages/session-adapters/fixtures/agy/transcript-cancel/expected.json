@@ -1,0 +1,489 @@
+{
+  "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b": [
+    {
+      "type": "message",
+      "message_id": "@0",
+      "parent_id": null,
+      "order": "000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:30:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Sleep 90 seconds, then say done."
+        },
+        {
+          "part_id": "1",
+          "kind": "notice",
+          "text": "<ADDITIONAL_METADATA>\nThe current local time is: 2026-10-22T09:30:00+00:00.\n</ADDITIONAL_METADATA>",
+          "level": null,
+          "native_type": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "041af1f572febb4ab80a30b43ea84f7b2ce3ce5ea3e887331e334e12afd4e63f"
+    },
+    {
+      "type": "message",
+      "message_id": "@1192",
+      "parent_id": null,
+      "order": "000000001192",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:31:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "@@935:0",
+          "is_error": null,
+          "status": "cancelled",
+          "output": "",
+          "output_len": 0,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353"
+    },
+    {
+      "type": "message",
+      "message_id": "@1302",
+      "parent_id": null,
+      "order": "000000001302",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:32:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "List the files."
+        },
+        {
+          "part_id": "1",
+          "kind": "notice",
+          "text": "<ADDITIONAL_METADATA>\nThe current local time is: 2026-10-22T09:32:00+00:00.\n</ADDITIONAL_METADATA>",
+          "level": null,
+          "native_type": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "c3b5b6c433f951f43c838f92b320393dfa8709e10d10d25e24dec90d1a712c48"
+    },
+    {
+      "type": "message",
+      "message_id": "@1579",
+      "parent_id": null,
+      "order": "000000001579",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:32:02.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "@@1579:0",
+          "name": "run_command",
+          "args": {
+            "CommandLine": "ls"
+          },
+          "server": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "d440380880dec4081bbb6db14ddc50cdd9ebff95b23c5425ad2dd767e91ade86"
+    },
+    {
+      "type": "message",
+      "message_id": "@1818",
+      "parent_id": null,
+      "order": "000000001818",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:32:03.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "@@1579:0",
+          "is_error": false,
+          "status": "completed",
+          "output": "Created At: 2026-10-22T09:32:03+00:00\nCompleted At: 2026-10-22T09:32:03+00:00\n\nThe command exited with code 0.\nOutput:\ncart.py\ntests\n",
+          "output_len": 133,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "792930225ccfb13812ee6fe528260c13391a0aa41b7cb0b3adad842a85d568d6"
+    },
+    {
+      "type": "message",
+      "message_id": "@2074",
+      "parent_id": null,
+      "order": "000000002074",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:32:04.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "cart.py and tests/."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "d955b7c6c88555c6323bef9de8306c1b1b661e56e640d68ae2e5aaf9ca926d79"
+    },
+    {
+      "type": "message",
+      "message_id": "@294",
+      "parent_id": null,
+      "order": "000000000294",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:30:02.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "@@294:0",
+          "name": "run_command",
+          "args": {
+            "CommandLine": "sleep 90 && echo done"
+          },
+          "server": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "ba9c6ebdc82236f26812f6e66218def9f3a430d9510fbc7b2e1f903a1dfa63e9"
+    },
+    {
+      "type": "message",
+      "message_id": "@552",
+      "parent_id": null,
+      "order": "000000000552",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "cancelled",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:30:10.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "tool",
+      "source": null,
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_result",
+          "call_id": "@@294:0",
+          "is_error": null,
+          "status": "cancelled",
+          "output": "",
+          "output_len": 0,
+          "truncated": null,
+          "exit_code": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353"
+    },
+    {
+      "type": "message",
+      "message_id": "@659",
+      "parent_id": null,
+      "order": "000000000659",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:31:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Run the tests."
+        },
+        {
+          "part_id": "1",
+          "kind": "notice",
+          "text": "<ADDITIONAL_METADATA>\nThe current local time is: 2026-10-22T09:31:00+00:00.\n</ADDITIONAL_METADATA>",
+          "level": null,
+          "native_type": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "a2fdf5fa598bc3f9506de27e9e2d45dcc6e661b7ce8e81a814c8c52a63509975"
+    },
+    {
+      "type": "message",
+      "message_id": "@935",
+      "parent_id": null,
+      "order": "000000000935",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:31:02.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "tool_call",
+          "call_id": "@@935:0",
+          "name": "run_command",
+          "args": {
+            "CommandLine": "python3 -m pytest -q"
+          },
+          "server": null
+        }
+      ],
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "cmp_sha": "7b4ed6b425b7ea0a25932a84c94836ab25562402aa427ab81ea8f00ff0b6bb1e"
+    },
+    {
+      "type": "session",
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "engine": null,
+      "client": "agy",
+      "harness_version": null,
+      "title": "A stopped sleep",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/ag3/toyshop",
+      "last_cwd": null,
+      "created_at": null,
+      "updated_at": "2026-10-22T09:32:04.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "041af1f572febb4ab80a30b43ea84f7b2ce3ce5ea3e887331e334e12afd4e63f",
+          "ba9c6ebdc82236f26812f6e66218def9f3a430d9510fbc7b2e1f903a1dfa63e9",
+          "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353",
+          "a2fdf5fa598bc3f9506de27e9e2d45dcc6e661b7ce8e81a814c8c52a63509975",
+          "7b4ed6b425b7ea0a25932a84c94836ab25562402aa427ab81ea8f00ff0b6bb1e",
+          "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353",
+          "c3b5b6c433f951f43c838f92b320393dfa8709e10d10d25e24dec90d1a712c48",
+          "d440380880dec4081bbb6db14ddc50cdd9ebff95b23c5425ad2dd767e91ade86",
+          "792930225ccfb13812ee6fe528260c13391a0aa41b7cb0b3adad842a85d568d6",
+          "d955b7c6c88555c6323bef9de8306c1b1b661e56e640d68ae2e5aaf9ca926d79"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "message:@1579#1",
+      "anchor": {
+        "message_id": "@1579"
+      },
+      "input": 6500,
+      "output": 18,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": null,
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "message:@2074#1",
+      "anchor": {
+        "message_id": "@2074"
+      },
+      "input": 6700,
+      "output": 9,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": null,
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "message:@294#1",
+      "anchor": {
+        "message_id": "@294"
+      },
+      "input": 6100,
+      "output": 24,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": null,
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "usage_id": "message:@935#1",
+      "anchor": {
+        "message_id": "@935"
+      },
+      "input": 6300,
+      "output": 22,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": null,
+      "harness": "agy",
+      "session_id": "0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b",
+      "incarnation": "",
+      "tool_prompt": null
+    }
+  ]
+}

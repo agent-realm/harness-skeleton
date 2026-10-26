@@ -13,7 +13,7 @@ import {
   A, H, O, F, P, C, R, HUB, ID, SIG, FULL_FIND, T0, E, STATUS, SOURCE, TYPE,
   conversation, call, usage, genRow, execRow, enc, anyOf,
 } from '../fixtures/agy/generate.js';
-import { S, decode } from '../src/harnesses/agy/pb.js';
+import { S, ST, decode } from '../src/harnesses/agy/pb.js';
 import { sha256 } from '../src/jcs.js';
 
 const adapter = adapterFor('agy');
@@ -222,9 +222,9 @@ test('agy: a generation spanning a planner and a CHECKPOINT (neither with its ow
 test('agy: lab case: a CANCELED result is cancelled; a denied one is an error with its details', () => {
   const recs = recsOf('features', A);
   const canceled = msg(recs, ID('G9'));
-  assert.deepEqual([canceled.status, canceled.parts[0].status, canceled.parts[0].is_error], ['cancelled', 'cancelled', false]);
+  assert.deepEqual([canceled.status, canceled.parts[0].status, canceled.parts[0].is_error], ['cancelled', 'cancelled', null]);
   const denied = msg(recs, ID('G2'));
-  assert.deepEqual([denied.status, denied.parts[0].status, denied.parts[0].is_error], ['error', 'denied', true]);
+  assert.deepEqual([denied.status, denied.parts[0].status, denied.parts[0].is_error], ['error', 'denied', null]);
   assert.match(denied.parts[0].output, /user denied permission to run command/);
 });
 
@@ -293,11 +293,47 @@ test('agy: is_error is the step status: DONE beside a non-zero exit is null, DON
   assert.deepEqual(resultOf({}), [false, 0], 'DONE, exit 0 (proto3 stores no 0)');
   assert.deepEqual(resultOf({ exit_code: 3, exit_code_unknown: true }), [false, null], 'DONE, the exit code unknown');
   assert.deepEqual(resultOf({ exit_code: 3 }, STATUS.ERROR), [true, 3], 'ERROR beside exit 3: the flag says failure');
-  // features, a full replay: G1 (DONE, exit 1), G7 (DONE, exit 0), G2 (ERROR, denied).
+  // features, a full replay: G1 (DONE, exit 1), G7 (DONE, exit 0), G2 (ERROR, denied: no call that
+  // completed, so null).
   withStore('features', (dir) => {
     const recs = project(fullReplay(adapter, dir).views())[A];
-    assert.deepEqual([ID('G1'), ID('G7'), ID('G2')].map((id) => [msg(recs, id).parts[0].is_error, msg(recs, id).parts[0].exit_code]), [[null, 1], [false, 0], [true, null]]);
+    assert.deepEqual([ID('G1'), ID('G7'), ID('G2')].map((id) => [msg(recs, id).parts[0].is_error, msg(recs, id).parts[0].exit_code]), [[null, 1], [false, 0], [null, null]]);
   });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A CANCELED or INTERRUPTED step is `cancelled`, an ERROR whose error is a denial is
+// `denied`; their is_error is null, and the status carries the fact. A call that completed keeps the
+// step's flag (the positive control: ERROR true, DONE false), in the conversation DB and in the
+// transcript alike.
+test('agy: is_error is null where the call did not complete: a CANCELED, INTERRUPTED or denied step, and a denied transcript line', () => {
+  const resultOf = (status, extra = {}) => {
+    const rows = turn1();
+    rows[2] = ca.generic(2, { t: at(9.5), exec: E(1), id: ID('G1'), call: C1 }, status, '', extra);
+    const p = deriveRows(A, { rows, execs: [execRow(0, E(1), 3)] }).changed.find((r) => r.message_id === ID('G1')).parts[0];
+    return [p.status, p.is_error];
+  };
+  const error = (text) => ({ error: { short_error: text, full_error: text } });
+  assert.deepEqual(resultOf(STATUS.CANCELED), ['cancelled', null], 'CANCELED');
+  assert.deepEqual(resultOf(ST.INTERRUPTED), ['cancelled', null], 'INTERRUPTED');
+  assert.deepEqual(resultOf(STATUS.ERROR, error('user denied permission to run command')), ['denied', null], 'ERROR, a denial');
+  assert.deepEqual(resultOf(STATUS.ERROR, error('command not found')), ['completed', true], 'ERROR, no denial: the flag');
+  assert.deepEqual(resultOf(STATUS.DONE), ['completed', false], 'DONE: the flag');
+  // features, a full replay: G9 (CANCELED) and G2 (ERROR, a denial).
+  withStore('features', (dir) => {
+    const recs = project(fullReplay(adapter, dir).views())[A];
+    assert.deepEqual([ID('G9'), ID('G2')].map((id) => [msg(recs, id).parts[0].status, msg(recs, id).parts[0].is_error]), [['cancelled', null], ['denied', null]]);
+  });
+  // The transcript alone: an ERROR line whose error is a denial, then one that is no denial.
+  const lines = [
+    { step_index: 0, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: '2026-10-20T15:18:00Z', content: 'Clean up.' },
+    { step_index: 1, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: '2026-10-20T15:18:01Z', tool_calls: [{ name: 'run_command', args: { CommandLine: 'rm -rf build' } }, { name: 'run_command', args: { CommandLine: 'make' } }] },
+    { step_index: 2, source: 'MODEL', type: 'GENERIC', status: 'ERROR', created_at: '2026-10-20T15:18:02Z', error: 'user denied permission to run command' },
+    { step_index: 3, source: 'MODEL', type: 'GENERIC', status: 'ERROR', created_at: '2026-10-20T15:18:03Z', error: 'make: no rule' },
+    { step_index: 4, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: '2026-10-20T15:18:09Z', content: 'Next.' },
+  ];
+  const results = deriveLines(J, lines).changed.filter((r) => r.type === 'message' && r.role === 'tool').map((m) => [m.parts[0].status, m.parts[0].is_error]);
+  assert.deepEqual(results, [['denied', null], ['completed', true]]);
 });
 
 test('agy: automated turns (a task done, a SYSTEM user input), a hidden restart notice', () => {

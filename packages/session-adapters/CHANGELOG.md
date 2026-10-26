@@ -386,3 +386,20 @@ a reader that wants a shell's failure reads `exit_code`.
     `8b76b964…202+1` (exit 3): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
     and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `orphan`, `rewind`
     and `subagent` are unchanged.
+
+### `is_error` is null where a call did not complete
+
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+completed. Where a `tool_result`'s `status` is `cancelled` or `denied`, `is_error` is null, and
+the status carries the fact. The adapters below gave false or true there. No key changes; a record
+changes only in that `is_error`, its message's `cmp_sha` and that entry of the session's
+`fingerprint.cmp_shas`. An adapter whose `adapter_ver` already moved in this release (agy, cursor,
+cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
+
+- **agy (adapter_ver 0.2.1, unchanged).** A CANCELED or INTERRUPTED step (`cancelled`) gave false,
+  and an ERROR whose error is a denial (`denied`) gave true, in the conversation database; a denied
+  transcript line gave true too. All give null. An ERROR that is no denial stays true, a DONE false.
+  - Goldens: two tool results, `features` session `63e1ede9…`: step G9 (message `5fccbbf0…`,
+    `call_213908`, CANCELED) `false` → `null`, and step G2 (message `d24bade1…`, `call_322814`,
+    denied) `true` → `null`, with each message's `cmp_sha` and its entry of the session's
+    `fingerprint.cmp_shas`. Nothing else moves.

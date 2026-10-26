@@ -379,7 +379,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_213908",
-          "is_error": false,
+          "is_error": null,
           "status": "cancelled",
           "output": "",
           "output_len": 0,
@@ -390,7 +390,7 @@
       "harness": "agy",
       "session_id": "63e1ede9-38a7-420a-a1da-f43eabc90713",
       "incarnation": "",
-      "cmp_sha": "d1d2ff8ada7e8e9b8985b2dccd105c768474b2afc8afd16ea7d2a61f797c86be"
+      "cmp_sha": "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353"
     },
     {
       "type": "message",
@@ -977,7 +977,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_322814",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "permission check failed for unsandboxed \"rm -rf tests/__pycache__\": user denied permission to run command:\nrm -rf tests/__pycache__\nDo not attempt to circumvent this denial by rephrasing the command, using alternative tools/scripts (e.g. python, sh, curl), or accessing the same target resource. Proceed without performing this action.",
           "output_len": 335,
@@ -988,7 +988,7 @@
       "harness": "agy",
       "session_id": "63e1ede9-38a7-420a-a1da-f43eabc90713",
       "incarnation": "",
-      "cmp_sha": "c0cf11dac3c2c5bc9500806e9fecb38c3e716f88aa10119c3d6fa24672b70421"
+      "cmp_sha": "e4f26b3c31925f89f3c6b6406681ce03b0126cc4d468b26aade1986ba229ae8f"
     },
     {
       "type": "message",
@@ -1281,7 +1281,7 @@
           "832c81237c7a7ff6f4fffcbe637c8a51cd14b999c3b48110905ed40456e83bf9",
           "8c1bd5c37d56e75b4488cfd8e705a895c48639f925daf86762dec4ebed8463e1",
           "9a0668df176b46520b5091a94697b9074a2111d784d53fee50849026c1d38932",
-          "c0cf11dac3c2c5bc9500806e9fecb38c3e716f88aa10119c3d6fa24672b70421",
+          "e4f26b3c31925f89f3c6b6406681ce03b0126cc4d468b26aade1986ba229ae8f",
           "9ecc34eafb4df3b2c2316735e6c4bac193800d638c98637f92be2d767a5f6db9",
           "c6d21d61950e8f8fe15a4a2681977828fc8ad621333899cc6c31ba6cd75516f8",
           "f3a7c3f1ae96ba5d0c650f2da36fd8b93352170a9c195987e3239644ac45948b",
@@ -1307,7 +1307,7 @@
           "10650618c570735f515db228a0713082994a2c768b4ed1df96e069690f9650f8",
           "b3c4605dce352ee289b1b242162e080d1322a6a3267145801613c568a8f2908b",
           "099f92502d49ecfef43c1927fe0763b76cdb2dea2022785d05f5072b5c936851",
-          "d1d2ff8ada7e8e9b8985b2dccd105c768474b2afc8afd16ea7d2a61f797c86be"
+          "f61af6fc48672850616c9b77d6890fe88cef6ba460f0c35ccd20f7a29ee0b353"
         ]
       },
       "setup": null

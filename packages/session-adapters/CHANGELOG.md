@@ -375,3 +375,14 @@ a reader that wants a shell's failure reads `exit_code`.
   - Goldens: none change. Both fixture results with exit 1 (`features` `CALL(2, 1)`, `lab`'s
     pytest shell) carry `additionalData.status: error`, so they stay true from the flag. The test
     edits a copy for the other cases.
+- **cursor-agent (adapter_ver 0.2.1 → 0.2.2).** The flag is a step result's oneof case
+  (ShellSuccess, ShellFailure and the other kinds' success or failure cases) or the model context's
+  `highLevelToolCallResult.isError`, which wins where both are stored. A success, either one,
+  beside a non-zero `exit_code` (ShellSuccess #3) gives null. A shell-mode turn (`!cmd`) gives
+  null: the ShellOutput fields read (#1 stdout, #2 stderr, #3 exit_code) hold no flag, and its
+  `is_error` was derived from the exit code. A model-context result with no `isError` and no step
+  result gives null, where it gave false; no fixture holds one.
+  - Goldens: one tool result, `features` session `c4a1e0de…`, the shell-mode turn
+    `8b76b964…202+1` (exit 3): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
+    and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `orphan`, `rewind`
+    and `subagent` are unchanged.

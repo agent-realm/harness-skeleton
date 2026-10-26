@@ -265,7 +265,7 @@
           "part_id": "0:result",
           "kind": "tool_result",
           "call_id": "@8b76b964-5a7e-4000-8000-000000000202+1:0",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "7\n",
           "output_len": 2,
@@ -276,7 +276,7 @@
       "harness": "cursor-agent",
       "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
       "incarnation": "",
-      "cmp_sha": "c297a4aa1591daf090cc0a786b8f0201898d7726931599a705fe5456cfa32d12"
+      "cmp_sha": "445cdd857d0cae4afd6d973b3a7352a53d92f97f1a2c9a8c923ea87e5f633174"
     },
     {
       "type": "message",
@@ -1120,7 +1120,7 @@
           "9edaedc851bddfb9f35a960aa59f6a086d48efa74d1f8feb27584a395031ca96",
           "d828ded5ef6d399c4223428fa070b11cace00a83ee4e93ed298327d73f609f12",
           "069d51dd3720538b6a8dc408244905fee122a20b856d620076c0bd971b04ca5b",
-          "c297a4aa1591daf090cc0a786b8f0201898d7726931599a705fe5456cfa32d12",
+          "445cdd857d0cae4afd6d973b3a7352a53d92f97f1a2c9a8c923ea87e5f633174",
           "5b22619ab8cd8f8d8a027b2b95cb8f3de90ec5acf3cc6729e2ef375ee8513363",
           "0751c941b15db8c3b7fd41240f994529c15a9e914da6098e7f25743c6d7e4d2d",
           "1f762a54be997fe82aedc8237f4e7bee3c495ee323b268e4eb0177fee52d62b0",

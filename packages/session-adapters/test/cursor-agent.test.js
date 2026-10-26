@@ -266,18 +266,18 @@ test('cursor-agent: without the model context the step is decoded: name, curated
   assert.ok(!JSON.stringify(recs).includes('SENTINEL-UNTYPED'), 'an untyped kind\'s step is never decoded');
 });
 
-test('cursor-agent: shell mode (!cmd): an anchored id, one call and its result, exit code 3 is an error', () => {
+test('cursor-agent: shell mode (!cmd): an anchored id, one call and its result; exit code 3 is exit_code, and is_error null (no flag)', () => {
   const m = msg(recsOf('features', A), `${UID(2)}+1`);
   assert.deepEqual([m.role, m.source, m.status, m.ts], ['user', 'user', 'complete', null]);
   assert.deepEqual(m.parts.map((p) => [p.part_id, p.kind, p.call_id]), [['0:call', 'tool_call', `@${UID(2)}+1:0`], ['0:result', 'tool_result', `@${UID(2)}+1:0`]]);
-  assert.deepEqual([m.parts[0].args.command, m.parts[1].output, m.parts[1].is_error], ['python3 -c "import sys; print(7); sys.exit(3)"', '7\n', true]);
-  // An empty ShellOutput (the empty blob) is a finished command with exit 0.
+  assert.deepEqual([m.parts[0].args.command, m.parts[1].output, m.parts[1].is_error, m.parts[1].exit_code], ['python3 -c "import sys; print(7); sys.exit(3)"', '7\n', null, 3]);
+  // An empty ShellOutput (the empty blob) is a finished command with exit 0, and still no flag.
   const { s, turns } = simpleChat(A, [['hi', 'hello']]);
   const quiet = s.put(pb([[2, [[1, ref(s.put(pb([[1, 'true']])))], [2, ref(s.put(Buffer.alloc(0)))]]]]));
   s.meta(metaOf(A, root(s, { turns: [...turns, quiet] })));
   withChats([s], (dir) => {
     const q = viewOf(fullReplay(adapter, dir), A).find((r) => r.type === 'message' && r.message_id === `${uid('8b76b964', 900)}+1`);
-    assert.deepEqual([q.parts[1].output, q.parts[1].is_error], ['', false]);
+    assert.deepEqual([q.parts[1].output, q.parts[1].is_error, q.parts[1].exit_code], ['', null, 0]);
   });
 });
 
@@ -805,6 +805,43 @@ test('cursor-agent: describe states every facet, and each explicit claim has a f
       for (const r of messages(recs).flatMap((m) => m.parts.filter((p) => p.kind === 'tool_result'))) assert.equal(callIds.filter((x) => x === r.call_id).length, 1, r.call_id);
     }
   }
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, a step
+// result's case (ShellSuccess, ShellFailure) or the model context's `isError`. A flag that says
+// success beside a shell's non-zero exit_code is unreliable for that result, so its is_error is
+// null; a shell-mode turn's ShellOutput keeps no flag, so null. Never derived from exit_code.
+test('cursor-agent: is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null, a shell-mode turn is null, ShellFailure is true', () => {
+  withStore('features', (dir) => {
+    const recs = viewOf(fullReplay(adapter, dir), A);
+    const results = (id) => msg(recs, id).parts.filter((p) => p.kind === 'tool_result').map((p) => [p.is_error, p.exit_code]);
+    assert.deepEqual(results(`${UID(2)}+1`), [[null, 3]], 'a shell-mode turn: no flag, exit 3');
+    assert.deepEqual(results(`${RID(1)}:assistant`), [[true, 1]], 'ShellFailure, and isError true, beside exit 1');
+  });
+  const { s, last, turns } = simpleChat(A, [['hi', 'hello']]);
+  const [C2, C0, CF, CJ] = [call(81), call(82), call(83), call(84)];
+  const shellSuccess = (cmd, out, code) => [[1, [[1, cmd], [2, CWD], [3, code], [5, out]]]];
+  const um = userMsg(s, { text: 'Run the checks.', id: uid('8b76b964', 981), snap: last, t: T0 + 300000 });
+  const steps = [
+    toolStep(s, 1, C2, shellArgs('./check', C2), shellSuccess('./check', 'warned', 2), T0 + 300100),
+    toolStep(s, 1, C0, shellArgs('true', C0), shellOk('true', ''), T0 + 300200),
+    toolStep(s, 1, CF, shellArgs('false', CF), shellFailure('false', '', 1), T0 + 300300),
+    toolStep(s, 1, CJ, shellArgs('./lint', CJ), shellSuccess('./lint', 'lint', 4), T0 + 300400),
+  ];
+  // CJ's model context: isError false beside its exit code 4.
+  const rj = s.json({
+    role: 'tool', id: CJ, content: [{ type: 'tool-result', toolCallId: CJ, toolName: 'Shell', result: 'Exit code: 4\n\nCommand output:\n\nlint' }],
+    providerOptions: { cursor: { highLevelToolCallResult: { output: { success: { exitCode: 4 } }, isError: false } } },
+  });
+  const t = agentTurn(s, { um, steps, rid: uid('c3a28bce', 981), uid: uid('8b76b964', 981) });
+  s.meta(metaOf(A, root(s, { turns: [...turns, t], ctx: [rj] })));
+  withChats([s], (dir) => {
+    const parts = msg(viewOf(fullReplay(adapter, dir), A), `${uid('c3a28bce', 981)}:assistant`).parts;
+    assert.deepEqual(Object.fromEntries(parts.filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]])), {
+      [C2]: [null, 2], [C0]: [false, 0], [CF]: [true, 1], [CJ]: [null, 4],
+    }, 'ShellSuccess beside exit 2: null; ShellSuccess exit 0: false; ShellFailure: true; isError false beside exit 4: null');
+    assert.match(parts.find((p) => p.kind === 'tool_result' && p.call_id === CJ).output, /^Exit code: 4/, 'CJ\'s result is the model context\'s');
+  });
 });
 
 test('cursor-agent: a tool_result carries the stored shell exit code (ShellSuccess / ShellFailure #3, ShellOutput #3); none for other kinds or a credential step', () => {

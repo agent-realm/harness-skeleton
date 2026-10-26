@@ -169,16 +169,20 @@ Every operation throws `SessionsError` with a `code`:
 
 sessions §2 has the consumer retry `busy`, `inconsistent` and `damaged` with backoff, and never
 treat one as an empty or vanished source; a `damaged` that persists is reported, and the session
-keeps its last derived state. For all three, the expected consumer behaviour is (a contract
-decision, to appear in sessions v1.x):
+keeps its last derived state. For all three, sessions v1.x (#6), §2 (`read` errors) rules:
 
 A retryable read error that outlasts the consumer's retry budget while `updated_hint` is
-unchanged is reported; the consumer stops retrying that session until `updated_hint` moves, and
-keeps the last derived state.
+unchanged is reported; the consumer stops retrying that session until `updated_hint` moves,
+apart from its scheduled re-read, and keeps the last derived state.
 
-`updated_hint` comes from `list`, which a failed `read` does not touch, so a moved hint means the
-harness has written the session since. The reference consumer, `conformance/engine.js`, keeps no
-retry budget: it lets the error out of `pass()`.
+- **The scheduled re-read** is the one sessions §2 gives every session whatever its hint (for
+  example once a day), because a hint can miss a change. A reported session still gets that one
+  read on the schedule; it gets no backoff retries until `updated_hint` moves.
+- `updated_hint` comes from `list`, which a failed `read` does not touch, so a moved hint means the
+  harness has written the session since.
+
+The reference consumer, `conformance/engine.js`, keeps no retry budget: it lets the error out of
+`pass()`.
 
 ## Database sources
 

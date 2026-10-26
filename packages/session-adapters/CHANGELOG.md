@@ -287,6 +287,7 @@ derives it.
 - `docs/adapter-interface.md`, *Errors*, gains *Retryable errors: what a consumer does*: a
   retryable read error (`busy`, `inconsistent`, `damaged`) that outlasts the consumer's retry
   budget while `updated_hint` is unchanged is reported, and the consumer stops retrying that
-  session until `updated_hint` moves, keeping the last derived state. It is a contract decision, to
-  appear in sessions v1.x, refining sessions §2's read errors. Consumer behaviour only: no adapter
-  changes.
+  session until `updated_hint` moves, apart from its scheduled re-read, keeping the last derived
+  state. The scheduled re-read is sessions §2's periodic read of every session: one read on the
+  schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
+  no adapter changes.

@@ -675,6 +675,14 @@ function build(f, mainKey, root) {
       const waiting = !textOf(r.content).trim() && !parts.some((p) => p.kind === 'tool_call');
       const isHeld = s.state === 'current' && s === tail && (pending || waiting);
       written.add(s.id);
+      // The record's `model` is the model the CLI named in its request (after its own model
+      // selection, fallback and hooks), never the response's `modelVersion`, which the CLI keeps
+      // only in telemetry: `processStreamResponse(lastModelToUse, …)` records it through
+      // `recordMessage({ model, type: 'gemini' })` (google-gemini/gemini-cli at 363a131,
+      // 0.67.0-nightly.20261020: packages/core/src/core/geminiChat.ts:1239-1240 and 1767-1768,
+      // packages/core/src/services/chatRecordingService.ts:1099; read 2026-10-27). So it is
+      // `requested_model`. The store keeps no served model: `served_model` and usage `model` (the
+      // served model, sessions-model §2.4) stay null.
       message({ ...base, role: 'assistant', source: 'model', status: pending ? 'interrupted' : 'complete', requested_model: str(r.model) || null, parts }, isHeld);
       const t = isObj(r.tokens) ? r.tokens : null;
       if (t) {
@@ -689,7 +697,7 @@ function build(f, mainKey, root) {
             out.push({
               type: 'usage', usage_id: s.id, anchor: { message_id: s.id },
               input: u.input, output: u.output, cache_read: u.cache_read, cache_write: null, reasoning: u.reasoning, tool_prompt: u.tool_prompt, cost: null,
-              input_includes_cache: true, output_includes_reasoning: false, granularity: 'per_response', model: str(r.model) || null,
+              input_includes_cache: true, output_includes_reasoning: false, granularity: 'per_response', model: null,
             });
           }
         }

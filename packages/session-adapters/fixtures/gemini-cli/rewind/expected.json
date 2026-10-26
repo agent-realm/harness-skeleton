@@ -553,7 +553,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gateway/toy-model-d"
+      "model": null
     },
     {
       "type": "usage",
@@ -574,7 +574,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gateway/toy-model-d"
+      "model": null
     }
   ]
 }

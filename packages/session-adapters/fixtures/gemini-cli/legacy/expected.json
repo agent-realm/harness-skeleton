@@ -110,7 +110,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ],
   "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f60": [
@@ -256,7 +256,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ]
 }

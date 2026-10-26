@@ -124,3 +124,17 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   summaries but no `thought` part lost its reasoning. A `thought` part in the content still stands
   for the summaries, so reasoning is not counted twice. No key changes; consumers re-derive
   gemini-cli sessions. Fixture: the `features` session `6e7f8091…`.
+
+### gemini-cli: a record's model is the requested model only (adapter_ver 0.2.2)
+
+- **A usage record's `model` is null.** The adapter wrote a gemini record's `model` as the
+  message's `requested_model` and also as its usage record's `model`, which sessions-model §2.4
+  defines as the served model. Gemini CLI records the model it named in its own request (after its
+  model selection, fallback and hooks), never the response's `modelVersion`, which it keeps only
+  in telemetry (google-gemini/gemini-cli at 363a131: `packages/core/src/core/geminiChat.ts`
+  1239-1240 and 1767-1768, `packages/core/src/services/chatRecordingService.ts` 1099). The
+  sessions-model annex says the same: "record `model` (requested id)". The message keeps
+  `requested_model`, and `served_model` stays null.
+- **Goldens:** `usage.model` becomes null on 20 usage records (features 12, pass3 4, legacy 2,
+  rewind 2). Nothing else moves. No key changes; consumers re-derive gemini-cli sessions. A
+  reader that wants a model per usage record takes the anchored message's `requested_model`.

@@ -143,6 +143,24 @@ test('gemini-cli: thought summaries stay when the history sync rewrote content a
   });
 });
 
+// A gemini record's `model` is the model the CLI named in its own request, never the response's
+// `modelVersion` (google-gemini/gemini-cli at 363a131: packages/core/src/core/geminiChat.ts:1239-1240
+// and 1767-1768, packages/core/src/services/chatRecordingService.ts:1099). sessions-model §2.4 makes
+// usage `model` the served model, so a record gives `requested_model` and no usage `model`.
+test('gemini-cli: a record\'s model is the requested model: the message\'s requested_model, never the usage record\'s served model', () => {
+  const out = deriveLines([head, user('u1', 1, 'hello'), gemini('g1', 2, 'Hi there.')]);
+  const m = out.changed.find((r) => r.type === 'message' && r.message_id === 'g1');
+  assert.deepEqual([m.requested_model, m.served_model], ['gemini-3.5-flash', null]);
+  const u = out.changed.find((r) => r.type === 'usage' && r.usage_id === 'g1');
+  assert.deepEqual([u.input, u.output, u.model], [100, 5, null]);
+  // Every usage record of every golden: no served model, since the store keeps none.
+  for (const name of CASES) {
+    for (const recs of Object.values(golden(name))) {
+      for (const r of recs.filter((x) => x.type === 'usage')) assert.equal(r.model, null, `${name} ${r.usage_id}`);
+    }
+  }
+});
+
 test('gemini-cli: a tool turn: thoughts, the reply, call and result parts, error and cancelled calls; the echo is no message', () => {
   const recs = Object.values(golden('features')).flat();
   const g1 = msg(recs, '00000000-0000-4000-8000-000000000002');

@@ -460,3 +460,12 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `0a0a0a0a…`, message `response_…048`, `call_D`
     (denied): `parts[2].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab` is unchanged.
+- **zed (adapter_ver 0.2.1 → 0.2.2).** Zed's canned results, `Tool canceled by user` (`cancelled`)
+  and `Permission to run tool denied by user` (`denied`), kept Zed's stored `is_error: true`. They
+  give null. A call that completed keeps a stored true, and a stored false stays null (unreliable,
+  as before).
+  - Goldens: one message, `features` session `5a1e0000…c1`, message `5a1e0000…a3+1`, the cancelled
+    and the denied call (`toolu_toy_…04`, `toolu_toy_…05`): `parts[1].is_error` and
+    `parts[3].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
+    `sentinel` are unchanged.

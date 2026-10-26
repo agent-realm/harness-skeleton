@@ -408,7 +408,7 @@
           "part_id": "0:result",
           "kind": "tool_result",
           "call_id": "toolu_toy_000000000000000004",
-          "is_error": true,
+          "is_error": null,
           "status": "cancelled",
           "output": "Tool canceled by user",
           "output_len": 21,
@@ -430,7 +430,7 @@
           "part_id": "1:result",
           "kind": "tool_result",
           "call_id": "toolu_toy_000000000000000005",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "Permission to run tool denied by user",
           "output_len": 37,
@@ -438,7 +438,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "8eaef31b566eff0843d6aa86b0bae5f357ddff39cee286d7e1e0c81290435e39"
+      "cmp_sha": "ed0681ab0533d27dbede719eaf737953d472fa0ab0ab4589dbe977bb0cb8234a"
     },
     {
       "type": "message",
@@ -503,7 +503,7 @@
           "69c7a6f7a0e2beb690475241b456de630a238d1a5371aa201f38863b7d2cfaa9",
           "cbce2fde02b915ba85f0813ffdd4a5422e18e47a15e28671a3fedc321aaa8b17",
           "d78bfbb731fab7dc6365953207883089c99aaeb27c13c6da069aa425a48e1f76",
-          "8eaef31b566eff0843d6aa86b0bae5f357ddff39cee286d7e1e0c81290435e39",
+          "ed0681ab0533d27dbede719eaf737953d472fa0ab0ab4589dbe977bb0cb8234a",
           "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0"
         ]
       },

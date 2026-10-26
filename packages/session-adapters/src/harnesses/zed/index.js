@@ -462,11 +462,15 @@ function agentParts(msg, messageId) {
       }
       if (v.is_input_complete === false) open = true;
       const output = resultText(r.content);
+      const status = CANCELLED.has(output) ? 'cancelled' : DENIED.has(output) ? 'denied' : 'completed';
       parts.push({
         part_id: `${pid}:result`, kind: 'tool_result', call_id: callId,
-        // Unreliable as stored (a failing command has false, annex §2): kept only when true.
-        is_error: r.is_error === true ? true : null,
-        status: CANCELLED.has(output) ? 'cancelled' : DENIED.has(output) ? 'denied' : 'completed',
+        // Unreliable as stored (a failing command has false, annex §2): kept only when true. It
+        // describes a call that completed (sessions-model v1.x (#6), §2.3): Zed's canned cancel and
+        // denial results (`cancelled`, `denied`) give null, though Zed stores true, and the status
+        // carries the fact.
+        is_error: status === 'completed' && r.is_error === true ? true : null,
+        status,
         output, output_len: utf8Len(output), truncated: null,
       });
       if (name === 'spawn_agent') {

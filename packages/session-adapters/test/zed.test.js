@@ -236,15 +236,37 @@ test('zed: an orphaned request_token_usage entry (its User message restored away
   }
 });
 
-test('zed: statuses: is_error true kept, false is null; Zed\'s canned results are cancelled and denied', () => {
+test('zed: statuses: false is null; Zed\'s canned results are cancelled and denied, with no is_error', () => {
   const recs = golden('features')[T.CART];
   assert.deepEqual(msgIds(recs), [U.U0, U.U1, A(U.U1, 1), U.U2, A(U.U2, 1), A(U.U2, 2), A(U.U2, 3), A(U.U2, 4), U.U3, A(U.U3, 1), A(U.U3, 2)]);
   const res3 = msg(recs, A(U.U3, 1)).parts.filter((p) => p.kind === 'tool_result');
-  assert.deepEqual(res3.map((p) => [p.call_id, p.is_error, p.status]), [[C.WAIT, true, 'cancelled'], [C.CLEAN, true, 'denied']]);
+  assert.deepEqual(res3.map((p) => [p.call_id, p.is_error, p.status]), [[C.WAIT, null, 'cancelled'], [C.CLEAN, null, 'denied']]);
   const read = msg(recs, A(U.U2, 1)).parts.find((p) => p.kind === 'tool_call');
   assert.deepEqual([read.name, read.args], ['read_file', { path: 'toyshop/cart.py' }], 'input {type: json, value} unwrapped');
   assert.deepEqual([msg(recs, A(U.U1, 1)).requested_model, msg(recs, A(U.U1, 1)).effort], ['gateway/toy-model-a', 'high'], 'model and effort per thread');
   assert.ok(!ofType(recs, 'message').some((m) => m.parts.some((p) => p.kind === 'tool_result' && p.is_error === false)), 'false never kept');
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. Zed's canned results, `Tool canceled by user` (`cancelled`) and `Permission to run
+// tool denied by user` (`denied`), did not: their is_error is null, though Zed stores true, and the
+// status carries the fact. A call that completed keeps a stored true (the positive control) and
+// never a false (unreliable as stored).
+test('zed: is_error is null for Zed\'s canned cancel and denial; a completed call keeps a stored true', () => {
+  withStore('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[T.CART], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    const r = resultsOf();
+    assert.deepEqual([r[C.WAIT], r[C.CLEAN], r[C.TEST]], [['cancelled', null], ['denied', null], ['completed', null]], 'stored true, true, false');
+    // Edited in this copy: the shell's result is stored true (kept), the canned cancel false.
+    const t = cartThread();
+    const results = (callId) => t.messages.find((m) => m.Agent && m.Agent.tool_results[callId]).Agent.tool_results[callId];
+    results(C.TEST).is_error = true;
+    results(C.WAIT).is_error = false;
+    save(dir, T.CART, t);
+    const e = resultsOf();
+    assert.deepEqual([e[C.TEST], e[C.WAIT], e[C.CLEAN]], [['completed', true], ['cancelled', null], ['denied', null]]);
+  });
 });
 
 test('zed: reasoning: Thinking text, signature-only and RedactedThinking opaque; reasoning_details only without Thinking; a Mention and an Image', () => {

@@ -194,6 +194,25 @@ From sessions-model.
 | zed | generic |
 | devin | generic |
 
+## M.is-error: is_error (v1.2): every tool_result copies the store's own flag; null where it has none, where the flag says success beside a shell's non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true
+
+From sessions-model.
+
+| Harness | Proved by |
+|---|---|
+| claude-code | generic<br>claude-code: “is_error copies the tool_result block's flag; a block without one is null; every result is completed” |
+| codex | generic<br>codex: “is_error is null where the output keeps no success flag; a stored flag is copied; never derived from exit_code” |
+| copilot-cli | generic<br>copilot-cli: “is_error copies success; success true with a non-zero shell exit is null”<br>copilot-cli: “is_error is null for a denied call” |
+| gemini-cli | generic<br>gemini-cli: “is_error is null for a cancelled call” |
+| vscode | generic<br>vscode: “is_error is the stored flag: done beside a non-zero terminal exit is null”<br>vscode: “is_error is null where the call did not complete” |
+| goose | generic<br>goose: “is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null”<br>goose: “is_error is null where the call did not complete” |
+| opencode | generic<br>opencode: “is_error is the state status: completed beside a non-zero exit is null”<br>opencode: “is_error is null where the call did not complete” |
+| agy | generic<br>agy: “is_error is the step status: DONE beside a non-zero exit is null”<br>agy: “is_error is null where the call did not complete” |
+| cursor | generic<br>cursor: “is_error is the stored status: completed beside a non-zero exit is null”<br>cursor: “is_error is null where the call did not complete” |
+| cursor-agent | generic<br>cursor-agent: “is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null”<br>cursor-agent: “is_error is null where the call did not complete” |
+| zed | generic<br>zed: “is_error is null for Zed's canned cancel and denial; a completed call keeps a stored true”<br>zed: “statuses: false is null” |
+| devin | generic<br>devin: “is_error is the stored flag: success true beside a non-zero exit is null”<br>devin: “is_error is null where the call did not complete” |
+
 ## M.folding: Folding: a repeated native id yields one record per key, in its last state
 
 From sessions-model.

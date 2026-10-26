@@ -88,8 +88,8 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   returns `[{at, problem}]` (valid when every finding is a warning: see *Registries accepted*). It checks shape, not meaning: enums, ISO times,
   non-empty string keys and call ids that are unique and carry no time, one session record with
   `setup`, usage with `tool_prompt` and no retired `basis`, an error part's `error_kind`.
-- **The conformance matrix**: `conformance/checklist.js` lists the 31 adapter-side items of
-  sessions-model v1 (21) and sessions v1 (10); `conformance/matrix.js` says, for every item and
+- **The conformance matrix**: `conformance/checklist.js` lists the 32 adapter-side items of
+  sessions-model v1 (21, and v1.2's `is_error`) and sessions v1 (10); `conformance/matrix.js` says, for every item and
   every harness, what proves it: `generic` (a check in `conformance/generic.js`, run over every
   fixture case), a named test, `n/a` with the reason, or `open` with the reason, for an item
   whose reading waits on a ruling (no cell is `open` today). `docs/conformance-matrix.md` is
@@ -475,3 +475,16 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `parts[3].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
     `sentinel` are unchanged.
+- **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
+  item (sessions-model v1.x (#6), §2.3): every `tool_result` copies the harness store's own flag,
+  and is null where the store has none, where the flag says success beside a shell's non-zero
+  `exit_code`, and where `status` is `cancelled` or `denied`; a fixture result with a non-zero
+  `exit_code` and no failure flag never has `is_error` true. Every harness's cell is `generic`
+  plus its own tests. The generic check (`conformance/generic.js`, run over every fixture case)
+  finds a non-null `is_error` on a cancelled or denied result, a false beside a non-zero
+  `exit_code`, and a true beside one that `FAILURE_FLAGS` does not list with the store's failure
+  flag (five results: cursor's two `additionalData.status: error`, cursor-agent's ShellFailure,
+  goose's two `isError: true`). The named tests show the copy and the nulls per harness.
+  claude-code gains one: its results copy the block's `is_error`, null where the block has none.
+  Over the goldens as they stood before the fixes above, the check finds 19 results in ten
+  harnesses; after them, none.

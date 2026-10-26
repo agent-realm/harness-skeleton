@@ -36,6 +36,25 @@ export const ORPHAN_RESULTS = {
   },
 };
 
+// Results whose `is_error` is true beside a non-zero `exit_code`, each because the harness store
+// keeps a failure flag for it: harness, then session, then call_id, then the flag. A non-zero
+// `exit_code` alone never makes `is_error` true (sessions-model v1.x (#6), §2.3), so a true beside
+// one anywhere else is a finding (M.is-error). The harness's own tests show each flag (the
+// matrix's M.is-error cell names them).
+export const FAILURE_FLAGS = {
+  cursor: {
+    'c0c0a001-0000-4000-8000-000000000001': { 'call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0': 'additionalData.status error' },
+    '5a5a0009-0009-4000-8000-000000000009': { 'call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0': 'additionalData.status error' },
+  },
+  'cursor-agent': {
+    'c4a1e0de-5a7e-4000-8000-000000000001': { 'call-00c41679-5a7e-4f00-8000-00000000c0de-2\nfc_synth02-0Synth-00000002-syn_th1_2': 'ShellFailure, and the model context\'s isError true' },
+  },
+  goose: {
+    '20261021_1': { 'call-1': 'isError true' },
+    '20261021_8': { 'call-1': 'isError true' },
+  },
+};
+
 // The usage each harness declares (sessions-model annex, finding 6, and each describe.js): the
 // granularities and anchor kinds its records may carry. cursor-agent stores no usage; no adapter
 // emits per_record (§2.4).
@@ -124,6 +143,21 @@ export function recordChecks(h, views) {
     for (const [id, n] of results) if (n > 1) add('M.tool-linkage', `${sid}: call ${id} has ${n} results`);
     for (const id of results.keys()) {
       if (!calls.has(id) && !ORPHAN_RESULTS[h]?.[sid]?.[id]) add('M.tool-linkage', `${sid}: result for ${id}, which no call of the session has`);
+    }
+
+    // M.is-error (v1.2, sessions-model v1.x (#6), §2.3): `is_error` describes a call that
+    // completed, so a cancelled or denied result has none. A false beside a non-zero `exit_code` is
+    // a flag that says success beside it, unreliable for that result, so null instead. A true
+    // beside one needs the harness store's failure flag (FAILURE_FLAGS): never the exit code alone.
+    for (const m of messages) {
+      for (const p of m.parts ?? []) {
+        if (p.kind !== 'tool_result') continue;
+        const at = `${sid}: result for ${JSON.stringify(p.call_id)}`;
+        const exit = Number.isInteger(p.exit_code) && p.exit_code !== 0 ? p.exit_code : null;
+        if ((p.status === 'cancelled' || p.status === 'denied') && p.is_error != null) add('M.is-error', `${at}: ${p.status} with is_error ${p.is_error}, not null`);
+        else if (p.is_error === false && exit !== null) add('M.is-error', `${at}: is_error false beside exit_code ${exit}, not null`);
+        else if (p.is_error === true && exit !== null && !FAILURE_FLAGS[h]?.[sid]?.[p.call_id]) add('M.is-error', `${at}: is_error true beside exit_code ${exit}, and no failure flag is listed`);
+      }
     }
 
     // M.compaction: the message a summary keeps from is still present, and nothing before it was

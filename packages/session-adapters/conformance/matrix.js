@@ -91,6 +91,23 @@ export const MATRIX = {
     devin: na('every node carries its native message_id; a revert moves main_chain_id and the regrown branch has new ids'),
   },
   'M.tool-linkage': all([G]),
+  // The generic check holds every fixture result to the item's nulls and to FAILURE_FLAGS; each
+  // harness's tests show that `is_error` is its store's own flag, and that a call that did not
+  // complete gives null.
+  'M.is-error': {
+    'claude-code': [G, t('claude-code', 'is_error copies the tool_result block\'s flag; a block without one is null; every result is completed')],
+    codex: [G, t('codex', 'is_error is null where the output keeps no success flag; a stored flag is copied; never derived from exit_code')],
+    'copilot-cli': [G, t('copilot-cli', 'is_error copies success; success true with a non-zero shell exit is null'), t('copilot-cli', 'is_error is null for a denied call')],
+    'gemini-cli': [G, t('gemini-cli', 'is_error is null for a cancelled call')],
+    vscode: [G, t('vscode', 'is_error is the stored flag: done beside a non-zero terminal exit is null'), t('vscode', 'is_error is null where the call did not complete')],
+    goose: [G, t('goose', 'is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null'), t('goose', 'is_error is null where the call did not complete')],
+    opencode: [G, t('opencode', 'is_error is the state status: completed beside a non-zero exit is null'), t('opencode', 'is_error is null where the call did not complete')],
+    agy: [G, t('agy', 'is_error is the step status: DONE beside a non-zero exit is null'), t('agy', 'is_error is null where the call did not complete')],
+    cursor: [G, t('cursor', 'is_error is the stored status: completed beside a non-zero exit is null'), t('cursor', 'is_error is null where the call did not complete')],
+    'cursor-agent': [G, t('cursor-agent', 'is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null'), t('cursor-agent', 'is_error is null where the call did not complete')],
+    zed: [G, t('zed', 'is_error is null for Zed\'s canned cancel and denial; a completed call keeps a stored true'), t('zed', 'statuses: false is null')],
+    devin: [G, t('devin', 'is_error is the stored flag: success true beside a non-zero exit is null'), t('devin', 'is_error is null where the call did not complete')],
+  },
   'M.folding': {
     'claude-code': [t('claude-code', 'one uuid in two main sources keeps the lowest-order copy, whatever the read order')],
     codex: [t('codex', 'one id in two rollouts of a session keeps the lowest-order copy, whatever the read order')],

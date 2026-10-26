@@ -259,10 +259,25 @@ test('goose: compaction: earlier rows flipped in place are to_model false (keys 
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A declined call (`denied`), Ctrl-C during a shell call and a cancelled approval
+// (`cancelled`) did not: their is_error is null, though goose stores `isError: true` on each, and
+// the status carries the fact. A call that completed keeps `isError` (the positive control).
+test('goose: is_error is null where the call did not complete: declined, Ctrl-C, a cancelled approval; a completed call keeps isError', () => {
+  withStore('features', (dir) => {
+    const views = project(fullReplay(adapter, dir).views());
+    const results = (sid) => Object.fromEntries(ofType(views[sid], 'message').flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error, p.exit_code]]));
+    const s2 = results(S2);
+    assert.deepEqual([s2['call-rm'], s2['call-sleep'], s2['call-rm2']], [['denied', null, null], ['cancelled', null, null], ['cancelled', null, null]]);
+    const s1 = results(S1);
+    assert.deepEqual([s1['call-1'], s1['call-label'], s1['call-scan']], [['completed', true, 1], ['completed', false, null], ['completed', true, null]], 'isError true beside exit 1; no isError (false, as goose reads it); isError true');
+  });
+});
+
 test('goose: statuses: a declined call is denied, Ctrl-C and a cancelled approval are cancelled; errors, a cut reply, the output-token limit', () => {
   const recs = golden('features')[S2];
   const result = (call) => ofType(recs, 'message').flatMap((m) => m.parts).find((p) => p.kind === 'tool_result' && p.call_id === call);
-  assert.deepEqual([result('call-rm').status, result('call-rm').is_error], ['denied', true]);
+  assert.deepEqual([result('call-rm').status, result('call-rm').is_error], ['denied', null]);
   assert.equal(result('call-sleep').status, 'cancelled', 'Ctrl-C during a shell call: (no output), no exit code');
   assert.equal(result('call-rm2').status, 'cancelled', 'Cancel in the approval prompt: interrupted before completing');
   const conf = msg(recs, 'msg_conf');

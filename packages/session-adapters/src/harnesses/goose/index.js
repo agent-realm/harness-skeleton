@@ -726,9 +726,13 @@ function build(st, key) {
         }
         case 'toolResponse': {
           const res = resultOf(p, pid);
+          const status = toolStatus(res, permission.get(str(p.id)));
           toolParts.push({
             part_id: pid, kind: 'tool_result', call_id: claimedBy.get(pk(i, j)) ?? (p.id != null ? str(p.id) : `@${id}:${j}`),
-            is_error: res.isError, status: toolStatus(res, permission.get(str(p.id))), output: res.output,
+            // `is_error` describes a call that completed (sessions-model v1.x (#6), §2.3): a declined
+            // (`denied`) or an interrupted (`cancelled`) call's is null, whatever `isError` says, and
+            // the status carries the fact.
+            is_error: status === 'completed' ? res.isError : null, status, output: res.output,
             output_len: Buffer.byteLength(res.output, 'utf8'), truncated: null,
             // `structuredContent.exit_code`, kept apart from the content text, never parsed out of it.
             exit_code: Number.isInteger(res.exit) ? res.exit : null,

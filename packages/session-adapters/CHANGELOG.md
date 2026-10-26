@@ -439,3 +439,11 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `7f3e9a10…`, message `00000000…004`, the cancelled
     edit (`write_file__…_1`): `parts[3].is_error` `false` → `null`, with the message's `cmp_sha` and
     that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **goose (adapter_ver 0.2.0 → 0.2.1).** A declined call (`denied`), Ctrl-C during a shell call
+  and a cancelled approval (`cancelled`) copied goose's `isError: true`. They give null. A call
+  that completed keeps `isError`.
+  - Goldens: three tool results, `features` session `20261021_2`: `msg_rr` (`call-rm`, denied),
+    `msg_rs` (`call-sleep`, Ctrl-C) and `msg_ri` (`call-rm2`, a cancelled approval),
+    `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and its entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab` and `conformance-goose-sentinel`
+    are unchanged.

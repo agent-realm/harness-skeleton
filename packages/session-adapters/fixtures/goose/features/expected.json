@@ -2156,7 +2156,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call-rm2",
-          "is_error": true,
+          "is_error": null,
           "status": "cancelled",
           "output": "Tool call was interrupted before completing.",
           "output_len": 44,
@@ -2164,7 +2164,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "1e632546a2d3918426dba276a5bdc91f8d9b03e3d4684b4a3823feac5088ad78"
+      "cmp_sha": "dabe71aedff54015a2fd664861c39e7800ebdfaa4d81bb914d60447a52b24436"
     },
     {
       "type": "message",
@@ -2193,7 +2193,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call-rm",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "The user has declined to run this tool. DO NOT attempt to call this tool again.",
           "output_len": 79,
@@ -2201,7 +2201,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "ff7ac3af5341f53d62d0db333761ef878890fdf718b887e577b96eabeb567650"
+      "cmp_sha": "4f3034c0225a605cd026387d3604b448c8adec2c8d831dc530b85b6af3a28034"
     },
     {
       "type": "message",
@@ -2230,7 +2230,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call-sleep",
-          "is_error": true,
+          "is_error": null,
           "status": "cancelled",
           "output": "(no output)",
           "output_len": 11,
@@ -2238,7 +2238,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559"
+      "cmp_sha": "c5e688ffdaf7c79ed14c7e9997d00f8b8cc5c0c505a683d1d6d8a71fdf2fc730"
     },
     {
       "type": "session",
@@ -2267,15 +2267,15 @@
           "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
           "48c87abeb1cbefefd76e1232e2004fac85ecf3a472f13f052e1543361739c52b",
           "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
-          "ff7ac3af5341f53d62d0db333761ef878890fdf718b887e577b96eabeb567650",
+          "4f3034c0225a605cd026387d3604b448c8adec2c8d831dc530b85b6af3a28034",
           "e93912daef7bcec9a65b50260282ed1969d083bc384f3ad9b2e793586b7ea594",
           "f6ee94c857d0e5007cc4032d7160a117f51addcc5b714bcf309443bcc83e0325",
           "be38bd6bf6fb43477d7a74b0f02e45b4aabbeba323ed34d3b55ac28a6fcb5fe4",
-          "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559",
+          "c5e688ffdaf7c79ed14c7e9997d00f8b8cc5c0c505a683d1d6d8a71fdf2fc730",
           "2012d5087648916d7bc5d668048a38bf9a7889eeb2a1279d9b58821ac315b26d",
           "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
           "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
-          "1e632546a2d3918426dba276a5bdc91f8d9b03e3d4684b4a3823feac5088ad78",
+          "dabe71aedff54015a2fd664861c39e7800ebdfaa4d81bb914d60447a52b24436",
           "4a1f869bc5d931e36d83a2d0f724b1f0ed04dd70bb89049d1fbd43f399afeb47",
           "f6334f8f5dd3c78af9e9619424b71d6944e1a5e50fa9a00c4dcf78674bbf90e8",
           "9aa4c112740bf2dc23c56aa9b78d464c8e1a59186ffa9ec14cfc971120851841",

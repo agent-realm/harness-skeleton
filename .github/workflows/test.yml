@@ -11,15 +11,36 @@ permissions:
   contents: read
 
 jobs:
-  unit:
+  node:
+    name: unit (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22 is the floor (engines: >=22 at the root, >=22.15 for the session adapters, which
+        # setup-node's latest 22.x meets); 24 is the current LTS.
+        node: [22, 24]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 22
+          node-version: ${{ matrix.node }}
       - run: npm ci --ignore-scripts
       - run: npm test
+
+  # The check `main` requires is named `unit`. It passes only when every Node version above
+  # passed; a failed, skipped or cancelled run fails it, so it never reports green by default.
+  unit:
+    needs: node
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          RESULT: ${{ needs.node.result }}
+        run: |
+          echo "unit tests on every Node version: $RESULT"
+          test "$RESULT" = success

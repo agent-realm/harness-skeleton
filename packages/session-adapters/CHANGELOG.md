@@ -246,3 +246,12 @@ a read inconsistent.
 - No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
   `read` used to refuse.
 - `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.
+
+### Docs: what a consumer does about a retryable read error
+
+- `docs/adapter-interface.md`, *Errors*, gains *Retryable errors: what a consumer does*: a
+  retryable read error (`busy`, `inconsistent`, `damaged`) that outlasts the consumer's retry
+  budget while `updated_hint` is unchanged is reported, and the consumer stops retrying that
+  session until `updated_hint` moves, keeping the last derived state. It is a contract decision, to
+  appear in sessions v1.x, refining sessions §2's read errors. Consumer behaviour only: no adapter
+  changes.

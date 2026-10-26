@@ -165,6 +165,21 @@ Every operation throws `SessionsError` with a `code`:
 - `busy`, `inconsistent` and `damaged`, which are retryable (sessions §2);
 - `harness_unknown`, `bad_request`, `folder_missing`, `host_unreadable` and `platform_unsupported`.
 
+### Retryable errors: what a consumer does
+
+sessions §2 has the consumer retry `busy`, `inconsistent` and `damaged` with backoff, and never
+treat one as an empty or vanished source; a `damaged` that persists is reported, and the session
+keeps its last derived state. For all three, the expected consumer behaviour is (a contract
+decision, to appear in sessions v1.x):
+
+A retryable read error that outlasts the consumer's retry budget while `updated_hint` is
+unchanged is reported; the consumer stops retrying that session until `updated_hint` moves, and
+keeps the last derived state.
+
+`updated_hint` comes from `list`, which a failed `read` does not touch, so a moved hint means the
+harness has written the session since. The reference consumer, `conformance/engine.js`, keeps no
+retry budget: it lets the error out of `pass()`.
+
 ## Database sources
 
 - A table slice's `source_key` is `<db path>#table:<name>` (sessions §1). Every OpenCode harness

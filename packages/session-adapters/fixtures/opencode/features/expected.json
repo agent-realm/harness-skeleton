@@ -97,7 +97,7 @@
           "part_id": "prt_15e9c2faf007rvlsQ6opVnvfPC:result",
           "kind": "tool_result",
           "call_id": "call_bc3a64f28f",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "1 failed",
           "output_ref": null,
@@ -125,7 +125,7 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "6212f5ff7105592f5187ec3da3748b588a1c7f65d87e6c214eb58b8418e1bb36"
+      "cmp_sha": "cbbcc19f44f8787b35aff1fe0ad6ccc418bf94f204584c2eb41e59c054757a02"
     },
     {
       "type": "message",
@@ -271,7 +271,7 @@
           "part_id": "prt_15e9c33b5010Xz6j7JOUtfiRAO:result",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-FixtureFixt00050",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "The user rejected permission to use this specific tool call.",
           "output_ref": null,
@@ -287,7 +287,7 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "64edf15a6bafc6f7e75977974171a35b5c57ea548cbb981e4a76e40519cf39f7"
+      "cmp_sha": "df454890dbbd7c36c727014974fe7b3ad5dd3729e4637e00d3389b8aca3370e1"
     },
     {
       "type": "message",
@@ -503,8 +503,8 @@
       "fingerprint": {
         "cmp_shas": [
           "09d6dac07f3976c90161b9df1669bac4ec4232a2c4b785835e326115ce24cd24",
-          "6212f5ff7105592f5187ec3da3748b588a1c7f65d87e6c214eb58b8418e1bb36",
-          "64edf15a6bafc6f7e75977974171a35b5c57ea548cbb981e4a76e40519cf39f7",
+          "cbbcc19f44f8787b35aff1fe0ad6ccc418bf94f204584c2eb41e59c054757a02",
+          "df454890dbbd7c36c727014974fe7b3ad5dd3729e4637e00d3389b8aca3370e1",
           "fa43dab3dc07e96b070cb7f3e533fef04a7b88f688e998d4d6c76ce1cadbf0d0",
           "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe",
           "5ab0c70f9af19af9190ece22f76853fdf633e8fdc411e4c427c2fdd6779c59ef",

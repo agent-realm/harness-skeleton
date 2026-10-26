@@ -9,7 +9,7 @@ const SIDEBAR = 'db/<channel>/db.sqlite#table:sidebar_threads';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/zed',
-  adapter_ver: '0.2.1',
+  adapter_ver: '0.2.2',
   model_version: 'sessions-model/1',
   harness: 'zed',
   state_ver: 1,
@@ -62,7 +62,8 @@ export const describe = Object.freeze({
     list: 'partial',
     // Lossy: Agent messages have no native id and no message a timestamp (annex); `is_error` is
     // kept
-    // only when true (a failing command stores false, annex §2); a terminal's exit code stays in
+    // only when true on a call that completed (a failing command stores false, annex §2); a
+    // terminal's exit code stays in
     // its
     // output text; an Image's media type is taken as image/png; a Mention keeps its content but not
     // its URI; the model is per thread (a mid-thread switch relabels earlier replies) and its

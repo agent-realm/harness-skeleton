@@ -591,20 +591,27 @@ function attachment(partId, f) {
 const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 
 // A tool's call and result (sessions-model §2.3: one native part holding both becomes
-// `<id>:call` + `<id>:result`, sharing the call id).
+// `<id>:call` + `<id>:result`, sharing the call id). `is_error` is the harness store's own flag,
+// the part's state status (sessions-model v1.x (#6), §2.3): `error` gives true and `completed`
+// false, and a status still pending or running gives null. A `completed` status beside a shell's
+// non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the other results
+// keep the flag. It describes a call that completed: a refused permission (`denied`) or a call cut
+// off (`cancelled`) gives null, and the status carries the fact. Never derived from the exit code
+// or the text.
 function toolPair(pid, callId, name, args, status, { output, error, truncated, outputRef, exitCode = null }) {
   const done = status === 'completed';
   const failed = status === 'error';
   const err = failed ? errorText(error) : '';
   const out = done ? String(output ?? '') : failed ? (typeof output === 'string' && output ? output : err) : null;
+  // A refused permission is `denied`; a call still pending or running when its message ended was
+  // cut off: cancelled.
+  const result = failed && /rejected permission/i.test(err) ? 'denied' : done || failed ? 'completed' : 'cancelled';
   return [
     { part_id: `${pid}:call`, kind: 'tool_call', call_id: callId, name, args, server: null },
     {
       part_id: `${pid}:result`, kind: 'tool_result', call_id: callId,
-      is_error: failed ? true : done ? false : null,
-      // A refused permission is `denied`; a call still pending or running when its message ended
-      // was cut off: cancelled.
-      status: failed && /rejected permission/i.test(err) ? 'denied' : done || failed ? 'completed' : 'cancelled',
+      is_error: result !== 'completed' ? null : failed ? true : exitCode !== null && exitCode !== 0 ? null : false,
+      status: result,
       output: out, output_ref: outputRef, output_len: out === null ? null : utf8Len(out), truncated, exit_code: exitCode,
     },
   ];

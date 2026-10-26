@@ -1,0 +1,530 @@
+{
+  "keen-ridge": [
+    {
+      "type": "lifecycle",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "lifecycle_id": "d5cc0835-de4a-4d90-8e39-12916c2d426e",
+      "op": "compaction",
+      "target": {
+        "range": {
+          "from_id": "efa09bce-660f-4719-8f33-73ac2acf46dd",
+          "through_id": "89cf5656-0fb8-4178-8371-09ea56353c5b"
+        }
+      },
+      "at": null,
+      "ts": "2026-10-20T10:01:31.000Z",
+      "evidence": "explicit"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "2ccdfd3c-44cc-4e8a-85a9-ef80475ae6a7",
+      "parent_id": "eda0b4a4-7343-40ac-8ac7-fadbddd80d74",
+      "order": "00000008",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:41.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "e03c463a-b55a-46f0-8edd-7b63a413dba6",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Added tests/test_rounding.py."
+        }
+      ],
+      "cmp_sha": "687907d1eabd82e03a30052d8c5cf9d2ed290a7bf39d92936feae12d4f70f9a6"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "42115e99-881c-4eee-8f12-4c65e5626d18",
+      "parent_id": "efa09bce-660f-4719-8f33-73ac2acf46dd",
+      "order": "00000006",
+      "agent_id": "",
+      "role": "system",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:31.200Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "You are continuing work from a previous conversation thread. Below is a summary of the previous conversation thread:\nFull conversation history saved at /home/user/.local/share/devin/cli/summaries/history_toy.md.\nSummary:\n<summary>\n1. Request and Intent: the user asked how discounts round; they now round half up.\n</summary>"
+        }
+      ],
+      "cmp_sha": "1c70c453cacaed5c0a2c8321abf438e71c9a6697f9e0435dff146bd282451ac6"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "4ef5e6f2-56a1-4b9b-8c93-24025935d5e5",
+      "parent_id": "7e1fb77d-6de7-42e4-8e5a-833fc7ab093d",
+      "order": "00000002.0000000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": false,
+      "ts": "2026-10-20T10:00:21.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "98bf410b-8e39-431a-8a6e-7f3d7ee80fc4",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Discounts would round down to the cent."
+        }
+      ],
+      "cmp_sha": "2d539e82de8f89d8f0abc3aafce7bbddfbd5a37fb2a866fcec5368e9586d20c8"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "7b730f4c-2683-4a30-89c9-9115f9f9dc4b",
+      "parent_id": "902abde5-7514-4c3f-8268-abc47404b35e",
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Round discounts half up instead."
+        }
+      ],
+      "cmp_sha": "3aa451bcf9c2c7852ac6223148da18f27580df47e3f5c7b479ac7884749cd89e"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "7e1fb77d-6de7-42e4-8e5a-833fc7ab093d",
+      "parent_id": "902abde5-7514-4c3f-8268-abc47404b35e",
+      "order": "00000002.0000000004",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": false,
+      "ts": "2026-10-20T10:00:20.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Round discounts down to the cent."
+        }
+      ],
+      "cmp_sha": "09e7b76211785ff4428109d814595f5b55d185a80c482b6da1cc2b5a45cbb4b3"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "89cf5656-0fb8-4178-8371-09ea56353c5b",
+      "parent_id": "7b730f4c-2683-4a30-89c9-9115f9f9dc4b",
+      "order": "00000004",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:02.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "b68afe40-7e30-4c3a-8985-8eb2dd9ddc21",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Discounts now round half up to the cent."
+        }
+      ],
+      "cmp_sha": "fa71849c6d43b52075d46377fec1e007fb01ab73a876823bae2481391bde92a4"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "902abde5-7514-4c3f-8268-abc47404b35e",
+      "parent_id": "efba86c1-96b4-445d-8353-12aba927e338",
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:03.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "bf2dfcc7-9a0c-43ab-8878-e6a73b8508d2",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "It sums integer cents, so nothing is rounded yet."
+        }
+      ],
+      "cmp_sha": "70ca40838ebb607bd21a6a9a50071e5a749a14efb14835aca4fa31a7507e430d"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "d5cc0835-de4a-4d90-8e39-12916c2d426e",
+      "parent_id": "5ffba857-9f29-40b8-8e37-a30d659817ec",
+      "order": "00000005",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:31.000Z",
+      "requested_model": null,
+      "served_model": "compactor",
+      "effort": null,
+      "response_id": "74086aa1-c0ec-4525-8326-412ce7d6d45a",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "summary",
+          "text": "<summary>\n1. Request and Intent: the user asked how discounts round; they now round half up.\n</summary>",
+          "replaces": {
+            "through_id": "89cf5656-0fb8-4178-8371-09ea56353c5b"
+          }
+        }
+      ],
+      "cmp_sha": "c464f5abf173c531c67c34aae2a7bf0f182016280c40e36a74dad2f593c6b396"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "eda0b4a4-7343-40ac-8ac7-fadbddd80d74",
+      "parent_id": "42115e99-881c-4eee-8f12-4c65e5626d18",
+      "order": "00000007",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:01:40.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Add a test for the half-up rounding."
+        }
+      ],
+      "cmp_sha": "0eae4e41295ef2b228300d04dd16b35dc491e98e120193f1f47bd35a93d02d77"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "efa09bce-660f-4719-8f33-73ac2acf46dd",
+      "parent_id": "42c6965c-5824-4125-863f-4b91673b03e0",
+      "order": "00000000",
+      "agent_id": "",
+      "role": "system",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:00.005Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
+        }
+      ],
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "message_id": "efba86c1-96b4-445d-8353-12aba927e338",
+      "parent_id": "efa09bce-660f-4719-8f33-73ac2acf46dd",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "How does Cart.total round a discount?"
+        }
+      ],
+      "cmp_sha": "4debe86fbf71227a1c0ba59e9403fa97371adea8327b93cef5a267481ae80e23"
+    },
+    {
+      "type": "session",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "engine": null,
+      "client": "devin",
+      "harness_version": null,
+      "title": "Discount rounding",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T10:00:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "smart",
+      "kind": null,
+      "reuse": "undetectable",
+      "ts_source": "reset_on_save",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+          "4debe86fbf71227a1c0ba59e9403fa97371adea8327b93cef5a267481ae80e23",
+          "70ca40838ebb607bd21a6a9a50071e5a749a14efb14835aca4fa31a7507e430d",
+          "3aa451bcf9c2c7852ac6223148da18f27580df47e3f5c7b479ac7884749cd89e",
+          "fa71849c6d43b52075d46377fec1e007fb01ab73a876823bae2481391bde92a4",
+          "c464f5abf173c531c67c34aae2a7bf0f182016280c40e36a74dad2f593c6b396",
+          "1c70c453cacaed5c0a2c8321abf438e71c9a6697f9e0435dff146bd282451ac6",
+          "0eae4e41295ef2b228300d04dd16b35dc491e98e120193f1f47bd35a93d02d77",
+          "687907d1eabd82e03a30052d8c5cf9d2ed290a7bf39d92936feae12d4f70f9a6"
+        ]
+      },
+      "setup": null
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "usage_id": "message:2ccdfd3c-44cc-4e8a-85a9-ef80475ae6a7#1",
+      "anchor": {
+        "message_id": "2ccdfd3c-44cc-4e8a-85a9-ef80475ae6a7"
+      },
+      "input": 2000,
+      "output": 9,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "usage_id": "message:4ef5e6f2-56a1-4b9b-8c93-24025935d5e5#1",
+      "anchor": {
+        "message_id": "4ef5e6f2-56a1-4b9b-8c93-24025935d5e5"
+      },
+      "input": 950,
+      "output": 10,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "usage_id": "message:89cf5656-0fb8-4178-8371-09ea56353c5b#1",
+      "anchor": {
+        "message_id": "89cf5656-0fb8-4178-8371-09ea56353c5b"
+      },
+      "input": 1400,
+      "output": 11,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "usage_id": "message:902abde5-7514-4c3f-8268-abc47404b35e#1",
+      "anchor": {
+        "message_id": "902abde5-7514-4c3f-8268-abc47404b35e"
+      },
+      "input": 900,
+      "output": 12,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "keen-ridge",
+      "incarnation": "",
+      "usage_id": "message:d5cc0835-de4a-4d90-8e39-12916c2d426e#1",
+      "anchor": {
+        "message_id": "d5cc0835-de4a-4d90-8e39-12916c2d426e"
+      },
+      "input": 2600,
+      "output": 900,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "compactor",
+      "tool_prompt": null
+    }
+  ]
+}

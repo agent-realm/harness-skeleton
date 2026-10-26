@@ -75,7 +75,7 @@ const findings = validateSession(records, { harness: 'claude-code', sessionId })
 // registry value such as a new harness or ts_source, which a v1 reader accepts)
 ```
 
-[`docs/conformance-matrix.md`](docs/conformance-matrix.md) says, for each of the 31 adapter-side
+[`docs/conformance-matrix.md`](docs/conformance-matrix.md) says, for each of the 32 adapter-side
 conformance items of sessions-model and sessions and each of the twelve harnesses, what proves it:
 a generic check run over every fixture case, a named test, or the reason the item does not apply.
 It is generated from `conformance/matrix.js`, and `npm test` fails when it is stale.

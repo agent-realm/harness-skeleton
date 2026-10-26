@@ -105,10 +105,10 @@ test('copilot-cli: a tool call and its result pair by toolCallId; usage, served 
     assert.equal(calls.filter((c) => c.call_id === r.call_id).length, 1, r.call_id);
   }
   // A shell that exited 1 under success true has no reliable flag (null; exit_code says it); a denied
-  // call is denied; a failing call is an error.
+  // call is denied, with no flag (null: it did not complete); a failing call is an error.
   const result = (call) => messages(recs).find((x) => x.role === 'tool' && x.parts[0].call_id === call).parts[0];
   assert.deepEqual([result('chatcmpl-tool-feat-test').is_error, result('chatcmpl-tool-feat-test').exit_code, result('chatcmpl-tool-feat-test').status], [null, 1, 'completed']);
-  assert.deepEqual([result('chatcmpl-tool-feat-pip').is_error, result('chatcmpl-tool-feat-pip').status], [true, 'denied']);
+  assert.deepEqual([result('chatcmpl-tool-feat-pip').is_error, result('chatcmpl-tool-feat-pip').status], [null, 'denied']);
   assert.deepEqual([result('chatcmpl-tool-feat-ask').is_error, result('chatcmpl-tool-feat-ask').status], [true, 'completed']);
   assert.equal(result('chatcmpl-tool-feat-mcp').is_error, false);
   // The assistant message that asked for the task: reasoning, then the call; usage in its own record.
@@ -440,7 +440,7 @@ test('copilot-cli: is_error copies success; success true with a non-zero shell e
     assert.deepEqual(r['chatcmpl-tool-feat-view'], [false, null], 'success true, no shell');
     assert.deepEqual(r['chatcmpl-tool-feat-mcp'], [false, null], 'success true, no shell');
     assert.deepEqual(r['chatcmpl-tool-feat-test'], [null, 1], 'success true, exit 1: the flag is contradicted');
-    assert.deepEqual(r['chatcmpl-tool-feat-pip'], [true, null], 'success false (denied)');
+    assert.deepEqual(r['chatcmpl-tool-feat-pip'], [null, null], 'success false, denied: no call that completed');
     assert.deepEqual(r['chatcmpl-tool-feat-ask'], [true, null], 'success false');
     // A result whose event carries no `success` at all (the line edited in this copy): no flag, null.
     const file = path.join(dir, events(A));
@@ -454,6 +454,32 @@ test('copilot-cli: is_error copies success; success true with a non-zero shell e
     const r = resultsOf(dir, '8259ca5e-606a-43e3-8753-6d6b97ebb992');
     assert.deepEqual([r['chatcmpl-tool-FixtureFixt00024'], r['chatcmpl-tool-FixtureFixt00026']], [[null, 1], [null, 1]], 'success true, exit 1');
     assert.deepEqual([r['chatcmpl-tool-FixtureFixt00022'], r['chatcmpl-tool-FixtureFixt00027']], [[false, null], [false, null]]);
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A denied call (`error.code: denied`) did not, so its is_error is null and `denied`
+// carries the fact, whatever `success` says. A call that completed keeps the flag (the positive
+// control: success false with another error code is true, success true false).
+test('copilot-cli: is_error is null for a denied call, the status carries the fact; a completed call keeps success', () => {
+  const resultsOf = (dir, sid) => Object.fromEntries(messages(project(fullReplay(adapter, dir).views())[sid])
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+  withCopy('features', (dir) => {
+    for (const sid of [A, C2]) assert.deepEqual(resultsOf(dir, sid)['chatcmpl-tool-feat-pip'], ['denied', null], `${sid}: success false, denied`);
+    const r = resultsOf(dir, A);
+    assert.deepEqual([r['chatcmpl-tool-feat-ask'], r['chatcmpl-tool-feat-ls']], [['completed', true], ['completed', false]], 'success false, no denial; success true');
+    // Edited in this copy: the denied call's event says success true. Still denied, still null.
+    const file = path.join(dir, events(A));
+    const lines = fs.readFileSync(file, 'utf8').split('\n');
+    const i = lines.findIndex((l) => l.includes('"tool.execution_complete"') && l.includes('chatcmpl-tool-feat-pip'));
+    assert.ok(lines[i].includes('"success":false'));
+    lines[i] = lines[i].replace('"success":false', '"success":true');
+    fs.writeFileSync(file, lines.join('\n'));
+    assert.deepEqual(resultsOf(dir, A)['chatcmpl-tool-feat-pip'], ['denied', null], 'success true, denied');
+  });
+  // The VS Code agent host's denied call, logged without its request.
+  withCopy('vscode-host', (dir) => {
+    assert.deepEqual(resultsOf(dir, '92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa').call_FixtureFixtureFixtu00018, ['denied', null]);
   });
 });
 

@@ -205,3 +205,27 @@ test('matrix: generic checks catch broken tool links, foreign usage shapes and u
     fs.rmSync(store, { recursive: true, force: true });
   }
 });
+
+// The is_error check (M.is-error, sessions-model v1.2) fails on each break it exists for: a flag on
+// a result that did not complete, a false beside a non-zero exit_code, and a true beside one that
+// no failure flag backs. A listed failure flag is excused in its own session only.
+test('matrix: the is_error check catches a flag on a cancelled or denied result, and a false or an unlisted true beside a non-zero exit_code', async () => {
+  const { recordChecks, FAILURE_FLAGS } = await import('../conformance/generic.js');
+  const view = (sid, parts) => ({ [sid]: new Map([['m', { type: 'message', message_id: 'm', parts: parts.map((p, i) => ({ part_id: String(i), kind: 'tool_result', call_id: `c${i}`, output: '', exit_code: null, ...p })) }]]) });
+  const check = (h, sid, parts) => recordChecks(h, view(sid, parts))['M.is-error'] ?? [];
+  const fine = [
+    { status: 'cancelled', is_error: null }, { status: 'denied', is_error: null }, { status: 'completed', is_error: null, exit_code: 2 },
+    { status: 'completed', is_error: false, exit_code: 0 }, { status: 'completed', is_error: true, exit_code: null }, { status: 'completed', is_error: true, exit_code: 0 },
+  ];
+  assert.deepEqual(check('claude-code', 's', fine), []);
+  for (const bad of [
+    { status: 'cancelled', is_error: false }, { status: 'cancelled', is_error: true }, { status: 'denied', is_error: true },
+    { status: 'completed', is_error: false, exit_code: 1 }, { status: 'completed', is_error: true, exit_code: 1 },
+  ]) assert.equal(check('claude-code', 's', [bad]).length, 1, JSON.stringify(bad));
+  // A listed failure flag: excused in its session, not in another, and never for a cancelled result.
+  assert.equal(FAILURE_FLAGS.goose['20261021_1']['call-1'], 'isError true');
+  const listed = { call_id: 'call-1', status: 'completed', is_error: true, exit_code: 1 };
+  assert.deepEqual(check('goose', '20261021_1', [listed]), []);
+  assert.equal(check('goose', 'another-session', [listed]).length, 1);
+  assert.equal(check('goose', '20261021_1', [{ ...listed, status: 'cancelled' }]).length, 1);
+});

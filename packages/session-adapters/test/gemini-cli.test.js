@@ -161,6 +161,29 @@ test('gemini-cli: a record\'s model is the requested model: the message\'s reque
   }
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A cancelled call did not: its is_error is null and `cancelled` carries the fact,
+// whether its response holds an `error` or an output. A call that completed keeps the flag (the
+// positive control: an `error` status true, `success` false).
+test('gemini-cli: is_error is null for a cancelled call, the status carries the fact; a completed call keeps the flag', () => {
+  withCopy('features', (dir) => {
+    const g2 = msg(project(fullReplay(adapter, dir).views())['7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f'], '00000000-0000-4000-8000-000000000004');
+    assert.deepEqual(g2.parts.filter((p) => p.kind === 'tool_result').map((p) => [p.status, p.is_error]), [['completed', true], ['cancelled', null]], 'the fixture\'s error and cancelled calls');
+  });
+  const errorResponse = (id, error) => ({ functionResponse: { id, name: 'replace', response: { error } } });
+  const calls = [
+    { id: 'c-cancel-error', name: 'replace', args: {}, result: [errorResponse('c-cancel-error', 'User cancelled the edit.')], status: 'cancelled' },
+    { id: 'c-cancel-output', name: 'run_shell_command', args: {}, result: [fr('c-cancel-output', 'tick')], status: 'cancelled' },
+    { id: 'c-error', name: 'run_shell_command', args: {}, result: [errorResponse('c-error', 'boom')], status: 'error' },
+    { id: 'c-success', name: 'run_shell_command', args: {}, result: [fr('c-success', 'ok')], status: 'success' },
+  ];
+  const out = deriveLines([head, user('u1', 1, 'Go.'), gemini('g1', 2, 'On it.', { toolCalls: calls }), user('u2', 3, 'Next.')]);
+  const g1 = msgsOf(out).find((m) => m.message_id === 'g1');
+  assert.deepEqual(Object.fromEntries(g1.parts.filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]])), {
+    'c-cancel-error': ['cancelled', null], 'c-cancel-output': ['cancelled', null], 'c-error': ['completed', true], 'c-success': ['completed', false],
+  });
+});
+
 test('gemini-cli: a tool turn: thoughts, the reply, call and result parts, error and cancelled calls; the echo is no message', () => {
   const recs = Object.values(golden('features')).flat();
   const g1 = msg(recs, '00000000-0000-4000-8000-000000000002');
@@ -169,7 +192,7 @@ test('gemini-cli: a tool turn: thoughts, the reply, call and result parts, error
   assert.ok(g1.parts[3].output.includes('i.price_cents * i.qty'), 'a $patch toolCalls result update');
   const g2 = msg(recs, '00000000-0000-4000-8000-000000000004');
   assert.deepEqual(g2.parts.filter((p) => p.kind === 'tool_result').map((p) => [p.is_error, p.status, p.output]),
-    [[true, 'completed', 'Command exited with code 1: 1 failed'], [false, 'cancelled', 'User cancelled the edit.']]);
+    [[true, 'completed', 'Command exited with code 1: 1 failed'], [null, 'cancelled', 'User cancelled the edit.']]);
   for (const echo of ['00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000016']) assert.equal(msg(recs, echo), undefined);
   // A call that never finished, once something follows: written, interrupted, no result part.
   const g9 = msg(recs, '00000000-0000-4000-8000-000000000017');

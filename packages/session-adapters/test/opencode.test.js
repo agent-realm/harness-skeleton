@@ -288,6 +288,51 @@ test('opencode: a tool_result carries the stored exit code (v1 metadata.exit, v2
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the part's state status is the harness
+// store's flag, `error` true and `completed` false. A `completed` beside a shell's non-zero
+// exit_code is unreliable for that result, so its is_error is null; never derived from exit_code.
+test('opencode: is_error is the state status: completed beside a non-zero exit is null, completed is false, error is true', () => {
+  withCase('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code, p.status]]));
+    const r = resultsOf();
+    assert.deepEqual(r.call_bc3a64f28f, [null, 1, 'completed'], 'v1: completed beside exit 1, unreliable for this result');
+    assert.deepEqual([r.call_4b13d21247, r.call_fake_scn_bigout_v2], [[false, 0, 'completed'], [false, 0, 'completed']], 'v1 and v2: completed, exit 0');
+    assert.deepEqual(r['01M5FAEW4AEJ4QVFJMH093YG1S'], [false, null, 'completed'], 'completed, no exit code (shell mode)');
+    assert.deepEqual([r['chatcmpl-tool-FixtureFixt00049'], r['chatcmpl-tool-FixtureFixt00050']], [[true, null, 'completed'], [null, null, 'denied']], 'error; error, a refused permission (denied: no call that completed)');
+    // Edited in this copy: the v2 shell exits 2 under `completed` (null); the v1 shell's status is
+    // `error` beside exit 1 (the flag says failure: true).
+    const w = new DatabaseSync(storeFile(dir));
+    w.prepare("UPDATE session_message SET data = replace(data, '\"structured\":{\"exit\":0,', '\"structured\":{\"exit\":2,') WHERE data LIKE '%call_fake_scn_bigout_v2%'").run();
+    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error') WHERE json_extract(data, '$.callID') = 'call_bc3a64f28f'").run();
+    w.close();
+    const e = resultsOf();
+    assert.deepEqual(e.call_fake_scn_bigout_v2, [null, 2, 'completed'], 'v2: completed beside exit 2');
+    assert.deepEqual(e.call_bc3a64f28f, [true, 1, 'completed'], 'v1: error beside exit 1');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A refused permission (an `error` status whose error says so: `denied`) and a call cut
+// off while pending or running (`cancelled`) did not: their is_error is null and the status carries
+// the fact. A call that completed keeps the state status as its flag (the positive control).
+test('opencode: is_error is null where the call did not complete: a refused permission, a call cut off; the status carries the fact', () => {
+  withCase('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    const r = resultsOf();
+    assert.deepEqual(r['chatcmpl-tool-FixtureFixt00050'], ['denied', null], 'the fixture\'s refused permission');
+    assert.deepEqual([r['chatcmpl-tool-FixtureFixt00049'], r.call_4b13d21247], [['completed', true], ['completed', false]], 'the positive control: error; completed');
+    // Edited in this copy: the v1 read is refused, and the v1 shell is cut off while running.
+    const w = new DatabaseSync(storeFile(dir));
+    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', 'Error: The user rejected permission to use this specific tool call.') WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run();
+    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'running') WHERE json_extract(data, '$.callID') = 'call_bc3a64f28f'").run();
+    w.close();
+    const e = resultsOf();
+    assert.deepEqual([e.call_4b13d21247, e.call_bc3a64f28f], [['denied', null], ['cancelled', null]]);
+  });
+});
+
 test('opencode: errors: an unknown session, an unknown or unreferenced source, a deleted session', () => {
   withCase('features', (dir) => {
     const store = storeOf(adapter, storeFile(dir));

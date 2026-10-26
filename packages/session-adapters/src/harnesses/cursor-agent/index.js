@@ -555,9 +555,16 @@ const allowArgs = (o) => Object.fromEntries(Object.entries(o || {}).filter(([k])
 const NAMES = { update_todos: 'TodoWrite', read_todos: 'TodoRead', get_mcp_tools: 'GetDynamicTools', ls: 'LS', mcp: 'CallMcpTool' };
 const pascal = (k) => k.split('_').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
 
+// `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): a result's oneof
+// case (a success or a failure), or the model context's `isError`; null where neither is stored. A
+// flag that says success beside a shell's non-zero `exit_code` is unreliable for that result: its
+// `is_error` is null, and the other results keep the flag. It describes a call that completed: a
+// denied or a cancelled result's is null (the model context's `isError` beside it too), and the
+// status carries the fact. Never derived from the exit code or the text.
+const flagBeside = (isError, exit) => (isError === false && Number.isInteger(exit) && exit !== 0 ? null : isError);
 const ok = (output) => ({ output, is_error: false, status: 'completed' });
 const err = (output) => ({ output, is_error: true, status: 'completed' });
-const denied = (output) => ({ output, is_error: true, status: 'denied' });
+const denied = (output) => ({ output, is_error: null, status: 'denied' });
 // A result whose text is not decoded: only which case is set (success is field 1 in every observed
 // oneof).
 const statusOnly = (r) => ({ output: null, is_error: !r.has(1), status: 'completed' });
@@ -570,9 +577,9 @@ const RESULTS = {
     // ShellSuccess / ShellFailure #3 exit_code (int32), stored apart from the output. proto3 leaves
     // a 0 unwritten, so an absent field is 0; a redacted case (a credential step) has none.
     const exit = r.msg(c) ? (m.num(3) ?? 0) : null;
-    if (c === 1) return { ...ok(m.str(10) || joinOut(m.str(5), m.str(6))), exit_code: exit };
-    if (c === 2) return { output: m.str(9) || joinOut(m.str(5), m.str(6)), is_error: true, status: m.bool(11) ? 'cancelled' : 'completed', exit_code: exit };
-    if (c === 3) return { output: `timed out after ${m.num(3) || 0} ms`, is_error: true, status: 'cancelled' };
+    if (c === 1) return { ...ok(m.str(10) || joinOut(m.str(5), m.str(6))), is_error: flagBeside(false, exit), exit_code: exit };
+    if (c === 2) return { output: m.str(9) || joinOut(m.str(5), m.str(6)), is_error: m.bool(11) ? null : true, status: m.bool(11) ? 'cancelled' : 'completed', exit_code: exit };
+    if (c === 3) return { output: `timed out after ${m.num(3) || 0} ms`, is_error: null, status: 'cancelled' };
     if (c === 4 || c === 7) return denied(m.str(3));
     if (c === 5) return err(m.str(3));
     return null;
@@ -733,7 +740,7 @@ function toolParts(tc, j, fallbackCall, J, blobText, blobLen) {
     res = {
       ...(res || {}),
       output: jr.output,
-      is_error: typeof jr.is_error === 'boolean' ? jr.is_error : res ? res.is_error : false,
+      is_error: typeof jr.is_error === 'boolean' ? flagBeside(jr.is_error, res && res.exit_code) : res ? res.is_error : null,
       status: res ? res.status : jr.outcome === 'rejected' ? 'denied' : 'completed',
     };
   }
@@ -753,8 +760,10 @@ function toolParts(tc, j, fallbackCall, J, blobText, blobLen) {
   let result = null;
   if (res) {
     const output = typeof res.output === 'string' ? res.output : null;
+    // A denied or cancelled call did not complete: no flag, the model context's included.
+    const completed = res.status !== 'denied' && res.status !== 'cancelled';
     result = {
-      part_id: `${j}:result`, kind: 'tool_result', call_id: callId, is_error: !!res.is_error, status: res.status,
+      part_id: `${j}:result`, kind: 'tool_result', call_id: callId, is_error: completed && typeof res.is_error === 'boolean' ? res.is_error : null, status: res.status,
       output, output_len: utf8Len(output), truncated: c === 34 ? true : null,
     };
     if (res.output_ref) result.output_ref = res.output_ref;
@@ -1056,7 +1065,9 @@ function fold(st, key) {
         // ShellOutput #3 exit_code (int32): proto3 leaves a 0 unwritten, so an absent field is 0;
         // none when the output blob does not decode.
         const exit = outMsg ? (outMsg.num(3) ?? 0) : null;
-        parts.push({ part_id: '0:result', kind: 'tool_result', call_id: callId, is_error: (out.num(3) || 0) !== 0, status: 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exit });
+        // The fields read here (#1 stdout, #2 stderr, #3 exit_code) hold no success or failure flag,
+        // so `is_error` is null: never derived from the exit code (sessions-model v1.x (#6), §2.3).
+        parts.push({ part_id: '0:result', kind: 'tool_result', call_id: callId, is_error: null, status: 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exit });
       }
       // Still running while it is the last turn: held; a later turn ends it, interrupted.
       put({ ...base(mid, 'user', 'user'), status: done ? 'complete' : 'interrupted', parts }, !done && lastTurn);

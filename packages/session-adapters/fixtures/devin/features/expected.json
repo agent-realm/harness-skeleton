@@ -27,7 +27,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_332a70edf5412790fdaeac6e",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "Tool execution was rejected: User rejected this tool call",
           "output_len": 57,
@@ -35,7 +35,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "df660e4b507758b3034ce1bd623dc9c929e261fbd2606658cb85274a305ff76a"
+      "cmp_sha": "588a8d5280b0bf072eaacfa4f267948564b5868b2076d79c81d87aff8032b6d6"
     },
     {
       "type": "message",
@@ -126,7 +126,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_b93c9e504cec3166de43eb65",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "Output from command in shell 3a5d2b:\nFAILED (failures=1)\n\nExit code: 1",
           "output_len": 70,
@@ -134,7 +134,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "ace38f7ef0df93d9dc944eea21d24a61b24cdf794d267e460db45b012d2ca1e1"
+      "cmp_sha": "c9d54e0df532f39acc18077ea55a298d406e540dcf7de02508a8a6061b2af8d3"
     },
     {
       "type": "message",
@@ -539,7 +539,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_2e42308abf31f8c08b83a80f",
-          "is_error": true,
+          "is_error": null,
           "status": "cancelled",
           "output": "Canceled due to user interrupt",
           "output_len": 30,
@@ -547,7 +547,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "0fe4e79171459e23932eb824ad3635ac10303bac74fb2cf041cd4aafddf83a1a"
+      "cmp_sha": "57174971023c27f4017672363333e648699523f6eb76de9b90a0f00f35b9a0d9"
     },
     {
       "type": "session",
@@ -577,14 +577,14 @@
           "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
           "5c9ecd53017d40882fa7c8c03f612be543fa0a52311878e6bb2cdec3837900cd",
           "ca27ba1fd5369235d3ce15d972dff5a08a434a99e95cfb77e1bad1f2395c1300",
-          "ace38f7ef0df93d9dc944eea21d24a61b24cdf794d267e460db45b012d2ca1e1",
+          "c9d54e0df532f39acc18077ea55a298d406e540dcf7de02508a8a6061b2af8d3",
           "d9790b76fe043dbe6abe42b0de8eefca8dd3b39fb0aa504fb8668e39d159b505",
           "1ee532e1dba28ca2b9329c22442d29c4099b0b6932f5e2d6b52c1512ad17295a",
           "301b6e597273d6286dbe675bc926132e1259e334623467d8aa0891e2222091ea",
           "d16d16f826e5d26997a145bd7f1fba0c61776fb656a8a2c8feb919d1098bda01",
-          "df660e4b507758b3034ce1bd623dc9c929e261fbd2606658cb85274a305ff76a",
+          "588a8d5280b0bf072eaacfa4f267948564b5868b2076d79c81d87aff8032b6d6",
           "5574c2462a5715a80403ef7bd4fee94d48c8300ddae133f5c6521481734d0f8a",
-          "0fe4e79171459e23932eb824ad3635ac10303bac74fb2cf041cd4aafddf83a1a",
+          "57174971023c27f4017672363333e648699523f6eb76de9b90a0f00f35b9a0d9",
           "ec882a4a052daa6e25ae4b05ef46692b6587e48a4c72eaa6eba6df5e5954a85e",
           "b143047bef37c18482bdd8d391affc4860c6c278c28ff1010669bdf674144773"
         ]

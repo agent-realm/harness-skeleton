@@ -795,7 +795,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-feat-pip",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "The user rejected this tool call. User feedback: Do not install packages.",
           "output_len": 73,
@@ -803,7 +803,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35"
+      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82"
     },
     {
       "type": "message",
@@ -1148,7 +1148,7 @@
           "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
           "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
           "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
-          "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35",
+          "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82",
           "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
           "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
           "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",
@@ -2350,7 +2350,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-feat-pip",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "The user rejected this tool call. User feedback: Do not install packages.",
           "output_len": 73,
@@ -2358,7 +2358,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35"
+      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82"
     },
     {
       "type": "message",
@@ -2775,7 +2775,7 @@
           "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
           "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
           "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
-          "a58c26642e5f02637255b72c355938e88fe488d920eab6e9adc45a30f600ac35",
+          "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82",
           "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
           "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
           "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",

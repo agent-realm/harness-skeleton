@@ -6,7 +6,7 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/vscode',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'vscode',
   state_ver: 1,

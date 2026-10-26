@@ -544,10 +544,13 @@ function toolParts(id, name, args, tc, echo) {
   const parts = [{ part_id: `${id}:call`, kind: 'tool_call', call_id: id, name, args: args === undefined || args === null ? {} : args, server: null }];
   if (finished) {
     const output = result != null ? resultText(result) : null;
+    const status = st === 'cancelled' ? 'cancelled' : 'completed';
     parts.push({
       part_id: `${id}:result`, kind: 'tool_result', call_id: id,
-      is_error: st === 'error' || (result != null && resultIsError(result)),
-      status: st === 'cancelled' ? 'cancelled' : 'completed',
+      // `is_error` describes a call that completed (sessions-model v1.x (#6), §2.3): a cancelled
+      // call's is null, whatever its response says, and `cancelled` carries the fact.
+      is_error: status === 'cancelled' ? null : st === 'error' || (result != null && resultIsError(result)),
+      status,
       output, output_len: output === null ? null : utf8Len(output), truncated: null,
     });
   }

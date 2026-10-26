@@ -16,6 +16,9 @@
 // lab session is rebuilt from them; their node, metadata and tool-state shapes are copied here, and
 // every text is invented (the toy shop repo).
 //
+// `switch-compaction`: one session, a mode switch then a compaction, with a turn abandoned in the
+// switch's old root (see switchCompaction below).
+//
 // Every id is synthetic and derived from a name below (sha256), so a re-run writes the same bytes:
 // message, request and client-message ids are UUIDs, call ids `call_` + 24 hex digits (the shape of
 // the captured ones), terminal ids 6 hex digits. No id captured in the lab appears.
@@ -460,6 +463,55 @@ function features() {
   return st;
 }
 
+// ---- the switch-compaction case -----------------------------------------------------------------
+
+// keen-ridge: a mode switch, then a compaction. The first turn runs in the original root, and a
+// second turn there is abandoned (a revert: main_chain_id moves back, the turn stays in the table).
+// The mode-switch shape (as amber-harbor) copies the whole chain under a new prefix, each copy
+// naming its original, so the old root keeps the originals and the abandoned turn. A /compact (as
+// calm-orchard) then summarizes the switched line and re-roots it again, its prefix copy naming the
+// switched line's context node. The compacted history is the switched line, and the old root is
+// named only through that history's copies: the shape in which a compacted history that tears
+// leaves the old root out with it, the abandoned turn included (test/devin.test.js).
+function switchCompaction() {
+  const st = new Store();
+  const t0 = min(0);
+  const s = new Session(st, { id: 'keen-ridge', working_directory: REPO, created_at: sec(t0), title: 'Discount rounding' });
+  const n0 = s.add(null, systemInfo('kr:si', t0 + 5));
+  const u1 = s.add(n0, prompt('kr:u1', t0 + 1000, 'How does Cart.total round a discount?'));
+  const a1 = s.twin(u1, reply('kr:a1', t0 + 3000, 'It sums integer cents, so nothing is rounded yet.', { metrics: [900, 12, 12000] }));
+  s.save(a1, t0 + 3100);
+  // The abandoned turn: answered, then reverted to the first answer.
+  const ou = s.add(a1, prompt('kr:old-u', t0 + 20000, 'Round discounts down to the cent.'));
+  const oa = s.twin(ou, reply('kr:old-a', t0 + 21000, 'Discounts would round down to the cent.', { metrics: [950, 10, 12000] }));
+  s.save(oa, t0 + 21100);
+  s.save(a1, t0 + 30000);
+  // The mode switch: the whole chain copied under a new prefix.
+  const pre = s.prefix('kr:prefix', t0 + 40000);
+  const c0 = s.copy(pre, [n0]);
+  const sw = s.copy(c0, [u1, a1]);
+  s.save(sw, t0 + 40100);
+  const u2 = s.add(sw, prompt('kr:u2', t0 + 60000, 'Round discounts half up instead.'));
+  const a2 = s.twin(u2, reply('kr:a2', t0 + 62000, 'Discounts now round half up to the cent.', { metrics: [1400, 11, 12000] }));
+  s.save(a2, t0 + 62100);
+  // /compact: the summarizer chain, the compactor's summary of a2, the line re-rooted under a new
+  // prefix with the continuation, then a turn.
+  const sroot = s.add(null, sysPrompt('kr:summarizer', t0 + 90000, 'You are a Summarizer that summarizes an agent\'s execution trace (synthetic).'), PREFIX);
+  const su = s.add(sroot, { message_id: uuid('kr:su'), role: 'user', content: 'Summarize the trace above.', metadata: md(t0 + 90001, { source: 'user', operation: 'unknown' }) });
+  const SUMMARY = '<summary>\n1. Request and Intent: the user asked how discounts round; they now round half up.\n</summary>';
+  s.add(su, reply('kr:summary', t0 + 91000, SUMMARY, { thinking: '', metrics: [2600, 900, null], model: 'compactor' }), { summarized_from: a2, num_tokens_preceding: null, is_system_prefix: null });
+  const pre2 = s.prefix('kr:prefix2', t0 + 91100);
+  const rr = s.copy(pre2, [c0]);
+  const cont = s.add(rr, sys('kr:cont', t0 + 91200, `You are continuing work from a previous conversation thread. Below is a summary of the previous conversation thread:\nFull conversation history saved at ${HOME}/.local/share/devin/cli/summaries/history_toy.md.\nSummary:\n${SUMMARY}`, {
+    'chisel/conversation_history': { messages: [{ role: 'user', message: 'Round discounts half up instead.' }, { role: 'assistant', message: 'Discounts now round half up to the cent.' }] },
+    'devin-rs/summary': { source: 'file_compactor' },
+  }), { summarized_from: a2, num_tokens_preceding: null, is_system_prefix: null });
+  const u3 = s.add(cont, prompt('kr:u3', t0 + 100000, 'Add a test for the half-up rounding.'));
+  const a3 = s.twin(u3, reply('kr:a3', t0 + 101000, 'Added tests/test_rounding.py.', { metrics: [2000, 9, 12000] }));
+  s.save(a3, t0 + 101100);
+  return st;
+}
+
 function write(name, store) {
   const dir = path.join(HERE, name, 'store-sql');
   fs.mkdirSync(dir, { recursive: true });
@@ -470,4 +522,5 @@ function write(name, store) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   write('features', features());
+  write('switch-compaction', switchCompaction());
 }

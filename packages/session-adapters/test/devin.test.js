@@ -12,7 +12,7 @@ import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance
 import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'devin');
-const CASES = ['features'];
+const CASES = ['features', 'switch-compaction'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const ID = (name) => uuid(name);
 
@@ -122,7 +122,7 @@ test('devin: a turn: each message once (twins, prefix copies), context injected,
   const u = ofType(recs, 'usage').find((x) => x.anchor.message_id === ID('ah:a1'));
   assert.deepEqual([u.usage_id, u.input, u.output, u.cache_read, u.cache_write, u.input_includes_cache, u.output_includes_reasoning, u.granularity], [`message:${ID('ah:a1')}#1`, 404, 194, 12896, null, null, null, 'per_response']);
   const r1 = msg(recs, ID('ah:r1'));
-  assert.deepEqual([r1.role, r1.parts[0].kind, r1.parts[0].call_id, r1.parts[0].status, r1.parts[0].is_error], ['tool', 'tool_result', callId('ah:exec1'), 'completed', false], 'a non-zero exit stays completed');
+  assert.deepEqual([r1.role, r1.parts[0].kind, r1.parts[0].call_id, r1.parts[0].status, r1.parts[0].is_error], ['tool', 'tool_result', callId('ah:exec1'), 'completed', null], 'a non-zero exit stays completed; success true beside it is no flag');
   assert.ok(r1.parts[0].output.includes('FAILED'));
   const si = msg(recs, ID('ah:si'));
   assert.deepEqual([si.role, si.source, si.to_user, si.to_model], ['system', 'injected', false, true]);
@@ -155,11 +155,62 @@ test('devin: every save re-inserts every node: new row ids and row times change 
 test('devin: tool outcomes: rejected is denied, canceled is cancelled (its reply interrupted), each from the tool node and tool_call_state', () => {
   const recs = golden('features')['amber-harbor'];
   const x3 = msg(recs, ID('ah:x3')).parts[0];
-  assert.deepEqual([x3.status, x3.is_error, x3.call_id], ['denied', true, callId('ah:rej')]);
+  assert.deepEqual([x3.status, x3.is_error, x3.call_id], ['denied', null, callId('ah:rej')]);
   const x4 = msg(recs, ID('ah:x4')).parts[0];
-  assert.deepEqual([x4.status, x4.is_error, x4.output], ['cancelled', true, 'Canceled due to user interrupt']);
+  assert.deepEqual([x4.status, x4.is_error, x4.output], ['cancelled', null, 'Canceled due to user interrupt']);
   assert.equal(msg(recs, ID('ah:a4')).status, 'interrupted');
   assert.equal(msg(recs, ID('ah:a3')).status, 'complete');
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, copied.
+// A flag that says success beside a shell's non-zero exit_code is unreliable for that result, so
+// its is_error is null; a store that keeps no flag gives null. Never derived from exit_code or text.
+test('devin: is_error is the stored flag: success true beside a non-zero exit is null, a failure flag is true, no flag is null', () => {
+  const resultsOf = (dir, sid) => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[sid], 'message')
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]]));
+  withStore('features', (dir) => {
+    const ah = resultsOf(dir, 'amber-harbor');
+    assert.deepEqual(ah[callId('ah:exec1')], [null, 1], 'success true (and a completed status) beside exit 1: unreliable for this result');
+    assert.deepEqual(ah[callId('ah:read1')], [false, null], 'success true, no shell');
+    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [[null, null], [null, null]], 'rejected, canceled: no call that completed');
+    assert.deepEqual(resultsOf(dir, 'calm-orchard')[callId('co:run')], [false, 0], 'success true, exit 0');
+    // Edited in this copy: the read's node loses its flag and its state row loses its status (no
+    // flag: null); the shell's node says success false beside exit 1 (the flag, copied: true).
+    const meta = '$.metadata.extensions."chisel/tool_result_meta"';
+    const w = writer(dir);
+    w.prepare(`UPDATE message_nodes SET chat_message = json_remove(chat_message, '${meta}') WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(callId('ah:read1'));
+    w.prepare("UPDATE tool_call_state SET tool_call_update_json = json_remove(tool_call_update_json, '$.status') WHERE session_id = 'amber-harbor' AND tool_call_id = ?").run(callId('ah:read1'));
+    w.prepare(`UPDATE message_nodes SET chat_message = json_set(chat_message, '${meta}.success', json('false')) WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(callId('ah:exec1'));
+    w.close();
+    const edited = resultsOf(dir, 'amber-harbor');
+    assert.deepEqual(edited[callId('ah:read1')], [null, null], 'no flag');
+    assert.deepEqual(edited[callId('ah:exec1')], [true, 1], 'success false beside exit 1: the flag says failure');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A rejection (`denied`) and a cancel (`cancelled`), from the tool node or from
+// tool_call_state, did not; their is_error is null and the status carries the fact, whatever
+// `success` says beside them. A call that completed keeps the flag (the positive control).
+test('devin: is_error is null where the call did not complete: a rejection or a cancel; the status carries the fact', () => {
+  const resultsOf = (dir) => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())['amber-harbor'], 'message')
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+  withStore('features', (dir) => {
+    const ah = resultsOf(dir);
+    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [['denied', null], ['cancelled', null]], 'the fixture\'s rejection and cancel');
+    assert.deepEqual([ah[callId('ah:read1')], ah[callId('ah:exec1')]], [['completed', false], ['completed', null]], 'the positive control: success true; success true beside exit 1');
+    // Edited in this copy: the read's node says Canceled beside success true, the shell's says
+    // Rejected beside success false.
+    const ext = '$.metadata.extensions';
+    const w = writer(dir);
+    const set = (call, path, value) => w.prepare(`UPDATE message_nodes SET chat_message = json_set(chat_message, '${ext}.${path}', json(?)) WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(value, call);
+    set(callId('ah:read1'), '"chisel/tool_failure"', '{"reason":"Canceled"}');
+    set(callId('ah:exec1'), '"chisel/tool_failure"', '{"reason":"Rejected"}');
+    set(callId('ah:exec1'), '"chisel/tool_result_meta".success', 'false');
+    w.close();
+    const edited = resultsOf(dir);
+    assert.deepEqual([edited[callId('ah:read1')], edited[callId('ah:exec1')]], [['cancelled', null], ['denied', null]]);
+  });
 });
 
 test('devin: held: a tail reply with a running call is held with its usage, its finished sibling call is not; the result releases it', () => {
@@ -298,8 +349,8 @@ test('devin: a session saved before its first turn is its session record alone',
 
 // sessions v1.x (#6), §2 `read` errors, `inconsistent`: only the main line itself (its head and the
 // parent links along it) tears a Devin read. A subagent_heads row naming a node the read does not
-// hold tears nothing: derive leaves that sub-agent chain out, and a later read that holds the node
-// derives it as a new rev.
+// hold tears nothing: derive leaves out what that node would have reached (the sub-agent chain),
+// and a later read that holds the node derives it.
 test('devin: a dangling sub-agent head is no torn read: derive leaves its chain out, and a later read that holds the node derives it', () => {
   // A head row naming a node never written: read succeeds, and the records are the session's own.
   withStore('features', (dir) => {
@@ -338,7 +389,8 @@ test('devin: a dangling sub-agent head is no torn read: derive leaves its chain 
       assert.deepEqual(t.changed, full.changed.filter((r) => !fromChain(r)), `${what}: the rest of the session as the whole read gives it`);
       assert.deepEqual(t.held, full.held, what);
       // The later read holds the node again: derived from the torn read's state, it folds to the
-      // whole read's derive, and what changed is the new rev.
+      // whole read's derive, and what changed is every record the torn read did not write at that
+      // version.
       w = writer(dir);
       const cols = Object.keys(rows[0]);
       const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
@@ -355,9 +407,9 @@ test('devin: a dangling sub-agent head is no torn read: derive leaves its chain 
 });
 
 // sessions v1.x (#6), §2 `inconsistent`, with sessions §2 `held`: a read with a dangling head that
-// follows a whole read must not tombstone what the whole read wrote. A key that was live before
-// and is left out now is held: its last written version stands. The next read that holds the head
-// releases it, unchanged.
+// follows a whole read must not tombstone what the whole read wrote. Records derive wrote earlier
+// among what it leaves out are held: the last written version stands. The next read that holds the
+// head releases them, unchanged.
 test('devin: derived from a whole read\'s state, a dangling head holds the keys it leaves out; none is tombstoned, and the next whole read releases them', () => {
   const [db] = sqlFilesOf(path.join(FIX, 'features'));
   const moves = db.ops.map((o, i) => [o, i]).filter(([o]) => /^INSERT OR REPLACE INTO subagent_heads/.test(o.sql) && o.params[0] === 'dusty-lantern');
@@ -471,9 +523,12 @@ test('devin: a torn main line is inconsistent, never an empty or shorter session
 
 // sessions v1.x (#6), §2 `inconsistent`: a node the main line only names (a compacted history's
 // prior nodes, a sub-agent chain a tool result names) that the read lacks tears nothing. derive
-// leaves out what it would have reached, the raw unit keeps the naming row, and a later read that
-// holds the node derives it. Each case removes the named node itself or an earlier node of its chain
-// (every row with that message id, so both streaming twins), from the fixture as it stands.
+// leaves out what that node would have reached, and the raw unit keeps the naming row. Records
+// derive wrote earlier among them are held, and so are a compaction record and its summary that
+// point into the missing nodes. Records the gap only moves (a message's order, the session's
+// fingerprint) are revised, and revised back once a later read holds the node and derives it. Each
+// case removes the named node itself or an earlier node of its chain (every row with that message
+// id, so both streaming twins), from the fixture as it stands.
 function namedNodeMissing(sid, mid, leftOut) {
   const byMid = 'FROM message_nodes WHERE session_id = ? AND json_extract(chat_message, \'$.message_id\') = ?';
   const isLeftOut = (r) => (r.type === 'message' && leftOut.includes(r.message_id)) || (r.type === 'usage' && leftOut.includes(r.anchor?.message_id)) || r.type === 'lifecycle';
@@ -496,8 +551,9 @@ function namedNodeMissing(sid, mid, leftOut) {
     const line = whole.changed.filter((r) => r.type === 'message' && !isLeftOut(r)).map((r) => r.message_id).sort();
     assert.deepEqual(t.live.message, line, 'the main line, whole');
     assert.deepEqual(t.held, whole.held);
-    // From the whole read's state: what the whole read wrote of the piece is held, never tombstoned;
-    // what remains is only revised (an order or a fingerprint that moved), never new.
+    // From the whole read's state: records the whole read wrote of the piece are held (a compaction
+    // record and its summary with them), never tombstoned; records the gap only moves (a message's
+    // order, the session's fingerprint) are revised, never new.
     const tw = deriveDir(dir, sid, whole.state);
     for (const type of ['session', 'message', 'usage', 'link', 'lifecycle']) {
       const wrote = whole.live[type].filter((k) => !tw.live[type].includes(k));
@@ -505,7 +561,8 @@ function namedNodeMissing(sid, mid, leftOut) {
     }
     assert.deepEqual(tw.held.message, whole.changed.filter((r) => r.type === 'message' && isLeftOut(r)).map((r) => r.message_id).sort(), 'the left-out messages are held');
     assert.ok(tw.changed.every((r) => !isLeftOut(r) && whole.state.emitted[r.type][recordKeyOf(r)] != null), 'a revision of a key the whole read wrote');
-    // The later read holds the node again: from either state, it folds to the whole read.
+    // The later read holds the node again: from either state, it folds to the whole read (what the
+    // gap moved is revised back).
     w = writer(dir);
     const cols = Object.keys(rows[0]);
     const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
@@ -528,6 +585,65 @@ test('devin: a compacted history the read does not hold whole is no torn read: d
 test('devin: a sub-agent chain a tool result names that the read does not hold whole is no torn read: derive leaves it out and holds what it wrote of it; a later read derives it', () => {
   const chain = ['dl:task', 'dl:sa1', 'dl:sr1', 'dl:sa2'].map(ID);
   for (const mid of ['dl:sa2', 'dl:sr1']) namedNodeMissing('dusty-lantern', ID(mid), chain);
+});
+
+// sessions v1.x (#6), §2 `inconsistent`, a side effect of leaving a compacted history out. A
+// compaction re-roots the line as a mode switch does, so while the history tears, a tree named
+// only through its prefix copies is left out with it. In `switch-compaction` that tree is a mode
+// switch's old root, and the turn abandoned there goes with it. Records derive wrote earlier among
+// what is left out are held, and so are the compaction record and its summary that point into the
+// missing nodes. Records the gap only moves (a message's order, the session's fingerprint) are
+// revised, and revised back once a later read holds the node and derives it. Each case removes the
+// history's named node or an earlier node of it (both streaming twins). The control is a dangling
+// sub-agent head, which names no compacted history: the old root keeps its abandoned branch.
+test('devin: while a compacted history tears, a turn abandoned in a mode switch\'s old root is left out with it: held from the whole read\'s state, never tombstoned, live again once a read holds the node', () => {
+  const sid = 'keen-ridge';
+  const types = ['session', 'message', 'usage', 'link', 'lifecycle'];
+  const branch = { message: ['kr:old-u', 'kr:old-a'].map(ID).sort(), usage: [`message:${ID('kr:old-a')}#1`] };
+  const key = (r) => `${r.type}\u0000${recordKeyOf(r)}`;
+  const byMid = 'FROM message_nodes WHERE session_id = ? AND json_extract(chat_message, \'$.message_id\') = ?';
+  withStore('switch-compaction', (dir) => {
+    const whole = deriveDir(dir, sid);
+    const w = writer(dir);
+    w.prepare("INSERT INTO subagent_heads (session_id, agent_id, chain_node_id, updated_at) VALUES (?, 'deadbeef', 999, 0)").run(sid);
+    w.close();
+    const out = deriveDir(dir, sid, whole.state);
+    assert.deepEqual([out.changed, out.live, out.held], [[], whole.live, whole.held], 'the control: a dangling head leaves the old root alone');
+  });
+  for (const mid of [ID('kr:a2'), ID('kr:u2')]) {
+    withStore('switch-compaction', (dir) => {
+      const whole = deriveDir(dir, sid);
+      assert.deepEqual(whole.changed.filter((r) => r.type === 'message' && branch.message.includes(r.message_id)).map((m) => m.on_active_branch), [false, false], 'the whole read: an abandoned branch');
+      assert.deepEqual(branch.usage.filter((k) => !whole.live.usage.includes(k)), [], 'with its usage');
+      let w = writer(dir);
+      const rows = w.prepare(`SELECT * ${byMid}`).all(sid, mid);
+      assert.ok(rows.length > 0, mid);
+      w.prepare(`DELETE ${byMid}`).run(sid, mid);
+      w.close();
+      const tw = deriveDir(dir, sid, whole.state);
+      // The abandoned turn: left out, held at its last written version, not rewritten.
+      for (const type of ['message', 'usage']) {
+        assert.deepEqual(branch[type].filter((k) => tw.live[type].includes(k)), [], `${type}: left out`);
+        assert.deepEqual(branch[type].filter((k) => !tw.held[type].includes(k)), [], `${type}: held`);
+        assert.deepEqual(branch[type].map((k) => tw.state.emitted[type][k]), branch[type].map((k) => whole.state.emitted[type][k]), `${type}: its last written version stands`);
+      }
+      assert.deepEqual(tw.changed.filter((r) => branch.message.includes(r.message_id) || branch.usage.includes(r.usage_id)), [], 'not rewritten');
+      // No tombstone: every key the whole read wrote is live or held.
+      for (const type of types) assert.deepEqual(whole.live[type].filter((k) => !tw.live[type].includes(k) && !tw.held[type].includes(k)), [], `${type}: live or held`);
+      assert.deepEqual([tw.held.lifecycle, tw.held.message.includes(ID('kr:summary'))], [[ID('kr:summary')], true], 'the compaction record and its summary are held');
+      assert.ok(tw.changed.length > 0 && tw.changed.every((r) => whole.state.emitted[r.type][recordKeyOf(r)] != null), 'what remains is revised, never new');
+      // The read holds the node again.
+      w = writer(dir);
+      const cols = Object.keys(rows[0]);
+      const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
+      for (const r of rows) ins.run(...cols.map((c) => r[c]));
+      w.close();
+      const later = deriveDir(dir, sid, tw.state);
+      assert.deepEqual([later.live, later.held], [whole.live, whole.held], 'the abandoned turn is live again');
+      assert.deepEqual(later.state.emitted, whole.state.emitted, 'every key at the whole read\'s version');
+      assert.deepEqual(later.changed.map(key).sort(), tw.changed.map(key).sort(), 'what the gap moved is revised back; the held keys return unchanged');
+    });
+  }
 });
 
 test('devin: list names every sessions row, hidden ones too, with its one source; the hint moves with this session only', () => {

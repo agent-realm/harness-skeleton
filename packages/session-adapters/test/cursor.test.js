@@ -184,7 +184,7 @@ test('cursor: one speaker per message: the user bubble, then <bubbleId>:assistan
   assert.equal(a1.parts[0].text, 'Read cart.py first.', 'thinking is capabilityType 30');
 });
 
-test('cursor: a tool bubble is a call and its result: a newline call id byte-exact, exitCode 1 an error, output from result.output', () => {
+test('cursor: a tool bubble is a call and its result: a newline call id byte-exact, an error status beside exitCode 1 an error, output from result.output', () => {
   const recs = golden('features')[CID(1)];
   const [call, result] = msg(recs, A(U(2))).parts.filter((p) => p.call_id === CALL(2, 1));
   assert.ok(CALL(2, 1).includes('\n'));
@@ -204,7 +204,7 @@ test('cursor: cancelled by the user: the tool keeps its partial output, status c
   for (const [recs, uid] of [[golden('features')[CID(1)], U(3)], [golden('lab')[LAB_MAIN], LAB_TURN3]]) {
     const a = msg(recs, A(uid));
     const r = a.parts.find((p) => p.kind === 'tool_result');
-    assert.deepEqual([r.status, r.is_error], ['cancelled', false]);
+    assert.deepEqual([r.status, r.is_error], ['cancelled', null]);
     assert.ok(r.output.startsWith('tick 1\ntick 2\n'));
     assert.equal(a.status, 'cancelled');
   }
@@ -228,7 +228,7 @@ test('cursor: opaque reasoning, a rejected tool, an image by path, rich text, an
   const a = msg(recs, A(U(71)));
   assert.deepEqual(a.parts[0], { part_id: 's:0', kind: 'reasoning', opaque: true, signature_len: 312 });
   const denied = a.parts.find((p) => p.kind === 'tool_result');
-  assert.deepEqual([denied.status, denied.is_error], ['denied', false]);
+  assert.deepEqual([denied.status, denied.is_error], ['denied', null]);
   const img = msg(recs, U(71)).parts[1];
   assert.deepEqual([img.kind, img.media_type, img.inline, img.ref], ['attachment', 'image/png', null, '/home/user/work/toyshop/label.png']);
   assert.equal(msg(recs, U(72)).parts[0].text, 'And the price?', 'the text of a rich-text-only prompt');
@@ -728,6 +728,72 @@ test('cursor: describe states every facet, and each explicit claim has a fixture
       assert.ok(results.filter((r) => r.call_id === p.call_id).length <= 1, p.call_id);
     }
   }
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, an `error`
+// status (the tool's or `additionalData`'s) true and `completed` false. A `completed` beside a
+// shell's non-zero exit_code is unreliable for that result, so its is_error is null. Never derived
+// from exit_code: an exit code without an error status is no error.
+test('cursor: is_error is the stored status: completed beside a non-zero exit is null, an error status is true, never from the exit code', () => {
+  withStore('features', (dir) => {
+    const key = `bubbleId:${CID(1)}:${U(2)}/t:${CALL(2, 1)}`;
+    const resultOf = () => {
+      const p = ofType(project(fullReplay(adapter, dir).views())[CID(1)], 'message').flatMap((m) => m.parts).find((x) => x.kind === 'tool_result' && x.call_id === CALL(2, 1));
+      return [p.is_error, p.exit_code, p.status];
+    };
+    const edit = (fn) => {
+      const v = getValue(dir, key);
+      fn(v.toolFormerData);
+      exec(dir, 'UPDATE cursorDiskKV SET value = ? WHERE key = ?', Buffer.from(JSON.stringify(v)), key);
+    };
+    assert.deepEqual(resultOf(), [true, 1, 'completed'], 'additionalData.status error beside exit 1: the flag says failure');
+    // Edited in this copy: no error status, so `completed` beside exit 1 (null), then exit 0 (false);
+    // the tool's own `error` status (true); and a cancel beside exit 1 (null: no call that completed).
+    edit((t) => { t.additionalData = { startedAtMs: t.additionalData.startedAtMs }; });
+    assert.deepEqual(resultOf(), [null, 1, 'completed'], 'completed beside exit 1: unreliable for this result');
+    edit((t) => { t.result = t.result.replace('"exitCode":1', '"exitCode":0'); });
+    assert.deepEqual(resultOf(), [false, 0, 'completed'], 'completed, exit 0');
+    edit((t) => { t.status = 'error'; t.result = t.result.replace('"exitCode":0', '"exitCode":1'); });
+    assert.deepEqual(resultOf(), [true, 1, 'completed'], 'an error status');
+    edit((t) => { t.status = 'cancelled'; });
+    assert.deepEqual(resultOf(), [null, 1, 'cancelled'], 'cancelled beside exit 1');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A denial (`rejected`, or a result that says `rejected`) is `denied`, and a cancel or
+// an abort is `cancelled`: their is_error is null, and the status carries the fact, whatever an
+// error status beside it says. A call that completed keeps the flag (the positive control).
+test('cursor: is_error is null where the call did not complete: a denial, a cancel or an abort; the status carries the fact', () => {
+  const resultsOf = (dir, sid, uid) => msg(project(fullReplay(adapter, dir).views())[sid], A(uid)).parts.filter((p) => p.kind === 'tool_result').map((p) => [p.status, p.is_error]);
+  withStore('features', (dir) => {
+    assert.deepEqual(resultsOf(dir, CID(1), U(3)), [['cancelled', null]], 'cancelled by the user');
+    assert.deepEqual(resultsOf(dir, CID(7), U(71)), [['denied', null]], 'a rejected tool');
+    const key = `bubbleId:${CID(1)}:${U(2)}/t:${CALL(2, 1)}`;
+    const resultOf = () => {
+      const p = msg(project(fullReplay(adapter, dir).views())[CID(1)], A(U(2))).parts.find((x) => x.kind === 'tool_result' && x.call_id === CALL(2, 1));
+      return [p.status, p.is_error];
+    };
+    const edit = (fn) => {
+      const v = getValue(dir, key);
+      fn(v.toolFormerData);
+      exec(dir, 'UPDATE cursorDiskKV SET value = ? WHERE key = ?', Buffer.from(JSON.stringify(v)), key);
+    };
+    // The positive control: the fixture's error status, then a plain completed.
+    assert.deepEqual(resultOf(), ['completed', true], 'additionalData.status error: the flag');
+    // Edited in this copy, each beside additionalData.status error.
+    edit((t) => { t.status = 'aborted'; });
+    assert.deepEqual(resultOf(), ['cancelled', null], 'aborted');
+    edit((t) => { t.status = 'rejected'; });
+    assert.deepEqual(resultOf(), ['denied', null], 'rejected');
+    edit((t) => { t.status = 'completed'; t.result = JSON.stringify({ ...JSON.parse(t.result), rejected: true }); });
+    assert.deepEqual(resultOf(), ['denied', null], 'a result that says rejected');
+    edit((t) => { t.result = JSON.stringify({ ...JSON.parse(t.result), rejected: false }); t.additionalData = { startedAtMs: t.additionalData.startedAtMs }; t.result = t.result.replace('"exitCode":1', '"exitCode":0'); });
+    assert.deepEqual(resultOf(), ['completed', false], 'completed, exit 0: the flag');
+  });
+  withStore('lab', (dir) => {
+    assert.deepEqual(resultsOf(dir, LAB_MAIN, LAB_TURN3), [['cancelled', null]], 'the lab\'s cancelled loop');
+  });
 });
 
 test('cursor: a tool_result carries the stored result.exitCode; a result without one has none', () => {

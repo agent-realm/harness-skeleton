@@ -623,11 +623,20 @@ function fromDb(st, sid, me) {
         part = { kind: 'tool_result', call_id: callId, is_error: null, status: null, output: str(r.result), output_len: utf8Len(str(r.result)), truncated: null };
       } else {
         const output = r.result || (s.status === ST.ERROR ? err : '') || '';
+        const exit = exitCodeOf(r, s.status);
         status = doneStatus(s);
+        const result = s.status === ST.ERROR && /denied/i.test(err) ? 'denied' : s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed';
+        // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x (#6),
+        // §2.3): ERROR gives true, DONE false. A DONE beside a run_command's non-zero `exit_code` is
+        // unreliable for that result: its `is_error` is null, and the other results keep the flag.
+        // It describes a call that completed: a CANCELED or INTERRUPTED step (`cancelled`) and a
+        // denied one (`denied`) give null, and the status carries the fact. Never derived from the
+        // exit code or the text.
         part = {
-          kind: 'tool_result', call_id: callId, is_error: s.status === ST.ERROR,
-          status: s.status === ST.ERROR && /denied/i.test(err) ? 'denied' : s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed',
-          output, output_len: utf8Len(output), truncated: null, exit_code: exitCodeOf(r, s.status),
+          kind: 'tool_result', call_id: callId,
+          is_error: result !== 'completed' ? null : s.status === ST.ERROR ? true : s.status === ST.DONE && exit !== null && exit !== 0 ? null : false,
+          status: result,
+          output, output_len: utf8Len(output), truncated: null, exit_code: exit,
         };
         // A result agy cut: the whole text is this conversation's steps/<n>/output.txt
         // (full_output_uri), a side source. The uri's folder is not trusted, only its step index.
@@ -867,12 +876,15 @@ function fromTranscript(st, sid, me) {
       const running = o.status === 'RUNNING';
       const isError = o.status === 'ERROR' || !!o.error;
       const output = running ? str(o.content) : String(o.content || o.error || '');
+      const result = running ? null : isError && /denied/i.test(String(o.error || '')) ? 'denied' : 'completed';
       msg = {
         ...base, role: 'tool', source: null, status: running ? 'streaming' : isError ? 'error' : 'complete',
         parts: [
           {
-            kind: 'tool_result', call_id: callId, is_error: running ? null : isError,
-            status: running ? null : isError && /denied/i.test(String(o.error || '')) ? 'denied' : 'completed',
+            // A denied call did not complete: `is_error` is null, and `denied` carries the fact
+            // (sessions-model v1.x (#6), §2.3).
+            kind: 'tool_result', call_id: callId, is_error: result === 'completed' ? isError : null,
+            status: result,
             output, output_len: utf8Len(output), truncated: null,
           },
           ...media(o),

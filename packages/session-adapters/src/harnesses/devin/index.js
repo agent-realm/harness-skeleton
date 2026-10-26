@@ -24,9 +24,11 @@
 //   main_chain_id, or a parent link along the line, is the retryable `inconsistent`, found in
 //   `read`, never an empty or shorter session. A node the main line only names (a running
 //   sub-agent's head in `subagent_heads`, a compacted history's prior nodes, a sub-agent chain a
-//   tool result names) that the read does not hold is no torn read: derive leaves out what it would
-//   have reached, holds what an earlier derive wrote of it, and a later read that holds the node
-//   derives it;
+//   tool result names) that the read does not hold is no torn read. derive leaves out what that
+//   node would have reached, and the raw unit keeps the naming row. Records derive wrote earlier
+//   among them are held, and so are a compaction record and its summary that point into the
+//   missing nodes. Records the gap only moves (a message's order, the session's fingerprint) are
+//   revised, and revised back once a later read holds the node and derives it;
 // - records in the sessions-model shape: a tool node is its own `tool` message; usage records; a
 //   rewind is implicit (a pointer move), so it gives no lifecycle record: the abandoned subtree's
 //   messages stay, with `on_active_branch: false`. Compaction is explicit, from the summary node;
@@ -356,7 +358,10 @@ function priorOf(n) {
 // A compaction re-roots the line as a mode switch does (prefix copies naming the context nodes),
 // so the tree its compacted history sits in is named by those copies. While a compacted history
 // tears (`priorLinks` false), a tree named only that way is left out with it, rather than read as
-// an abandoned branch: the history's nodes above the gap cannot be told from such a branch.
+// an abandoned branch: the history's nodes above the gap cannot be told from such a branch. So is
+// a mode switch's old root that only the history's copies name, with any branch abandoned in it
+// (fixture `switch-compaction`): held where derive wrote it before, and back once a read holds the
+// node.
 function keptTrees(t, seen, { priorLinks = true } = {}) {
   const roots = new Map();
   const rootOf = (id) => {
@@ -493,10 +498,13 @@ export function derive(session, input, state) {
   line.sort((a, b) => cmpStr(a[0], b[0]));
   if (sessionRec) put({ ...sessionRec, fingerprint: { cmp_shas: line.map((x) => x[1]) } });
 
-  // While a node the main line names dangles, derive leaves out what it would have reached, and a
-  // later read that holds the node derives it (sessions v1.x (#6), §2 `inconsistent`). So a key
-  // written before and left out now is held, not tombstoned: its last written version stands, and
-  // the next read that holds the node releases it (live again) or drops it (sessions §2, `held`).
+  // While a node the main line names dangles, derive leaves out what that node would have reached
+  // (sessions v1.x (#6), §2 `inconsistent`). Records derive wrote earlier among them are held, not
+  // tombstoned, and so are a compaction record and its summary that point into the missing nodes:
+  // the last written version stands, and the next read that holds the node releases it (live
+  // again) or drops it (sessions §2, `held`). Records the gap only moves (a message's order, the
+  // session's fingerprint) are revised, and revised back once a later read holds the node and
+  // derives it.
   if (partial) {
     for (const type of Object.keys(live)) {
       const now = new Set([...live[type], ...held[type]]);
@@ -559,8 +567,14 @@ function typedText(n) {
   return blocks.filter((b) => isObj(b) && b.type === 'text' && typeof b.text === 'string').map((b) => b.text).join('');
 }
 
-// A tool node's outcome: rejected is denied, canceled is cancelled, a failure is an error; a
-// non-zero exit stays completed (fixture captures).
+// A tool node's outcome: rejected is denied, canceled is cancelled; a non-zero exit stays completed
+// (fixture captures). `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3):
+// true where the store says failure (`chisel/tool_result_meta.success: false`, a `failed` final
+// status), false where it says success (`success: true`, a `completed` final status), and null
+// where it keeps no flag. A flag that says success beside a shell's non-zero `exit_code` is
+// unreliable for that result: its `is_error` is null, and the other results keep the flag. It
+// describes a call that completed: a rejection (`denied`) or a cancel (`cancelled`) gives null, and
+// the status carries the fact. Never derived from the exit code or the text.
 function outcome(res, st) {
   const x = res.ext;
   const meta = isObj(x['chisel/tool_result_meta']) ? x['chisel/tool_result_meta'] : {};
@@ -571,7 +585,11 @@ function outcome(res, st) {
   const rejected = um['cognition.ai/rejected'] === true || has('Rejected');
   const canceled = um['cognition.ai/canceled'] === true || has('Canceled');
   const failed = meta.success === false || u.status === 'failed';
-  return { is_error: !!(failed || rejected || canceled), status: rejected ? 'denied' : canceled ? 'cancelled' : 'completed' };
+  const succeeded = meta.success === true || u.status === 'completed';
+  const exit = exitOf(res);
+  const status = rejected ? 'denied' : canceled ? 'cancelled' : 'completed';
+  const isError = status !== 'completed' ? null : failed ? true : succeeded ? (exit !== null && exit !== 0 ? null : false) : null;
+  return { is_error: isError, status };
 }
 
 // A shell tool's exit code: the tool node's `chisel/terminal_output.exit.exit_code` (the lab
@@ -726,8 +744,8 @@ function build(body) {
   const p = plan(t);
   const items = p ? p.items : null;
   // Something the main line names dangles: a running sub-agent's head, a compacted history or a
-  // sub-agent chain a tool result names. What it would have reached is left out (below), and what
-  // an earlier derive wrote of it is held (derive).
+  // sub-agent chain a tool result names. What that node would have reached is left out (below), and
+  // records derive wrote earlier among them are held (derive).
   const partial = headDangles(t) || !!p?.torn;
   for (const it of items ?? []) {
     if (it.compaction != null) {

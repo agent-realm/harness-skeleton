@@ -553,7 +553,7 @@
           "part_id": "9:result",
           "kind": "tool_result",
           "call_id": "call_B",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "1 failed in 0.01s",
           "output_len": 17,
@@ -621,7 +621,7 @@
           "text": "Fixed: the total multiplies by qty."
         }
       ],
-      "cmp_sha": "b8106276fbfbe847b55b1a87698f47fd5182a9bc797eeaf1ad71fad4f8999f04"
+      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c"
     },
     {
       "type": "message",
@@ -1016,7 +1016,7 @@
           "part_id": "2:result",
           "kind": "tool_result",
           "call_id": "call_D",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": null,
           "output_len": null,
@@ -1024,7 +1024,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "43ce3ed901cbe9afd6713d43601c86599a4e6c8543f27e041678eddc3dda04c8"
+      "cmp_sha": "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262"
     },
     {
       "type": "session",
@@ -1050,7 +1050,7 @@
       "fingerprint": {
         "cmp_shas": [
           "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
-          "b8106276fbfbe847b55b1a87698f47fd5182a9bc797eeaf1ad71fad4f8999f04",
+          "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c",
           "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab",
           "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48",
           "3075092bacb1360b0f44fbe9c1bbf6496df890244be384df30f4475d8aa1abfb",
@@ -1069,7 +1069,7 @@
           "f6fd752d6810d069c27f305a3236c938cf4645dc9727cf55733a2166ab91cca0",
           "504e3a2be71de025d55b8858424e247ee2baaa55716ae32f8e340180ac58534f",
           "e8197b429a80615ef58797550152bc1f8c84cee2d5dc85b47151788b9bdbfcf8",
-          "43ce3ed901cbe9afd6713d43601c86599a4e6c8543f27e041678eddc3dda04c8",
+          "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262",
           "23f4b7345ea3e3eeca08c7e3c33b9717b96533edd647ad7489cf111782a7186d"
         ]
       },
@@ -1666,7 +1666,7 @@
           "part_id": "9:result",
           "kind": "tool_result",
           "call_id": "call_B",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "1 failed in 0.01s",
           "output_len": 17,
@@ -1734,7 +1734,7 @@
           "text": "Fixed: the total multiplies by qty."
         }
       ],
-      "cmp_sha": "b8106276fbfbe847b55b1a87698f47fd5182a9bc797eeaf1ad71fad4f8999f04"
+      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c"
     },
     {
       "type": "message",
@@ -1822,7 +1822,7 @@
       "fingerprint": {
         "cmp_shas": [
           "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
-          "b8106276fbfbe847b55b1a87698f47fd5182a9bc797eeaf1ad71fad4f8999f04",
+          "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c",
           "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab",
           "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48"
         ]

@@ -88,8 +88,8 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   returns `[{at, problem}]` (valid when every finding is a warning: see *Registries accepted*). It checks shape, not meaning: enums, ISO times,
   non-empty string keys and call ids that are unique and carry no time, one session record with
   `setup`, usage with `tool_prompt` and no retired `basis`, an error part's `error_kind`.
-- **The conformance matrix**: `conformance/checklist.js` lists the 31 adapter-side items of
-  sessions-model v1 (21) and sessions v1 (10); `conformance/matrix.js` says, for every item and
+- **The conformance matrix**: `conformance/checklist.js` lists the 32 adapter-side items of
+  sessions-model v1 (21, and v1.2's `is_error`) and sessions v1 (10); `conformance/matrix.js` says, for every item and
   every harness, what proves it: `generic` (a check in `conformance/generic.js`, run over every
   fixture case), a named test, `n/a` with the reason, or `open` with the reason, for an item
   whose reading waits on a ruling (no cell is `open` today). `docs/conformance-matrix.md` is
@@ -263,24 +263,36 @@ derives it.
   the original such a node names through `compact/prior_node_ids`. So a sub-agent's task, a root
   of its own re-rooted under its prompt (fixture `features`, session `dusty-lantern`), is left out
   with its chain. Off-line trees that exist without the dangling node keep their normal treatment:
-  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either.
+  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either
+  (save for the old root while a compacted history tears, below).
 - **A compacted history that tears is left out whole**, with its compaction record and summary
   message. A compaction re-roots the line as a mode switch does, so the tree its history sits in is
   named by the line's prefix copies; while that history tears, a tree named only that way is left
-  out with it. Its nodes above the gap cannot be told from an abandoned branch there.
-- **What the torn read still emits is revised, not new.** Leaving a piece out moves the `order` of
-  the line messages after it and the session's fingerprint, so those records are revised, and
-  revised back by the read that holds the node. `calm-orchard` without `co:a2` or `co:r1`:
-  `co:si` (its parent is now the copy's), `co:cont`, `co:u2`, `co:a3` and the session record.
-  `dusty-lantern` without `dl:sa2` or `dl:sr1`: `dl:res`, `dl:a2` and the session record.
-- **What a dangling read leaves out is held, not tombstoned.** While a node the main line names
-  dangles, a key written before (live or held in the state derive is given) and left out now goes
-  to `held`: its last written version stands (sessions §2, `held`). The next read that holds the
-  node releases it, live again, or drops it. Before, a read with a dangling head that followed a
-  whole read left those keys out of both `live` and `held`, so a consumer tombstoned them and the
-  next whole read recreated them: `dusty-lantern` at the head's last move, its node removed,
-  tombstoned three messages (the task and the streaming twins' siblings) and two usage records.
-- **Goldens:** none change. No fixture case has a dangling node. The tests:
+  out with it. Its nodes above the gap cannot be told from an abandoned branch there. A side
+  effect: where the compacted history is a mode switch's line, the switch's old root is named only
+  through the history's copies, so it is left out too, with any branch abandoned in it (fixture
+  `switch-compaction`). Such a branch is held where derive wrote it before, and live again once a
+  read holds the node.
+- **Records the gap only moves (a message's `order`, the session's `fingerprint`) are revised, and
+  revised back once a later read holds the node and derives it** (sessions v1.x (#6), §2,
+  `inconsistent`). Leaving a piece out moves the `order` of the line messages after it and the
+  session's fingerprint. `calm-orchard` without `co:a2` or `co:r1`: `co:si` (its parent is now the
+  copy's), `co:cont`, `co:u2`, `co:a3` and the session record. `dusty-lantern` without `dl:sa2` or
+  `dl:sr1`: `dl:res`, `dl:a2` and the session record. `keen-ridge` without `kr:a2` or `kr:u2`:
+  `kr:si` (its parent is now the copy's), `kr:cont`, `kr:u3`, `kr:a3` and the session record.
+- **Records derive wrote earlier among what it leaves out are held, and so are a compaction record
+  and its summary that point into the missing nodes** (sessions v1.x (#6), §2, `inconsistent`).
+  While a node the main line names dangles, a key written before (live or held in the state derive
+  is given) and left out now goes to `held`, not away: its last written version stands (sessions
+  §2, `held`). The next read that holds the node releases it, live again, or drops it. Before, a
+  read with a dangling head that followed a whole read left those keys out of both `live` and
+  `held`, so a consumer tombstoned them and the next whole read recreated them: `dusty-lantern` at
+  the head's last move, its node removed, tombstoned three messages (the task and the streaming
+  twins' siblings) and two usage records.
+- **Goldens:** none change. No fixture case has a dangling node. One case is new,
+  `switch-compaction` (session `keen-ridge`: a turn abandoned in the original root, a mode switch,
+  then a compaction), with its own golden of 18 records, the abandoned turn's two messages among
+  them with `on_active_branch: false`. The tests:
   - build the `features` store up to the head's last move and remove the head's node, or an
     earlier node of its chain, deriving from an empty state and from the whole read's state;
   - add a dangling head to `amber-harbor`, the mode-switch shape (the line runs through prefix
@@ -290,7 +302,13 @@ derives it.
     `calm-orchard`, and the named sub-agent chain's node (`dl:sa2`) or an earlier one (`dl:sr1`)
     from `dusty-lantern`. Each read succeeds, the piece is left out (and held from the whole read's
     state), and the read that holds the node again folds to the whole read's state, from either
-    state.
+    state;
+  - remove the compacted history's named node (`kr:a2`) or an earlier one (`kr:u2`) from
+    `switch-compaction`. Derived from the whole read's state, the turn abandoned in the mode
+    switch's old root is left out with the history: its two messages and its usage record go to
+    `held` at their last written version, with the compaction record and its summary, and no key is
+    tombstoned. The read that holds the node again makes them live, unchanged, and revises back what
+    the gap moved. A dangling sub-agent head there leaves the old root alone.
 - No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
   `read` used to refuse.
 - `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.
@@ -304,3 +322,170 @@ derives it.
   state. The scheduled re-read is sessions §2's periodic read of every session: one read on the
   schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
   no adapter changes.
+
+### devin, opencode, vscode, agy, cursor, cursor-agent and goose: `is_error` is the stored flag
+
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
+v1.2: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
+and where its flag is unreliable: a flag that says success beside a shell's non-zero `exit_code`
+is unreliable for that result, so that result's `is_error` is null, and the harness store's other
+results keep the flag. An adapter never derives `is_error` from `exit_code` or from the output's
+text. copilot-cli and codex follow it already (above). Each adapter below bumps its `adapter_ver`
+(§8: an adapter that derived otherwise bumps it, so the consumer re-derives); no key changes, and
+a reader that wants a shell's failure reads `exit_code`.
+
+- **devin (adapter_ver 0.2.1 → 0.2.2).** A failure flag gives true, as before:
+  `chisel/tool_result_meta.success: false`, a `failed` final status in `tool_call_state`, a
+  rejection or a cancel (a rejection or a cancel gives null now: see *`is_error` is null where a
+  call did not complete*, below). A success flag (`success: true`, a `completed` final status) gives
+  false, except beside a non-zero `exit_code` (the node's `chisel/terminal_output.exit.exit_code`),
+  where it gives null. A result with no flag gives null. Before, every result without a failure flag
+  was false, `success: true` beside exit 1 included.
+  - Goldens: one tool result, `features` `amber-harbor` `ah:r1` (`success: true`, a `completed`
+    status, exit 1): `parts[0].is_error` `false` → `null`, with its message's `cmp_sha` and that
+    entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `switch-compaction` has no
+    tool result.
+- **opencode (adapter_ver 0.2.0 → 0.2.1).** The flag is a tool part's state status, v1 and v2
+  alike: `error` gives true, and `completed` gives false, except beside a non-zero `exit_code`
+  (v1 `metadata.exit`, v2 `structured.exit`), where it gives null. A part still pending or running
+  gives null, as before.
+  - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c2f9…`, call
+    `call_bc3a64f28f` (`completed`, exit 1): `parts[3].is_error` `false` → `null`, with the
+    message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **vscode (adapter_ver 0.2.0 → 0.2.1).** A denial (null now: see below) or a `resultError` gives
+  true, and a done invocation (`isComplete`, or a result stored) gives false, except beside a
+  terminal's non-zero `exit_code` (`terminalCommandState.exitCode`), where it gives null. An
+  invocation still running gives null, as before.
+  - Goldens: two tool results, `features` `call_B` (done, exit 1) in session `0a0a0a0a…` (message
+    `response_…05`) and in its fork `0d0d0d0d…` (message `…080`): `parts[6].is_error` `false` →
+    `null`, with each message's `cmp_sha` and that entry of each session's `fingerprint.cmp_shas`.
+    The fork's leading `cmp_shas` still match its origin's. Nothing else moves; `lab` is unchanged.
+- **agy (adapter_ver 0.2.0 → 0.2.1).** The flag is a GENERIC step's status in the conversation
+  database: ERROR gives true, and DONE gives false, except beside a run_command's non-zero
+  `exit_code` (the RunCommand payload's), where it gives null. A step still running gives null, and
+  a CANCELED or INTERRUPTED step false, as before (null now: see below). The transcript keeps no
+  exit code, so its results are unchanged.
+  - Goldens: one tool result, `features` step G1 (message `c0497521…`, `call_1164701`, DONE,
+    exit 1): `parts[0].is_error` `false` → `null`, with the message's `cmp_sha` and that entry of
+    the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **cursor (Cursor IDE; adapter_ver 0.2.1 → 0.2.2).** The flag is the tool bubble's status: an
+  `error` status, `toolFormerData.status` or `additionalData.status`, gives true, and `completed`
+  gives false, except beside a non-zero `exit_code` (`result.exitCode`), where it gives null. The
+  exit code no longer decides: before, a non-zero `exitCode` gave true whatever the status said. A
+  denial, a cancel and an abort give false, as before (null now: see below).
+  - Goldens: none change. Both fixture results with exit 1 (`features` `CALL(2, 1)`, `lab`'s
+    pytest shell) carry `additionalData.status: error`, so they stay true from the flag. The test
+    edits a copy for the other cases.
+- **cursor-agent (adapter_ver 0.2.1 → 0.2.2).** The flag is a step result's oneof case
+  (ShellSuccess, ShellFailure and the other kinds' success or failure cases) or the model context's
+  `highLevelToolCallResult.isError`, which wins where both are stored. A success, either one,
+  beside a non-zero `exit_code` (ShellSuccess #3) gives null. A shell-mode turn (`!cmd`) gives
+  null: the ShellOutput fields read (#1 stdout, #2 stderr, #3 exit_code) hold no flag, and its
+  `is_error` was derived from the exit code. A model-context result with no `isError` and no step
+  result gives null, where it gave false; no fixture holds one.
+  - Goldens: one tool result, `features` session `c4a1e0de…`, the shell-mode turn
+    `8b76b964…202+1` (exit 3): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
+    and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `orphan`, `rewind`
+    and `subagent` are unchanged.
+- **goose (adapter_ver 0.2.1, its one move in this release: see below).** The flag is a tool
+  result's `isError`. `isError: false`, or none (read as false), beside a non-zero
+  `structuredContent.exit_code` gave false. It gives null. `isError: true` stays true, beside any
+  exit code.
+  - Goldens: none change. Both fixture results with exit 1 (`call-1` in `20261021_1` and
+    `20261021_8`) carry `isError: true`. The test edits a copy for the other cases.
+
+### `is_error` is null where a call did not complete
+
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+completed. Where a `tool_result`'s `status` is `cancelled` or `denied`, `is_error` is null, and
+the status carries the fact. The adapters below gave false or true there. No key changes; a record
+changes only in that `is_error`, its message's `cmp_sha` and that entry of the session's
+`fingerprint.cmp_shas`. An adapter whose `adapter_ver` already moved in this release (agy, cursor,
+cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
+
+- **agy (adapter_ver 0.2.1, unchanged).** A CANCELED or INTERRUPTED step (`cancelled`) gave false,
+  and an ERROR whose error is a denial (`denied`) gave true, in the conversation database; a denied
+  transcript line gave true too. All give null. An ERROR that is no denial stays true, a DONE false.
+  - Goldens: two tool results, `features` session `63e1ede9…`: step G9 (message `5fccbbf0…`,
+    `call_213908`, CANCELED) `false` → `null`, and step G2 (message `d24bade1…`, `call_322814`,
+    denied) `true` → `null`, with each message's `cmp_sha` and its entry of the session's
+    `fingerprint.cmp_shas`. Nothing else moves.
+- **copilot-cli (adapter_ver 0.2.1 → 0.2.2).** A denied call (`error.code: denied`, `denied`) gave
+  true from its `success: false`. It gives null, whatever `success` says. A call that completed
+  keeps `success` as its flag.
+  - Goldens: three tool results, the denied call in `features` (`chatcmpl-tool-feat-pip`, message
+    `a0000000…056`) in session `a0a0a0a0…` and in its fork `c2c2c2c2…`, and in `vscode-host`
+    (`call_…00018`, message `b579dd63…`): `parts[0].is_error` `true` → `null`, with each message's
+    `cmp_sha` and its entry of the session's `fingerprint.cmp_shas`. The fork's `cmp_shas` still
+    match its origin's. Nothing else moves.
+- **cursor (adapter_ver 0.2.2, unchanged).** A denial (`rejected`, or a result that says
+  `rejected`: `denied`) and a cancel or an abort (`cancelled`) gave false, or true beside an `error`
+  status. They give null. A call that completed keeps its status as the flag.
+  - Goldens: three tool results, `parts[n].is_error` `false` → `null`, with each message's
+    `cmp_sha` and its entry of the session's `fingerprint.cmp_shas`: in `features`, the cancelled
+    loop (session `c0c0a001…`, message `b0b0b003…:assistant`) and the rejected tool (session
+    `c0c0a007…`, message `b0b0b071…:assistant`); in `lab`, the cancelled loop (message
+    `5a5a0029…:assistant`). Nothing else moves.
+- **cursor-agent (adapter_ver 0.2.2, unchanged).** A rejected or permission-denied step (`denied`),
+  a ShellFailure marked cancelled (#11) and a shell timeout (`cancelled`) gave true. They give
+  null, and so does a model context's `isError` beside such a step. A call that completed keeps the
+  flag.
+  - Goldens: one tool result, `features` session `c4a1e0de…`, the rejected shell (message
+    `c3a28bce…104:assistant`): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
+    and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **devin (adapter_ver 0.2.2, unchanged).** A rejection (`denied`) and a cancel (`cancelled`), from
+  the tool node's failure reason or from `tool_call_state`, gave true. They give null, whatever
+  `success` says beside them. `success: false` and a `failed` final status stay true on a call that
+  completed.
+  - Goldens: two tool results, `features` `amber-harbor`: `ah:x3` (`ah:rej`, denied) and `ah:x4`
+    (`ah:slow`, cancelled), `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and
+    its entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **gemini-cli (adapter_ver 0.2.2 → 0.2.3).** A cancelled call (`status: cancelled`) gave false, or
+  true where its response held an `error`. It gives null. A call that completed keeps the flag: an
+  `error` status or an `error` in its response true, else false.
+  - Goldens: one tool result, `features` session `7f3e9a10…`, message `00000000…004`, the cancelled
+    edit (`write_file__…_1`): `parts[3].is_error` `false` → `null`, with the message's `cmp_sha` and
+    that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **goose (adapter_ver 0.2.0 → 0.2.1).** A declined call (`denied`), Ctrl-C during a shell call
+  and a cancelled approval (`cancelled`) copied goose's `isError: true`. They give null. A call
+  that completed keeps `isError`.
+  - Goldens: three tool results, `features` session `20261021_2`: `msg_rr` (`call-rm`, denied),
+    `msg_rs` (`call-sleep`, Ctrl-C) and `msg_ri` (`call-rm2`, a cancelled approval),
+    `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and its entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab` and `conformance-goose-sentinel`
+    are unchanged.
+- **opencode (adapter_ver 0.2.1, unchanged).** A refused permission (an `error` status whose error
+  says so: `denied`) gave true. It gives null; a call cut off while pending or running (`cancelled`)
+  gave null already. A call that completed keeps its state status as the flag.
+  - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c338…`, call
+    `chatcmpl-tool-…00050` (denied): `parts[11].is_error` `true` → `null`, with the message's
+    `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **vscode (adapter_ver 0.2.1, unchanged).** A denial (`isConfirmed` 0, `denied`) gave true, and a
+  skip (`isConfirmed` 5, `cancelled`; UNVERIFIED reading) gave false or true. Both give null; a call
+  cut off in a reply that ended (`cancelled`) gave null already. A call that completed keeps the
+  flag: a `resultError` true, done false.
+  - Goldens: one tool result, `features` session `0a0a0a0a…`, message `response_…048`, `call_D`
+    (denied): `parts[2].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab` is unchanged.
+- **zed (adapter_ver 0.2.1 → 0.2.2).** Zed's canned results, `Tool canceled by user` (`cancelled`)
+  and `Permission to run tool denied by user` (`denied`), kept Zed's stored `is_error: true`. They
+  give null. A call that completed keeps a stored true, and a stored false stays null (unreliable,
+  as before).
+  - Goldens: one message, `features` session `5a1e0000…c1`, message `5a1e0000…a3+1`, the cancelled
+    and the denied call (`toolu_toy_…04`, `toolu_toy_…05`): `parts[1].is_error` and
+    `parts[3].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
+    `sentinel` are unchanged.
+- **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
+  item (sessions-model v1.x (#6), §2.3): every `tool_result` copies the harness store's own flag,
+  and is null where the store has none, where the flag says success beside a shell's non-zero
+  `exit_code`, and where `status` is `cancelled` or `denied`; a fixture result with a non-zero
+  `exit_code` and no failure flag never has `is_error` true. Every harness's cell is `generic`
+  plus its own tests. The generic check (`conformance/generic.js`, run over every fixture case)
+  finds a non-null `is_error` on a cancelled or denied result, a false beside a non-zero
+  `exit_code`, and a true beside one that `FAILURE_FLAGS` does not list with the store's failure
+  flag (five results: cursor's two `additionalData.status: error`, cursor-agent's ShellFailure,
+  goose's two `isError: true`). The named tests show the copy and the nulls per harness.
+  claude-code gains one: its results copy the block's `is_error`, null where the block has none.
+  Over the goldens as they stood before the fixes above, the check finds 19 results in ten
+  harnesses; after them, none.

@@ -6,6 +6,9 @@ on:
   pull_request:
   push:
     branches: [main]
+  # By hand (Actions, guard, Run workflow): the guard over the whole history. Run it whenever the
+  # guard's rules tighten (AGENTS.md, Testing).
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -27,6 +30,8 @@ jobs:
       - name: Self-test the guard
         run: node scripts/guard.mjs --self-test
       - name: Guard the tracked files and the commits
+        env:
+          BEFORE: ${{ github.event.before }}
         run: |
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             # The checkout is the merge commit: HEAD^1 is the base, HEAD^2 the pull request's head.
@@ -39,6 +44,15 @@ jobs:
               guard=scripts/guard.mjs
             fi
             node "$guard" --commits "HEAD^1..HEAD^2"
-          else
+          elif [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             node scripts/guard.mjs --commits HEAD
+          else
+            # A push scans the commits it brings. Earlier history was scanned when it came in, so a
+            # stricter guard does not fail main on lines it already carries. A new branch, or a
+            # before-commit this clone lacks, scans the whole history.
+            if [ -n "$BEFORE" ] && [ "$BEFORE" != 0000000000000000000000000000000000000000 ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              node scripts/guard.mjs --commits "$BEFORE..HEAD"
+            else
+              node scripts/guard.mjs --commits HEAD
+            fi
           fi

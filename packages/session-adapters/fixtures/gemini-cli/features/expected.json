@@ -733,7 +733,7 @@
           "part_id": "write_file__write_file_1770112804000_1:result",
           "kind": "tool_result",
           "call_id": "write_file__write_file_1770112804000_1",
-          "is_error": false,
+          "is_error": null,
           "status": "cancelled",
           "output": "User cancelled the edit.",
           "output_len": 24,
@@ -741,7 +741,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "b3e280b345d21ce00b1a1089eca1f5f54ac4068e51eeb53e4eb7020d002d0df2"
+      "cmp_sha": "7e0358a6bef006b9c1142dce222980379dd70353588ac9d0a7f360036fe237d0"
     },
     {
       "type": "message",
@@ -1383,7 +1383,7 @@
           "131336bfd90a3d663ef0404942c0e94c88d6d7618621b078b4b22065d45587d0",
           "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
           "f85e1e65fa6c9380b540ce1b61caac5e5113c0d82402deb2c033d1cb60bf2c65",
-          "b3e280b345d21ce00b1a1089eca1f5f54ac4068e51eeb53e4eb7020d002d0df2",
+          "7e0358a6bef006b9c1142dce222980379dd70353588ac9d0a7f360036fe237d0",
           "55f0751e5d2f55c66d867d117ccf5f0bf5cdee3efced5e4ae18818e47c61c724",
           "0e4f435dd2f71029fa2a2909eb0f2f12b91d2166ea8e869edbb46e635497b56c",
           "9194b9903b4f8eb48c0b0a83f6a89e7f740b575f2612450a2273dcbcc92d1c64",

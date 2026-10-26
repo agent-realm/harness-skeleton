@@ -433,3 +433,9 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: two tool results, `features` `amber-harbor`: `ah:x3` (`ah:rej`, denied) and `ah:x4`
     (`ah:slow`, cancelled), `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and
     its entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **gemini-cli (adapter_ver 0.2.2 → 0.2.3).** A cancelled call (`status: cancelled`) gave false, or
+  true where its response held an `error`. It gives null. A call that completed keeps the flag: an
+  `error` status or an `error` in its response true, else false.
+  - Goldens: one tool result, `features` session `7f3e9a10…`, message `00000000…004`, the cancelled
+    edit (`write_file__…_1`): `parts[3].is_error` `false` → `null`, with the message's `cmp_sha` and
+    that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.

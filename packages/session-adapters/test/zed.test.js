@@ -13,7 +13,7 @@ import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance
 import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   CASES as GENERATED, LAB, T, U, C, R, S, SENTINEL,
-  heldThread, cartThread, thread, user, agent, use, res, restoreLabCapture,
+  heldThread, cartThread, thread, user, agent, use, res, restoreLabCapture, restoreThread,
 } from '../fixtures/zed/generate.js';
 
 const adapter = adapterFor('zed');
@@ -172,11 +172,12 @@ test('zed: a thread with both cumulative_token_usage and request_token_usage yie
   });
 });
 
-// Contract decision, to appear in sessions-model v1.x (refines §2.4 "No overlap", whose one Zed
-// record assumes a total): where `cumulative_token_usage` is empty, the `request_token_usage`
-// entries are the usage. One record per entry, anchored to the User message the entry is keyed
-// by, per_turn, both flags null: not a zero record, and not "no usage". A non-empty cumulative
-// stays the one per_session total (above).
+// sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where
+// `cumulative_token_usage` is empty, the `request_token_usage` entries are the usage. One record
+// per entry, anchored to the User message the entry is keyed by, per_turn, both flags null: not a
+// zero record, and not "no usage". A non-empty cumulative stays the one per_session total (above).
+// The running turn's entry is held with its reply (the held test, below), and an orphaned entry is
+// still a record (the next test).
 test('zed: an empty cumulative_token_usage gives one per_turn usage record per request_token_usage entry, anchored to its User message', () => {
   const only = (recs) => ofType(recs, 'usage').map(({ usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }) => (
     { usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }));
@@ -202,6 +203,37 @@ test('zed: an empty cumulative_token_usage gives one per_turn usage record per r
     assert.deepEqual(only(recs).sort(byId), [turn(R.R1, 400, 9), turn(R.R4, 530, 16)].sort(byId));
     for (const u of ofType(recs, 'usage')) assert.ok(msg(recs, u.anchor.message_id), `${u.usage_id} anchors a message of the thread`);
   });
+});
+
+// sessions-model v1.x (#6), §2.4: an entry keyed by a User message the thread no longer holds (after
+// a checkpoint restore) is still emitted, anchored to that id: it is spend. So its usage_id keeps
+// its key across the restore, and the record is unchanged. restore-lab's capture cleared every
+// entry, so this keeps one in a synthetic save: the restore case's v3 with R2's entry left in.
+test('zed: an orphaned request_token_usage entry (its User message restored away) is still a per_turn record, anchored to that id, its key kept across the restore', () => {
+  const dir = tmpStore();
+  try {
+    const [db] = sqlFilesOf(path.join(FIX, 'restore'));
+    const e = new MiniEngine(adapter, storeOf(adapter, dir));
+    buildDb(dir, db, 1);
+    e.pass();
+    const r2 = `message:${R.R2}#1`;
+    const usageOf = (id) => ofType(viewOf(e, R.ID), 'usage').find((u) => u.usage_id === id);
+    const before = usageOf(r2);
+    assert.deepEqual([before.anchor, before.input, before.output, before.granularity], [{ message_id: R.R2 }, 520, 14, 'per_turn']);
+    // The checkpoint restore on R2, the turn regrown under R4, and R2's entry kept.
+    const t = restoreThread(3);
+    t.request_token_usage = { ...t.request_token_usage, [R.R2]: { input_tokens: 520, output_tokens: 14 } };
+    save(dir, R.ID, t);
+    e.pass();
+    const out = lastDerive(e, R.ID);
+    assert.ok(!out.live.message.includes(R.R2) && !msg(viewOf(e, R.ID), R.R2), 'R2 is restored away');
+    assert.deepEqual(out.live.usage, [R.R1, R.R2, R.R4].map((u) => `message:${u}#1`).sort(), 'the orphaned entry is still a record');
+    assert.deepEqual(out.held.usage, []);
+    assert.ok(!out.changed.some((r) => r.usage_id === r2), 'its key and content are unchanged across the restore');
+    assert.deepEqual(usageOf(r2), before, 'anchored to the gone id');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('zed: statuses: is_error true kept, false is null; Zed\'s canned results are cancelled and denied', () => {

@@ -16,8 +16,8 @@
 // - records in the sessions-model shape: a ToolUse and its result are two parts, `<i>:call` and
 //   `<i>:result`, on the Agent message; usage as its own record, one per session from
 //   `cumulative_token_usage` (annex §4 finding 6), or, where that is empty, one per turn from
-//   `request_token_usage` (a contract decision, to appear in sessions-model v1.x); the archive
-//   and compaction lifecycle records; the hold as derive `held`.
+//   `request_token_usage` (sessions-model v1.x (#6), §2.4); the archive and compaction lifecycle
+//   records; the hold as derive `held`.
 //
 // Zed keeps no Agent message id and no timestamp at all: Agent messages are anchored to the
 // preceding User `id` (`<user id>+n`, sessions-model §1 rule 4), `order` is the array position and
@@ -615,10 +615,11 @@ function build(st, key) {
   // the total would count those tokens twice. It stays in the raw unit.
   // Where the cumulative is empty, the entries are all the usage the thread keeps: one record per
   // entry, anchored to the User message it is keyed by, per_turn, both flags null; never a zero
-  // record, and not "no usage" (contract decision, to appear in sessions-model v1.x; refines §2.4
-  // "No overlap"). Fixtures: features (the held thread), restore. The held turn's usage is held
-  // with its reply. An entry whose User message the thread no longer holds is still spend, so it
-  // is still a record (not observed: restore-lab's restore cleared every entry).
+  // record, and not "no usage" (sessions-model v1.x (#6), §2.4 "No overlap"). Fixtures: features
+  // (the held thread), restore. The running turn's entry is held with its reply (sessions §2). An
+  // entry keyed by a User message the thread no longer holds (after a checkpoint restore) is still
+  // emitted, anchored to that id: it is spend, and its key stays across the restore (tested on a
+  // synthetic save; restore-lab's restore cleared every entry).
   const total = usageFields(t.cumulative_token_usage);
   if (total) out.push({ type: 'usage', usage_id: 'session#1', anchor: { session: true }, ...total, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_session', model: null });
   else if (isObj(t.request_token_usage)) {

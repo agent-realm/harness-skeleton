@@ -50,8 +50,8 @@ export const USAGE_SHAPE = {
   agy: [['per_response'], ['response_id', 'message_id']],
   cursor: [['per_message'], ['message_id']],
   'cursor-agent': [[], []],
-  // per_turn from request_token_usage only where cumulative_token_usage is empty (a contract
-  // decision, to appear in sessions-model v1.x).
+  // per_turn from request_token_usage only where cumulative_token_usage is empty (sessions-model
+  // v1.x (#6), §2.4).
   zed: [['per_session', 'per_turn'], ['session', 'message_id']],
   devin: [['per_response'], ['message_id']],
 };

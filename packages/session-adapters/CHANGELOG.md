@@ -202,9 +202,9 @@ result, both unchanged.
 
 ### zed: per-turn usage where the cumulative total is empty (adapter_ver 0.2.1)
 
-A contract decision, to appear in sessions-model v1.x, refining §2.4 (*No overlap*, whose one Zed
-record assumes a total): where a thread's `cumulative_token_usage` is empty, its
-`request_token_usage` entries are the usage. The adapter emitted no usage at all for such a thread.
+sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where a
+thread's `cumulative_token_usage` is empty, its `request_token_usage` entries are the usage. The
+adapter emitted no usage at all for such a thread.
 
 - **One record per entry**: `usage_id` `message:<user id>#1`, `anchor` `{message_id: <user id>}`
   (the User message the entry is keyed by), `granularity: per_turn`, `input_includes_cache` and
@@ -212,11 +212,13 @@ record assumes a total): where a thread's `cumulative_token_usage` is empty, its
   zero record.
 - **A non-empty cumulative is unchanged**: one `per_session` total, `session#1`, and the entries
   stay in the raw unit, so nothing is counted twice.
-- **The running turn's usage is held** with its reply (sessions v1 §2, `held`): its entry is
+- **The running turn's usage is held** with its reply (#6, §2.4, with sessions §2 `held`): its entry is
   rewritten by every request of the turn. Released with the reply, and held again, with its last
   version standing, when Zed regenerates the reply.
-- An entry keyed by a User id the thread no longer holds is still a record: it is spend. Not
-  observed: `restore-lab`'s restore cleared every entry.
+- **An orphaned entry is still a record**: one keyed by a User message the thread no longer holds
+  (after a checkpoint restore) is emitted, anchored to that id, because it is spend. Its `usage_id`
+  keeps its key across the restore. A test keeps one through a synthetic save; `restore-lab`'s
+  restore cleared every entry, so Zed has not been seen to keep one.
 - **Goldens:** three usage records are new, nothing else moves:
   - `features`, the held thread: `message:…a9#1` (input 500, output 20). Its running turn's
     `message:…aa#1` is held, so it is in no golden.

@@ -422,7 +422,13 @@ function toolParts(tfd, partId) {
     else output = '';
     const exit = isObj(res) && Number.isFinite(res.exitCode) ? res.exitCode : null;
     const denied = st === 'rejected' || (isObj(res) && res.rejected === true);
-    const isError = !denied && (st === 'error' || (isObj(tfd.additionalData) && tfd.additionalData.status === 'error') || (exit !== null && exit !== 0));
+    // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): an `error`
+    // status, the tool's or `additionalData`'s, gives true, and `completed` false. A `completed`
+    // beside a shell's non-zero `exit_code` is unreliable for that result: its `is_error` is null,
+    // and the other results keep the flag. A denial, a cancel and an abort give false, as before.
+    // Never derived from the exit code or the text.
+    const failed = st === 'error' || (isObj(tfd.additionalData) && tfd.additionalData.status === 'error');
+    const isError = denied ? false : failed ? true : st === 'completed' && exit !== null && exit !== 0 ? null : false;
     parts.push({
       part_id: `${partId}:result`, kind: 'tool_result', call_id: callId, is_error: isError,
       status: denied ? 'denied' : st === 'cancelled' || st === 'aborted' ? 'cancelled' : 'completed',

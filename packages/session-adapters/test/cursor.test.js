@@ -184,7 +184,7 @@ test('cursor: one speaker per message: the user bubble, then <bubbleId>:assistan
   assert.equal(a1.parts[0].text, 'Read cart.py first.', 'thinking is capabilityType 30');
 });
 
-test('cursor: a tool bubble is a call and its result: a newline call id byte-exact, exitCode 1 an error, output from result.output', () => {
+test('cursor: a tool bubble is a call and its result: a newline call id byte-exact, an error status beside exitCode 1 an error, output from result.output', () => {
   const recs = golden('features')[CID(1)];
   const [call, result] = msg(recs, A(U(2))).parts.filter((p) => p.call_id === CALL(2, 1));
   assert.ok(CALL(2, 1).includes('\n'));
@@ -728,6 +728,36 @@ test('cursor: describe states every facet, and each explicit claim has a fixture
       assert.ok(results.filter((r) => r.call_id === p.call_id).length <= 1, p.call_id);
     }
   }
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, an `error`
+// status (the tool's or `additionalData`'s) true and `completed` false. A `completed` beside a
+// shell's non-zero exit_code is unreliable for that result, so its is_error is null. Never derived
+// from exit_code: an exit code without an error status is no error.
+test('cursor: is_error is the stored status: completed beside a non-zero exit is null, an error status is true, never from the exit code', () => {
+  withStore('features', (dir) => {
+    const key = `bubbleId:${CID(1)}:${U(2)}/t:${CALL(2, 1)}`;
+    const resultOf = () => {
+      const p = ofType(project(fullReplay(adapter, dir).views())[CID(1)], 'message').flatMap((m) => m.parts).find((x) => x.kind === 'tool_result' && x.call_id === CALL(2, 1));
+      return [p.is_error, p.exit_code, p.status];
+    };
+    const edit = (fn) => {
+      const v = getValue(dir, key);
+      fn(v.toolFormerData);
+      exec(dir, 'UPDATE cursorDiskKV SET value = ? WHERE key = ?', Buffer.from(JSON.stringify(v)), key);
+    };
+    assert.deepEqual(resultOf(), [true, 1, 'completed'], 'additionalData.status error beside exit 1: the flag says failure');
+    // Edited in this copy: no error status, so `completed` beside exit 1 (null), then exit 0 (false);
+    // the tool's own `error` status (true); and a cancel beside exit 1 (false: no exit code decides).
+    edit((t) => { t.additionalData = { startedAtMs: t.additionalData.startedAtMs }; });
+    assert.deepEqual(resultOf(), [null, 1, 'completed'], 'completed beside exit 1: unreliable for this result');
+    edit((t) => { t.result = t.result.replace('"exitCode":1', '"exitCode":0'); });
+    assert.deepEqual(resultOf(), [false, 0, 'completed'], 'completed, exit 0');
+    edit((t) => { t.status = 'error'; t.result = t.result.replace('"exitCode":0', '"exitCode":1'); });
+    assert.deepEqual(resultOf(), [true, 1, 'completed'], 'an error status');
+    edit((t) => { t.status = 'cancelled'; });
+    assert.deepEqual(resultOf(), [false, 1, 'cancelled'], 'cancelled beside exit 1');
+  });
 });
 
 test('cursor: a tool_result carries the stored result.exitCode; a result without one has none', () => {

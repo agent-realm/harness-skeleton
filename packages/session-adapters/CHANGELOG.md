@@ -367,3 +367,11 @@ a reader that wants a shell's failure reads `exit_code`.
   - Goldens: one tool result, `features` step G1 (message `c0497521…`, `call_1164701`, DONE,
     exit 1): `parts[0].is_error` `false` → `null`, with the message's `cmp_sha` and that entry of
     the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **cursor (Cursor IDE; adapter_ver 0.2.1 → 0.2.2).** The flag is the tool bubble's status: an
+  `error` status, `toolFormerData.status` or `additionalData.status`, gives true, and `completed`
+  gives false, except beside a non-zero `exit_code` (`result.exitCode`), where it gives null. The
+  exit code no longer decides: before, a non-zero `exitCode` gave true whatever the status said. A
+  denial, a cancel and an abort give false, as before.
+  - Goldens: none change. Both fixture results with exit 1 (`features` `CALL(2, 1)`, `lab`'s
+    pytest shell) carry `additionalData.status: error`, so they stay true from the flag. The test
+    edits a copy for the other cases.

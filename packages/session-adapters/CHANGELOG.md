@@ -185,3 +185,16 @@ code or the text. Both adapters applied an exit-code rule inherited from an earl
     `live`'s plain-text outputs were null already.
 - No key changes; consumers re-derive copilot-cli and codex sessions. A reader that wants a shell's
   failure reads `exit_code`.
+
+### cursor-agent: a session's `kind` is null (adapter_ver 0.2.1)
+
+A contract decision, to appear in sessions-model v1.x, refining §2.1 (`kind`, the native session
+type): cursor-agent stores no kind field, so `kind` is null for every session. The adapter wrote
+`'subagent'` for a chat whose `meta.subagentInfo` names a parent. That fact stays where §2.5 puts
+it: the child-side `subagent` link from `meta.subagentInfo`, and the parent-side link from its Task
+result, both unchanged.
+
+- **Goldens:** one field, `kind` `"subagent"` → `null` on the child session of the `subagent` case.
+  Nothing else moves.
+- No key changes; consumers re-derive cursor-agent sessions. A reader that wants to know whether a
+  session is a sub-agent reads its `subagent` link with `stated_on: child`.

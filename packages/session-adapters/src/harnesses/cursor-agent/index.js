@@ -1191,7 +1191,10 @@ function fold(st, key) {
     recs, held,
     session: {
       title: str(meta.name), cwd, last_cwd: mj ? str(mj.cwd) : null, created_at: iso(meta.createdAt || root.num(26)),
-      client: str(root.str(22)), kind: si && si.parentAgentId ? 'subagent' : null,
+      // `kind` is the native session type (sessions-model §2.1), and cursor-agent stores none: null.
+      // A sub-agent is told by its §2.5 link from meta.subagentInfo, above (contract decision, to
+      // appear in sessions-model v1.x).
+      client: str(root.str(22)), kind: null,
     },
   };
 }

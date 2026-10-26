@@ -75,9 +75,10 @@ tools ──depend on──▶ harness-skeleton ◀──implement── adapter
   `package-lock.json`). They build fixture folders in a
   temp directory and stand in a stub script for a harness binary: they never start a real
   harness and never read a real data folder. Keep it that way.
-- CI (`.github/workflows/test.yml`) runs `npm ci --ignore-scripts` and `npm test` on Node 22,
-  on a GitHub-hosted `ubuntu-latest` runner, for every pull request and every push to `main`. It uses no secrets
-  and no self-hosted runner. A milestone merges only with it green.
+- CI (`.github/workflows/test.yml`) runs `npm ci --ignore-scripts` and `npm test` on Node 22
+  (the floor) and Node 24, on a GitHub-hosted `ubuntu-latest` runner, for every pull request and
+  every push to `main`. Its `unit` check passes only when both do. It uses no secrets and no
+  self-hosted runner. A milestone merges only with it green.
 - Harness facts live in a driver's `descriptor.js`, each with its source, never in logic.
 - Conformance runs start real harnesses. They run on disposable benches (a VM made for it, or a
   CI runner), never on a user's workstation and never against a user's real data folder. The

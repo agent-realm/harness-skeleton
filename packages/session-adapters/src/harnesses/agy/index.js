@@ -623,11 +623,17 @@ function fromDb(st, sid, me) {
         part = { kind: 'tool_result', call_id: callId, is_error: null, status: null, output: str(r.result), output_len: utf8Len(str(r.result)), truncated: null };
       } else {
         const output = r.result || (s.status === ST.ERROR ? err : '') || '';
+        const exit = exitCodeOf(r, s.status);
         status = doneStatus(s);
+        // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x (#6),
+        // §2.3): ERROR gives true, DONE false. A DONE beside a run_command's non-zero `exit_code` is
+        // unreliable for that result: its `is_error` is null, and the other results keep the flag.
+        // Never derived from the exit code or the text.
         part = {
-          kind: 'tool_result', call_id: callId, is_error: s.status === ST.ERROR,
+          kind: 'tool_result', call_id: callId,
+          is_error: s.status === ST.ERROR ? true : s.status === ST.DONE && exit !== null && exit !== 0 ? null : false,
           status: s.status === ST.ERROR && /denied/i.test(err) ? 'denied' : s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed',
-          output, output_len: utf8Len(output), truncated: null, exit_code: exitCodeOf(r, s.status),
+          output, output_len: utf8Len(output), truncated: null, exit_code: exit,
         };
         // A result agy cut: the whole text is this conversation's steps/<n>/output.txt
         // (full_output_uri), a side source. The uri's folder is not trusted, only its step index.

@@ -241,7 +241,7 @@ test('agy: a turn: content ids, a call and its result, reasoning, usage and the 
   const u1 = ofType(recs, 'usage').find((u) => u.usage_id === p1.response_id);
   assert.deepEqual([u1.input, u1.output, u1.reasoning, u1.cache_read, u1.input_includes_cache, u1.output_includes_reasoning, u1.granularity, u1.anchor], [6889, 206, 179, null, null, null, 'per_response', { response_id: p1.response_id }], 'an unset counter is null, not 0');
   const g1 = msg(recs, ID('G1'));
-  assert.deepEqual([g1.parts[0].call_id, g1.parts[0].is_error, g1.parts[0].status, g1.parts[0].output.split('\n')[0]], ['call_1164701', false, 'completed', 'Command exited with code 1.']);
+  assert.deepEqual([g1.parts[0].call_id, g1.parts[0].is_error, g1.parts[0].status, g1.parts[0].output.split('\n')[0]], ['call_1164701', null, 'completed', 'Command exited with code 1.'], 'DONE beside exit 1 is no flag');
   assert.deepEqual([ID('SYS1'), ID('EPH1'), ID('U1'), ID('P1')].map((id) => msg(recs, id).source), ['injected', 'injected', 'user', 'model']);
   assert.ok(!JSON.stringify(golden('features')).includes(SIG), 'no signature bytes reach a record');
   const p12 = msg(recs, ID('P12'));
@@ -277,6 +277,27 @@ test('agy: a tool_result carries its RunCommand exit_code; a stored unknown is n
   assert.equal(exitOf({ exit_code: 3, exit_code_unknown: true }), null, 'exit_code_unknown means null');
   assert.equal(exitOf({ timed_out: true }), null, 'a timed-out command stored no code: none');
   assert.equal(exitOf({}, STATUS.ERROR), null, 'a command that did not finish stored no code: none');
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the step's status is the harness store's
+// flag, ERROR true and DONE false. A DONE beside a run_command's non-zero exit_code is unreliable
+// for that result, so its is_error is null. Never derived from exit_code or the text.
+test('agy: is_error is the step status: DONE beside a non-zero exit is null, DONE is false, ERROR is true', () => {
+  const resultOf = (payload, status = STATUS.DONE) => {
+    const rows = turn1();
+    rows[2] = ca.generic(2, { t: at(9.5), exec: E(1), id: ID('G1'), call: C1 }, status, 'done', { result: { payload: anyOf('RunCommand', payload) } });
+    const p = deriveRows(A, { rows, execs: [execRow(0, E(1), 3)] }).changed.find((r) => r.message_id === ID('G1')).parts[0];
+    return [p.is_error, p.exit_code];
+  };
+  assert.deepEqual(resultOf({ exit_code: 3 }), [null, 3], 'DONE beside exit 3: unreliable for this result');
+  assert.deepEqual(resultOf({}), [false, 0], 'DONE, exit 0 (proto3 stores no 0)');
+  assert.deepEqual(resultOf({ exit_code: 3, exit_code_unknown: true }), [false, null], 'DONE, the exit code unknown');
+  assert.deepEqual(resultOf({ exit_code: 3 }, STATUS.ERROR), [true, 3], 'ERROR beside exit 3: the flag says failure');
+  // features, a full replay: G1 (DONE, exit 1), G7 (DONE, exit 0), G2 (ERROR, denied).
+  withStore('features', (dir) => {
+    const recs = project(fullReplay(adapter, dir).views())[A];
+    assert.deepEqual([ID('G1'), ID('G7'), ID('G2')].map((id) => [msg(recs, id).parts[0].is_error, msg(recs, id).parts[0].exit_code]), [[null, 1], [false, 0], [true, null]]);
+  });
 });
 
 test('agy: automated turns (a task done, a SYSTEM user input), a hidden restart notice', () => {

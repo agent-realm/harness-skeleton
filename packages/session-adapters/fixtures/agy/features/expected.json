@@ -873,7 +873,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_1164701",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "Command exited with code 1.\n\n1 failed, 2 passed",
           "output_len": 47,
@@ -884,7 +884,7 @@
       "harness": "agy",
       "session_id": "63e1ede9-38a7-420a-a1da-f43eabc90713",
       "incarnation": "",
-      "cmp_sha": "4520ebecc5a472521afef9ad6f38e8f57abf0ab04b5426c27edca6ae8690868e"
+      "cmp_sha": "0a42493970e58a44e4872d62a8dc522ad138f55f64da22d425a6d941d9380bba"
     },
     {
       "type": "message",
@@ -1277,7 +1277,7 @@
           "97db9bdf6b4b54bea38d21c6193087c81e3c5d04bd71bfa4579c4a9e94251472",
           "5ac377f26657ff2b4fbe9b5f5f205de76bebe985aeb7620c6ade9077dfe455d2",
           "5987266ff197e47718864efd3863bcc9b0e7db16d746b424400cda24ff8d077e",
-          "4520ebecc5a472521afef9ad6f38e8f57abf0ab04b5426c27edca6ae8690868e",
+          "0a42493970e58a44e4872d62a8dc522ad138f55f64da22d425a6d941d9380bba",
           "832c81237c7a7ff6f4fffcbe637c8a51cd14b999c3b48110905ed40456e83bf9",
           "8c1bd5c37d56e75b4488cfd8e705a895c48639f925daf86762dec4ebed8463e1",
           "9a0668df176b46520b5091a94697b9074a2111d784d53fee50849026c1d38932",

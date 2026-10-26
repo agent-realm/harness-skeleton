@@ -359,3 +359,11 @@ a reader that wants a shell's failure reads `exit_code`.
     `response_…05`) and in its fork `0d0d0d0d…` (message `…080`): `parts[6].is_error` `false` →
     `null`, with each message's `cmp_sha` and that entry of each session's `fingerprint.cmp_shas`.
     The fork's leading `cmp_shas` still match its origin's. Nothing else moves; `lab` is unchanged.
+- **agy (adapter_ver 0.2.0 → 0.2.1).** The flag is a GENERIC step's status in the conversation
+  database: ERROR gives true, and DONE gives false, except beside a run_command's non-zero
+  `exit_code` (the RunCommand payload's), where it gives null. A step still running gives null, and
+  a CANCELED or INTERRUPTED step false, as before. The transcript keeps no exit code, so its
+  results are unchanged.
+  - Goldens: one tool result, `features` step G1 (message `c0497521…`, `call_1164701`, DONE,
+    exit 1): `parts[0].is_error` `false` → `null`, with the message's `cmp_sha` and that entry of
+    the session's `fingerprint.cmp_shas`. Nothing else moves.

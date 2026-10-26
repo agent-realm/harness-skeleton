@@ -447,3 +447,9 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and its entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab` and `conformance-goose-sentinel`
     are unchanged.
+- **opencode (adapter_ver 0.2.1, unchanged).** A refused permission (an `error` status whose error
+  says so: `denied`) gave true. It gives null; a call cut off while pending or running (`cancelled`)
+  gave null already. A call that completed keeps its state status as the flag.
+  - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c338…`, call
+    `chatcmpl-tool-…00050` (denied): `parts[11].is_error` `true` → `null`, with the message's
+    `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.

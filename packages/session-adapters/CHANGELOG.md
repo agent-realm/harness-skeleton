@@ -344,3 +344,10 @@ a reader that wants a shell's failure reads `exit_code`.
     status, exit 1): `parts[0].is_error` `false` → `null`, with its message's `cmp_sha` and that
     entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `switch-compaction` has no
     tool result.
+- **opencode (adapter_ver 0.2.0 → 0.2.1).** The flag is a tool part's state status, v1 and v2
+  alike: `error` gives true, and `completed` gives false, except beside a non-zero `exit_code`
+  (v1 `metadata.exit`, v2 `structured.exit`), where it gives null. A part still pending or running
+  gives null, as before.
+  - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c2f9…`, call
+    `call_bc3a64f28f` (`completed`, exit 1): `parts[3].is_error` `false` → `null`, with the
+    message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.

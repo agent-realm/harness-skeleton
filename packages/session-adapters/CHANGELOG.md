@@ -248,6 +248,13 @@ a read inconsistent.
   exist without the dangling head keep their normal treatment: a mode switch's old root, a valid
   sub-agent's pre-copy task, and the abandoned branches in either. A later read that holds the node
   derives the chain as usual, as a new rev.
+- **What a dangling read leaves out is held, not tombstoned.** While a head dangles, a key written
+  before (live or held in the state derive is given) and left out now goes to `held`: its last
+  written version stands (sessions §2, `held`). The next read that holds the node releases it, live
+  again, or drops it. Before, a read with a dangling head that followed a whole read left those keys
+  out of both `live` and `held`, so a consumer tombstoned them and the next whole read recreated
+  them: `dusty-lantern` at the head's last move, its node removed, tombstoned three messages (the
+  task and the streaming twins' siblings) and two usage records.
 - **Goldens:** none change. No fixture case ends with a sub-agent running. One test builds the
   `features` store up to the head's last move and removes the head's node, or an earlier node of
   its chain. Another adds a dangling head to `amber-harbor`, the mode-switch shape (the line runs

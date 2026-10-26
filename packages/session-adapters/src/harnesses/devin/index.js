@@ -444,7 +444,7 @@ export function derive(session, input, state) {
     } else if (src.complete) st.body = null;
   }
 
-  const { out, held } = build(st.body);
+  const { out, held, partial } = build(st.body);
 
   const changed = [];
   const live = noHeld();
@@ -472,6 +472,16 @@ export function derive(session, input, state) {
   line.sort((a, b) => cmpStr(a[0], b[0]));
   if (sessionRec) put({ ...sessionRec, fingerprint: { cmp_shas: line.map((x) => x[1]) } });
 
+  // While a node the main line names dangles, derive leaves out what it would have reached, and a
+  // later read that holds the node derives it (sessions v1.x (#6), §2 `inconsistent`). So a key
+  // written before and left out now is held, not tombstoned: its last written version stands, and
+  // the next read that holds the node releases it (live again) or drops it (sessions §2, `held`).
+  if (partial) {
+    for (const type of Object.keys(live)) {
+      const now = new Set([...live[type], ...held[type]]);
+      for (const k of Object.keys(st.emitted[type])) if (!now.has(k)) held[type].push(k);
+    }
+  }
   // A key neither live nor held leaves `emitted`, and the consumer tombstones it; a held key keeps
   // its last emitted sha (sessions §2).
   for (const type of Object.keys(live)) {
@@ -571,10 +581,11 @@ const numbered = (parts) => parts.map((p, i) => ({ part_id: String(i), ...p }));
 function build(body) {
   const out = [];
   const held = noHeld();
-  if (!body) return { out, held };
+  if (!body) return { out, held, partial: false };
   const t = treeOf(body);
   const row = t.row;
-  if (!row) return { out, held };
+  if (!row) return { out, held, partial: false };
+  const partial = dangling(t);
   const hidden = Number(row.hidden) === 1;
 
   const processed = new Map(); // message_id -> order, of every message emitted or held
@@ -736,7 +747,7 @@ function build(body) {
     // and its held nodes would read as an abandoned branch. derive leaves out what it would have
     // reached (sessions v1.x (#6), §2 `inconsistent`): while a head dangles, a node is left out when
     // no valid head reaches its tree and no tree holding a main-line node contains it.
-    const kept = dangling(t) ? keptTrees(t, seenNodes) : null;
+    const kept = partial ? keptTrees(t, seenNodes) : null;
     const known = new Set([...seenNodes].map((id) => t.nodes.get(id).mid));
     const cand = new Map();
     for (const n of [...t.nodes.values()].sort((a, b) => a.id - b.id)) {
@@ -793,5 +804,5 @@ function build(body) {
     ts_source: 'reset_on_save',
     aliases: [],
   });
-  return { out, held };
+  return { out, held, partial };
 }

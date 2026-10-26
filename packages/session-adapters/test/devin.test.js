@@ -354,6 +354,52 @@ test('devin: a dangling sub-agent head is no torn read: derive leaves its chain 
   }
 });
 
+// sessions v1.x (#6), §2 `inconsistent`, with sessions §2 `held`: a read with a dangling head that
+// follows a whole read must not tombstone what the whole read wrote. A key that was live before
+// and is left out now is held: its last written version stands. The next read that holds the head
+// releases it, unchanged.
+test('devin: derived from a whole read\'s state, a dangling head holds the keys it leaves out; none is tombstoned, and the next whole read releases them', () => {
+  const [db] = sqlFilesOf(path.join(FIX, 'features'));
+  const moves = db.ops.map((o, i) => [o, i]).filter(([o]) => /^INSERT OR REPLACE INTO subagent_heads/.test(o.sql) && o.params[0] === 'dusty-lantern');
+  const upto = moves[2][1] + 1;
+  const sid = 'dusty-lantern';
+  const byMid = "FROM message_nodes WHERE session_id = 'dusty-lantern' AND json_extract(chat_message, '$.message_id') = ?";
+  const types = ['session', 'message', 'usage', 'link', 'lifecycle'];
+  for (const mid of [ID('dl:sa2'), ID('dl:sr1')]) {
+    const dir = tmpStore();
+    try {
+      buildDb(dir, db, upto);
+      const whole = deriveDir(dir, sid);
+      // While the sub-agent runs and its head resolves: the line, its task and the streaming twins'
+      // siblings (abandoned-branch records until the result names the chain).
+      assert.deepEqual([whole.live.message.length, whole.live.usage.length], [5, 2], 'the whole read');
+      let w = writer(dir);
+      const rows = w.prepare(`SELECT * ${byMid}`).all(mid);
+      w.prepare(`DELETE ${byMid}`).run(mid);
+      w.close();
+      const t = deriveDir(dir, sid, whole.state);
+      assert.deepEqual([t.live.message.length, t.live.usage.length], [2, 0], 'the dangling read leaves the sub-agent\'s records out');
+      for (const type of types) {
+        const left = whole.live[type].filter((k) => !t.live[type].includes(k));
+        assert.deepEqual(left.filter((k) => !t.held[type].includes(k)), [], `${type}: a key the whole read wrote is in live or held, never tombstoned`);
+        assert.deepEqual(t.held[type].filter((k) => t.live[type].includes(k)), [], `${type}: a held key is not also live`);
+      }
+      assert.deepEqual([t.held.message.length - whole.held.message.length, t.held.usage.length - whole.held.usage.length], [3, 2], 'three messages and two usage records held');
+      assert.deepEqual(t.changed, [], 'nothing is rewritten');
+      // The head's node arrives: released, unchanged.
+      w = writer(dir);
+      const cols = Object.keys(rows[0]);
+      const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
+      for (const r of rows) ins.run(...cols.map((c) => r[c]));
+      w.close();
+      const later = deriveDir(dir, sid, t.state);
+      assert.deepEqual([later.live, later.held, later.changed], [whole.live, whole.held, []], 'released, as the whole read wrote them');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+});
+
 // sessions v1.x (#6), §2 `inconsistent`: while a head dangles, derive leaves out only what that
 // head would have reached: nodes no valid head reaches, in no tree that holds a main-line node.
 // An off-line tree that exists without the dangling head keeps its normal treatment. amber-harbor

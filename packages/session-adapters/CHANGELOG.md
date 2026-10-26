@@ -426,3 +426,10 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `c4a1e0de…`, the rejected shell (message
     `c3a28bce…104:assistant`): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
     and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **devin (adapter_ver 0.2.2, unchanged).** A rejection (`denied`) and a cancel (`cancelled`), from
+  the tool node's failure reason or from `tool_call_state`, gave true. They give null, whatever
+  `success` says beside them. `success: false` and a `failed` final status stay true on a call that
+  completed.
+  - Goldens: two tool results, `features` `amber-harbor`: `ah:x3` (`ah:rej`, denied) and `ah:x4`
+    (`ah:slow`, cancelled), `parts[0].is_error` `true` → `null`, with each message's `cmp_sha` and
+    its entry of the session's `fingerprint.cmp_shas`. Nothing else moves.

@@ -155,9 +155,9 @@ test('devin: every save re-inserts every node: new row ids and row times change 
 test('devin: tool outcomes: rejected is denied, canceled is cancelled (its reply interrupted), each from the tool node and tool_call_state', () => {
   const recs = golden('features')['amber-harbor'];
   const x3 = msg(recs, ID('ah:x3')).parts[0];
-  assert.deepEqual([x3.status, x3.is_error, x3.call_id], ['denied', true, callId('ah:rej')]);
+  assert.deepEqual([x3.status, x3.is_error, x3.call_id], ['denied', null, callId('ah:rej')]);
   const x4 = msg(recs, ID('ah:x4')).parts[0];
-  assert.deepEqual([x4.status, x4.is_error, x4.output], ['cancelled', true, 'Canceled due to user interrupt']);
+  assert.deepEqual([x4.status, x4.is_error, x4.output], ['cancelled', null, 'Canceled due to user interrupt']);
   assert.equal(msg(recs, ID('ah:a4')).status, 'interrupted');
   assert.equal(msg(recs, ID('ah:a3')).status, 'complete');
 });
@@ -172,7 +172,7 @@ test('devin: is_error is the stored flag: success true beside a non-zero exit is
     const ah = resultsOf(dir, 'amber-harbor');
     assert.deepEqual(ah[callId('ah:exec1')], [null, 1], 'success true (and a completed status) beside exit 1: unreliable for this result');
     assert.deepEqual(ah[callId('ah:read1')], [false, null], 'success true, no shell');
-    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [[true, null], [true, null]], 'success false: rejected, canceled');
+    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [[null, null], [null, null]], 'rejected, canceled: no call that completed');
     assert.deepEqual(resultsOf(dir, 'calm-orchard')[callId('co:run')], [false, 0], 'success true, exit 0');
     // Edited in this copy: the read's node loses its flag and its state row loses its status (no
     // flag: null); the shell's node says success false beside exit 1 (the flag, copied: true).
@@ -185,6 +185,31 @@ test('devin: is_error is the stored flag: success true beside a non-zero exit is
     const edited = resultsOf(dir, 'amber-harbor');
     assert.deepEqual(edited[callId('ah:read1')], [null, null], 'no flag');
     assert.deepEqual(edited[callId('ah:exec1')], [true, 1], 'success false beside exit 1: the flag says failure');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A rejection (`denied`) and a cancel (`cancelled`), from the tool node or from
+// tool_call_state, did not; their is_error is null and the status carries the fact, whatever
+// `success` says beside them. A call that completed keeps the flag (the positive control).
+test('devin: is_error is null where the call did not complete: a rejection or a cancel; the status carries the fact', () => {
+  const resultsOf = (dir) => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())['amber-harbor'], 'message')
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+  withStore('features', (dir) => {
+    const ah = resultsOf(dir);
+    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [['denied', null], ['cancelled', null]], 'the fixture\'s rejection and cancel');
+    assert.deepEqual([ah[callId('ah:read1')], ah[callId('ah:exec1')]], [['completed', false], ['completed', null]], 'the positive control: success true; success true beside exit 1');
+    // Edited in this copy: the read's node says Canceled beside success true, the shell's says
+    // Rejected beside success false.
+    const ext = '$.metadata.extensions';
+    const w = writer(dir);
+    const set = (call, path, value) => w.prepare(`UPDATE message_nodes SET chat_message = json_set(chat_message, '${ext}.${path}', json(?)) WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(value, call);
+    set(callId('ah:read1'), '"chisel/tool_failure"', '{"reason":"Canceled"}');
+    set(callId('ah:exec1'), '"chisel/tool_failure"', '{"reason":"Rejected"}');
+    set(callId('ah:exec1'), '"chisel/tool_result_meta".success', 'false');
+    w.close();
+    const edited = resultsOf(dir);
+    assert.deepEqual([edited[callId('ah:read1')], edited[callId('ah:exec1')]], [['cancelled', null], ['denied', null]]);
   });
 });
 

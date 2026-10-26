@@ -274,6 +274,33 @@ test('goose: is_error is null where the call did not complete: declined, Ctrl-C,
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): a flag that says success beside a
+// shell's non-zero exit_code is unreliable for that result, so its is_error is null; the other
+// results keep `isError`. Never derived from exit_code: `isError: true` beside exit 1 stays true.
+test('goose: is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null; isError true beside it stays true', () => {
+  withStore('features', (dir) => {
+    const resultOf = () => ofType(project(fullReplay(adapter, dir).views())[S1], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result' && p.call_id === 'call-1').map((p) => [p.status, p.is_error, p.exit_code]);
+    assert.deepEqual(resultOf(), [['completed', true, 1]], 'isError true beside exit 1: the flag says failure');
+    // Edited in this copy: call-1's result says isError false, then carries no isError.
+    const edit = (fn) => {
+      const w = writer(dir);
+      for (const row of w.prepare("SELECT id, content_json FROM messages WHERE session_id = ? AND content_json LIKE '%\"toolResponse\"%' AND content_json LIKE '%\"call-1\"%'").all(S1)) {
+        const content = JSON.parse(row.content_json);
+        for (const p of content) if (p.type === 'toolResponse' && p.id === 'call-1') fn(p.toolResult.value);
+        w.prepare('UPDATE messages SET content_json = ? WHERE id = ?').run(JSON.stringify(content), row.id);
+      }
+      w.close();
+    };
+    edit((v) => { v.isError = false; });
+    assert.deepEqual(resultOf(), [['completed', null, 1]], 'isError false beside exit 1: unreliable for this result');
+    edit((v) => { delete v.isError; });
+    assert.deepEqual(resultOf(), [['completed', null, 1]], 'no isError beside exit 1');
+    edit((v) => { v.structuredContent.exit_code = 0; });
+    assert.deepEqual(resultOf(), [['completed', false, 0]], 'no isError, exit 0');
+  });
+});
+
 test('goose: statuses: a declined call is denied, Ctrl-C and a cancelled approval are cancelled; errors, a cut reply, the output-token limit', () => {
   const recs = golden('features')[S2];
   const result = (call) => ofType(recs, 'message').flatMap((m) => m.parts).find((p) => p.kind === 'tool_result' && p.call_id === call);

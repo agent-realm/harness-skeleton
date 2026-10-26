@@ -323,7 +323,7 @@ derives it.
   schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
   no adapter changes.
 
-### devin, opencode, vscode, agy, cursor and cursor-agent: `is_error` is the stored flag
+### devin, opencode, vscode, agy, cursor, cursor-agent and goose: `is_error` is the stored flag
 
 sessions-model v1.x (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
 v1.2: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
@@ -386,6 +386,12 @@ a reader that wants a shell's failure reads `exit_code`.
     `8b76b964…202+1` (exit 3): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
     and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `orphan`, `rewind`
     and `subagent` are unchanged.
+- **goose (adapter_ver 0.2.1, its one move in this release: see below).** The flag is a tool
+  result's `isError`. `isError: false`, or none (read as false), beside a non-zero
+  `structuredContent.exit_code` gave false. It gives null. `isError: true` stays true, beside any
+  exit code.
+  - Goldens: none change. Both fixture results with exit 1 (`call-1` in `20261021_1` and
+    `20261021_8`) carry `isError: true`. The test edits a copy for the other cases.
 
 ### `is_error` is null where a call did not complete
 

@@ -88,6 +88,45 @@ test('claude-code: an assistant record\'s plain tool_result block (a gateway ran
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the tool_result block's own `is_error`,
+// copied; null where the block has none. The transcript keeps no tool status, so every result is
+// `completed`, and none is cancelled or denied. Never derived from the text.
+test('claude-code: is_error copies the tool_result block\'s flag; a block without one is null; every result is completed', () => {
+  const transcripts = (dir) => fs.readdirSync(dir, { recursive: true }).filter((f) => f.endsWith('.jsonl')).map((f) => path.join(dir, f));
+  const stored = (dir) => {
+    const out = {};
+    for (const f of transcripts(dir)) {
+      for (const line of fs.readFileSync(f, 'utf8').split('\n').filter(Boolean)) {
+        const content = JSON.parse(line).message?.content;
+        for (const b of Array.isArray(content) ? content : []) if (b.type === 'tool_result') out[b.tool_use_id] = ['completed', typeof b.is_error === 'boolean' ? b.is_error : null];
+      }
+    }
+    return out;
+  };
+  const resultsOf = (dir) => Object.fromEntries(Object.values(project(fullReplay(adapter, dir).views())).flat().filter((r) => r.type === 'message')
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+  for (const name of CASES) {
+    withCopy(name, (dir) => {
+      const want = stored(dir);
+      assert.ok(Object.values(want).some(([, f]) => f === true) && Object.values(want).some(([, f]) => f === false), `${name}: both flags stored`);
+      assert.deepEqual(resultsOf(dir), want, name);
+    });
+  }
+  // Edited in this copy: the MCP result's block loses its `is_error: true`.
+  withCopy('features', (dir) => {
+    const f = transcripts(dir).find((x) => fs.readFileSync(x, 'utf8').includes('"tool_use_id":"toolu_feat_mcp"'));
+    const text = fs.readFileSync(f, 'utf8');
+    const lines = text.split('\n').map((line) => {
+      if (!line.includes('"tool_use_id":"toolu_feat_mcp"')) return line;
+      const o = JSON.parse(line);
+      for (const b of o.message.content) if (b.tool_use_id === 'toolu_feat_mcp') delete b.is_error;
+      return JSON.stringify(o);
+    });
+    fs.writeFileSync(f, lines.join('\n'));
+    assert.deepEqual(resultsOf(dir).toolu_feat_mcp, ['completed', null]);
+  });
+});
+
 test('claude-code: list names every session and its sources; sub-agent files are agent sources', () => {
   withCopy('basic', (dir) => {
     const sessions = adapter.list(storeOf(adapter, dir));

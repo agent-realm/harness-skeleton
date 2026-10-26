@@ -158,6 +158,18 @@ test('codex: describe states every facet, and each explicit claim has a fixture'
   }
 });
 
+// `held` has the shape of `live` (sessions v1 §2; docs/adapter-interface.md, "derive output"). This
+// derive never holds a record (the conformance matrix, S.held), so each of its five lists is empty.
+test('codex: derive never holds a record: held is the five record types of live, each empty', () => {
+  for (const name of CASES) {
+    withCopy(name, (dir) => {
+      for (const s of fullReplay(adapter, dir).sessions.values()) {
+        assert.deepEqual(s.last.held, { session: [], message: [], usage: [], link: [], lifecycle: [] }, name);
+      }
+    });
+  }
+});
+
 test('codex: a tool_result carries the stored metadata.exit_code; a plain-text output has none', () => {
   withCopy('features', (dir) => {
     const parts = Object.values(project(fullReplay(adapter, dir).views())).flat()

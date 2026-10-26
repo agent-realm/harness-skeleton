@@ -243,7 +243,9 @@ export function derive(session, input, state) {
   return {
     changed: [...out.values()],
     live,
-    held: {},
+    // A record is final once its line is whole, so nothing is held: `live`'s five lists, empty
+    // (sessions v1 §2; docs/adapter-interface.md, "derive output").
+    held: { session: [], message: [], usage: [], link: [], lifecycle: [] },
     state: st,
     checkpoint: true,
     adapter_ver: describeData.adapter_ver,

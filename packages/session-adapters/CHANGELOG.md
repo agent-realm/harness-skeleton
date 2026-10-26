@@ -149,3 +149,14 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
 - Only `describe()` changes. What `read` redacts, its units and the records are the same, so no
   `adapter_ver` moves and no golden changes.
 - A test holds every adapter's `redaction.paths` to that shape (`test/describe.test.js`).
+
+### claude-code and codex: derive's `held` in the documented shape
+
+- **`held` is `{session, message, usage, link, lifecycle}`, each an empty list**, the shape of
+  `live` that sessions v1 §2 and `docs/adapter-interface.md` give it. Both adapters returned
+  `held: {}`. Neither derive holds a record (a record is final once its line is whole), so the
+  lists stay empty.
+- `changed`, `live`, the records and the state are the same: no `adapter_ver` or `state_ver`
+  moves, and no golden changes. A consumer that read a missing list as empty sees no difference.
+- A test holds every adapter's `held` to the five record types of `live` after a full replay of
+  every fixture case (`test/derive-state.test.js`).

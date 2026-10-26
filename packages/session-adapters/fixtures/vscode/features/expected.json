@@ -1016,7 +1016,7 @@
           "part_id": "2:result",
           "kind": "tool_result",
           "call_id": "call_D",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": null,
           "output_len": null,
@@ -1024,7 +1024,7 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "43ce3ed901cbe9afd6713d43601c86599a4e6c8543f27e041678eddc3dda04c8"
+      "cmp_sha": "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262"
     },
     {
       "type": "session",
@@ -1069,7 +1069,7 @@
           "f6fd752d6810d069c27f305a3236c938cf4645dc9727cf55733a2166ab91cca0",
           "504e3a2be71de025d55b8858424e247ee2baaa55716ae32f8e340180ac58534f",
           "e8197b429a80615ef58797550152bc1f8c84cee2d5dc85b47151788b9bdbfcf8",
-          "43ce3ed901cbe9afd6713d43601c86599a4e6c8543f27e041678eddc3dda04c8",
+          "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262",
           "23f4b7345ea3e3eeca08c7e3c33b9717b96533edd647ad7489cf111782a7186d"
         ]
       },

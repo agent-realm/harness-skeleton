@@ -612,11 +612,15 @@ function toolParts(p, i, callId, call) {
   // from the output; never read from the text.
   const tcs = tsd.kind === 'terminal' && isObj(tsd.terminalCommandState) ? tsd.terminalCommandState : {};
   const exit = Number.isInteger(tcs.exitCode) ? tcs.exitCode : null;
-  // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): a denial or a
-  // `resultError` gives true, a done invocation false, one still running null. A done invocation
-  // beside a terminal's non-zero `exit_code` is unreliable for that result: its `is_error` is null,
-  // and the other results keep the flag. Never derived from the exit code or the text.
-  const isError = failed ? true : done ? (exit !== null && exit !== 0 ? null : false) : null;
+  // A call that never completed in a reply that ended was cut off: cancelled.
+  const status = denied ? 'denied' : skipped ? 'cancelled' : done || failed ? 'completed' : 'cancelled';
+  // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): a `resultError`
+  // gives true, a done invocation false, one still running null. A done invocation beside a
+  // terminal's non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the
+  // other results keep the flag. It describes a call that completed: a denial (`denied`), a skip or
+  // a cut-off call (`cancelled`) gives null, and the status carries the fact. Never derived from the
+  // exit code or the text.
+  const isError = status !== 'completed' ? null : failed ? true : done ? (exit !== null && exit !== 0 ? null : false) : null;
   const src = isObj(p.source) ? p.source : {};
   // An MCP tool's server is its ToolDataSource label, else the name the server reports.
   const server = src.type === 'mcp' ? str(src.label) || str(src.serverLabel) || null : null;
@@ -625,8 +629,7 @@ function toolParts(p, i, callId, call) {
     {
       part_id: `${i}:result`, kind: 'tool_result', call_id: callId,
       is_error: isError,
-      // A call that never completed in a reply that ended was cut off: cancelled.
-      status: denied ? 'denied' : skipped ? 'cancelled' : done || failed ? 'completed' : 'cancelled',
+      status,
       output, output_len: output == null ? null : utf8Len(output), truncated: null,
       exit_code: exit,
     },

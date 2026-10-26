@@ -265,10 +265,10 @@ test('vscode: a terminal tool_result carries the stored terminalCommandState.exi
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the invocation's own flag. A denial or a
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the invocation's own flag. A
 // `resultError` is true and a done invocation false; a done invocation beside a terminal's non-zero
 // exit_code is unreliable for that result, so its is_error is null. Never derived from exit_code.
-test('vscode: is_error is the stored flag: done beside a non-zero terminal exit is null, done is false, a resultError or a denial is true', () => {
+test('vscode: is_error is the stored flag: done beside a non-zero terminal exit is null, done is false, a resultError is true', () => {
   withCopy('features', (dir) => {
     const resultsOf = () => {
       const out = {};
@@ -280,13 +280,38 @@ test('vscode: is_error is the stored flag: done beside a non-zero terminal exit 
     const r = resultsOf();
     assert.deepEqual([r['0a0a0a0a:call_B'], r['0d0d0d0d:call_B']], [[null, 1, 'completed'], [null, 1, 'completed']], 'done beside exit 1 (and its fork copy): unreliable for this result');
     assert.deepEqual([r['0a0a0a0a:call_A'], r['0a0a0a0a:call_M']], [[false, null, 'completed'], [false, null, 'completed']], 'done, no terminal');
-    assert.deepEqual([r['0a0a0a0a:call_C'], r['0a0a0a0a:call_D']], [[true, null, 'completed'], [true, null, 'denied']], 'resultError; a denial');
+    assert.deepEqual([r['0a0a0a0a:call_C'], r['0a0a0a0a:call_D']], [[true, null, 'completed'], [null, null, 'denied']], 'resultError; a denial (no call that completed)');
     // Edited in this copy: the terminal exits 0 (done: false).
     const file = path.join(dir, mainOf(dir, SID_A));
     const text = fs.readFileSync(file, 'utf8');
     assert.equal(text.split('"terminalCommandState":{"exitCode":1').length, 2, 'one terminal state to edit');
     fs.writeFileSync(file, text.replace('"terminalCommandState":{"exitCode":1', '"terminalCommandState":{"exitCode":0'));
     assert.deepEqual(resultsOf()['0a0a0a0a:call_B'], [false, 0, 'completed'], 'done, exit 0');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A denial (`isConfirmed` 0: `denied`) and a skip (5: `cancelled`) did not: their
+// is_error is null, a `resultError` beside them included, and the status carries the fact. A call
+// that completed keeps the flag (the positive control: a `resultError` true, done false).
+test('vscode: is_error is null where the call did not complete: a denial or a skip; the status carries the fact', () => {
+  withCopy('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(project(fullReplay(adapter, dir).views())[SID_A].filter((r) => r.type === 'message')
+      .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    const r = resultsOf();
+    assert.deepEqual(r.call_D, ['denied', null], 'the fixture\'s denial');
+    assert.deepEqual([r.call_C, r.call_A], [['completed', true], ['completed', false]], 'the positive control: a resultError; done');
+    // Edited in this copy: call_A is skipped, and call_C (its resultError kept) is denied.
+    const file = path.join(dir, mainOf(dir, SID_A));
+    let text = fs.readFileSync(file, 'utf8');
+    for (const [id, type] of [['call_A', 5], ['call_C', 0]]) {
+      const before = `"isConfirmed":{"type":1},"isComplete":true,"source":{"type":"internal","label":"Built-In"},"toolCallId":"${id}"`;
+      assert.equal(text.split(before).length, 2, id);
+      text = text.replace(before, before.replace('"type":1', `"type":${type}`));
+    }
+    fs.writeFileSync(file, text);
+    const e = resultsOf();
+    assert.deepEqual([e.call_A, e.call_C], [['cancelled', null], ['denied', null]]);
   });
 });
 

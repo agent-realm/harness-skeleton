@@ -453,3 +453,10 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c338…`, call
     `chatcmpl-tool-…00050` (denied): `parts[11].is_error` `true` → `null`, with the message's
     `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **vscode (adapter_ver 0.2.1, unchanged).** A denial (`isConfirmed` 0, `denied`) gave true, and a
+  skip (`isConfirmed` 5, `cancelled`; UNVERIFIED reading) gave false or true. Both give null; a call
+  cut off in a reply that ended (`cancelled`) gave null already. A call that completed keeps the
+  flag: a `resultError` true, done false.
+  - Goldens: one tool result, `features` session `0a0a0a0a…`, message `response_…048`, `call_D`
+    (denied): `parts[2].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
+    session's `fingerprint.cmp_shas`. Nothing else moves; `lab` is unchanged.

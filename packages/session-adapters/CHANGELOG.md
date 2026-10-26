@@ -480,6 +480,9 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `0a0a0a0a…`, message `response_…048`, `call_D`
     (denied): `parts[2].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab` is unchanged.
+  - A skip's `status` is `cancelled`, never another value, a `resultError` beside it included (the
+    test now shows that case too). The reading of 5 as a skip stays UNVERIFIED: no fixture holds
+    one, and `docs/live-check.md` lists it.
 - **zed (adapter_ver 0.2.1 → 0.2.2).** Zed's canned results, `Tool canceled by user` (`cancelled`)
   and `Permission to run tool denied by user` (`denied`), kept Zed's stored `is_error: true`. They
   give null. A call that completed keeps a stored true, and a stored false stays null (unreliable,

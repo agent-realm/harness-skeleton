@@ -45,6 +45,10 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 - `modelState` values other than 1.
 - `kind 3` entries.
 - A `kind 0` in the middle of a file.
+- `isConfirmed.type` 5, read as a skipped tool call: not established (no live run). Only 1 and 4
+  are observed; 5 is the reading the adapter marks UNVERIFIED. The adapter makes such a call
+  `cancelled` with `is_error` null (sessions-model v1.x (#6), §2.3), a `resultError` beside it
+  included. Skip a tool call in a live run and check the stored value.
 
 ## Goose
 

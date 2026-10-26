@@ -315,7 +315,7 @@ export const MATRIX = {
     cursor: [t('cursor', 'held again: a reply regenerated after an edit keeps its last version, then returns complete')],
     'cursor-agent': [t('cursor-agent', 'a held key keeps its last version: a reply written once and regenerated is held'), t('cursor-agent', 'held: the last reply waits while its tool runs')],
     zed: [t('zed', 'an open call in the last turn is held; the result releases it; held again, the view keeps its last version')],
-    devin: [t('devin', 'a held key keeps its last version: a reply written once and held again'), t('devin', 'held: a tail reply with a running call is held with its usage'), t('devin', 'derived from a whole read\'s state, a dangling head holds the keys it leaves out')],
+    devin: [t('devin', 'a held key keeps its last version: a reply written once and held again'), t('devin', 'held: a tail reply with a running call is held with its usage'), t('devin', 'derived from a whole read\'s state, a dangling head holds the keys it leaves out'), t('devin', 'while a compacted history tears, a turn abandoned in a mode switch\'s old root is left out with it')],
   },
   'S.list-deleted': {
     'claude-code': [t('claude-code', 'errors: an unknown session, an unknown source')],

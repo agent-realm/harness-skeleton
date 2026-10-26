@@ -263,24 +263,36 @@ derives it.
   the original such a node names through `compact/prior_node_ids`. So a sub-agent's task, a root
   of its own re-rooted under its prompt (fixture `features`, session `dusty-lantern`), is left out
   with its chain. Off-line trees that exist without the dangling node keep their normal treatment:
-  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either.
+  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either
+  (save for the old root while a compacted history tears, below).
 - **A compacted history that tears is left out whole**, with its compaction record and summary
   message. A compaction re-roots the line as a mode switch does, so the tree its history sits in is
   named by the line's prefix copies; while that history tears, a tree named only that way is left
-  out with it. Its nodes above the gap cannot be told from an abandoned branch there.
-- **What the torn read still emits is revised, not new.** Leaving a piece out moves the `order` of
-  the line messages after it and the session's fingerprint, so those records are revised, and
-  revised back by the read that holds the node. `calm-orchard` without `co:a2` or `co:r1`:
-  `co:si` (its parent is now the copy's), `co:cont`, `co:u2`, `co:a3` and the session record.
-  `dusty-lantern` without `dl:sa2` or `dl:sr1`: `dl:res`, `dl:a2` and the session record.
-- **What a dangling read leaves out is held, not tombstoned.** While a node the main line names
-  dangles, a key written before (live or held in the state derive is given) and left out now goes
-  to `held`: its last written version stands (sessions §2, `held`). The next read that holds the
-  node releases it, live again, or drops it. Before, a read with a dangling head that followed a
-  whole read left those keys out of both `live` and `held`, so a consumer tombstoned them and the
-  next whole read recreated them: `dusty-lantern` at the head's last move, its node removed,
-  tombstoned three messages (the task and the streaming twins' siblings) and two usage records.
-- **Goldens:** none change. No fixture case has a dangling node. The tests:
+  out with it. Its nodes above the gap cannot be told from an abandoned branch there. A side
+  effect: where the compacted history is a mode switch's line, the switch's old root is named only
+  through the history's copies, so it is left out too, with any branch abandoned in it (fixture
+  `switch-compaction`). Such a branch is held where derive wrote it before, and live again once a
+  read holds the node.
+- **Records the gap only moves (a message's `order`, the session's `fingerprint`) are revised, and
+  revised back once a later read holds the node and derives it** (sessions v1.x (#6), §2,
+  `inconsistent`). Leaving a piece out moves the `order` of the line messages after it and the
+  session's fingerprint. `calm-orchard` without `co:a2` or `co:r1`: `co:si` (its parent is now the
+  copy's), `co:cont`, `co:u2`, `co:a3` and the session record. `dusty-lantern` without `dl:sa2` or
+  `dl:sr1`: `dl:res`, `dl:a2` and the session record. `keen-ridge` without `kr:a2` or `kr:u2`:
+  `kr:si` (its parent is now the copy's), `kr:cont`, `kr:u3`, `kr:a3` and the session record.
+- **Records derive wrote earlier among what it leaves out are held, and so are a compaction record
+  and its summary that point into the missing nodes** (sessions v1.x (#6), §2, `inconsistent`).
+  While a node the main line names dangles, a key written before (live or held in the state derive
+  is given) and left out now goes to `held`, not away: its last written version stands (sessions
+  §2, `held`). The next read that holds the node releases it, live again, or drops it. Before, a
+  read with a dangling head that followed a whole read left those keys out of both `live` and
+  `held`, so a consumer tombstoned them and the next whole read recreated them: `dusty-lantern` at
+  the head's last move, its node removed, tombstoned three messages (the task and the streaming
+  twins' siblings) and two usage records.
+- **Goldens:** none change. No fixture case has a dangling node. One case is new,
+  `switch-compaction` (session `keen-ridge`: a turn abandoned in the original root, a mode switch,
+  then a compaction), with its own golden of 18 records, the abandoned turn's two messages among
+  them with `on_active_branch: false`. The tests:
   - build the `features` store up to the head's last move and remove the head's node, or an
     earlier node of its chain, deriving from an empty state and from the whole read's state;
   - add a dangling head to `amber-harbor`, the mode-switch shape (the line runs through prefix
@@ -290,7 +302,13 @@ derives it.
     `calm-orchard`, and the named sub-agent chain's node (`dl:sa2`) or an earlier one (`dl:sr1`)
     from `dusty-lantern`. Each read succeeds, the piece is left out (and held from the whole read's
     state), and the read that holds the node again folds to the whole read's state, from either
-    state.
+    state;
+  - remove the compacted history's named node (`kr:a2`) or an earlier one (`kr:u2`) from
+    `switch-compaction`. Derived from the whole read's state, the turn abandoned in the mode
+    switch's old root is left out with the history: its two messages and its usage record go to
+    `held` at their last written version, with the compaction record and its summary, and no key is
+    tombstoned. The read that holds the node again makes them live, unchanged, and revises back what
+    the gap moved. A dangling sub-agent head there leaves the old root alone.
 - No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
   `read` used to refuse.
 - `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.

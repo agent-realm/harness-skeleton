@@ -572,7 +572,7 @@ From sessions.
 | cursor | cursor: “held again: a reply regenerated after an edit keeps its last version, then returns complete” |
 | cursor-agent | cursor-agent: “a held key keeps its last version: a reply written once and regenerated is held”<br>cursor-agent: “held: the last reply waits while its tool runs” |
 | zed | zed: “an open call in the last turn is held; the result releases it; held again, the view keeps its last version” |
-| devin | devin: “a held key keeps its last version: a reply written once and held again”<br>devin: “held: a tail reply with a running call is held with its usage”<br>devin: “derived from a whole read's state, a dangling head holds the keys it leaves out” |
+| devin | devin: “a held key keeps its last version: a reply written once and held again”<br>devin: “held: a tail reply with a running call is held with its usage”<br>devin: “derived from a whole read's state, a dangling head holds the keys it leaves out”<br>devin: “while a compacted history tears, a turn abandoned in a mode switch's old root is left out with it” |
 
 ## S.list-deleted: list omits a deleted session, even where a native index keeps it
 

@@ -510,14 +510,19 @@ function foldEvent(ctx, o, sk, unitKey) {
       const call = str(d.toolCallId) ?? '';
       const output = resultText(d);
       const exit = d.shellExecution && typeof d.shellExecution === 'object' ? num(d.shellExecution.exitCode) : null;
-      // memhouse's error rule, as for Codex: a failed call, or a shell that exited non-zero.
-      const isError = d.success === false || (exit !== null && exit !== 0) ? true : d.success === true ? false : null;
+      const exitCode = Number.isInteger(exit) ? exit : null;
+      // `is_error` copies the stored `success` flag: false gives true, true gives false. Where the
+      // shell exited non-zero under `success: true`, the flag is contradicted, so `is_error` is null
+      // and `exit_code` carries the failure; without a flag it is null. Never derived from the exit
+      // code or the text (contract decision, to appear in sessions-model v1.x; refines §2.3, whose
+      // Zed case is the same unreliable flag).
+      const isError = d.success === false ? true : d.success === true ? (exitCode !== null && exitCode !== 0 ? null : false) : null;
       const denied = !!d.error && typeof d.error === 'object' && d.error.code === 'denied';
       // A tool result is written by the harness running the tool: no `source` value fits it.
       emitMessage(ctx, {
         ...base, role: 'tool', source: null,
         // `shellExecution.exitCode` is stored beside the result text, never parsed out of it.
-        parts: [{ kind: 'tool_result', call_id: call, is_error: isError, status: denied ? 'denied' : 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: Number.isInteger(exit) ? exit : null }],
+        parts: [{ kind: 'tool_result', call_id: call, is_error: isError, status: denied ? 'denied' : 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exitCode }],
       });
       const waiting = Object.keys(st.pending).sort().find((mid) => st.pending[mid].open.includes(call));
       if (!waiting) {

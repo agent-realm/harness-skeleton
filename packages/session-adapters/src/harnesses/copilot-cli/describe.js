@@ -6,7 +6,7 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/copilot-cli',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'copilot-cli',
   state_ver: 1,

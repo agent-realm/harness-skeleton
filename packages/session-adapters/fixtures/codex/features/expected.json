@@ -349,7 +349,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_shell_1",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "1 failing",
           "output_len": 9,
@@ -357,7 +357,7 @@
           "exit_code": 2
         }
       ],
-      "cmp_sha": "e37cd342b425c02544540d6ba8d4538c1a7eb12a085151876bcb0fe2c940765f"
+      "cmp_sha": "6920863298f9df453aacaa3d4d556768da56fa1247702ac8408bdebf91b05181"
     },
     {
       "type": "message",
@@ -417,7 +417,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_patch_1",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "Success. Updated src/a.js",
           "output_len": 25,
@@ -425,7 +425,7 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "6624e6a6d0d5679df1a3a7ea27b7b8e97e6b093eedc4c499127e84b6548cfff5"
+      "cmp_sha": "cfbf0c43ea8dbe2f98ade60b36cc05c5f5a9e27fd2dda53cb57575b6ef536520"
     },
     {
       "type": "message",
@@ -656,10 +656,10 @@
           "1df223d0e45edaea0fac7d67e957609ed425894adcdaeae4d1397ff7a881f887",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "0daee85a33251cb2ba6a12d8ad6beb72f0e2ca851775f113feeab73c94199ed8",
-          "e37cd342b425c02544540d6ba8d4538c1a7eb12a085151876bcb0fe2c940765f",
+          "6920863298f9df453aacaa3d4d556768da56fa1247702ac8408bdebf91b05181",
           "4f2e7c642faa9c0807bd1ebe0e5a83ccf7651ef46f486ce9a0278e02c30b7f1c",
           "464ee6022883949de9b7e3188a31d5615fb6a7377b660f19d1fcc216070ad5a6",
-          "6624e6a6d0d5679df1a3a7ea27b7b8e97e6b093eedc4c499127e84b6548cfff5",
+          "cfbf0c43ea8dbe2f98ade60b36cc05c5f5a9e27fd2dda53cb57575b6ef536520",
           "cf969b6f89de8acf16166eb5e5afcba0eef6d369a9c2e13def138a29f975a137",
           "8873d10a29d24c8d3c924017f82fb47ea34079f1dd0574ad492bb9007f408067",
           "a3e7b1d731a6297c2fd989518bb8d91c6593af7c4c2981f6d3f1993f8b187d54",

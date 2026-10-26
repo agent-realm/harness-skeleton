@@ -639,7 +639,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-feat-test",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "1 failed\n<shellId: 1 completed with exit code 1>",
           "output_len": 48,
@@ -647,7 +647,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532"
+      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979"
     },
     {
       "type": "message",
@@ -1144,7 +1144,7 @@
           "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
           "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
           "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
-          "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532",
+          "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979",
           "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
           "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
           "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
@@ -2194,7 +2194,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-feat-test",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "1 failed\n<shellId: 1 completed with exit code 1>",
           "output_len": 48,
@@ -2202,7 +2202,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532"
+      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979"
     },
     {
       "type": "message",
@@ -2771,7 +2771,7 @@
           "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
           "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
           "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
-          "4a3e8c2a3409766871852edab7a174c179d8dddb266965e18bfee44d87a30532",
+          "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979",
           "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
           "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
           "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",

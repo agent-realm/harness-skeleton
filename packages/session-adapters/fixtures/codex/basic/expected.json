@@ -333,7 +333,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_5405de47666b4153af20",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "çalışma ğüşıöç 漢字 sigma bravo cursor delta sigma cursor sigma delta 🙂 replay 🙂 über",
           "output_len": 103,
@@ -341,7 +341,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "ca3b5271742b4ba7e2a7b09f9a083f41dfeabde2340cc8ed073af70d2c585424"
+      "cmp_sha": "722e69ac85ac3fb2471382afa269a67f14a65cb3c0b4e441dc27754faa49c4a7"
     },
     {
       "type": "message",
@@ -370,7 +370,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_a61c28edf75e4bbda24a",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "x vector テスト replay archive 🙂 delta über ğüşıöç テスト vector gamma bravo naïve ğüşıöç",
           "output_len": 112,
@@ -378,7 +378,7 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "59062dbb34010a6816c01ed3640e081f2209d00d7099f7c048e7d0e34e9f16bc"
+      "cmp_sha": "7fb2fa0b29bb0e66a18ea2b19630b05e487adfcf2f1054f8882b6c3f07e1e32d"
     },
     {
       "type": "message",
@@ -507,7 +507,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_6480e4611b884189aef9",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "x ğüşıöç naïve テスト 🚀 x bravo gamma ğüşıöç cursor cursor anchor bravo bravo archive",
           "output_len": 104,
@@ -515,7 +515,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "4bf478ce4b5416d3d4de80d1959a5f78b115746c6c05c2b8701a262b3b8d88b8"
+      "cmp_sha": "b8dac0aa63e03cd2774b59a9d8539111e3abddb98af2a3a37a28abc490da2d35"
     },
     {
       "type": "message",
@@ -575,7 +575,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_f735bb0b16c64fb1a120",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "çalışma x çalışma gamma bravo delta kappa テスト gamma delta bravo テスト über alpha buffer",
           "output_len": 104,
@@ -583,7 +583,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "d3aa435c8df84ce71377f83099a1fa78470753305364b190e79ad04e87e28ba2"
+      "cmp_sha": "888ef3a4bd6ecd1d4d9794e33186f7580e6d120c5334ea3bed8a26844c2fc4dc"
     },
     {
       "type": "message",
@@ -854,23 +854,23 @@
           "456eed9f69e5321055e8584c998379a1cb8e795234f63ef42ea825e3dd4b4eb3",
           "98a445b0e77dccaa4e24180c68f6a0b9a60b2e2eebd68a5672f2d95346ffec89",
           "283443651c583ed496399a9357634c169aec81fe0ea9bb9f3b05c2ed46fb644f",
-          "4bf478ce4b5416d3d4de80d1959a5f78b115746c6c05c2b8701a262b3b8d88b8",
+          "b8dac0aa63e03cd2774b59a9d8539111e3abddb98af2a3a37a28abc490da2d35",
           "3f54adfeb24625aa49a80d103207010a5facd05a565fe1dabb99041013617c90",
           "c5612bcadc53a7bd0109aabc90fe9b71350d5c527ae4f6de7ed90bae76aab5a9",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "2dc474de94f5c5d9e5eec407fe808a674852e8d666c6f8c53c4be8b38d3fc206",
-          "d3aa435c8df84ce71377f83099a1fa78470753305364b190e79ad04e87e28ba2",
+          "888ef3a4bd6ecd1d4d9794e33186f7580e6d120c5334ea3bed8a26844c2fc4dc",
           "3f723e87c90c812cf238cb974bd7d4efbd192ccd7a2c9282644506aee8d318e3",
           "0d91a5673a909ae81344d93c8d22a16bae784e805f0def5d5f4f666fc7be355d",
           "c41c92b40cac284448a72b59e29dcd195026cfaed11c6b6e601f9deeb464f9a7",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
-          "ca3b5271742b4ba7e2a7b09f9a083f41dfeabde2340cc8ed073af70d2c585424",
+          "722e69ac85ac3fb2471382afa269a67f14a65cb3c0b4e441dc27754faa49c4a7",
           "322fb1150f77d7ce7fe9678f85bad8bc4b414d9567e90c309b8bbc8f1827100d",
           "7c6eb3eb62c08dc8623dc740f87c6aeced6378fa45a62282f61ba0b5c5fbf2c5",
           "0a050cea5184c8f5bd06527140fb6d2b88ed90b9dc75d765d8da1e4eea531a3c",
           "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
-          "59062dbb34010a6816c01ed3640e081f2209d00d7099f7c048e7d0e34e9f16bc",
+          "7fb2fa0b29bb0e66a18ea2b19630b05e487adfcf2f1054f8882b6c3f07e1e32d",
           "7f8348e979dae50e99e1f8c87ea8cb6ed34cb371149981dbbfecf913bbe32353",
           "fc3149bb31c611e8314e36402bd33402ac21a3e201d333ff7b0b33d360c7bea1",
           "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498"

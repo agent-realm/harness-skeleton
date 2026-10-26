@@ -221,7 +221,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-FixtureFixt00026",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "/usr/bin/python3: No module named pytest\n<shellId: 0 completed with exit code 1>",
           "output_len": 80,
@@ -229,7 +229,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "e6c10dfb8be8234b5b3e290b4190011605f3447305d3475c2791961aea75b0e7"
+      "cmp_sha": "a14b706dbb569d158bb619fdc2890658250a18947c9ed64cb11fdcc29781abba"
     },
     {
       "type": "message",
@@ -258,7 +258,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "chatcmpl-tool-FixtureFixt00024",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "cat: /etc/nonexistent-file: No such file or directory\n<shellId: 1 completed with exit code 1>",
           "output_len": 93,
@@ -266,7 +266,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "79ba697802e7cd2d4a3cfd5150d5f5d5b26cc7d9b9513c4e1eba0dffde628550"
+      "cmp_sha": "b1be8241c5b520ee26525faa89116649baf1d6c3f126520a871e76f2bc59f3ca"
     },
     {
       "type": "message",
@@ -534,9 +534,9 @@
           "86df43f3c942a03312dd0e05fff250282f8178453ccc79865e8b2c3ac327eb7b",
           "756b97beceaf9f4e163aa8c9fdab0b83e64bb6ac013fe0207e3c50e87f4a27d2",
           "cc9f040690e1f23b01d7d128df1a0ab6748870834c302c544664eb262028daf1",
-          "e6c10dfb8be8234b5b3e290b4190011605f3447305d3475c2791961aea75b0e7",
+          "a14b706dbb569d158bb619fdc2890658250a18947c9ed64cb11fdcc29781abba",
           "af41cb6360fe0a8081026003239ae5b9ea82bf561347896430142d7f40a2a2ed",
-          "79ba697802e7cd2d4a3cfd5150d5f5d5b26cc7d9b9513c4e1eba0dffde628550",
+          "b1be8241c5b520ee26525faa89116649baf1d6c3f126520a871e76f2bc59f3ca",
           "b95903ba1cc3bea0d201f19294d0c5aa6ae1ee6bfbae66889dd5b4c1f7d74df5",
           "d3311703729c907f535ca78d659b3f90cddd4881ad36190b419126b145de1934"
         ]

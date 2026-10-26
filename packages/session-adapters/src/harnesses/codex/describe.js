@@ -3,7 +3,7 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/codex',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'codex',
   state_ver: 2,
@@ -32,7 +32,9 @@ export const describe = Object.freeze({
     // of a compacted record make no record; a tool output's duration (`metadata.duration_seconds`)
     // is not kept, its `metadata.exit_code` is the tool_result's `exit_code`; a plain-text output
     // (fixture: live) has exit_code null, since the `item_completed` CommandExecution that carries
-    // one names no call_id to join on; an image given by URL rather than a data URL is not kept.
+    // one names no call_id to join on; no fixture output carries a success flag, so `is_error` is
+    // null there, never derived from the exit code (contract decision, to appear in
+    // sessions-model v1.x; refines §2.3); an image given by URL rather than a data URL is not kept.
     read: 'lossy',
     reuse: 'impossible',
     lifecycle: {

@@ -3,9 +3,10 @@
 // operations over sessions-model v1.1 records.
 //
 // Ported from memhouse's v3 reader (its Codex module: the turn boundaries,
-// the token delta rule, boot-context detection, the output error rule).
+// the token delta rule, boot-context detection).
 // New here: records in the sessions-model shape, one usage record per turn, the compaction
-// lifecycle record, one speaker per message, source keys relative to CODEX_HOME.
+// lifecycle record, one speaker per message, source keys relative to CODEX_HOME, and `is_error`
+// as the stored flag only (null without one; never from the exit code).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -279,15 +280,18 @@ function outputExit(output) {
   return Number.isInteger(code) ? code : null;
 }
 
-// memhouse's error rule (`success: false`, or a non-zero `metadata.exit_code`) for true; a stored
-// `success: true` or exit code 0 for false; null where the output carries no flag at all.
+// The stored `success` flag, copied: false gives true, true gives false. Null where the output keeps
+// no flag, which is every rollout in the fixtures (an `{output, metadata}` string or plain text),
+// and null where `success: true` sits beside a non-zero `metadata.exit_code` (a contradicted flag,
+// as for copilot-cli). Never derived from the exit code, which is `exit_code`, or from the text
+// (contract decision, to appear in sessions-model v1.x; refines §2.3).
 function outputError(output) {
   const j = outputObject(output);
   if (!j) return null;
-  const code = j.metadata && typeof j.metadata === 'object' ? j.metadata.exit_code : undefined;
-  if (j.success === false || (typeof code === 'number' && code !== 0)) return true;
-  if (j.success === true || code === 0) return false;
-  return null;
+  if (j.success === false) return true;
+  if (j.success !== true) return null;
+  const code = outputExit(output);
+  return code !== null && code !== 0 ? null : false;
 }
 
 // `arguments` parsed when it is a JSON string; any other args value as stored.

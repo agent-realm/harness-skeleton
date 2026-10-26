@@ -160,3 +160,28 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   moves, and no golden changes. A consumer that read a missing list as empty sees no difference.
 - A test holds every adapter's `held` to the five record types of `live` after a full replay of
   every fixture case (`test/derive-state.test.js`).
+
+### copilot-cli and codex: `is_error` is the stored flag only (adapter_ver 0.2.1 each)
+
+A contract decision, to appear in sessions-model v1.x, refining §2.3 (`tool_result.is_error`): an
+adapter copies the harness store's success or error flag and never derives `is_error` from the exit
+code or the text. Both adapters applied an exit-code rule inherited from an earlier reader.
+
+- **copilot-cli:** `success: false` gives true and `success: true` gives false, except where the
+  shell exited non-zero under `success: true`. There the flag is contradicted, as in §2.3's Zed
+  case, so `is_error` is null and `exit_code` carries the failure. An event with no `success` gives
+  null.
+- **codex:** a rollout's tool output keeps no success flag (an `{output, metadata}` string, or plain
+  text), so `is_error` is null; `metadata.exit_code` stays in `exit_code`. Where an output does carry
+  `success`, it is copied, with the same rule for a contradicting non-zero exit code. No fixture
+  rollout carries one.
+- **Goldens:** `parts[0].is_error` changes on 14 tool results, and with it each message's
+  `cmp_sha` (`is_error` is in its projection) and that entry of the session's
+  `fingerprint.cmp_shas`. Nothing else moves.
+  - copilot-cli, 4 results, `true` → `null` (success true, exit 1): `basic` 2, `features` 1 in each
+    of the two sessions that hold the call.
+  - codex, 10 results, every one with a `metadata.exit_code` and no flag: `basic` 4 (3 `true`, 1
+    `false`), `features` 2 (1 `true`, 1 `false`), `no-ids` 4 (1 `true`, 3 `false`), each now `null`.
+    `live`'s plain-text outputs were null already.
+- No key changes; consumers re-derive copilot-cli and codex sessions. A reader that wants a shell's
+  failure reads `exit_code`.

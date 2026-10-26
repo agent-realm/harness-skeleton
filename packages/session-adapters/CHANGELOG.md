@@ -223,3 +223,26 @@ record assumes a total): where a thread's `cumulative_token_usage` is empty, its
 - The conformance checks accept `per_turn` with a `message_id` anchor for zed beside `per_session`
   with `session` (`conformance/generic.js`); the matrix's M.usage cell for zed names the new test.
 - No key changes; consumers re-derive zed sessions.
+
+### devin: a dangling sub-agent head is no torn read (adapter_ver 0.2.1)
+
+A contract decision, to appear in sessions v1.x, refining §2 (`read` errors, `inconsistent`, whose
+Devin example is a `main_chain_id` naming a node not yet written): only the main chain's head makes
+a read inconsistent.
+
+- **`read`:** a `subagent_heads` row naming a node the read does not hold, or whose chain the read
+  does not hold whole, no longer throws `inconsistent`. The read returns the snapshot. A dangling
+  `main_chain_id`, and a compacted history or a finished sub-agent chain that the main line names,
+  still do. A loop in a head's chain is still `damaged`.
+- **`derive` leaves that sub-agent's chain out.** Its head cannot be walked, so its held nodes
+  cannot be marked as a sub-agent's. They would otherwise read as an abandoned branch (messages
+  with `on_active_branch: false`). A sub-agent's task is a root of its own, re-rooted under its
+  prompt (fixture `features`, session `dusty-lantern`), so while a head dangles, a node in a tree
+  that holds no line node is left out. A later read that holds the node derives the chain as
+  usual, as a new rev.
+- **Goldens:** none change. No fixture case ends with a sub-agent running. The test builds the
+  `features` store up to the head's last move and removes the head's node, or an earlier node of
+  its chain.
+- No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
+  `read` used to refuse.
+- `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.

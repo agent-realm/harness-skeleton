@@ -20,8 +20,10 @@
 // - ONE source, `sessions.db#table:message_nodes`: main, snapshot, a `rows-json` unit of the
 //   session's row, nodes, tool states and sub-agent heads, read in one transaction (sessions
 //   §1). Per-table deltas would split the pointer from the nodes across reads;
-// - the torn read (a dangling main_chain_id, compacted history or sub-agent chain) is the retryable
-//   `inconsistent`, found in `read`, never an empty or shorter session;
+// - the torn read (a dangling main_chain_id, or a compacted history or finished sub-agent chain
+//   the main line names) is the retryable `inconsistent`, found in `read`, never an empty or
+//   shorter session. A running sub-agent's head (`subagent_heads`) that the read does not hold is
+//   no torn read: derive leaves that chain out (a contract decision, to appear in sessions v1.x);
 // - records in the sessions-model shape: a tool node is its own `tool` message; usage records; a
 //   rewind is implicit (a pointer move), so it gives no lifecycle record: the abandoned subtree's
 //   messages stay, with `on_active_branch: false`. Compaction is explicit, from the summary node;
@@ -297,9 +299,24 @@ function plan(t) {
     });
   };
   addLine(lineOf(walk(t, num(t.row.main_chain_id), 'main_chain_id')), '', true);
-  // A running sub-agent's head must resolve too, or its chain would read as an abandoned branch.
-  for (const h of t.heads) walk(t, h.node, `the sub-agent head of ${h.agent_id}`);
+  // A running sub-agent's head is walked for a loop (damaged), never for closure: one the read does
+  // not hold whole tears nothing, and derive leaves its chain out (headHeld, below).
+  for (const h of t.heads) headHeld(t, h);
   return items;
+}
+
+// Whether the read holds a running sub-agent's chain whole, from its head to its root. Only the
+// main chain's head makes a read inconsistent; a subagent_heads row naming a node this read does
+// not hold (a save in progress) does not (contract decision, to appear in sessions v1.x; refines
+// sessions §2, `inconsistent`). A loop is still damaged.
+function headHeld(t, h) {
+  try {
+    walk(t, h.node, `the sub-agent head of ${h.agent_id}`);
+    return true;
+  } catch (e) {
+    if (e instanceof SessionsError && e.code === 'inconsistent') return false;
+    throw e;
+  }
 }
 
 // ---- list ---------------------------------------------------------------------------------------
@@ -674,10 +691,27 @@ function build(body) {
       if (n.ext['subagent/chain_node_id'] != null) markUp(num(n.ext['subagent/chain_node_id']));
     }
     for (const h of t.heads) markUp(h.node);
+    // A head the read does not hold whole: its chain cannot be walked, so it cannot be marked, and
+    // its held nodes would read as an abandoned branch. They sit in a tree of their own (a
+    // sub-agent's task is a root, re-rooted under its prompt: fixture features, dusty-lantern), so
+    // while a head dangles, a node in a tree that holds no line node is left out. A later read
+    // that holds the head derives them as usual (contract decision, to appear in sessions v1.x).
+    const dangling = t.heads.some((h) => !headHeld(t, h));
+    const roots = new Map();
+    const rootOf = (id) => {
+      if (roots.has(id)) return roots.get(id);
+      let n = t.nodes.get(id);
+      for (let k = 0; n && n.parent != null && t.nodes.has(n.parent) && k <= t.nodes.size; k++) n = t.nodes.get(n.parent);
+      const r = n ? n.id : id;
+      roots.set(id, r);
+      return r;
+    };
+    const lineRoots = dangling ? new Set([...seenNodes].map(rootOf)) : null;
     const known = new Set([...seenNodes].map((id) => t.nodes.get(id).mid));
     const cand = new Map();
     for (const n of [...t.nodes.values()].sort((a, b) => a.id - b.id)) {
       if (seenNodes.has(n.id) || aux.has(n.id) || isPrefix(n) || isKeepalive(n) || !n.mid || known.has(n.mid)) continue;
+      if (lineRoots && !lineRoots.has(rootOf(n.id))) continue;
       cand.set(n.id, n);
     }
     const results = new Map();

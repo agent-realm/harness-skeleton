@@ -9,7 +9,7 @@ import { SOURCE, DB_REL } from '../src/harnesses/devin/index.js';
 import { uuid, callId } from '../fixtures/devin/generate.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'devin');
 const CASES = ['features'];
@@ -296,14 +296,72 @@ test('devin: a session saved before its first turn is its session record alone',
 
 // ---- torn reads, list and read ------------------------------------------------------------------
 
-test('devin: a torn read is inconsistent, never an empty or shorter session: main_chain_id, a compacted history, a sub-agent chain, a head', () => {
+// Contract decision, to appear in sessions v1.x (refines §2 `read` errors, `inconsistent`, whose
+// Devin example is a main_chain_id naming a node not yet written): only the main chain's head makes
+// a read inconsistent. A subagent_heads row naming a node the read does not hold tears nothing:
+// derive leaves that sub-agent chain out, and a later read that holds the node derives it as a new
+// rev.
+test('devin: a dangling sub-agent head is no torn read: derive leaves its chain out, and a later read that holds the node derives it', () => {
+  // A head row naming a node never written: read succeeds, and the records are the session's own.
+  withStore('features', (dir) => {
+    const before = deriveDir(dir, 'brisk-meadow');
+    const w = writer(dir);
+    w.prepare("INSERT INTO subagent_heads (session_id, agent_id, chain_node_id, updated_at) VALUES ('brisk-meadow', 'deadbeef', 999, 0)").run();
+    w.close();
+    const after = deriveDir(dir, 'brisk-meadow');
+    assert.deepEqual([after.changed, after.live, after.held], [before.changed, before.live, before.held]);
+  });
+  // dusty-lantern while its sub-agent runs: the store as it stands once the head row has moved to
+  // the sub-agent's last reply (the generator's statements up to that write), read whole, and the
+  // same store torn, the head's node (both streaming twins of that reply) not yet written, or an
+  // earlier node of the chain missing.
+  const [db] = sqlFilesOf(path.join(FIX, 'features'));
+  const moves = db.ops.map((o, i) => [o, i]).filter(([o]) => /^INSERT OR REPLACE INTO subagent_heads/.test(o.sql) && o.params[0] === 'dusty-lantern');
+  assert.equal(moves.length, 3, 'the head row moves three times');
+  const upto = moves[2][1] + 1;
+  const chain = ['dl:task', 'dl:sa1', 'dl:sr1', 'dl:sa2'].map(ID);
+  const fromChain = (r) => (r.type === 'message' && chain.includes(r.message_id)) || (r.type === 'usage' && chain.includes(r.anchor?.message_id));
+  const key = (r) => `${r.type}\u0000${r.type === 'message' ? r.message_id : r.type === 'usage' ? r.usage_id : r.type === 'session' ? '' : JSON.stringify(r)}`;
+  const sid = 'dusty-lantern';
+  const byMid = "FROM message_nodes WHERE session_id = 'dusty-lantern' AND json_extract(chat_message, '$.message_id') = ?";
+  for (const [what, mid] of [['the head\'s node', ID('dl:sa2')], ['a node of its chain', ID('dl:sr1')]]) {
+    const dir = tmpStore();
+    try {
+      buildDb(dir, db, upto);
+      const full = deriveDir(dir, sid);
+      let w = writer(dir);
+      const rows = w.prepare(`SELECT * ${byMid}`).all(mid);
+      assert.ok(rows.length > 0, what);
+      w.prepare(`DELETE ${byMid}`).run(mid);
+      w.close();
+      const t = deriveDir(dir, sid);
+      assert.deepEqual(t.changed.filter(fromChain).map(key), [], `${what}: no record from the sub-agent chain`);
+      assert.deepEqual(t.changed, full.changed.filter((r) => !fromChain(r)), `${what}: the rest of the session as the whole read gives it`);
+      assert.deepEqual(t.held, full.held, what);
+      // The later read holds the node again: derived from the torn read's state, it folds to the
+      // whole read's derive, and what changed is the new rev.
+      w = writer(dir);
+      const cols = Object.keys(rows[0]);
+      const ins = w.prepare(`INSERT INTO message_nodes (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`);
+      for (const r of rows) ins.run(...cols.map((c) => r[c]));
+      w.close();
+      const later = deriveDir(dir, sid, t.state);
+      assert.deepEqual(later.live, full.live, what);
+      const seen = new Map(t.changed.map((r) => [key(r), r.content_sha]));
+      assert.deepEqual(later.changed.map(key).sort(), full.changed.filter((r) => seen.get(key(r)) !== r.content_sha).map(key).sort(), what);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+});
+
+test('devin: a torn read is inconsistent, never an empty or shorter session: main_chain_id, a compacted history, a sub-agent chain', () => {
   withStore('features', (dir) => {
     const store = storeOf(adapter, dir);
     const cases = [
       ['amber-harbor', (w) => w.prepare("UPDATE sessions SET main_chain_id = 999 WHERE id = 'amber-harbor'").run()],
       ['calm-orchard', (w) => w.prepare("DELETE FROM message_nodes WHERE session_id = 'calm-orchard' AND node_id = ?").run(nodeOf(w, 'calm-orchard', ID('co:r1')))],
       ['dusty-lantern', (w) => w.prepare("DELETE FROM message_nodes WHERE session_id = 'dusty-lantern' AND node_id = ?").run(nodeOf(w, 'dusty-lantern', ID('dl:sr1')))],
-      ['brisk-meadow', (w) => w.prepare("INSERT INTO subagent_heads (session_id, agent_id, chain_node_id, updated_at) VALUES ('brisk-meadow', 'deadbeef', 999, 0)").run()],
     ];
     for (const [sid, tear] of cases) {
       const w = writer(dir);

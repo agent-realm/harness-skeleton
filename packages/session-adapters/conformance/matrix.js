@@ -301,7 +301,7 @@ export const MATRIX = {
     cursor: [t('cursor', 'errors: an unknown chat, another chat'), t('cursor', 'a locked store (Cursor mid-save) is busy'), t('cursor', 'damaged: a stored bubble, composerData or header value that does not parse'), t('cursor', 'inconsistent: bubbles stored but no composerData row')],
     'cursor-agent': [t('cursor-agent', 'errors: an unknown session, an unknown source, a deleted chat'), t('cursor-agent', 'a locked store is busy, a damaged one or an undecodable meta row damaged'), t('cursor-agent', 'a torn tree: read of meta is the retryable inconsistent')],
     zed: [t('zed', 'errors: an unknown session or source'), t('zed', 'Zed saving (a write lock on threads.db) is busy'), t('zed', 'damaged: an undecodable blob is listed and reads damaged'), t('zed', 'a channel DB with a -wal but no -shm is busy')],
-    devin: [t('devin', 'errors: an unknown session, an unknown source, an incarnation Devin never gives'), t('devin', 'a locked store is busy, a damaged one or a row that does not parse is damaged'), t('devin', 'a torn read is inconsistent')],
+    devin: [t('devin', 'errors: an unknown session, an unknown source, an incarnation Devin never gives'), t('devin', 'a locked store is busy, a damaged one or a row that does not parse is damaged'), t('devin', 'a torn read is inconsistent'), t('devin', 'a dangling sub-agent head is no torn read')],
   },
   'S.held': {
     'claude-code': na('derive never holds a record: a message is final once its line is whole (held is always empty)'),

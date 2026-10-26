@@ -8,7 +8,7 @@ const SOURCE = 'sessions.db#table:message_nodes';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/devin',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'devin',
   state_ver: 1,
@@ -49,7 +49,9 @@ export const describe = Object.freeze({
     // last_activity_at, tool_call_state.tool_call_json and subagent_heads.updated_at are not read;
     // chisel/undo, chisel/conversation_history, tool timings and an inline image's source path stay
     // in the unit and reach no record (a shell's `chisel/terminal_output.exit.exit_code` is the
-    // tool_result's `exit_code`); archive state lives in another store.
+    // tool_result's `exit_code`); archive state lives in another store. A `subagent_heads` row
+    // naming a node the read does not hold is no torn read: that running sub-agent's chain is left
+    // out until a read holds it (contract decision, to appear in sessions v1.x).
     read: 'lossy',
     // A two-word slug, reuse unverified, and no birth marker: incarnation '' (annex mapping row).
     reuse: 'undetectable',

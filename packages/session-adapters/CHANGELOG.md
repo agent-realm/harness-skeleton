@@ -336,10 +336,11 @@ a reader that wants a shell's failure reads `exit_code`.
 
 - **devin (adapter_ver 0.2.1 → 0.2.2).** A failure flag gives true, as before:
   `chisel/tool_result_meta.success: false`, a `failed` final status in `tool_call_state`, a
-  rejection or a cancel. A success flag (`success: true`, a `completed` final status) gives false,
-  except beside a non-zero `exit_code` (the node's `chisel/terminal_output.exit.exit_code`), where
-  it gives null. A result with no flag gives null. Before, every result without a failure flag was
-  false, `success: true` beside exit 1 included.
+  rejection or a cancel (a rejection or a cancel gives null now: see *`is_error` is null where a
+  call did not complete*, below). A success flag (`success: true`, a `completed` final status) gives
+  false, except beside a non-zero `exit_code` (the node's `chisel/terminal_output.exit.exit_code`),
+  where it gives null. A result with no flag gives null. Before, every result without a failure flag
+  was false, `success: true` beside exit 1 included.
   - Goldens: one tool result, `features` `amber-harbor` `ah:r1` (`success: true`, a `completed`
     status, exit 1): `parts[0].is_error` `false` → `null`, with its message's `cmp_sha` and that
     entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `switch-compaction` has no
@@ -351,10 +352,10 @@ a reader that wants a shell's failure reads `exit_code`.
   - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c2f9…`, call
     `call_bc3a64f28f` (`completed`, exit 1): `parts[3].is_error` `false` → `null`, with the
     message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
-- **vscode (adapter_ver 0.2.0 → 0.2.1).** A denial or a `resultError` gives true, and a done
-  invocation (`isComplete`, or a result stored) gives false, except beside a terminal's non-zero
-  `exit_code` (`terminalCommandState.exitCode`), where it gives null. An invocation still running
-  gives null, as before.
+- **vscode (adapter_ver 0.2.0 → 0.2.1).** A denial (null now: see below) or a `resultError` gives
+  true, and a done invocation (`isComplete`, or a result stored) gives false, except beside a
+  terminal's non-zero `exit_code` (`terminalCommandState.exitCode`), where it gives null. An
+  invocation still running gives null, as before.
   - Goldens: two tool results, `features` `call_B` (done, exit 1) in session `0a0a0a0a…` (message
     `response_…05`) and in its fork `0d0d0d0d…` (message `…080`): `parts[6].is_error` `false` →
     `null`, with each message's `cmp_sha` and that entry of each session's `fingerprint.cmp_shas`.
@@ -362,8 +363,8 @@ a reader that wants a shell's failure reads `exit_code`.
 - **agy (adapter_ver 0.2.0 → 0.2.1).** The flag is a GENERIC step's status in the conversation
   database: ERROR gives true, and DONE gives false, except beside a run_command's non-zero
   `exit_code` (the RunCommand payload's), where it gives null. A step still running gives null, and
-  a CANCELED or INTERRUPTED step false, as before. The transcript keeps no exit code, so its
-  results are unchanged.
+  a CANCELED or INTERRUPTED step false, as before (null now: see below). The transcript keeps no
+  exit code, so its results are unchanged.
   - Goldens: one tool result, `features` step G1 (message `c0497521…`, `call_1164701`, DONE,
     exit 1): `parts[0].is_error` `false` → `null`, with the message's `cmp_sha` and that entry of
     the session's `fingerprint.cmp_shas`. Nothing else moves.
@@ -371,7 +372,7 @@ a reader that wants a shell's failure reads `exit_code`.
   `error` status, `toolFormerData.status` or `additionalData.status`, gives true, and `completed`
   gives false, except beside a non-zero `exit_code` (`result.exitCode`), where it gives null. The
   exit code no longer decides: before, a non-zero `exitCode` gave true whatever the status said. A
-  denial, a cancel and an abort give false, as before.
+  denial, a cancel and an abort give false, as before (null now: see below).
   - Goldens: none change. Both fixture results with exit 1 (`features` `CALL(2, 1)`, `lab`'s
     pytest shell) carry `additionalData.status: error`, so they stay true from the flag. The test
     edits a copy for the other cases.

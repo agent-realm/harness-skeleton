@@ -138,3 +138,14 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
 - **Goldens:** `usage.model` becomes null on 20 usage records (features 12, pass3 4, legacy 2,
   rewind 2). Nothing else moves. No key changes; consumers re-derive gemini-cli sessions. A
   reader that wants a model per usage record takes the anchored message's `requested_model`.
+
+### vscode: `describe().redaction.paths` in the documented shape
+
+- **`redaction.paths` is a list of `{source, path, opened}`**, as `docs/adapter-interface.md`
+  fixes it and every other adapter writes it. It held a bare string,
+  `'**.selectedModel.metadata.auth'`. It now holds that path once per chat source (the `.jsonl`
+  change log and the `.json` snapshot, in a workspace's `chatSessions/` and in
+  `emptyWindowChatSessions/`), `opened: true`.
+- Only `describe()` changes. What `read` redacts, its units and the records are the same, so no
+  `adapter_ver` moves and no golden changes.
+- A test holds every adapter's `redaction.paths` to that shape (`test/describe.test.js`).

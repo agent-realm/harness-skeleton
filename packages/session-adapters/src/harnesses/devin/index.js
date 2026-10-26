@@ -567,8 +567,13 @@ function typedText(n) {
   return blocks.filter((b) => isObj(b) && b.type === 'text' && typeof b.text === 'string').map((b) => b.text).join('');
 }
 
-// A tool node's outcome: rejected is denied, canceled is cancelled, a failure is an error; a
-// non-zero exit stays completed (fixture captures).
+// A tool node's outcome: rejected is denied, canceled is cancelled; a non-zero exit stays completed
+// (fixture captures). `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3):
+// true where the store says failure (`chisel/tool_result_meta.success: false`, a `failed` final
+// status, a rejection or a cancel), false where it says success (`success: true`, a `completed`
+// final status), and null where it keeps no flag. A flag that says success beside a shell's
+// non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the other
+// results keep the flag. Never derived from the exit code or the text.
 function outcome(res, st) {
   const x = res.ext;
   const meta = isObj(x['chisel/tool_result_meta']) ? x['chisel/tool_result_meta'] : {};
@@ -579,7 +584,10 @@ function outcome(res, st) {
   const rejected = um['cognition.ai/rejected'] === true || has('Rejected');
   const canceled = um['cognition.ai/canceled'] === true || has('Canceled');
   const failed = meta.success === false || u.status === 'failed';
-  return { is_error: !!(failed || rejected || canceled), status: rejected ? 'denied' : canceled ? 'cancelled' : 'completed' };
+  const succeeded = meta.success === true || u.status === 'completed';
+  const exit = exitOf(res);
+  const isError = failed || rejected || canceled ? true : succeeded ? (exit !== null && exit !== 0 ? null : false) : null;
+  return { is_error: isError, status: rejected ? 'denied' : canceled ? 'cancelled' : 'completed' };
 }
 
 // A shell tool's exit code: the tool node's `chisel/terminal_output.exit.exit_code` (the lab

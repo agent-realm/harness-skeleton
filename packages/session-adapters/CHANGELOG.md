@@ -322,3 +322,25 @@ derives it.
   state. The scheduled re-read is sessions §2's periodic read of every session: one read on the
   schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
   no adapter changes.
+
+### devin, opencode, vscode, agy, cursor and cursor-agent: `is_error` is the stored flag
+
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
+v1.2: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
+and where its flag is unreliable: a flag that says success beside a shell's non-zero `exit_code`
+is unreliable for that result, so that result's `is_error` is null, and the harness store's other
+results keep the flag. An adapter never derives `is_error` from `exit_code` or from the output's
+text. copilot-cli and codex follow it already (above). Each adapter below bumps its `adapter_ver`
+(§8: an adapter that derived otherwise bumps it, so the consumer re-derives); no key changes, and
+a reader that wants a shell's failure reads `exit_code`.
+
+- **devin (adapter_ver 0.2.1 → 0.2.2).** A failure flag gives true, as before:
+  `chisel/tool_result_meta.success: false`, a `failed` final status in `tool_call_state`, a
+  rejection or a cancel. A success flag (`success: true`, a `completed` final status) gives false,
+  except beside a non-zero `exit_code` (the node's `chisel/terminal_output.exit.exit_code`), where
+  it gives null. A result with no flag gives null. Before, every result without a failure flag was
+  false, `success: true` beside exit 1 included.
+  - Goldens: one tool result, `features` `amber-harbor` `ah:r1` (`success: true`, a `completed`
+    status, exit 1): `parts[0].is_error` `false` → `null`, with its message's `cmp_sha` and that
+    entry of the session's `fingerprint.cmp_shas`. Nothing else moves; `switch-compaction` has no
+    tool result.

@@ -122,7 +122,7 @@ test('devin: a turn: each message once (twins, prefix copies), context injected,
   const u = ofType(recs, 'usage').find((x) => x.anchor.message_id === ID('ah:a1'));
   assert.deepEqual([u.usage_id, u.input, u.output, u.cache_read, u.cache_write, u.input_includes_cache, u.output_includes_reasoning, u.granularity], [`message:${ID('ah:a1')}#1`, 404, 194, 12896, null, null, null, 'per_response']);
   const r1 = msg(recs, ID('ah:r1'));
-  assert.deepEqual([r1.role, r1.parts[0].kind, r1.parts[0].call_id, r1.parts[0].status, r1.parts[0].is_error], ['tool', 'tool_result', callId('ah:exec1'), 'completed', false], 'a non-zero exit stays completed');
+  assert.deepEqual([r1.role, r1.parts[0].kind, r1.parts[0].call_id, r1.parts[0].status, r1.parts[0].is_error], ['tool', 'tool_result', callId('ah:exec1'), 'completed', null], 'a non-zero exit stays completed; success true beside it is no flag');
   assert.ok(r1.parts[0].output.includes('FAILED'));
   const si = msg(recs, ID('ah:si'));
   assert.deepEqual([si.role, si.source, si.to_user, si.to_model], ['system', 'injected', false, true]);
@@ -160,6 +160,32 @@ test('devin: tool outcomes: rejected is denied, canceled is cancelled (its reply
   assert.deepEqual([x4.status, x4.is_error, x4.output], ['cancelled', true, 'Canceled due to user interrupt']);
   assert.equal(msg(recs, ID('ah:a4')).status, 'interrupted');
   assert.equal(msg(recs, ID('ah:a3')).status, 'complete');
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, copied.
+// A flag that says success beside a shell's non-zero exit_code is unreliable for that result, so
+// its is_error is null; a store that keeps no flag gives null. Never derived from exit_code or text.
+test('devin: is_error is the stored flag: success true beside a non-zero exit is null, a failure flag is true, no flag is null', () => {
+  const resultsOf = (dir, sid) => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[sid], 'message')
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]]));
+  withStore('features', (dir) => {
+    const ah = resultsOf(dir, 'amber-harbor');
+    assert.deepEqual(ah[callId('ah:exec1')], [null, 1], 'success true (and a completed status) beside exit 1: unreliable for this result');
+    assert.deepEqual(ah[callId('ah:read1')], [false, null], 'success true, no shell');
+    assert.deepEqual([ah[callId('ah:rej')], ah[callId('ah:slow')]], [[true, null], [true, null]], 'success false: rejected, canceled');
+    assert.deepEqual(resultsOf(dir, 'calm-orchard')[callId('co:run')], [false, 0], 'success true, exit 0');
+    // Edited in this copy: the read's node loses its flag and its state row loses its status (no
+    // flag: null); the shell's node says success false beside exit 1 (the flag, copied: true).
+    const meta = '$.metadata.extensions."chisel/tool_result_meta"';
+    const w = writer(dir);
+    w.prepare(`UPDATE message_nodes SET chat_message = json_remove(chat_message, '${meta}') WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(callId('ah:read1'));
+    w.prepare("UPDATE tool_call_state SET tool_call_update_json = json_remove(tool_call_update_json, '$.status') WHERE session_id = 'amber-harbor' AND tool_call_id = ?").run(callId('ah:read1'));
+    w.prepare(`UPDATE message_nodes SET chat_message = json_set(chat_message, '${meta}.success', json('false')) WHERE session_id = 'amber-harbor' AND json_extract(chat_message, '$.tool_call_id') = ?`).run(callId('ah:exec1'));
+    w.close();
+    const edited = resultsOf(dir, 'amber-harbor');
+    assert.deepEqual(edited[callId('ah:read1')], [null, null], 'no flag');
+    assert.deepEqual(edited[callId('ah:exec1')], [true, 1], 'success false beside exit 1: the flag says failure');
+  });
 });
 
 test('devin: held: a tail reply with a running call is held with its usage, its finished sibling call is not; the result releases it', () => {

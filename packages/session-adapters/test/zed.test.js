@@ -150,8 +150,9 @@ test('zed/lab: User ids are kept, Agent messages anchored <user id>+n; four Tool
   assert.deepEqual([s.title, s.cwd, s.created_at, s.mode, s.state, s.ts_source], ['inventory thread (renamed)', '/home/user/work/inventory-cli', '2026-10-19T22:23:11.194Z', 'write', 'active', 'none']);
 });
 
-// Annex §4 finding 6: Zed's usage is per_session only. `request_token_usage` is a turn's last
-// request, part of the cumulative total (annex §2), so a record of its own would count it twice.
+// Annex §4 finding 6: beside a non-empty cumulative_token_usage, Zed's usage is per_session only.
+// `request_token_usage` is a turn's last request, part of the cumulative total (annex §2), so a
+// record of its own would count it twice. An empty cumulative is the next test.
 test('zed: a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record, per session, with the cumulative values', () => {
   const only = (recs) => ofType(recs, 'usage').map(({ usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, input_includes_cache, output_includes_reasoning, granularity, model }) => (
     { usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, input_includes_cache, output_includes_reasoning, granularity, model }));

@@ -160,3 +160,147 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   moves, and no golden changes. A consumer that read a missing list as empty sees no difference.
 - A test holds every adapter's `held` to the five record types of `live` after a full replay of
   every fixture case (`test/derive-state.test.js`).
+
+### copilot-cli and codex: `is_error` is the stored flag only (adapter_ver 0.2.1 each)
+
+sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): an adapter copies the harness store's
+success or error flag and never derives `is_error` from the exit code or the text. A flag that says
+success beside a shell's non-zero `exit_code` is unreliable for that result (Copilot CLI and Codex
+store `success: true` so): that result's `is_error` is null, and the harness store's other results
+keep the flag. Both adapters applied an exit-code rule inherited from an earlier reader.
+
+- **copilot-cli:** `success: false` gives true and `success: true` gives false, except where the
+  shell exited non-zero under `success: true`: there `is_error` is null and `exit_code` carries the
+  failure. An event with no `success` gives null.
+- **codex:** a rollout's tool output keeps no success flag (an `{output, metadata}` string, or plain
+  text), so `is_error` is null; `metadata.exit_code` stays in `exit_code`. Where an output does carry
+  `success`, it is copied, with the same rule for `success: true` beside a non-zero exit code. No
+  fixture rollout carries one.
+- **Goldens:** `parts[0].is_error` changes on 14 tool results, and with it each message's
+  `cmp_sha` (`is_error` is in its projection) and that entry of the session's
+  `fingerprint.cmp_shas`. Nothing else moves.
+  - copilot-cli, 4 results, `true` → `null` (success true, exit 1): `basic` 2, `features` 1 in each
+    of the two sessions that hold the call.
+  - codex, 10 results, every one with a `metadata.exit_code` and no flag: `basic` 4 (3 `true`, 1
+    `false`), `features` 2 (1 `true`, 1 `false`), `no-ids` 4 (1 `true`, 3 `false`), each now `null`.
+    `live`'s plain-text outputs were null already.
+- No key changes; consumers re-derive copilot-cli and codex sessions. A reader that wants a shell's
+  failure reads `exit_code`.
+
+### cursor-agent, cursor and zed: a sub-agent session's `kind` is null (adapter_ver 0.2.1 each)
+
+sessions-model v1.x (#6), §2.1 (`kind`, the native session type): an adapter never mints a `kind`
+the harness store does not write, and a flag or a parent reference is not a kind. cursor-agent's
+`subagentInfo`, Cursor IDE's `isSubagent` and Zed's `subagent_context` or `parent_id` leave `kind`
+null, and such a sub-agent session is told by its `subagent` link (§2.5). Each adapter wrote
+`'subagent'`.
+
+- **cursor-agent:** for a chat whose `meta.subagentInfo` names a parent. The fact stays the
+  child-side `subagent` link from `meta.subagentInfo`, and the parent-side link from its Task
+  result, both unchanged.
+- **cursor** (Cursor IDE): for a chat whose `composerHeaders` row has `isSubagent = 1`. A child
+  names no parent, so the fact is the parent's origin-side link from
+  `composerData.subagentComposerIds`, unchanged. `isSubagent` now reaches no record; it stays in
+  the raw unit.
+- **zed:** for a thread whose `subagent_context.parent_thread_id` or row `parent_id` names another
+  thread. The fact stays the child-side `subagent` link from either, unchanged.
+- **Goldens:** one field per sub-agent session, `kind` `"subagent"` → `null`; nothing else moves:
+  - cursor-agent: the `subagent` case's child session;
+  - cursor: `features`, the child chat `c0c0a005…`;
+  - zed: `features`, the child thread `…c5`, and `lab`, the child thread `865975e1…`.
+- **adapter_ver:** cursor 0.2.0 → 0.2.1. cursor-agent and zed stay at 0.2.1, the bump each already
+  carries in this unreleased change: a consumer re-derives once for it.
+- No key changes; consumers re-derive the three harnesses' sessions. A reader that wants to know
+  whether a session is a sub-agent reads its `subagent` links.
+
+### zed: per-turn usage where the cumulative total is empty (adapter_ver 0.2.1)
+
+sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where a
+thread's `cumulative_token_usage` is empty, its `request_token_usage` entries are the usage. The
+adapter emitted no usage at all for such a thread.
+
+- **One record per entry**: `usage_id` `message:<user id>#1`, `anchor` `{message_id: <user id>}`
+  (the User message the entry is keyed by), `granularity: per_turn`, `input_includes_cache` and
+  `output_includes_reasoning` null, `model` null. An entry with no counter gives no record: never a
+  zero record.
+- **A non-empty cumulative is unchanged**: one `per_session` total, `session#1`, and the entries
+  stay in the raw unit, so nothing is counted twice.
+- **The running turn's usage is held** with its reply (#6, §2.4, with sessions §2 `held`): its entry is
+  rewritten by every request of the turn. Released with the reply, and held again, with its last
+  version standing, when Zed regenerates the reply.
+- **An orphaned entry is still a record**: one keyed by a User message the thread no longer holds
+  (after a checkpoint restore) is emitted, anchored to that id, because it is spend. Its `usage_id`
+  keeps its key across the restore. A test keeps one through a synthetic save; `restore-lab`'s
+  restore cleared every entry, so Zed has not been seen to keep one.
+- **Goldens:** three usage records are new, nothing else moves:
+  - `features`, the held thread: `message:…a9#1` (input 500, output 20). Its running turn's
+    `message:…aa#1` is held, so it is in no golden.
+  - `restore`: `message:…e1#1` (400, 9) and `message:…e4#1` (530, 16), the last save's two entries.
+- The conformance checks accept `per_turn` with a `message_id` anchor for zed beside `per_session`
+  with `session` (`conformance/generic.js`); the matrix's M.usage cell for zed names the new test.
+- No key changes; consumers re-derive zed sessions.
+
+### devin: only the main line tears a read (adapter_ver 0.2.1)
+
+sessions v1.x (#6), §2 (`read` errors, `inconsistent`, whose Devin example is a `main_chain_id`
+naming a node not yet written): only the main line itself tears a Devin read, its head and the
+parent links along it. A node the main line only names (a sub-agent head, a compacted history's
+prior nodes, a sub-agent chain a tool result names) that the read lacks does not: derive leaves out
+what it would have reached, the raw unit keeps the naming row, and a later read that holds the node
+derives it.
+
+- **`read`:** a dangling `main_chain_id`, or a parent link along the main line that the read cannot
+  follow (after a compaction or a mode switch, the re-rooted copies are that line), still throws
+  `inconsistent`. These no longer do, and the read returns the snapshot: a `subagent_heads` row
+  naming a node the read does not hold, or whose chain it does not hold whole; a compacted history
+  (`summarized_from`) the read does not hold whole; a sub-agent chain a tool result names
+  (`subagent/chain_node_id`) that it does not hold whole. A loop anywhere is still `damaged`.
+- **`derive` leaves out what the dangling node would have reached.** Its chain cannot be walked,
+  so its held nodes cannot be named. They would otherwise read as an abandoned branch (messages
+  with `on_active_branch: false`). While something dangles, a node is left out only when no valid
+  head reaches its tree and no tree holding a main-line node contains it. A tree is kept when it
+  holds a node the plan reached from the main line or a node of a valid sub-agent head's chain, or
+  the original such a node names through `compact/prior_node_ids`. So a sub-agent's task, a root
+  of its own re-rooted under its prompt (fixture `features`, session `dusty-lantern`), is left out
+  with its chain. Off-line trees that exist without the dangling node keep their normal treatment:
+  a mode switch's old root, a valid sub-agent's pre-copy task, and the abandoned branches in either.
+- **A compacted history that tears is left out whole**, with its compaction record and summary
+  message. A compaction re-roots the line as a mode switch does, so the tree its history sits in is
+  named by the line's prefix copies; while that history tears, a tree named only that way is left
+  out with it. Its nodes above the gap cannot be told from an abandoned branch there.
+- **What the torn read still emits is revised, not new.** Leaving a piece out moves the `order` of
+  the line messages after it and the session's fingerprint, so those records are revised, and
+  revised back by the read that holds the node. `calm-orchard` without `co:a2` or `co:r1`:
+  `co:si` (its parent is now the copy's), `co:cont`, `co:u2`, `co:a3` and the session record.
+  `dusty-lantern` without `dl:sa2` or `dl:sr1`: `dl:res`, `dl:a2` and the session record.
+- **What a dangling read leaves out is held, not tombstoned.** While a node the main line names
+  dangles, a key written before (live or held in the state derive is given) and left out now goes
+  to `held`: its last written version stands (sessions §2, `held`). The next read that holds the
+  node releases it, live again, or drops it. Before, a read with a dangling head that followed a
+  whole read left those keys out of both `live` and `held`, so a consumer tombstoned them and the
+  next whole read recreated them: `dusty-lantern` at the head's last move, its node removed,
+  tombstoned three messages (the task and the streaming twins' siblings) and two usage records.
+- **Goldens:** none change. No fixture case has a dangling node. The tests:
+  - build the `features` store up to the head's last move and remove the head's node, or an
+    earlier node of its chain, deriving from an empty state and from the whole read's state;
+  - add a dangling head to `amber-harbor`, the mode-switch shape (the line runs through prefix
+    copies), with and without a turn abandoned in its old root: the records are the same as
+    without the head;
+  - remove the compacted history's named node (`co:a2`) or an earlier one (`co:r1`) from
+    `calm-orchard`, and the named sub-agent chain's node (`dl:sa2`) or an earlier one (`dl:sr1`)
+    from `dusty-lantern`. Each read succeeds, the piece is left out (and held from the whole read's
+    state), and the read that holds the node again folds to the whole read's state, from either
+    state.
+- No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
+  `read` used to refuse.
+- `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.
+
+### Docs: what a consumer does about a retryable read error
+
+- `docs/adapter-interface.md`, *Errors*, gains *Retryable errors: what a consumer does*: a
+  retryable read error (`busy`, `inconsistent`, `damaged`) that outlasts the consumer's retry
+  budget while `updated_hint` is unchanged is reported, and the consumer stops retrying that
+  session until `updated_hint` moves, apart from its scheduled re-read, keeping the last derived
+  state. The scheduled re-read is sessions §2's periodic read of every session: one read on the
+  schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
+  no adapter changes.

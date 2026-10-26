@@ -510,14 +510,20 @@ function foldEvent(ctx, o, sk, unitKey) {
       const call = str(d.toolCallId) ?? '';
       const output = resultText(d);
       const exit = d.shellExecution && typeof d.shellExecution === 'object' ? num(d.shellExecution.exitCode) : null;
-      // memhouse's error rule, as for Codex: a failed call, or a shell that exited non-zero.
-      const isError = d.success === false || (exit !== null && exit !== 0) ? true : d.success === true ? false : null;
+      const exitCode = Number.isInteger(exit) ? exit : null;
+      // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): the stored
+      // `success` copied, false giving true and true giving false; without a flag it is null. A flag
+      // that says success beside a shell's non-zero `exit_code` is unreliable for that result, as
+      // §2.3 rules for Copilot CLI and Codex alike: that result's `is_error` is null, `exit_code`
+      // carries the failure, and the other results keep the flag. Never derived from the exit code
+      // or the text.
+      const isError = d.success === false ? true : d.success === true ? (exitCode !== null && exitCode !== 0 ? null : false) : null;
       const denied = !!d.error && typeof d.error === 'object' && d.error.code === 'denied';
       // A tool result is written by the harness running the tool: no `source` value fits it.
       emitMessage(ctx, {
         ...base, role: 'tool', source: null,
         // `shellExecution.exitCode` is stored beside the result text, never parsed out of it.
-        parts: [{ kind: 'tool_result', call_id: call, is_error: isError, status: denied ? 'denied' : 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: Number.isInteger(exit) ? exit : null }],
+        parts: [{ kind: 'tool_result', call_id: call, is_error: isError, status: denied ? 'denied' : 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exitCode }],
       });
       const waiting = Object.keys(st.pending).sort().find((mid) => st.pending[mid].open.includes(call));
       if (!waiting) {

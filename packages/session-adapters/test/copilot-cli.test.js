@@ -104,9 +104,10 @@ test('copilot-cli: a tool call and its result pair by toolCallId; usage, served 
   for (const r of messages(recs).flatMap((x) => x.parts.filter((p) => p.kind === 'tool_result'))) {
     assert.equal(calls.filter((c) => c.call_id === r.call_id).length, 1, r.call_id);
   }
-  // A shell that exited 1 is an error; a denied call is denied; a failing call is an error.
+  // A shell that exited 1 under success true has no reliable flag (null; exit_code says it); a denied
+  // call is denied; a failing call is an error.
   const result = (call) => messages(recs).find((x) => x.role === 'tool' && x.parts[0].call_id === call).parts[0];
-  assert.deepEqual([result('chatcmpl-tool-feat-test').is_error, result('chatcmpl-tool-feat-test').status], [true, 'completed']);
+  assert.deepEqual([result('chatcmpl-tool-feat-test').is_error, result('chatcmpl-tool-feat-test').exit_code, result('chatcmpl-tool-feat-test').status], [null, 1, 'completed']);
   assert.deepEqual([result('chatcmpl-tool-feat-pip').is_error, result('chatcmpl-tool-feat-pip').status], [true, 'denied']);
   assert.deepEqual([result('chatcmpl-tool-feat-ask').is_error, result('chatcmpl-tool-feat-ask').status], [true, 'completed']);
   assert.equal(result('chatcmpl-tool-feat-mcp').is_error, false);
@@ -422,6 +423,37 @@ test('copilot-cli: a tool_result carries the stored shellExecution.exitCode; a n
     // `shellExecution: { exitCode: 1 }` beside the result text: the code is the field, not the text.
     assert.equal(byCall['chatcmpl-tool-feat-test'].exit_code, 1);
     assert.equal(byCall['chatcmpl-tool-feat-mcp'].exit_code, null);
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (tool_result `is_error`): `is_error` copies the stored `success`
+// flag. A flag that says success beside a shell's non-zero `exit_code` is unreliable for that
+// result (Copilot CLI and Codex store `success: true` so): that result's `is_error` is null,
+// `exit_code` carries the failure, and the other results keep the flag. It is never derived from
+// the exit code or the text.
+test('copilot-cli: is_error copies success; success true with a non-zero shell exit is null, and exit_code carries the failure', () => {
+  const resultsOf = (dir, sid) => Object.fromEntries(messages(project(fullReplay(adapter, dir).views())[sid])
+    .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]]));
+  withCopy('features', (dir) => {
+    const r = resultsOf(dir, A);
+    assert.deepEqual(r['chatcmpl-tool-feat-ls'], [false, 0], 'success true, exit 0');
+    assert.deepEqual(r['chatcmpl-tool-feat-view'], [false, null], 'success true, no shell');
+    assert.deepEqual(r['chatcmpl-tool-feat-mcp'], [false, null], 'success true, no shell');
+    assert.deepEqual(r['chatcmpl-tool-feat-test'], [null, 1], 'success true, exit 1: the flag is contradicted');
+    assert.deepEqual(r['chatcmpl-tool-feat-pip'], [true, null], 'success false (denied)');
+    assert.deepEqual(r['chatcmpl-tool-feat-ask'], [true, null], 'success false');
+    // A result whose event carries no `success` at all (the line edited in this copy): no flag, null.
+    const file = path.join(dir, events(A));
+    const lines = fs.readFileSync(file, 'utf8').split('\n');
+    const i = lines.findIndex((l) => l.includes('"tool.execution_complete"') && l.includes('chatcmpl-tool-feat-mcp'));
+    lines[i] = lines[i].replace('"success":true,', '');
+    fs.writeFileSync(file, lines.join('\n'));
+    assert.deepEqual(resultsOf(dir, A)['chatcmpl-tool-feat-mcp'], [null, null], 'no success flag');
+  });
+  withCopy('basic', (dir) => {
+    const r = resultsOf(dir, '8259ca5e-606a-43e3-8753-6d6b97ebb992');
+    assert.deepEqual([r['chatcmpl-tool-FixtureFixt00024'], r['chatcmpl-tool-FixtureFixt00026']], [[null, 1], [null, 1]], 'success true, exit 1');
+    assert.deepEqual([r['chatcmpl-tool-FixtureFixt00022'], r['chatcmpl-tool-FixtureFixt00027']], [[false, null], [false, null]]);
   });
 });
 

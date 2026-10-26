@@ -8,7 +8,7 @@ const DB = 'User/globalStorage/state.vscdb';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/cursor',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'cursor',
   state_ver: 1,
@@ -74,8 +74,10 @@ export const describe = Object.freeze({
     // Lossy: the `agent-transcripts` side source (outside `harness_path`, under `~/.cursor`) is not
     // read in this version; `agentKv:blob:*` is not read; images are a path, no bytes; a tool's
     // toolFormerData beyond name, args, status and result (whose `exitCode` is the tool_result's
-    // `exit_code`), and a sub-agent's `subagentTypeName` reach no record (they stay in the raw
-    // unit); usage is `{0,0}` on the free plan; the volatile fields above are not read.
+    // `exit_code`), and a sub-agent's `isSubagent` and `subagentTypeName` reach no record (they
+    // stay in the raw unit: a flag is not a kind, sessions-model v1.x (#6), §2.1; the parent's
+    // `subagent` link states the sub-agent); usage is `{0,0}` on the free plan; the volatile fields
+    // above are not read.
     read: 'lossy',
     // `composerId` is a uuid (annex mapping row). UNVERIFIED: the archived draft id
     // `empty-state-draft` (fixture: lab) is not a uuid and may be reused.

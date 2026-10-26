@@ -199,7 +199,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_27d414e450d3488aa6d5",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "🚀 archive replay cursor sigma テスト x alpha çalışma anchor çalışma bravo replay anchor x",
           "output_len": 101,
@@ -207,7 +207,7 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "b40556b042425850f408725988698646fea43971a262680f6a677878f63ce443"
+      "cmp_sha": "e92bd790cb3028395b927ad5f74732d4c462f510287bc371d1836972ca7c83e4"
     },
     {
       "type": "message",
@@ -307,7 +307,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_1b5266d1b63640c0a098",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "🙂 gamma 🙂 bravo sigma x sigma replay vector replay cursor über delta 🚀 anchor",
           "output_len": 87,
@@ -315,7 +315,7 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "f735323229f8e116ed6a9a60e4e3a1cf733691e7a1f54966b2762d80a4c22cfa"
+      "cmp_sha": "1f4ffd353c318efe811970538f24170b15af7369aaf98ab64b91aa1728e69479"
     },
     {
       "type": "message",
@@ -509,7 +509,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_7a17f33ae7e04211a72a",
-          "is_error": true,
+          "is_error": null,
           "status": "completed",
           "output": "bravo bravo archive archive çalışma 漢字 ğüşıöç ğüşıöç çalışma gamma 🙂 naïve naïve archive vector",
           "output_len": 122,
@@ -517,7 +517,7 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "8c1e800d491fa923dca87227cb6bd6749a75262dbe37f9dedff55d9ae2474922"
+      "cmp_sha": "3d8589aa803b6a059af6368e49c2436d4cc74d33685cca7d412f9ec24ba6a9d5"
     },
     {
       "type": "message",
@@ -742,7 +742,7 @@
           "part_id": "0",
           "kind": "tool_result",
           "call_id": "call_f0d7637f95304016a0c8",
-          "is_error": false,
+          "is_error": null,
           "status": "completed",
           "output": "anchor ğüşıöç çalışma buffer anchor archive cursor archive vector über buffer 🙂 漢字 kappa x",
           "output_len": 107,
@@ -750,7 +750,7 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "b833cbec6d3d85b7391eb5e5607eb26d6451bf9ff4fee276a270480e0824399a"
+      "cmp_sha": "796c532b18697599178870cc4400481b8cc098b81a63bad570a66f5b790ef9db"
     },
     {
       "type": "session",
@@ -779,23 +779,23 @@
           "2f37987f97f486b76d74a7d85904ed10ad7415a87a2b4e15ebd0a2e3cbfb8248",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "ddd6c761f66667a0418ba8a32571b0c6f75785fb5e1f79d7c5e7bdfbb118944e",
-          "f735323229f8e116ed6a9a60e4e3a1cf733691e7a1f54966b2762d80a4c22cfa",
+          "1f4ffd353c318efe811970538f24170b15af7369aaf98ab64b91aa1728e69479",
           "ca305d1617b7f68da1a133f6312321b9b37335273940c3e1b3aa38ecf16cbc29",
           "bf37f28fb98a718d4534c0cd46275afe2c371e95f704f9c74ea85648a7235b17",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "e13ea46286ab943e7c4ba99ab26afb7355848edd336dc6f4f79322a3ebc61251",
-          "8c1e800d491fa923dca87227cb6bd6749a75262dbe37f9dedff55d9ae2474922",
+          "3d8589aa803b6a059af6368e49c2436d4cc74d33685cca7d412f9ec24ba6a9d5",
           "5b3f2fe9b7e600223b5a4b4fa9812b496d8d9c4d5e7fe58f30fd23833273879a",
           "cff62fd470f436977958135c88f8f96d32e627aed4a5ade3cc39506b943d36fd",
           "4be722b8436b51b8e42db110862a721e3e7f0b4916d2e0fe5c00cbc00f498168",
           "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
           "a2629c5bb175de131eb0acc289aaebdd092dc03bdee82d0b70a110e86c949fa9",
-          "b833cbec6d3d85b7391eb5e5607eb26d6451bf9ff4fee276a270480e0824399a",
+          "796c532b18697599178870cc4400481b8cc098b81a63bad570a66f5b790ef9db",
           "acd435ef647460b2f61688099259be846ca627703652043a91721b09e45c1ce3",
           "84a0cb8aec24135f12bf304f5ed96c8fc096de931fc4cacc803724a771fa6ddd",
           "64819659f14a317c89ec966e38f1cd5272c2c63a94a7843610ec422848cd9b19",
           "b96e2857d498bf52600e386f654f0af0133d2cce6c3dde60ccd7af8bdf07bd2d",
-          "b40556b042425850f408725988698646fea43971a262680f6a677878f63ce443",
+          "e92bd790cb3028395b927ad5f74732d4c462f510287bc371d1836972ca7c83e4",
           "16e356f072c518b6c36f4e571d2f494cd971d85c7a145ce5fe7af0df830c5e5e"
         ]
       },

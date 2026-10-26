@@ -20,8 +20,13 @@
 // - ONE source, `sessions.db#table:message_nodes`: main, snapshot, a `rows-json` unit of the
 //   session's row, nodes, tool states and sub-agent heads, read in one transaction (sessions
 //   §1). Per-table deltas would split the pointer from the nodes across reads;
-// - the torn read (a dangling main_chain_id, compacted history or sub-agent chain) is the retryable
-//   `inconsistent`, found in `read`, never an empty or shorter session;
+// - only the main line itself tears a read (sessions v1.x (#6), §2 `inconsistent`): a dangling
+//   main_chain_id, or a parent link along the line, is the retryable `inconsistent`, found in
+//   `read`, never an empty or shorter session. A node the main line only names (a running
+//   sub-agent's head in `subagent_heads`, a compacted history's prior nodes, a sub-agent chain a
+//   tool result names) that the read does not hold is no torn read: derive leaves out what it would
+//   have reached, holds what an earlier derive wrote of it, and a later read that holds the node
+//   derives it;
 // - records in the sessions-model shape: a tool node is its own `tool` message; usage records; a
 //   rewind is implicit (a pointer move), so it gives no lifecycle record: the abandoned subtree's
 //   messages stay, with `on_active_branch: false`. Compaction is explicit, from the summary node;
@@ -238,13 +243,19 @@ function walk(t, id, what) {
 // (the first one before the whole chain, so the line only grows), each sub-agent chain right after
 // the message that started it. An item is a node with its agent, whether it may be held, whether
 // it is its line's tail (no content follows), the next content entry, and its line's results by
-// call id; or a compaction marker. Every pointer it follows must resolve: `read` runs it as the
-// closure check, so derive never sees a torn tree. Null when the session has no turn yet.
+// call id; or a compaction marker. `read` runs it as the closure check. Only the main line itself
+// (its head and the parent links along it) must resolve: a pointer there that this read cannot
+// follow is `inconsistent`. A node the main line only names (a compacted history's prior nodes, a
+// sub-agent chain a tool result names) that the read does not hold whole tears nothing: that piece
+// is left out of the plan, and `torn` says so (sessions v1.x (#6), §2 `inconsistent`). A loop is
+// still damaged. `{items, torn, tornCompaction}`, or null when the session has no turn yet.
 function plan(t) {
   if (!t.row || t.row.main_chain_id == null) return null;
   const items = [];
   const expanded = new Set();
   const subChains = new Set();
+  let tornCompaction = false;
+  let tornChain = false;
   const lineOf = (chain) => {
     const out = [];
     let hoisted = false;
@@ -252,11 +263,15 @@ function plan(t) {
       const x = sumFrom(n);
       if (x != null && !expanded.has(x)) {
         expanded.add(x);
-        const piece = [...lineOf(walk(t, x, `the compacted history of node ${n.id}`)), { compaction: x, trigger: n }];
-        if (!hoisted) {
-          out.unshift(...piece);
-          hoisted = true;
-        } else out.push(...piece);
+        const history = tryWalk(t, x, `the compacted history of node ${n.id}`);
+        if (!history) tornCompaction = true;
+        else {
+          const piece = [...lineOf(history), { compaction: x, trigger: n }];
+          if (!hoisted) {
+            out.unshift(...piece);
+            hoisted = true;
+          } else out.push(...piece);
+        }
       }
       out.push({ node: n });
     }
@@ -292,14 +307,78 @@ function plan(t) {
         const head = num(r.ext['subagent/chain_node_id']);
         if (head == null || r.ext['subagent/agent_id'] == null || subChains.has(head)) continue;
         subChains.add(head);
-        addLine(lineOf(walk(t, head, `the sub-agent chain of node ${r.id}`)), str(r.ext['subagent/agent_id']), false);
+        const chain = tryWalk(t, head, `the sub-agent chain of node ${r.id}`);
+        if (!chain) tornChain = true;
+        else addLine(lineOf(chain), str(r.ext['subagent/agent_id']), false);
       }
     });
   };
   addLine(lineOf(walk(t, num(t.row.main_chain_id), 'main_chain_id')), '', true);
-  // A running sub-agent's head must resolve too, or its chain would read as an abandoned branch.
-  for (const h of t.heads) walk(t, h.node, `the sub-agent head of ${h.agent_id}`);
-  return items;
+  // A running sub-agent's head is walked for a loop (damaged), never for closure: one the read does
+  // not hold whole tears nothing, and derive leaves its chain out (headHeld, below).
+  for (const h of t.heads) headHeld(t, h);
+  return { items, torn: tornCompaction || tornChain, tornCompaction };
+}
+
+// The chain ending at a node the main line only names, or null when this read does not hold it
+// whole (a save in progress). Only the main line itself tears a read (sessions v1.x (#6), §2
+// `inconsistent`). A loop is still damaged.
+function tryWalk(t, id, what) {
+  try {
+    return walk(t, id, what);
+  } catch (e) {
+    if (e instanceof SessionsError && e.code === 'inconsistent') return null;
+    throw e;
+  }
+}
+
+// Whether the read holds a running sub-agent's chain whole, from its head to its root: a
+// subagent_heads row naming a node this read does not hold tears nothing.
+const headHeld = (t, h) => tryWalk(t, h.node, `the sub-agent head of ${h.agent_id}`) !== null;
+
+// Whether a running sub-agent's head dangles: one the read does not hold whole.
+const headDangles = (t) => t.heads.some((h) => !headHeld(t, h));
+
+// The node ids a copy names as its originals: a mode switch (and a compaction) re-roots the line
+// under a new prefix, each copy naming the node it copies (`compact/prior_node_ids`, in the node's
+// metadata column; sessions-model annex, Devin).
+function priorOf(n) {
+  const ids = isObj(n.nm.extensions) ? n.nm.extensions['compact/prior_node_ids'] : null;
+  return Array.isArray(ids) ? ids.map(num).filter((x) => x != null) : [];
+}
+
+// The trees (by root node id) that keep their normal treatment while something dangles: every tree
+// holding a node the plan reached from the main line (`seen`), or a node on a valid sub-agent
+// head's chain, and every tree such a node names through `compact/prior_node_ids`, transitively. So
+// a mode switch's old root, a valid sub-agent's pre-copy task and the abandoned branches in either
+// stay as they are; only the trees a dangling node's chain sits in are left out. A missing parent
+// ends a tree. Returns `{roots, rootOf}`.
+// A compaction re-roots the line as a mode switch does (prefix copies naming the context nodes),
+// so the tree its compacted history sits in is named by those copies. While a compacted history
+// tears (`priorLinks` false), a tree named only that way is left out with it, rather than read as
+// an abandoned branch: the history's nodes above the gap cannot be told from such a branch.
+function keptTrees(t, seen, { priorLinks = true } = {}) {
+  const roots = new Map();
+  const rootOf = (id) => {
+    if (roots.has(id)) return roots.get(id);
+    let n = t.nodes.get(id);
+    for (let k = 0; n && n.parent != null && t.nodes.has(n.parent) && k <= t.nodes.size; k++) n = t.nodes.get(n.parent);
+    const r = n ? n.id : id;
+    roots.set(id, r);
+    return r;
+  };
+  const kept = new Set(); // root ids
+  const work = [...seen];
+  for (const h of t.heads) if (headHeld(t, h)) work.push(...walk(t, h.node, `the sub-agent head of ${h.agent_id}`).map((n) => n.id));
+  const done = new Set();
+  while (work.length) {
+    const id = work.pop();
+    if (done.has(id) || !t.nodes.has(id)) continue;
+    done.add(id);
+    kept.add(rootOf(id));
+    if (priorLinks) work.push(...priorOf(t.nodes.get(id)));
+  }
+  return { roots: kept, rootOf };
 }
 
 // ---- list ---------------------------------------------------------------------------------------
@@ -386,7 +465,7 @@ export function derive(session, input, state) {
     } else if (src.complete) st.body = null;
   }
 
-  const { out, held } = build(st.body);
+  const { out, held, partial } = build(st.body);
 
   const changed = [];
   const live = noHeld();
@@ -414,6 +493,16 @@ export function derive(session, input, state) {
   line.sort((a, b) => cmpStr(a[0], b[0]));
   if (sessionRec) put({ ...sessionRec, fingerprint: { cmp_shas: line.map((x) => x[1]) } });
 
+  // While a node the main line names dangles, derive leaves out what it would have reached, and a
+  // later read that holds the node derives it (sessions v1.x (#6), §2 `inconsistent`). So a key
+  // written before and left out now is held, not tombstoned: its last written version stands, and
+  // the next read that holds the node releases it (live again) or drops it (sessions §2, `held`).
+  if (partial) {
+    for (const type of Object.keys(live)) {
+      const now = new Set([...live[type], ...held[type]]);
+      for (const k of Object.keys(st.emitted[type])) if (!now.has(k)) held[type].push(k);
+    }
+  }
   // A key neither live nor held leaves `emitted`, and the consumer tombstones it; a held key keeps
   // its last emitted sha (sessions §2).
   for (const type of Object.keys(live)) {
@@ -513,10 +602,10 @@ const numbered = (parts) => parts.map((p, i) => ({ part_id: String(i), ...p }));
 function build(body) {
   const out = [];
   const held = noHeld();
-  if (!body) return { out, held };
+  if (!body) return { out, held, partial: false };
   const t = treeOf(body);
   const row = t.row;
-  if (!row) return { out, held };
+  if (!row) return { out, held, partial: false };
   const hidden = Number(row.hidden) === 1;
 
   const processed = new Map(); // message_id -> order, of every message emitted or held
@@ -634,7 +723,12 @@ function build(body) {
     }
   };
 
-  const items = plan(t);
+  const p = plan(t);
+  const items = p ? p.items : null;
+  // Something the main line names dangles: a running sub-agent's head, a compacted history or a
+  // sub-agent chain a tool result names. What it would have reached is left out (below), and what
+  // an earlier derive wrote of it is held (derive).
+  const partial = headDangles(t) || !!p?.torn;
   for (const it of items ?? []) {
     if (it.compaction != null) {
       compaction(it);
@@ -674,10 +768,17 @@ function build(body) {
       if (n.ext['subagent/chain_node_id'] != null) markUp(num(n.ext['subagent/chain_node_id']));
     }
     for (const h of t.heads) markUp(h.node);
+    // A node the main line names that the read does not hold whole: its chain cannot be walked, so
+    // its nodes cannot be named, and its held nodes would read as an abandoned branch. derive leaves
+    // out what it would have reached (sessions v1.x (#6), §2 `inconsistent`): while something
+    // dangles, a node is left out when no valid head reaches its tree and no tree holding a
+    // main-line node contains it.
+    const kept = partial ? keptTrees(t, seenNodes, { priorLinks: !p.tornCompaction }) : null;
     const known = new Set([...seenNodes].map((id) => t.nodes.get(id).mid));
     const cand = new Map();
     for (const n of [...t.nodes.values()].sort((a, b) => a.id - b.id)) {
       if (seenNodes.has(n.id) || aux.has(n.id) || isPrefix(n) || isKeepalive(n) || !n.mid || known.has(n.mid)) continue;
+      if (kept && !kept.roots.has(kept.rootOf(n.id))) continue;
       cand.set(n.id, n);
     }
     const results = new Map();
@@ -729,5 +830,5 @@ function build(body) {
     ts_source: 'reset_on_save',
     aliases: [],
   });
-  return { out, held };
+  return { out, held, partial };
 }

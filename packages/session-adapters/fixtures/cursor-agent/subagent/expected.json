@@ -100,7 +100,7 @@
       "state": "active",
       "pinned": null,
       "mode": null,
-      "kind": "subagent",
+      "kind": null,
       "reuse": "impossible",
       "ts_source": "event",
       "aliases": [],

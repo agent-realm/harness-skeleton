@@ -883,7 +883,7 @@
       "state": "active",
       "pinned": null,
       "mode": "agent",
-      "kind": "subagent",
+      "kind": null,
       "reuse": "impossible",
       "ts_source": "event",
       "aliases": [],

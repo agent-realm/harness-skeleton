@@ -9,7 +9,7 @@ const SIDEBAR = 'db/<channel>/db.sqlite#table:sidebar_threads';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/zed',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'zed',
   state_ver: 1,
@@ -66,11 +66,14 @@ export const describe = Object.freeze({
     // its
     // output text; an Image's media type is taken as image/png; a Mention keeps its content but not
     // its URI; the model is per thread (a mid-thread switch relabels earlier replies) and its
-    // provider is not carried. Usage is per_session only, one record from `cumulative_token_usage`
+    // provider is not carried. Usage is one per_session record from `cumulative_token_usage`
     // (annex §4 finding 6): `request_token_usage` holds a turn's last request, part of that total
-    // and not a turn total (annex §2), so it reaches no record (it stays in the raw unit) and no
-    // usage is per turn. `ui_scroll_position`, `sandbox_grants`, `speed` and the row / thread
-    // `updated_at` reach no record either.
+    // and not a turn total (annex §2), so beside a total it reaches no record (it stays in the raw
+    // unit). Where the cumulative is empty, each entry is one per_turn record anchored to its User
+    // message, an orphaned entry anchored to its gone User id (sessions-model v1.x (#6), §2.4;
+    // fixtures: features, restore).
+    // `ui_scroll_position`, `sandbox_grants`, `speed` and the row / thread `updated_at` reach no
+    // record either.
     read: 'lossy',
     reuse: 'impossible', // thread ids are uuids (annex mapping row, fx)
     lifecycle: {

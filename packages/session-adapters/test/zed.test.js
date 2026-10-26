@@ -13,7 +13,7 @@ import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance
 import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   CASES as GENERATED, LAB, T, U, C, R, S, SENTINEL,
-  heldThread, cartThread, thread, user, agent, use, res, restoreLabCapture,
+  heldThread, cartThread, childThread, thread, user, agent, use, res, restoreLabCapture, restoreThread,
 } from '../fixtures/zed/generate.js';
 
 const adapter = adapterFor('zed');
@@ -150,8 +150,9 @@ test('zed/lab: User ids are kept, Agent messages anchored <user id>+n; four Tool
   assert.deepEqual([s.title, s.cwd, s.created_at, s.mode, s.state, s.ts_source], ['inventory thread (renamed)', '/home/user/work/inventory-cli', '2026-10-19T22:23:11.194Z', 'write', 'active', 'none']);
 });
 
-// Annex §4 finding 6: Zed's usage is per_session only. `request_token_usage` is a turn's last
-// request, part of the cumulative total (annex §2), so a record of its own would count it twice.
+// Annex §4 finding 6: beside a non-empty cumulative_token_usage, Zed's usage is per_session only.
+// `request_token_usage` is a turn's last request, part of the cumulative total (annex §2), so a
+// record of its own would count it twice. An empty cumulative is the next test.
 test('zed: a thread with both cumulative_token_usage and request_token_usage yields exactly one usage record, per session, with the cumulative values', () => {
   const only = (recs) => ofType(recs, 'usage').map(({ usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, input_includes_cache, output_includes_reasoning, granularity, model }) => (
     { usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, input_includes_cache, output_includes_reasoning, granularity, model }));
@@ -169,9 +170,70 @@ test('zed: a thread with both cumulative_token_usage and request_token_usage yie
     const u = adapter.read(store, keyOf(store, adapter.list(store).find((s) => s.session_id === LAB.PARENT)), MAIN).units[0];
     assert.equal(Object.keys(JSON.parse(u.body).data.request_token_usage).length, 3);
   });
-  // A thread with request_token_usage and no cumulative total has no usage record at all.
-  for (const sid of [T.HELD]) assert.deepEqual(only(golden('features')[sid]), []);
-  assert.deepEqual(only(golden('restore')[R.ID]), []);
+});
+
+// sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where
+// `cumulative_token_usage` is empty, the `request_token_usage` entries are the usage. One record
+// per entry, anchored to the User message the entry is keyed by, per_turn, both flags null: not a
+// zero record, and not "no usage". A non-empty cumulative stays the one per_session total (above).
+// The running turn's entry is held with its reply (the held test, below), and an orphaned entry is
+// still a record (the next test).
+test('zed: an empty cumulative_token_usage gives one per_turn usage record per request_token_usage entry, anchored to its User message', () => {
+  const only = (recs) => ofType(recs, 'usage').map(({ usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }) => (
+    { usage_id, anchor, input, output, cache_read, cache_write, reasoning, cost, tool_prompt, input_includes_cache, output_includes_reasoning, granularity, model }));
+  const turn = (uid, input, output) => ({
+    usage_id: `message:${uid}#1`, anchor: { message_id: uid }, input, output, cache_read: null, cache_write: null, reasoning: null, cost: null, tool_prompt: null,
+    input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: null,
+  });
+  withStore('features', (dir) => {
+    const e = fullReplay(adapter, dir);
+    // The held thread: cumulative {} and two entries. U10's turn still runs a call, so its usage is
+    // held with the turn's reply (below); U9's is written.
+    assert.deepEqual(only(viewOf(e, T.HELD)), [turn(U.U9, 500, 20)]);
+    assert.deepEqual(lastDerive(e, T.HELD).held.usage, [`message:${U.U10}#1`]);
+    // Threads with neither (cumulative {}, request_token_usage {}): no usage, and no zero record.
+    for (const sid of [T.NOTES, T.COMPACT, T.PARENT, T.CHILD]) assert.deepEqual(only(viewOf(e, sid)), [], sid);
+    // A non-empty cumulative beside entries: the total only.
+    assert.deepEqual(only(viewOf(e, T.CART)).map((u) => [u.usage_id, u.granularity]), [['session#1', 'per_session']]);
+  });
+  withStore('restore', (dir) => {
+    // The last save: R1's entry kept, R4's for the regrown turn; each anchored to a live User message.
+    const recs = viewOf(fullReplay(adapter, dir), R.ID);
+    const byId = (a, b) => (a.usage_id < b.usage_id ? -1 : 1);
+    assert.deepEqual(only(recs).sort(byId), [turn(R.R1, 400, 9), turn(R.R4, 530, 16)].sort(byId));
+    for (const u of ofType(recs, 'usage')) assert.ok(msg(recs, u.anchor.message_id), `${u.usage_id} anchors a message of the thread`);
+  });
+});
+
+// sessions-model v1.x (#6), §2.4: an entry keyed by a User message the thread no longer holds (after
+// a checkpoint restore) is still emitted, anchored to that id: it is spend. So its usage_id keeps
+// its key across the restore, and the record is unchanged. restore-lab's capture cleared every
+// entry, so this keeps one in a synthetic save: the restore case's v3 with R2's entry left in.
+test('zed: an orphaned request_token_usage entry (its User message restored away) is still a per_turn record, anchored to that id, its key kept across the restore', () => {
+  const dir = tmpStore();
+  try {
+    const [db] = sqlFilesOf(path.join(FIX, 'restore'));
+    const e = new MiniEngine(adapter, storeOf(adapter, dir));
+    buildDb(dir, db, 1);
+    e.pass();
+    const r2 = `message:${R.R2}#1`;
+    const usageOf = (id) => ofType(viewOf(e, R.ID), 'usage').find((u) => u.usage_id === id);
+    const before = usageOf(r2);
+    assert.deepEqual([before.anchor, before.input, before.output, before.granularity], [{ message_id: R.R2 }, 520, 14, 'per_turn']);
+    // The checkpoint restore on R2, the turn regrown under R4, and R2's entry kept.
+    const t = restoreThread(3);
+    t.request_token_usage = { ...t.request_token_usage, [R.R2]: { input_tokens: 520, output_tokens: 14 } };
+    save(dir, R.ID, t);
+    e.pass();
+    const out = lastDerive(e, R.ID);
+    assert.ok(!out.live.message.includes(R.R2) && !msg(viewOf(e, R.ID), R.R2), 'R2 is restored away');
+    assert.deepEqual(out.live.usage, [R.R1, R.R2, R.R4].map((u) => `message:${u}#1`).sort(), 'the orphaned entry is still a record');
+    assert.deepEqual(out.held.usage, []);
+    assert.ok(!out.changed.some((r) => r.usage_id === r2), 'its key and content are unchanged across the restore');
+    assert.deepEqual(usageOf(r2), before, 'anchored to the gone id');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('zed: statuses: is_error true kept, false is null; Zed\'s canned results are cancelled and denied', () => {
@@ -222,12 +284,41 @@ test('zed: sub-agents: the child states its parent; the parent\'s spawn_agent re
   const child = golden('features')[T.CHILD];
   const cl = ofType(child, 'link');
   assert.deepEqual(cl.map((l) => [l.kind, l.stated_on, l.origin, l.at, l.evidence]), [['subagent', 'child', { harness: 'zed', session_id: T.PARENT }, '', 'explicit']]);
-  assert.equal(ofType(child, 'session')[0].kind, 'subagent');
+  assert.equal(ofType(child, 'session')[0].kind, null, 'a parent reference is not a kind: the link is the fact');
   const parent = golden('features')[T.PARENT];
   assert.deepEqual(ofType(parent, 'link').map((l) => [l.stated_on, l.child, l.at]), [['origin', { harness: 'zed', session_id: T.CHILD }, C.SPAWN]]);
   // The lab child states its parent through subagent_context and the row's parent_id: one link.
   assert.equal(ofType(golden('lab')[LAB.CHILD], 'link').length, 1);
   assert.equal(ofType(golden('lab')[LAB.PARENT], 'link').length, 0, 'the lab parent has no spawn_agent call');
+});
+
+// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): a parent reference is not a
+// kind. A thread's subagent_context and its row's parent_id leave `kind` null, each on its own, and
+// the sub-agent is told by its child-side `subagent` link.
+test('zed: kind is null for every session, a sub-agent included, whether subagent_context or the row\'s parent_id names the parent; the child-side link carries it', () => {
+  for (const name of CASES) {
+    withStore(name, (dir) => {
+      for (const [sid, recs] of Object.entries(project(fullReplay(adapter, dir).views()))) assert.equal(ofType(recs, 'session')[0].kind, null, `${name} ${sid}`);
+    });
+  }
+  const childLink = (recs) => ofType(recs, 'link').filter((l) => l.stated_on === 'child').map((l) => [l.kind, l.origin.session_id, l.evidence]);
+  withStore('features', (dir) => {
+    // subagent_context only: the row's parent_id cleared.
+    let w = writer(dir);
+    w.prepare('UPDATE threads SET parent_id = NULL WHERE id = ?').run(T.CHILD);
+    w.close();
+    let recs = project(fullReplay(adapter, dir).views())[T.CHILD];
+    assert.deepEqual([ofType(recs, 'session')[0].kind, childLink(recs)], [null, [['subagent', T.PARENT, 'explicit']]], 'subagent_context');
+    // The row's parent_id only: the thread saved without subagent_context.
+    w = writer(dir);
+    w.prepare('UPDATE threads SET parent_id = ? WHERE id = ?').run(T.PARENT, T.CHILD);
+    w.close();
+    const t = childThread();
+    delete t.subagent_context;
+    save(dir, T.CHILD, t);
+    recs = project(fullReplay(adapter, dir).views())[T.CHILD];
+    assert.deepEqual([ofType(recs, 'session')[0].kind, childLink(recs)], [null, [['subagent', T.PARENT, 'explicit']]], 'parent_id');
+  });
 });
 
 test('zed: an open call in the last turn is held; the result releases it; held again, the view keeps its last version', () => {
@@ -236,7 +327,12 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     e.pass();
     let out = lastDerive(e, T.HELD);
     assert.deepEqual(out.held.message, [A(U.U10, 1)]);
-    assert.deepEqual(out.held.usage, [], 'no per-turn usage to hold');
+    // The running turn's usage (cumulative {}, so its request_token_usage entry is a record) is
+    // held with its reply.
+    const u10 = `message:${U.U10}#1`;
+    const usage = (id) => ofType(viewOf(e, T.HELD), 'usage').find((u) => u.usage_id === id);
+    assert.deepEqual(out.held.usage, [u10]);
+    assert.ok(!out.live.usage.includes(u10) && !out.changed.some((r) => r.usage_id === u10));
     assert.ok(!out.live.message.includes(A(U.U10, 1)) && !out.changed.some((r) => r.message_id === A(U.U10, 1)));
     // An earlier turn's unanswered call is interrupted, not held.
     assert.equal(msg(viewOf(e, T.HELD), A(U.U9, 1)).status, 'interrupted');
@@ -245,7 +341,9 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     out = lastDerive(e, T.HELD);
     assert.deepEqual([out.held.message, out.held.usage], [[], []]);
     assert.ok(out.live.message.includes(A(U.U10, 1)) && out.live.message.includes(A(U.U10, 2)));
+    assert.deepEqual([usage(u10).input, usage(u10).output, usage(u10).granularity], [700, 12, 'per_turn'], 'released with the turn');
     const done = msg(viewOf(e, T.HELD), A(U.U10, 1));
+    const doneUsage = usage(u10);
     assert.equal(done.parts.find((p) => p.kind === 'tool_result').output, '```\n3 passed\n```');
     // Zed regenerating the reply: the call open again. Held, and the consumer keeps the done version.
     save(dir, T.HELD, heldThread());
@@ -254,6 +352,8 @@ test('zed: an open call in the last turn is held; the result releases it; held a
     assert.deepEqual(out.held.message, [A(U.U10, 1)]);
     assert.ok(!out.changed.some((r) => r.message_id === A(U.U10, 1)));
     assert.deepEqual(msg(viewOf(e, T.HELD), A(U.U10, 1)), done);
+    assert.deepEqual(out.held.usage, [u10]);
+    assert.deepEqual(usage(u10), doneUsage, 'the turn\'s usage keeps its done version too');
     assert.ok(!msg(viewOf(e, T.HELD), A(U.U10, 2)), 'the later reply of the regenerated turn is gone');
     // A ToolUse whose input is still streaming is held even with a result.
     const streaming = thread('t', [user(U.U9, 'Read.'), agent([use(C.LOOK, 'read_file', { path: 'toy' }, { is_input_complete: false })], res(C.LOOK, 'read_file', ''))]);
@@ -275,6 +375,9 @@ test('zed/restore: an appended turn keeps every earlier key unchanged (positive 
     e.pass();
     const v1 = lastDerive(e, R.ID).live;
     assert.deepEqual(v1.message, [R.R1, A(R.R1, 1), R.R2, A(R.R2, 1), A(R.R2, 2)].sort());
+    // cumulative_token_usage is {} in every save: one per_turn record per request_token_usage entry.
+    const ukey = (uid) => `message:${uid}#1`;
+    assert.deepEqual(v1.usage, [ukey(R.R1), ukey(R.R2)].sort());
     // v2: a turn appended in place.
     buildDb(dir, db, 2);
     e.pass();
@@ -282,13 +385,17 @@ test('zed/restore: an appended turn keeps every earlier key unchanged (positive 
     assert.deepEqual(e.log.find((l) => l.session_id === R.ID).continuity, 'snapshot');
     for (const k of v1.message) assert.ok(out.live.message.includes(k), `${k} kept`);
     assert.deepEqual(out.changed.filter((r) => r.type === 'message').map((r) => r.message_id).sort(), [R.R3, A(R.R3, 1), A(R.R3, 2)].sort(), 'only the new messages changed');
-    assert.deepEqual(out.changed.filter((r) => r.type === 'usage'), [], 'request_token_usage alone makes no usage record');
+    for (const k of v1.usage) assert.ok(out.live.usage.includes(k), `${k} kept`);
+    assert.deepEqual(out.changed.filter((r) => r.type === 'usage').map((r) => r.usage_id), [ukey(R.R3)], 'only the new turn\'s usage changed');
     // v3: restore to before R2, regrown under a new User id. The cut keys vanish; no lifecycle record.
     buildDb(dir, db, 3);
     e.pass();
     out = lastDerive(e, R.ID);
     assert.deepEqual(out.live.message, [R.R1, A(R.R1, 1), R.R4, A(R.R4, 1)].sort());
     assert.deepEqual(out.live.lifecycle, [], 'the store keeps no trace of the restore');
+    // The cut turns' entries are gone from request_token_usage, so their usage keys vanish too.
+    assert.deepEqual(out.live.usage, [ukey(R.R1), ukey(R.R4)].sort());
+    assert.deepEqual(out.changed.filter((r) => r.type === 'usage').map((r) => r.usage_id), [ukey(R.R4)], 'the kept usage is unchanged');
     const ids = msgIds(viewOf(e, R.ID));
     for (const gone of [R.R2, A(R.R2, 1), A(R.R2, 2), R.R3, A(R.R3, 1), A(R.R3, 2)]) assert.ok(!ids.includes(gone), `${gone} tombstoned`);
     assert.deepEqual(out.changed.filter((r) => r.type === 'message').map((r) => r.message_id).sort(), [R.R4, A(R.R4, 1)].sort(), 'the kept messages are unchanged');

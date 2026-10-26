@@ -182,6 +182,43 @@ test('codex: a tool_result carries the stored metadata.exit_code; a plain-text o
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (tool_result `is_error`): where the store keeps no success or error
+// flag, `is_error` is null. A flag that says success beside a shell's non-zero `exit_code` is
+// unreliable for that result (Copilot CLI and Codex store `success: true` so): that result's
+// `is_error` is null. It is never derived from the exit code (`metadata.exit_code` stays in
+// `exit_code`) or from the text.
+test('codex: is_error is null where the output keeps no success flag; a stored flag is copied; never derived from exit_code', () => {
+  const resultsOf = (dir) => Object.fromEntries(Object.values(project(fullReplay(adapter, dir).views())).flat()
+    .filter((r) => r.type === 'message').flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.is_error, p.exit_code]]));
+  withCopy('features', (dir) => {
+    const r = resultsOf(dir);
+    assert.deepEqual(r.call_shell_1, [null, 2], '{output, metadata: {exit_code: 2}}: no flag');
+    assert.deepEqual(r.call_patch_1, [null, 0], '{output, metadata: {exit_code: 0}}: no flag');
+    assert.deepEqual(r.call_local_1, [null, null], 'plain text: no flag');
+  });
+  withCopy('basic', (dir) => {
+    for (const [call, v] of Object.entries(resultsOf(dir))) assert.equal(v[0], null, `${call}: exit_code ${v[1]} with no flag`);
+  });
+  // An output that does carry `success` (no fixture rollout does; the object form the adapter already
+  // reads, appended to a copy as synthetic lines): the flag is copied. With `success: true` and a
+  // non-zero exit code beside it, the flag is contradicted, and is_error is null, as for copilot-cli.
+  withCopy('features', (dir) => {
+    const rel = adapter.list(storeOf(adapter, dir)).flatMap((s) => s.sources.map((x) => x.source_key)).find((k) => k.includes('2026-02-10'));
+    const line = (call, output) => JSON.stringify({ timestamp: '2026-02-10T09:00:30.000Z', type: 'response_item', payload: { type: 'function_call_output', call_id: call, output } });
+    fs.appendFileSync(path.join(dir, rel), [
+      line('call_flag_false', { content: 'no such file', success: false }),
+      line('call_flag_true', { content: 'ok', success: true }),
+      line('call_flag_text_false', JSON.stringify({ output: 'boom', metadata: { exit_code: 0 }, success: false })),
+      line('call_flag_text_contradicted', JSON.stringify({ output: '1 failing', metadata: { exit_code: 1 }, success: true })),
+    ].join('\n') + '\n');
+    const r = resultsOf(dir);
+    assert.deepEqual(r.call_flag_false, [true, null]);
+    assert.deepEqual(r.call_flag_true, [false, null]);
+    assert.deepEqual(r.call_flag_text_false, [true, 0], 'the flag, not the exit code');
+    assert.deepEqual(r.call_flag_text_contradicted, [null, 1], 'success true, exit 1: contradicted');
+  });
+});
+
 test('codex: positional ids are qualified by the rollout file name, so two main sources never share a key (sessions-model §1 rule 10)', () => {
   withCopy('no-ids', (dir) => {
     const rel = adapter.list(storeOf(adapter, dir))[0].sources[0].source_key;

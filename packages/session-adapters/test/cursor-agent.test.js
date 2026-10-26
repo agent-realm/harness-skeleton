@@ -193,7 +193,22 @@ test('cursor-agent: lab case: subagentInfo.parentAgentId de1be1a9… + toolCallI
   // The child's prompt is its parent's, its user message has no id, and the reminder is not its text.
   const um = msg(recsOf('subagent', SUB), `${uid('c3a28bce', 132)}:user`);
   assert.deepEqual([um.source, um.parts.map((p) => p.text)], ['automated', ['List the test functions under tests/.']]);
-  assert.equal(ofType(recsOf('subagent', SUB), 'session')[0].kind, 'subagent');
+  assert.equal(ofType(recsOf('subagent', SUB), 'session')[0].kind, null, 'no kind field: the sub-agent fact is the link');
+});
+
+// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): cursor-agent stores no kind
+// field, and a flag or a parent reference is not a kind, so a session's `kind` is null. A sub-agent
+// stays a sub-agent through the §2.5 link that meta.subagentInfo states.
+test('cursor-agent: kind is null for every session, a sub-agent included; meta.subagentInfo stays the child-side subagent link', () => {
+  for (const name of CASES) {
+    withStore(name, (dir) => {
+      const views = project(fullReplay(adapter, dir).views());
+      for (const [sid, recs] of Object.entries(views)) assert.equal(ofType(recs, 'session')[0].kind, null, `${name} ${sid}`);
+      if (name !== 'subagent') return;
+      const links = ofType(views[SUB], 'link');
+      assert.deepEqual(links.map((l) => [l.kind, l.stated_on, l.origin.session_id, l.at]), [['subagent', 'child', P, TOOL]]);
+    });
+  }
 });
 
 test('cursor-agent: lab case: latestRootBlobId = e3b0c442… gives a titled session with zero messages', () => {

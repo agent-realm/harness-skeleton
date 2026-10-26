@@ -9,7 +9,7 @@ const ACP = 'acp-sessions/<id>';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/cursor-agent',
-  adapter_ver: '0.2.0',
+  adapter_ver: '0.2.1',
   model_version: 'sessions-model/1',
   harness: 'cursor-agent',
   state_ver: 1,

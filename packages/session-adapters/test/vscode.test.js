@@ -265,6 +265,31 @@ test('vscode: a terminal tool_result carries the stored terminalCommandState.exi
   });
 });
 
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the invocation's own flag. A denial or a
+// `resultError` is true and a done invocation false; a done invocation beside a terminal's non-zero
+// exit_code is unreliable for that result, so its is_error is null. Never derived from exit_code.
+test('vscode: is_error is the stored flag: done beside a non-zero terminal exit is null, done is false, a resultError or a denial is true', () => {
+  withCopy('features', (dir) => {
+    const resultsOf = () => {
+      const out = {};
+      for (const [sid, recs] of Object.entries(project(fullReplay(adapter, dir).views()))) {
+        for (const p of recs.filter((r) => r.type === 'message').flatMap((m) => m.parts)) if (p.kind === 'tool_result') out[`${sid.slice(0, 8)}:${p.call_id}`] = [p.is_error, p.exit_code, p.status];
+      }
+      return out;
+    };
+    const r = resultsOf();
+    assert.deepEqual([r['0a0a0a0a:call_B'], r['0d0d0d0d:call_B']], [[null, 1, 'completed'], [null, 1, 'completed']], 'done beside exit 1 (and its fork copy): unreliable for this result');
+    assert.deepEqual([r['0a0a0a0a:call_A'], r['0a0a0a0a:call_M']], [[false, null, 'completed'], [false, null, 'completed']], 'done, no terminal');
+    assert.deepEqual([r['0a0a0a0a:call_C'], r['0a0a0a0a:call_D']], [[true, null, 'completed'], [true, null, 'denied']], 'resultError; a denial');
+    // Edited in this copy: the terminal exits 0 (done: false).
+    const file = path.join(dir, mainOf(dir, SID_A));
+    const text = fs.readFileSync(file, 'utf8');
+    assert.equal(text.split('"terminalCommandState":{"exitCode":1').length, 2, 'one terminal state to edit');
+    fs.writeFileSync(file, text.replace('"terminalCommandState":{"exitCode":1', '"terminalCommandState":{"exitCode":0'));
+    assert.deepEqual(resultsOf()['0a0a0a0a:call_B'], [false, 0, 'completed'], 'done, exit 0');
+  });
+});
+
 test('vscode: the order sources are folded in changes nothing', () => {
   withCopy('features', (dir) => {
     const store = storeOf(adapter, dir);

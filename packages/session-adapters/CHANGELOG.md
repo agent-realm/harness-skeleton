@@ -351,3 +351,11 @@ a reader that wants a shell's failure reads `exit_code`.
   - Goldens: one tool result, `features` session `ses_15e9c27c…`, message `msg_15e9c2f9…`, call
     `call_bc3a64f28f` (`completed`, exit 1): `parts[3].is_error` `false` → `null`, with the
     message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.
+- **vscode (adapter_ver 0.2.0 → 0.2.1).** A denial or a `resultError` gives true, and a done
+  invocation (`isComplete`, or a result stored) gives false, except beside a terminal's non-zero
+  `exit_code` (`terminalCommandState.exitCode`), where it gives null. An invocation still running
+  gives null, as before.
+  - Goldens: two tool results, `features` `call_B` (done, exit 1) in session `0a0a0a0a…` (message
+    `response_…05`) and in its fork `0d0d0d0d…` (message `…080`): `parts[6].is_error` `false` →
+    `null`, with each message's `cmp_sha` and that entry of each session's `fingerprint.cmp_shas`.
+    The fork's leading `cmp_shas` still match its origin's. Nothing else moves; `lab` is unchanged.

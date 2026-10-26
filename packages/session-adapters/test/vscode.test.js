@@ -414,6 +414,11 @@ test('vscode: describe states every facet, and each explicit claim has a fixture
       }
     }
   }
+  // The one declared secret path (sessions-model §4.1), on each chat file `read` redacts, in the
+  // shape docs/adapter-interface.md fixes: [{source, path, opened}].
+  const chat = d.sources.filter((s) => s.role === 'main').map((s) => s.pattern);
+  assert.equal(chat.length, 4);
+  assert.deepEqual(d.redaction.paths, chat.map((source) => ({ source, path: '**.selectedModel.metadata.auth', opened: true })));
 });
 
 test('vscode: redaction: a value below selectedModel.metadata.auth (auth.token) is redacted too', () => {

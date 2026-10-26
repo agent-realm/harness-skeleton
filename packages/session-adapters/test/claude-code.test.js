@@ -133,6 +133,18 @@ test('claude-code: describe states every facet, and each explicit claim has a fi
   for (const op of explicit) assert.ok(ops.has(op), `explicit ${op} has no fixture record`);
 });
 
+// `held` has the shape of `live` (sessions v1 §2; docs/adapter-interface.md, "derive output"). This
+// derive never holds a record (the conformance matrix, S.held), so each of its five lists is empty.
+test('claude-code: derive never holds a record: held is the five record types of live, each empty', () => {
+  for (const name of CASES) {
+    withCopy(name, (dir) => {
+      for (const s of fullReplay(adapter, dir).sessions.values()) {
+        assert.deepEqual(s.last.held, { session: [], message: [], usage: [], link: [], lifecycle: [] }, name);
+      }
+    });
+  }
+});
+
 test('claude-code: a symlinked transcript or project folder is neither listed nor read', () => {
   withCopy('features', (dir) => {
     const store = storeOf(adapter, dir);

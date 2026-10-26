@@ -35,8 +35,14 @@ export const describe = Object.freeze({
     // state: in a change-log op the path is the op's `k` joined with the path inside `v`, so a
     // `kind 1` whose `k` ends at `…selectedModel.metadata.auth`, or holds it, is redacted too
     // (fixture `features`). A line or a snapshot that does not parse is never emitted as it is:
-    // a complete line becomes one marker, and a snapshot is held back until it parses.
-    paths: ['**.selectedModel.metadata.auth'],
+    // a complete line becomes one marker, and a snapshot is held back until it parses. One entry
+    // per chat source, in the shape docs/adapter-interface.md fixes: {source, path, opened}.
+    paths: [
+      { source: 'User/workspaceStorage/<ws>/chatSessions/<session>.jsonl', path: '**.selectedModel.metadata.auth', opened: true },
+      { source: 'User/globalStorage/emptyWindowChatSessions/<session>.jsonl', path: '**.selectedModel.metadata.auth', opened: true },
+      { source: 'User/workspaceStorage/<ws>/chatSessions/<session>.json', path: '**.selectedModel.metadata.auth', opened: true },
+      { source: 'User/globalStorage/emptyWindowChatSessions/<session>.json', path: '**.selectedModel.metadata.auth', opened: true },
+    ],
     // sessions-model §4.3's lab exemptions for VS Code, none of them secrets: `cacheKey` (a folder
     // URI, fixture `lab`), `tokenizer`, `tokenType`, and a URI's `authority` (in an object with a
     // `scheme`).

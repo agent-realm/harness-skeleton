@@ -18,6 +18,22 @@ test('describe: every adapter states what its harness_path names', async () => {
   assert.deepEqual(ADAPTERS.opencode.describe().store_shape, { kind: 'file', default: 'opencode.db', names: ['opencode.db', 'opencode-<channel>.db'] });
 });
 
+// docs/adapter-interface.md, "Record shapes this package fixes": `describe().redaction.paths` is
+// a list of {source, path, opened}, so a consumer reads every adapter's the same way.
+test('describe: every adapter states its redaction paths as [{source, path, opened}]', async () => {
+  const { ADAPTERS } = await import('../src/index.js');
+  for (const [h, a] of Object.entries(ADAPTERS)) {
+    const { paths, exemptions } = a.describe().redaction;
+    assert.ok(Array.isArray(paths) && Array.isArray(exemptions), `${h}: redaction.paths and redaction.exemptions are lists`);
+    for (const p of paths) {
+      const at = `${h}: ${JSON.stringify(p)}`;
+      assert.ok(p !== null && typeof p === 'object' && !Array.isArray(p), `${at} is not {source, path, opened}`);
+      assert.deepEqual(Object.keys(p).sort(), ['opened', 'path', 'source'], at);
+      assert.ok(typeof p.source === 'string' && p.source !== '' && typeof p.path === 'string' && p.path !== '' && typeof p.opened === 'boolean', at);
+    }
+  }
+});
+
 // describe() and derive must agree on the versions a consumer persists by (docs/adapter-interface.md
 // "Versions"): a state_ver bump in derive that describe misses would hide a needed refold.
 test('describe: every adapter states the adapter_ver, model_version and state_ver its derive returns', async () => {

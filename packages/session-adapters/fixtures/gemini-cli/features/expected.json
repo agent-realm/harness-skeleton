@@ -221,7 +221,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -242,7 +242,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ],
   "6e7f8091-a2b3-4c4d-9e5f-6a7b8c9d0e1f": [
@@ -481,7 +481,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -502,7 +502,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ],
   "7f3e9a10-5c2d-4b8e-9f01-2a3b4c5d6e7f": [
@@ -1421,7 +1421,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1442,7 +1442,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1463,7 +1463,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1484,7 +1484,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1505,7 +1505,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1526,7 +1526,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     },
     {
       "type": "usage",
@@ -1547,7 +1547,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ],
   "a7c3e9f0-1b2c-4d3e-8f4a-5b6c7d8e9f01": [
@@ -1681,7 +1681,7 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": "gemini-3.5-flash"
+      "model": null
     }
   ]
 }

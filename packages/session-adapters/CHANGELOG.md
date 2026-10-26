@@ -237,15 +237,22 @@ a read inconsistent.
   does not hold whole, no longer throws `inconsistent`. The read returns the snapshot. A dangling
   `main_chain_id`, and a compacted history or a finished sub-agent chain that the main line names,
   still do. A loop in a head's chain is still `damaged`.
-- **`derive` leaves that sub-agent's chain out.** Its head cannot be walked, so its held nodes
-  cannot be marked as a sub-agent's. They would otherwise read as an abandoned branch (messages
-  with `on_active_branch: false`). A sub-agent's task is a root of its own, re-rooted under its
-  prompt (fixture `features`, session `dusty-lantern`), so while a head dangles, a node in a tree
-  that holds no line node is left out. A later read that holds the node derives the chain as
-  usual, as a new rev.
-- **Goldens:** none change. No fixture case ends with a sub-agent running. The test builds the
+- **`derive` leaves out what the dangling head would have reached.** Its head cannot be walked,
+  so its held nodes cannot be named as a sub-agent's. They would otherwise read as an abandoned
+  branch (messages with `on_active_branch: false`). While a head dangles, a node is left out only
+  when no valid head reaches its tree and no tree holding a main-line node contains it (sessions
+  v1.x (#6), §2). A tree is kept when it holds a node the plan reached from the main line or a
+  node of a valid sub-agent head's chain, or the original such a node names through
+  `compact/prior_node_ids`. So a sub-agent's task, a root of its own re-rooted under its prompt
+  (fixture `features`, session `dusty-lantern`), is left out with its chain. Off-line trees that
+  exist without the dangling head keep their normal treatment: a mode switch's old root, a valid
+  sub-agent's pre-copy task, and the abandoned branches in either. A later read that holds the node
+  derives the chain as usual, as a new rev.
+- **Goldens:** none change. No fixture case ends with a sub-agent running. One test builds the
   `features` store up to the head's last move and removes the head's node, or an earlier node of
-  its chain.
+  its chain. Another adds a dangling head to `amber-harbor`, the mode-switch shape (the line runs
+  through prefix copies), with and without a turn abandoned in its old root: the records are the
+  same as without the head.
 - No key changes. Consumers re-derive devin sessions: `derive`'s records change only for units
   `read` used to refuse.
 - `subagent_heads` is still INFERRED from the table's columns: the lab never saw a row in it.

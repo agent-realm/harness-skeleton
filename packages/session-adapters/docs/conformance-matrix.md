@@ -553,7 +553,7 @@ From sessions.
 | cursor | cursor: “errors: an unknown chat, another chat”<br>cursor: “a locked store (Cursor mid-save) is busy”<br>cursor: “damaged: a stored bubble, composerData or header value that does not parse”<br>cursor: “inconsistent: bubbles stored but no composerData row” |
 | cursor-agent | cursor-agent: “errors: an unknown session, an unknown source, a deleted chat”<br>cursor-agent: “a locked store is busy, a damaged one or an undecodable meta row damaged”<br>cursor-agent: “a torn tree: read of meta is the retryable inconsistent” |
 | zed | zed: “errors: an unknown session or source”<br>zed: “Zed saving (a write lock on threads.db) is busy”<br>zed: “damaged: an undecodable blob is listed and reads damaged”<br>zed: “a channel DB with a -wal but no -shm is busy” |
-| devin | devin: “errors: an unknown session, an unknown source, an incarnation Devin never gives”<br>devin: “a locked store is busy, a damaged one or a row that does not parse is damaged”<br>devin: “a torn read is inconsistent”<br>devin: “a dangling sub-agent head is no torn read” |
+| devin | devin: “errors: an unknown session, an unknown source, an incarnation Devin never gives”<br>devin: “a locked store is busy, a damaged one or a row that does not parse is damaged”<br>devin: “a torn read is inconsistent”<br>devin: “a dangling sub-agent head is no torn read”<br>devin: “a dangling sub-agent head leaves a mode switch's old root alone” |
 
 ## S.held: Held: a record withheld again is in held, not changed or live, until it completes
 

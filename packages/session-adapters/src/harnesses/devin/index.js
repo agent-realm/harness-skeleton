@@ -306,9 +306,8 @@ function plan(t) {
 }
 
 // Whether the read holds a running sub-agent's chain whole, from its head to its root. Only the
-// main chain's head makes a read inconsistent; a subagent_heads row naming a node this read does
-// not hold (a save in progress) does not (contract decision, to appear in sessions v1.x; refines
-// sessions §2, `inconsistent`). A loop is still damaged.
+// main line itself tears a read; a subagent_heads row naming a node this read does not hold (a
+// save in progress) does not (sessions v1.x (#6), §2 `inconsistent`). A loop is still damaged.
 function headHeld(t, h) {
   try {
     walk(t, h.node, `the sub-agent head of ${h.agent_id}`);
@@ -317,6 +316,48 @@ function headHeld(t, h) {
     if (e instanceof SessionsError && e.code === 'inconsistent') return false;
     throw e;
   }
+}
+
+// Whether a node the main line names dangles: today, a running sub-agent's head the read does not
+// hold whole.
+const dangling = (t) => t.heads.some((h) => !headHeld(t, h));
+
+// The node ids a copy names as its originals: a mode switch (and a compaction) re-roots the line
+// under a new prefix, each copy naming the node it copies (`compact/prior_node_ids`, in the node's
+// metadata column; sessions-model annex, Devin).
+function priorOf(n) {
+  const ids = isObj(n.nm.extensions) ? n.nm.extensions['compact/prior_node_ids'] : null;
+  return Array.isArray(ids) ? ids.map(num).filter((x) => x != null) : [];
+}
+
+// The trees (by root node id) that keep their normal treatment while something dangles: every tree
+// holding a node the plan reached from the main line (`seen`), or a node on a valid sub-agent
+// head's chain, and every tree such a node names through `compact/prior_node_ids`, transitively. So
+// a mode switch's old root, a valid sub-agent's pre-copy task and the abandoned branches in either
+// stay as they are; only the trees a dangling head's chain sits in are left out. A missing parent
+// ends a tree. Returns `{roots, rootOf}`.
+function keptTrees(t, seen) {
+  const roots = new Map();
+  const rootOf = (id) => {
+    if (roots.has(id)) return roots.get(id);
+    let n = t.nodes.get(id);
+    for (let k = 0; n && n.parent != null && t.nodes.has(n.parent) && k <= t.nodes.size; k++) n = t.nodes.get(n.parent);
+    const r = n ? n.id : id;
+    roots.set(id, r);
+    return r;
+  };
+  const kept = new Set(); // root ids
+  const work = [...seen];
+  for (const h of t.heads) if (headHeld(t, h)) work.push(...walk(t, h.node, `the sub-agent head of ${h.agent_id}`).map((n) => n.id));
+  const done = new Set();
+  while (work.length) {
+    const id = work.pop();
+    if (done.has(id) || !t.nodes.has(id)) continue;
+    done.add(id);
+    kept.add(rootOf(id));
+    work.push(...priorOf(t.nodes.get(id)));
+  }
+  return { roots: kept, rootOf };
 }
 
 // ---- list ---------------------------------------------------------------------------------------
@@ -691,27 +732,16 @@ function build(body) {
       if (n.ext['subagent/chain_node_id'] != null) markUp(num(n.ext['subagent/chain_node_id']));
     }
     for (const h of t.heads) markUp(h.node);
-    // A head the read does not hold whole: its chain cannot be walked, so it cannot be marked, and
-    // its held nodes would read as an abandoned branch. They sit in a tree of their own (a
-    // sub-agent's task is a root, re-rooted under its prompt: fixture features, dusty-lantern), so
-    // while a head dangles, a node in a tree that holds no line node is left out. A later read
-    // that holds the head derives them as usual (contract decision, to appear in sessions v1.x).
-    const dangling = t.heads.some((h) => !headHeld(t, h));
-    const roots = new Map();
-    const rootOf = (id) => {
-      if (roots.has(id)) return roots.get(id);
-      let n = t.nodes.get(id);
-      for (let k = 0; n && n.parent != null && t.nodes.has(n.parent) && k <= t.nodes.size; k++) n = t.nodes.get(n.parent);
-      const r = n ? n.id : id;
-      roots.set(id, r);
-      return r;
-    };
-    const lineRoots = dangling ? new Set([...seenNodes].map(rootOf)) : null;
+    // A head the read does not hold whole: its chain cannot be walked, so its nodes cannot be named,
+    // and its held nodes would read as an abandoned branch. derive leaves out what it would have
+    // reached (sessions v1.x (#6), §2 `inconsistent`): while a head dangles, a node is left out when
+    // no valid head reaches its tree and no tree holding a main-line node contains it.
+    const kept = dangling(t) ? keptTrees(t, seenNodes) : null;
     const known = new Set([...seenNodes].map((id) => t.nodes.get(id).mid));
     const cand = new Map();
     for (const n of [...t.nodes.values()].sort((a, b) => a.id - b.id)) {
       if (seenNodes.has(n.id) || aux.has(n.id) || isPrefix(n) || isKeepalive(n) || !n.mid || known.has(n.mid)) continue;
-      if (lineRoots && !lineRoots.has(rootOf(n.id))) continue;
+      if (kept && !kept.roots.has(kept.rootOf(n.id))) continue;
       cand.set(n.id, n);
     }
     const results = new Map();

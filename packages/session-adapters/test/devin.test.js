@@ -296,11 +296,10 @@ test('devin: a session saved before its first turn is its session record alone',
 
 // ---- torn reads, list and read ------------------------------------------------------------------
 
-// Contract decision, to appear in sessions v1.x (refines §2 `read` errors, `inconsistent`, whose
-// Devin example is a main_chain_id naming a node not yet written): only the main chain's head makes
-// a read inconsistent. A subagent_heads row naming a node the read does not hold tears nothing:
-// derive leaves that sub-agent chain out, and a later read that holds the node derives it as a new
-// rev.
+// sessions v1.x (#6), §2 `read` errors, `inconsistent`: only the main line itself (its head and the
+// parent links along it) tears a Devin read. A subagent_heads row naming a node the read does not
+// hold tears nothing: derive leaves that sub-agent chain out, and a later read that holds the node
+// derives it as a new rev.
 test('devin: a dangling sub-agent head is no torn read: derive leaves its chain out, and a later read that holds the node derives it', () => {
   // A head row naming a node never written: read succeeds, and the records are the session's own.
   withStore('features', (dir) => {
@@ -353,6 +352,47 @@ test('devin: a dangling sub-agent head is no torn read: derive leaves its chain 
       fs.rmSync(dir, { recursive: true, force: true });
     }
   }
+});
+
+// sessions v1.x (#6), §2 `inconsistent`: while a head dangles, derive leaves out only what that
+// head would have reached: nodes no valid head reaches, in no tree that holds a main-line node.
+// An off-line tree that exists without the dangling head keeps its normal treatment. amber-harbor
+// is the mode-switch shape: the line runs through prefix copies (`compact/prior_node_ids`), and the
+// old root keeps the originals. A turn abandoned in the old root before the switch is the control:
+// it is an abandoned branch with or without a dangling head elsewhere.
+test('devin: a dangling sub-agent head leaves a mode switch\'s old root alone: the session derives the same records with and without it', () => {
+  const sid = 'amber-harbor';
+  const dangle = (dir) => {
+    const w = writer(dir);
+    w.prepare("INSERT INTO subagent_heads (session_id, agent_id, chain_node_id, updated_at) VALUES (?, 'deadbeef', 999, 0)").run(sid);
+    w.close();
+  };
+  const same = (a, b, what) => assert.deepEqual([a.changed, a.live, a.held], [b.changed, b.live, b.held], what);
+  // The fixture as it is.
+  withStore('features', (dir) => {
+    const whole = deriveDir(dir, sid);
+    dangle(dir);
+    same(deriveDir(dir, sid), whole, 'the prefix-copy fixture');
+  });
+  // The same session with a turn abandoned in the old root (a revert before the mode switch copied
+  // the chain): two nodes under the original of ah:u1, shaped as the session's own prompt and reply.
+  withStore('features', (dir) => {
+    const w = writer(dir);
+    const orig = w.prepare("SELECT node_id FROM message_nodes WHERE session_id = ? AND json_extract(chat_message, '$.message_id') = ? ORDER BY node_id").get(sid, ID('ah:u1')).node_id;
+    const copy = nodeOf(w, sid, ID('ah:u1'));
+    assert.ok(orig < copy, 'the original sits in the old root, the copy on the line');
+    const max = w.prepare('SELECT max(node_id) AS m FROM message_nodes WHERE session_id = ?').get(sid).m;
+    const like = "INSERT INTO message_nodes (session_id, node_id, parent_node_id, chat_message, created_at, metadata) SELECT session_id, ?, ?, json_set(chat_message, '$.message_id', ?, '$.content', ?), created_at, NULL FROM message_nodes WHERE session_id = ? AND node_id = ?";
+    w.prepare(like).run(max + 1, orig, ID('ah:old-u'), 'Fix it some other way.', sid, orig);
+    w.prepare(like).run(max + 2, max + 1, ID('ah:old-a'), 'Reverted before the switch.', sid, nodeOf(w, sid, ID('ah:a2')));
+    w.close();
+    const whole = deriveDir(dir, sid);
+    const old = whole.changed.filter((r) => r.type === 'message' && [ID('ah:old-u'), ID('ah:old-a')].includes(r.message_id));
+    assert.deepEqual(old.map((m) => [m.message_id, m.on_active_branch]), [[ID('ah:old-u'), false], [ID('ah:old-a'), false]], 'the old root\'s abandoned turn is an abandoned branch');
+    assert.ok(whole.live.usage.includes(`message:${ID('ah:old-a')}#1`), 'with its usage');
+    dangle(dir);
+    same(deriveDir(dir, sid), whole, 'the old root\'s abandoned turn with a dangling head elsewhere');
+  });
 });
 
 test('devin: a torn read is inconsistent, never an empty or shorter session: main_chain_id, a compacted history, a sub-agent chain', () => {

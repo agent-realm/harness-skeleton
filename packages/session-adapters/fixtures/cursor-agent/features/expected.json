@@ -595,7 +595,7 @@
           "part_id": "0:result",
           "kind": "tool_result",
           "call_id": "call-00c41679-5a7e-4f00-8000-00000000c0de-4\nfc_synth04-0Synth-00000004-syn_th1_4",
-          "is_error": true,
+          "is_error": null,
           "status": "denied",
           "output": "Denied: do not run git clean.",
           "output_len": 29,
@@ -652,7 +652,7 @@
       "harness": "cursor-agent",
       "session_id": "c4a1e0de-5a7e-4000-8000-000000000001",
       "incarnation": "",
-      "cmp_sha": "0751c941b15db8c3b7fd41240f994529c15a9e914da6098e7f25743c6d7e4d2d"
+      "cmp_sha": "5758e4bf78207791e4fbdd52b9f1074e2de85f356ef360c7e325f3bde15893f6"
     },
     {
       "type": "message",
@@ -1122,7 +1122,7 @@
           "069d51dd3720538b6a8dc408244905fee122a20b856d620076c0bd971b04ca5b",
           "445cdd857d0cae4afd6d973b3a7352a53d92f97f1a2c9a8c923ea87e5f633174",
           "5b22619ab8cd8f8d8a027b2b95cb8f3de90ec5acf3cc6729e2ef375ee8513363",
-          "0751c941b15db8c3b7fd41240f994529c15a9e914da6098e7f25743c6d7e4d2d",
+          "5758e4bf78207791e4fbdd52b9f1074e2de85f356ef360c7e325f3bde15893f6",
           "1f762a54be997fe82aedc8237f4e7bee3c495ee323b268e4eb0177fee52d62b0",
           "a50676f228508dd1d4fa5fef940c3e552e79a6b4a062730ea80a67cc4d29e3a1",
           "164f295d3bc31bc0d94c55cdb26e6e647e6a9e67de3d837319ec80597f89b72f",

@@ -558,12 +558,13 @@ const pascal = (k) => k.split('_').map((w) => w.charAt(0).toUpperCase() + w.slic
 // `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): a result's oneof
 // case (a success or a failure), or the model context's `isError`; null where neither is stored. A
 // flag that says success beside a shell's non-zero `exit_code` is unreliable for that result: its
-// `is_error` is null, and the other results keep the flag. Never derived from the exit code or the
-// text.
+// `is_error` is null, and the other results keep the flag. It describes a call that completed: a
+// denied or a cancelled result's is null (the model context's `isError` beside it too), and the
+// status carries the fact. Never derived from the exit code or the text.
 const flagBeside = (isError, exit) => (isError === false && Number.isInteger(exit) && exit !== 0 ? null : isError);
 const ok = (output) => ({ output, is_error: false, status: 'completed' });
 const err = (output) => ({ output, is_error: true, status: 'completed' });
-const denied = (output) => ({ output, is_error: true, status: 'denied' });
+const denied = (output) => ({ output, is_error: null, status: 'denied' });
 // A result whose text is not decoded: only which case is set (success is field 1 in every observed
 // oneof).
 const statusOnly = (r) => ({ output: null, is_error: !r.has(1), status: 'completed' });
@@ -577,8 +578,8 @@ const RESULTS = {
     // a 0 unwritten, so an absent field is 0; a redacted case (a credential step) has none.
     const exit = r.msg(c) ? (m.num(3) ?? 0) : null;
     if (c === 1) return { ...ok(m.str(10) || joinOut(m.str(5), m.str(6))), is_error: flagBeside(false, exit), exit_code: exit };
-    if (c === 2) return { output: m.str(9) || joinOut(m.str(5), m.str(6)), is_error: true, status: m.bool(11) ? 'cancelled' : 'completed', exit_code: exit };
-    if (c === 3) return { output: `timed out after ${m.num(3) || 0} ms`, is_error: true, status: 'cancelled' };
+    if (c === 2) return { output: m.str(9) || joinOut(m.str(5), m.str(6)), is_error: m.bool(11) ? null : true, status: m.bool(11) ? 'cancelled' : 'completed', exit_code: exit };
+    if (c === 3) return { output: `timed out after ${m.num(3) || 0} ms`, is_error: null, status: 'cancelled' };
     if (c === 4 || c === 7) return denied(m.str(3));
     if (c === 5) return err(m.str(3));
     return null;
@@ -759,8 +760,10 @@ function toolParts(tc, j, fallbackCall, J, blobText, blobLen) {
   let result = null;
   if (res) {
     const output = typeof res.output === 'string' ? res.output : null;
+    // A denied or cancelled call did not complete: no flag, the model context's included.
+    const completed = res.status !== 'denied' && res.status !== 'cancelled';
     result = {
-      part_id: `${j}:result`, kind: 'tool_result', call_id: callId, is_error: typeof res.is_error === 'boolean' ? res.is_error : null, status: res.status,
+      part_id: `${j}:result`, kind: 'tool_result', call_id: callId, is_error: completed && typeof res.is_error === 'boolean' ? res.is_error : null, status: res.status,
       output, output_len: utf8Len(output), truncated: c === 34 ? true : null,
     };
     if (res.output_ref) result.output_ref = res.output_ref;

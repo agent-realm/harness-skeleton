@@ -419,3 +419,10 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     loop (session `c0c0a001…`, message `b0b0b003…:assistant`) and the rejected tool (session
     `c0c0a007…`, message `b0b0b071…:assistant`); in `lab`, the cancelled loop (message
     `5a5a0029…:assistant`). Nothing else moves.
+- **cursor-agent (adapter_ver 0.2.2, unchanged).** A rejected or permission-denied step (`denied`),
+  a ShellFailure marked cancelled (#11) and a shell timeout (`cancelled`) gave true. They give
+  null, and so does a model context's `isError` beside such a step. A call that completed keeps the
+  flag.
+  - Goldens: one tool result, `features` session `c4a1e0de…`, the rejected shell (message
+    `c3a28bce…104:assistant`): `parts[1].is_error` `true` → `null`, with the message's `cmp_sha`
+    and that entry of the session's `fingerprint.cmp_shas`. Nothing else moves.

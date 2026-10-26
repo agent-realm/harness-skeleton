@@ -260,7 +260,7 @@ test('cursor-agent: without the model context the step is decoded: name, curated
   const read = msg(recs, `${RID(2)}:assistant`).parts;
   assert.deepEqual([read[0].name, read[0].args, read[1].output, read[1].is_error], ['Read', { path: `${CWD}/toyshop/cart.py` }, 'class Cart: ...', false]);
   const p = msg(recs, `${RID(4)}:assistant`).parts;
-  assert.deepEqual([p[0].name, p[1].status, p[1].is_error, p[1].output], ['Shell', 'denied', true, 'Denied: do not run git clean.']);
+  assert.deepEqual([p[0].name, p[1].status, p[1].is_error, p[1].output], ['Shell', 'denied', null, 'Denied: do not run git clean.']);
   assert.deepEqual(p[0].args, { command: 'git clean -fdx', working_directory: CWD, description: 'Run the tests', timeout: 30000 }, 'never secret_scope_id or the bookkeeping');
   assert.deepEqual([p[2].name, p[2].args, p[3].output, p[3].is_error, p[3].status], ['WebSearch', {}, null, false, 'completed']);
   assert.ok(!JSON.stringify(recs).includes('SENTINEL-UNTYPED'), 'an untyped kind\'s step is never decoded');
@@ -841,6 +841,41 @@ test('cursor-agent: is_error is the stored flag: ShellSuccess or isError false b
       [C2]: [null, 2], [C0]: [false, 0], [CF]: [true, 1], [CJ]: [null, 4],
     }, 'ShellSuccess beside exit 2: null; ShellSuccess exit 0: false; ShellFailure: true; isError false beside exit 4: null');
     assert.match(parts.find((p) => p.kind === 'tool_result' && p.call_id === CJ).output, /^Exit code: 4/, 'CJ\'s result is the model context\'s');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// completed. A rejected shell (`denied`), a cancelled ShellFailure (#11) and a timeout (`cancelled`)
+// did not; their is_error is null and the status carries the fact, the model context's `isError`
+// beside them included. A call that completed keeps the flag (the positive control: ShellFailure
+// true, ShellSuccess false).
+test('cursor-agent: is_error is null where the call did not complete: a rejection, a cancelled ShellFailure, a timeout; the status carries the fact', () => {
+  withStore('features', (dir) => {
+    const p = msg(viewOf(fullReplay(adapter, dir), A), `${RID(4)}:assistant`).parts;
+    assert.deepEqual([p[1].status, p[1].is_error], ['denied', null], 'the fixture\'s rejected shell');
+  });
+  const { s, last, turns } = simpleChat(A, [['hi', 'hello']]);
+  const [CX, CT, CR, CF, CO] = [call(91), call(92), call(93), call(94), call(95)];
+  const um = userMsg(s, { text: 'Run the checks.', id: uid('8b76b964', 991), snap: last, t: T0 + 400000 });
+  const steps = [
+    toolStep(s, 1, CX, shellArgs('./slow', CX), [[2, [[1, './slow'], [2, CWD], [3, 130], [5, 'tick'], [11, true]]]], T0 + 400100),
+    toolStep(s, 1, CT, shellArgs('./hang', CT), [[3, [[3, 30000]]]], T0 + 400200),
+    toolStep(s, 1, CR, shellArgs('git clean -fdx', CR), [[4, [[3, 'Denied: no.']]]], T0 + 400300),
+    toolStep(s, 1, CF, shellArgs('false', CF), shellFailure('false', '', 1), T0 + 400400),
+    toolStep(s, 1, CO, shellArgs('true', CO), shellOk('true', ''), T0 + 400500),
+  ];
+  // CR's model context: isError true beside the rejection.
+  const rj = s.json({
+    role: 'tool', id: CR, content: [{ type: 'tool-result', toolCallId: CR, toolName: 'Shell', result: 'Denied: no.' }],
+    providerOptions: { cursor: { highLevelToolCallResult: { isError: true } } },
+  });
+  const t = agentTurn(s, { um, steps, rid: uid('c3a28bce', 991), uid: uid('8b76b964', 991) });
+  s.meta(metaOf(A, root(s, { turns: [...turns, t], ctx: [rj] })));
+  withChats([s], (dir) => {
+    const parts = msg(viewOf(fullReplay(adapter, dir), A), `${uid('c3a28bce', 991)}:assistant`).parts;
+    assert.deepEqual(Object.fromEntries(parts.filter((x) => x.kind === 'tool_result').map((x) => [x.call_id, [x.status, x.is_error]])), {
+      [CX]: ['cancelled', null], [CT]: ['cancelled', null], [CR]: ['denied', null], [CF]: ['completed', true], [CO]: ['completed', false],
+    });
   });
 });
 

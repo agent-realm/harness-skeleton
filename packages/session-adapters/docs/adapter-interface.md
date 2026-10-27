@@ -169,7 +169,7 @@ Every operation throws `SessionsError` with a `code`:
 
 sessions §2 has the consumer retry `busy`, `inconsistent` and `damaged` with backoff, and never
 treat one as an empty or vanished source; a `damaged` that persists is reported, and the session
-keeps its last derived state. For all three, sessions v1.x (#6), §2 (`read` errors) rules:
+keeps its last derived state. For all three, sessions v1.x proposal (#6), §2 (`read` errors) rules:
 
 A retryable read error that outlasts the consumer's retry budget while `updated_hint` is
 unchanged is reported; the consumer stops retrying that session until `updated_hint` moves,

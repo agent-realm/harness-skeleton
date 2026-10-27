@@ -88,7 +88,7 @@ test('claude-code: an assistant record\'s plain tool_result block (a gateway ran
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the tool_result block's own `is_error`,
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the tool_result block's own `is_error`,
 // copied; null where the block has none. The transcript keeps no tool status, so every result is
 // `completed`, and none is cancelled or denied. Never derived from the text.
 test('claude-code: is_error copies the tool_result block\'s flag; a block without one is null; every result is completed', () => {

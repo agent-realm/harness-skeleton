@@ -182,7 +182,7 @@ test('codex: a tool_result carries the stored metadata.exit_code; a plain-text o
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (tool_result `is_error`): where the store keeps no success or error
+// sessions-model v1.x proposal (#6), §2.3 (tool_result `is_error`): where the store keeps no success or error
 // flag, `is_error` is null. A flag that says success beside a shell's non-zero `exit_code` is
 // unreliable for that result (Copilot CLI and Codex store `success: true` so): that result's
 // `is_error` is null. It is never derived from the exit code (`metadata.exit_code` stays in

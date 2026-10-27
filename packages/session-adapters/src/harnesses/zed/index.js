@@ -16,7 +16,7 @@
 // - records in the sessions-model shape: a ToolUse and its result are two parts, `<i>:call` and
 //   `<i>:result`, on the Agent message; usage as its own record, one per session from
 //   `cumulative_token_usage` (annex §4 finding 6), or, where that is empty, one per turn from
-//   `request_token_usage` (sessions-model v1.x (#6), §2.4); the archive and compaction lifecycle
+//   `request_token_usage` (sessions-model v1.x proposal (#6), §2.4); the archive and compaction lifecycle
 //   records; the hold as derive `held`.
 //
 // Zed keeps no Agent message id and no timestamp at all: Agent messages are anchored to the
@@ -466,7 +466,7 @@ function agentParts(msg, messageId) {
       parts.push({
         part_id: `${pid}:result`, kind: 'tool_result', call_id: callId,
         // Unreliable as stored (a failing command has false, annex §2): kept only when true. It
-        // describes a call that completed (sessions-model v1.x (#6), §2.3): Zed's canned cancel and
+        // describes a call that completed (sessions-model v1.x proposal (#6), §2.3): Zed's canned cancel and
         // denial results (`cancelled`, `denied`) give null, though Zed stores true, and the status
         // carries the fact.
         is_error: status === 'completed' && r.is_error === true ? true : null,
@@ -619,7 +619,7 @@ function build(st, key) {
   // the total would count those tokens twice. It stays in the raw unit.
   // Where the cumulative is empty, the entries are all the usage the thread keeps: one record per
   // entry, anchored to the User message it is keyed by, per_turn, both flags null; never a zero
-  // record, and not "no usage" (sessions-model v1.x (#6), §2.4 "No overlap"). Fixtures: features
+  // record, and not "no usage" (sessions-model v1.x proposal (#6), §2.4 "No overlap"). Fixtures: features
   // (the held thread), restore. The running turn's entry is held with its reply (sessions §2). An
   // entry keyed by a User message the thread no longer holds (after a checkpoint restore) is still
   // emitted, anchored to that id: it is spend, and its key stays across the restore (tested on a
@@ -675,7 +675,7 @@ function build(st, key) {
     mode: t.profile ? String(t.profile) : null,
     // `kind` is the native session type, and a parent reference is not a kind: subagent_context and
     // the row's parent_id leave it null. The sub-agent fact is the child-side `subagent` link above.
-    // sessions-model v1.x (#6), §2.1.
+    // sessions-model v1.x proposal (#6), §2.1.
     kind: null,
     reuse: 'impossible',
     ts_source: 'none',

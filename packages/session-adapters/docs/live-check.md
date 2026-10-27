@@ -29,7 +29,7 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
   In the fixture that event names no call id, so `exit_code` stays null there. Check whether a
   real event carries one to join on.
 - `cancelled` and `denied` come only from a structured marker the harness store writes, never
-  from the output's text (sessions-model v1.x (#6), §2.3). For these two harnesses, neither is
+  from the output's text (sessions-model v1.x proposal (#6), §2.3). For these two harnesses, neither is
   established (no live run, and no fixture holds the case), so every result is `completed` today:
   - **Claude Code: a user's rejection of a tool call, or an interrupt during one.** The adapter
     copies the `tool_result` block's `is_error`. What would establish a status: a structured field
@@ -62,7 +62,7 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 - A `kind 0` in the middle of a file.
 - `isConfirmed.type` 5, read as a skipped tool call: not established (no live run). Only 1 and 4
   are observed; 5 is the reading the adapter marks UNVERIFIED. The adapter makes such a call
-  `cancelled` with `is_error` null (sessions-model v1.x (#6), §2.3), a `resultError` beside it
+  `cancelled` with `is_error` null (sessions-model v1.x proposal (#6), §2.3), a `resultError` beside it
   included. Skip a tool call in a live run and check the stored value.
 
 ## Goose

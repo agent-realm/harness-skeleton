@@ -7,7 +7,7 @@
 // New here: records in the sessions-model shape, one usage record per turn, the compaction
 // lifecycle record, one speaker per message, source keys relative to CODEX_HOME, and `is_error`
 // as the stored flag only: null without one, and null where it says success beside a non-zero
-// exit code; never from the exit code (sessions-model v1.x (#6), §2.3).
+// exit code; never from the exit code (sessions-model v1.x proposal (#6), §2.3).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -281,7 +281,7 @@ function outputExit(output) {
   return Number.isInteger(code) ? code : null;
 }
 
-// `is_error` is the harness store's own flag (sessions-model v1.x (#6), §2.3): a stored `success`
+// `is_error` is the harness store's own flag (sessions-model v1.x proposal (#6), §2.3): a stored `success`
 // copied, false giving true and true giving false. Null where the output keeps no flag, which is
 // every rollout in the fixtures (an `{output, metadata}` string or plain text). A flag that says
 // success beside a shell's non-zero `exit_code` is unreliable for that result, as §2.3 rules for

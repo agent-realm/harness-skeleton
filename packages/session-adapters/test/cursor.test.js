@@ -398,7 +398,7 @@ test('cursor: sub-agents: the parent names them (origin side, deduped, in stored
   assert.ok(!g[CID(13)], 'the second child was never stored: only the statement exists');
 });
 
-// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): a flag is not a kind. The
+// sessions-model v1.x proposal (#6), §2.1 (`kind`, the native session type): a flag is not a kind. The
 // header's `isSubagent` leaves `kind` null, and the sub-agent is told by its `subagent` link: for
 // Cursor, the parent's origin-side link (a child names no parent).
 test('cursor: kind is null for every session, a header with isSubagent 1 included; the parent\'s subagent link names that chat', () => {
@@ -730,7 +730,7 @@ test('cursor: describe states every facet, and each explicit claim has a fixture
   }
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, an `error`
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, an `error`
 // status (the tool's or `additionalData`'s) true and `completed` false. A `completed` beside a
 // shell's non-zero exit_code is unreliable for that result, so its is_error is null. Never derived
 // from exit_code: an exit code without an error status is no error.
@@ -760,7 +760,7 @@ test('cursor: is_error is the stored status: completed beside a non-zero exit is
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A denial (`rejected`, or a result that says `rejected`) is `denied`, and a cancel or
 // an abort is `cancelled`: their is_error is null, and the status carries the fact, whatever an
 // error status beside it says. A call that completed keeps the flag (the positive control).

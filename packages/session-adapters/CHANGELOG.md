@@ -531,6 +531,7 @@ changes. The strings, each read from the harness's source at the version the fix
 | zed | `Permission denied: user sent a follow-up message instead of approving the tool call.` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:74-75` |
 | goose | `The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.` | `denied` | Goose v1.55.0, `crates/goose/src/agents/tool_execution.rs:151-153` |
 | goose | `Tool call was interrupted before completing` (no final period) | `cancelled` | Goose v1.55.0, `crates/goose-agent/src/machine.rs:83-86` |
+| opencode | `The user rejected permission to use this specific tool call.` | `denied` | OpenCode v1.19.3, `packages/core/src/v1/permission.ts:7-11` |
 
 - **zed (adapter_ver 0.2.2 → 0.2.3).** The three texts were compared with the result's content
   joined into one string, whatever `is_error` said. They now count only in the shape Zed writes
@@ -561,3 +562,15 @@ changes. The strings, each read from the harness's source at the version the fix
     `output_len` (79 → 167, 44 → 43) follow the fixture. Each message's `cmp_sha` and its entry of
     the session's `fingerprint.cmp_shas` change with them. Nothing else moves; `lab` and
     `conformance-goose-sentinel` are unchanged.
+- **opencode (adapter_ver 0.2.1 → 0.2.2).** A tool part in `error` was `denied` where its error
+  text contained `rejected permission`, in any case. It is `denied` now only where the stored
+  `state.error` is OpenCode's own text, whole: `PermissionRejectedError`'s message, which OpenCode
+  v1.19.3 stores as the error string (`packages/opencode/src/session/processor.ts:186-194`). An
+  error that contains the words, the text after a prefix, and a rejection with feedback
+  (`PermissionCorrectedError`, whose text embeds the user's words: no fixed string) are
+  `completed`, with the state status as the flag (true). v2 parts (`session_message`) never held
+  the text: a declined permission there halts the loop instead of becoming a tool result.
+  - Goldens: none change; the fixture's refused permission is OpenCode's text, whole. The
+    earlier test edited a copy with an `Error: ` prefix before the text and expected `denied`; it
+    now writes the text as OpenCode stores it, and a new test shows the near misses. The matrix's
+    M.is-error cell for opencode names it.

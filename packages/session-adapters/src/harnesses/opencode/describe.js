@@ -11,7 +11,7 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/opencode',
-  adapter_ver: '0.2.1',
+  adapter_ver: '0.2.2',
   model_version: 'sessions-model/1',
   harness: 'opencode',
   state_ver: 1,

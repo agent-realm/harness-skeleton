@@ -323,13 +323,39 @@ test('opencode: is_error is null where the call did not complete: a refused perm
     const r = resultsOf();
     assert.deepEqual(r['chatcmpl-tool-FixtureFixt00050'], ['denied', null], 'the fixture\'s refused permission');
     assert.deepEqual([r['chatcmpl-tool-FixtureFixt00049'], r.call_4b13d21247], [['completed', true], ['completed', false]], 'the positive control: error; completed');
-    // Edited in this copy: the v1 read is refused, and the v1 shell is cut off while running.
+    // Edited in this copy: the v1 read is refused (OpenCode's own text, as OpenCode stores it), and
+    // the v1 shell is cut off while running.
     const w = new DatabaseSync(storeFile(dir));
-    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', 'Error: The user rejected permission to use this specific tool call.') WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run();
+    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', 'The user rejected permission to use this specific tool call.') WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run();
     w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'running') WHERE json_extract(data, '$.callID') = 'call_bc3a64f28f'").run();
     w.close();
     const e = resultsOf();
     assert.deepEqual([e.call_4b13d21247, e.call_bc3a64f28f], [['denied', null], ['cancelled', null]]);
+  });
+});
+
+// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
+// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
+// (#6)); never from a pattern in free text. OpenCode's text for a refused permission (OpenCode
+// v1.19.3, packages/core/src/v1/permission.ts:7-11) counts only as the whole stored error. An error
+// that merely contains it, or the words, is completed with the state status as its flag (true).
+test('opencode: a refused permission is OpenCode\'s own text, matched exactly as the whole stored error; a near miss is completed with the flag', () => {
+  withCase('features', (dir) => {
+    const resultOf = (call) => Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
+      .filter((p) => p.kind === 'tool_result' && p.call_id === call).map((p) => [p.status, p.is_error])[0];
+    const refuse = (error) => {
+      const w = new DatabaseSync(storeFile(dir));
+      w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', ?) WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run(error);
+      w.close();
+      return resultOf('call_4b13d21247');
+    };
+    // The positive control: the fixture's refused permission, and the same text on another call.
+    assert.deepEqual(resultOf('chatcmpl-tool-FixtureFixt00050'), ['denied', null]);
+    assert.deepEqual(refuse('The user rejected permission to use this specific tool call.'), ['denied', null]);
+    // Near misses.
+    assert.deepEqual(refuse('EACCES: rejected permission to open toyshop/cart.py'), ['completed', true], 'a tool\'s error with the words in it');
+    assert.deepEqual(refuse('Error: The user rejected permission to use this specific tool call.'), ['completed', true], 'the text after a prefix: not the whole error');
+    assert.deepEqual(refuse('The user rejected permission to use this specific tool call with the following feedback: run the tests first'), ['completed', true], 'a rejection with feedback embeds the user\'s words: no fixed string');
   });
 });
 

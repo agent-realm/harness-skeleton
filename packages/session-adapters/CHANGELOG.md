@@ -390,7 +390,10 @@ a reader that wants a shell's failure reads `exit_code`.
 - **goose (adapter_ver 0.2.1, its one move in this release: see below).** The flag is a tool
   result's `isError`. `isError: false`, or none (read as false), beside a non-zero
   `structuredContent.exit_code` gave false. It gives null. `isError: true` stays true, beside any
-  exit code.
+  exit code. A result without `isError` has MCP's default, false, as sessions-model v1.x (#6),
+  §2.3 now states (a flag the harness store leaves out where its protocol defines a default has
+  that default): false beside exit 0 or no exit code, null beside a non-zero one. The code and the
+  test cite the clause; no behaviour changes for it.
   - Goldens: none change. Both fixture results with exit 1 (`call-1` in `20261021_1` and
     `20261021_8`) carry `isError: true`. The test edits a copy for the other cases.
 

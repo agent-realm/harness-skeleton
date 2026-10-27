@@ -265,7 +265,7 @@ test('vscode: a terminal tool_result carries the stored terminalCommandState.exi
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the invocation's own flag. A
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the invocation's own flag. A
 // `resultError` is true and a done invocation false; a done invocation beside a terminal's non-zero
 // exit_code is unreliable for that result, so its is_error is null. Never derived from exit_code.
 test('vscode: is_error is the stored flag: done beside a non-zero terminal exit is null, done is false, a resultError is true', () => {
@@ -290,7 +290,7 @@ test('vscode: is_error is the stored flag: done beside a non-zero terminal exit 
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A denial (`isConfirmed` 0: `denied`) and a skip (5: `cancelled`) did not: their
 // is_error is null, a `resultError` beside them included, and the status carries the fact. A call
 // that completed keeps the flag (the positive control: a `resultError` true, done false).

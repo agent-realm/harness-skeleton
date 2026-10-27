@@ -79,6 +79,24 @@ tools ──depend on──▶ harness-skeleton ◀──implement── adapter
   (the floor) and Node 24, on a GitHub-hosted `ubuntu-latest` runner, for every pull request and
   every push to `main`. Its `unit` check passes only when both do. It uses no secrets and no
   self-hosted runner. A milestone merges only with it green.
+- **The guard:** this repo is public, and a pushed branch is already published. Run
+  `node scripts/guard.mjs --commits origin/main..HEAD` before you push; it must print
+  `guard: clean`. CI (`.github/workflows/guard.yml`, check `guard`) runs it on every pull request
+  and every push to `main`.
+  - It checks the tracked files' paths and lines, and each commit's author and committer names,
+    message, every path it touches and every line it adds, for private detail: credential shapes,
+    home paths with a user name, private IP addresses, e-mail addresses, machine numbers, and
+    process wording. It prints file and line, or commit, never the matched text.
+  - Stand-ins pass as they are: a secret-shaped value that says it is fake (a part starting with
+    `toy`, `dummy`, `fake`, `sentinel` or `placeholder`, or the words `not-a-` or
+    `pasted-secret`), and addresses or URL credentials on reserved names (`example.com`, and
+    anything under `.example`, `.invalid`, `.test`). Write test secrets that way.
+  - Any other false positive goes into the guard's `ALLOW` list, in a pull request of its own: CI
+    runs the base branch's copy of the guard. Never reword correct text to pass it.
+  - The maintainer also runs it with `--names <file>`, a local list of names that never enters the
+    repository in any form.
+  - `node scripts/guard.mjs --self-test` runs the guard's own cases. Add a case with every fix to a
+    check.
 - Harness facts live in a driver's `descriptor.js`, each with its source, never in logic.
 - Conformance runs start real harnesses. They run on disposable benches (a VM made for it, or a
   CI runner), never on a user's workstation and never against a user's real data folder. The

@@ -632,7 +632,7 @@ function fromDb(st, sid, me) {
         // its source is not public and the step's `permissions` blob is not decoded. A denied
         // command is an ERROR step: `completed`.
         const result = s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed';
-        // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x (#6),
+        // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x proposal (#6),
         // §2.3): ERROR gives true, DONE false. A DONE beside a run_command's non-zero `exit_code` is
         // unreliable for that result: its `is_error` is null, and the other results keep the flag.
         // It describes a call that completed: a CANCELED or INTERRUPTED step (`cancelled`) gives
@@ -891,7 +891,7 @@ function fromTranscript(st, sid, me) {
         ...base, role: 'tool', source: null, status: running ? 'streaming' : cancelled ? base.status : isError ? 'error' : 'complete',
         parts: [
           {
-            // `is_error` describes a call that completed (sessions-model v1.x (#6), §2.3): a
+            // `is_error` describes a call that completed (sessions-model v1.x proposal (#6), §2.3): a
             // CANCELED or INTERRUPTED line (`cancelled`) gives null, whatever an error beside it
             // says, and the status carries the fact. As in the DB, the status is the line's own
             // field.

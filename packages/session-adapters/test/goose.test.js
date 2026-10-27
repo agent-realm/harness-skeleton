@@ -259,7 +259,7 @@ test('goose: compaction: earlier rows flipped in place are to_model false (keys 
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A declined call (`denied`) and a cancelled approval (`cancelled`) did not: their
 // is_error is null, though goose stores `isError: true` on each, and the status carries the fact.
 // A call that completed keeps `isError` (the positive control), Ctrl-C during a shell call
@@ -320,7 +320,7 @@ test('goose: a declined or an interrupted call is goose\'s own text, matched exa
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): a flag that says success beside a
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): a flag that says success beside a
 // shell's non-zero exit_code is unreliable for that result, so its is_error is null; the other
 // results keep `isError`. Never derived from exit_code: `isError: true` beside exit 1 stays true.
 // A result without `isError` has MCP's default, false (§2.3: a flag the harness store leaves out

@@ -528,7 +528,7 @@ function resultOf(resp, partId) {
   const one = isObj(v) && v.isError === true && content.length === 1 && isObj(content[0]) ? content[0] : null;
   const sole = one && one.type === 'text' && typeof one.text === 'string' ? one.text : null;
   // A result without `isError` has MCP's default, false: a flag the harness store leaves out where
-  // its protocol defines a default has that default (sessions-model v1.x (#6), §2.3). Beside a
+  // its protocol defines a default has that default (sessions-model v1.x proposal (#6), §2.3). Beside a
   // non-zero `exit_code` it is null, as any flag that says success (build, below).
   return { output: text.join('\n'), isError: !!(isObj(v) && v.isError === true), exit, files, sole };
 }
@@ -748,7 +748,7 @@ function build(st, key) {
           const status = toolStatus(res, permission.get(str(p.id)));
           toolParts.push({
             part_id: pid, kind: 'tool_result', call_id: claimedBy.get(pk(i, j)) ?? (p.id != null ? str(p.id) : `@${id}:${j}`),
-            // `is_error` is the harness store's own flag, `isError` (sessions-model v1.x (#6), §2.3),
+            // `is_error` is the harness store's own flag, `isError` (sessions-model v1.x proposal (#6), §2.3),
             // MCP's default false where the result leaves it out (§2.3: a protocol default stands).
             // A flag that says success beside a shell's non-zero `exit_code` is unreliable for that
             // result, the default included: its `is_error` is null, and the other results keep the

@@ -172,7 +172,7 @@ test('zed: a thread with both cumulative_token_usage and request_token_usage yie
   });
 });
 
-// sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where
+// sessions-model v1.x proposal (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where
 // `cumulative_token_usage` is empty, the `request_token_usage` entries are the usage. One record
 // per entry, anchored to the User message the entry is keyed by, per_turn, both flags null: not a
 // zero record, and not "no usage". A non-empty cumulative stays the one per_session total (above).
@@ -205,7 +205,7 @@ test('zed: an empty cumulative_token_usage gives one per_turn usage record per r
   });
 });
 
-// sessions-model v1.x (#6), §2.4: an entry keyed by a User message the thread no longer holds (after
+// sessions-model v1.x proposal (#6), §2.4: an entry keyed by a User message the thread no longer holds (after
 // a checkpoint restore) is still emitted, anchored to that id: it is spend. So its usage_id keeps
 // its key across the restore, and the record is unchanged. restore-lab's capture cleared every
 // entry, so this keeps one in a synthetic save: the restore case's v3 with R2's entry left in.
@@ -247,7 +247,7 @@ test('zed: statuses: false is null; Zed\'s canned results are cancelled and deni
   assert.ok(!ofType(recs, 'message').some((m) => m.parts.some((p) => p.kind === 'tool_result' && p.is_error === false)), 'false never kept');
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. Zed's canned results, `Tool canceled by user` (`cancelled`) and `Permission to run
 // tool denied by user` (`denied`), did not: their is_error is null, though Zed stores true, and the
 // status carries the fact. A call that completed keeps a stored true (the positive control) and
@@ -377,7 +377,7 @@ test('zed: sub-agents: the child states its parent; the parent\'s spawn_agent re
   assert.equal(ofType(golden('lab')[LAB.PARENT], 'link').length, 0, 'the lab parent has no spawn_agent call');
 });
 
-// sessions-model v1.x (#6), §2.1 (`kind`, the native session type): a parent reference is not a
+// sessions-model v1.x proposal (#6), §2.1 (`kind`, the native session type): a parent reference is not a
 // kind. A thread's subagent_context and its row's parent_id leave `kind` null, each on its own, and
 // the sub-agent is told by its child-side `subagent` link.
 test('zed: kind is null for every session, a sub-agent included, whether subagent_context or the row\'s parent_id names the parent; the child-side link carries it', () => {

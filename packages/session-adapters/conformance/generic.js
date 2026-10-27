@@ -38,7 +38,7 @@ export const ORPHAN_RESULTS = {
 
 // Results whose `is_error` is true beside a non-zero `exit_code`, each because the harness store
 // keeps a failure flag for it: harness, then session, then call_id, then the flag. A non-zero
-// `exit_code` alone never makes `is_error` true (sessions-model v1.x (#6), §2.3), so a true beside
+// `exit_code` alone never makes `is_error` true (sessions-model v1.x proposal (#6), §2.3), so a true beside
 // one anywhere else is a finding (M.is-error). The harness's own tests show each flag (the
 // matrix's M.is-error cell names them).
 export const FAILURE_FLAGS = {
@@ -70,7 +70,7 @@ export const USAGE_SHAPE = {
   cursor: [['per_message'], ['message_id']],
   'cursor-agent': [[], []],
   // per_turn from request_token_usage only where cumulative_token_usage is empty (sessions-model
-  // v1.x (#6), §2.4).
+  // v1.x proposal (#6), §2.4).
   zed: [['per_session', 'per_turn'], ['session', 'message_id']],
   devin: [['per_response'], ['message_id']],
 };
@@ -145,7 +145,7 @@ export function recordChecks(h, views) {
       if (!calls.has(id) && !ORPHAN_RESULTS[h]?.[sid]?.[id]) add('M.tool-linkage', `${sid}: result for ${id}, which no call of the session has`);
     }
 
-    // M.is-error (v1.2, sessions-model v1.x (#6), §2.3): `is_error` describes a call that
+    // M.is-error (sessions-model v1.x proposal (#6), §2.3): `is_error` describes a call that
     // completed, so a cancelled or denied result has none. A false beside a non-zero `exit_code` is
     // a flag that says success beside it, unreliable for that result, so null instead. A true
     // beside one needs the harness store's failure flag (FAILURE_FLAGS): never the exit code alone.

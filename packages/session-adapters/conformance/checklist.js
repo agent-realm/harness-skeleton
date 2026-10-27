@@ -15,7 +15,7 @@ export const ITEMS = [
   { id: 'M.incarnation', of: 'sessions-model', title: 'Incarnation: reuse is told apart where it can be, declared where it cannot' },
   { id: 'M.anchored-ids', of: 'sessions-model', title: 'Anchored ids: a truncate and regrow gives new keys under a new anchor, the same key revised under a surviving one' },
   { id: 'M.tool-linkage', of: 'sessions-model', title: 'Tool linkage: a tool_call with a result links to exactly one tool_result' },
-  { id: 'M.is-error', of: 'sessions-model', title: 'is_error (v1.2): every tool_result copies the store\'s own flag; null where it has none, where the flag says success beside a shell\'s non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true' },
+  { id: 'M.is-error', of: 'sessions-model', title: 'is_error (v1.x proposal (#6)): every tool_result copies the store\'s own flag; null where it has none, where the flag says success beside a shell\'s non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true' },
   { id: 'M.folding', of: 'sessions-model', title: 'Folding: a repeated native id yields one record per key, in its last state' },
   { id: 'M.migration-fold', of: 'sessions-model', title: 'Migration fold: migration copies fold only on evidence; identical records stay apart' },
   { id: 'M.explicit-links', of: 'sessions-model', title: 'Explicit links: each explicit link yields one link with the right fields' },

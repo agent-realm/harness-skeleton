@@ -96,7 +96,7 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
   non-empty string keys and call ids that are unique and carry no time, one session record with
   `setup`, usage with `tool_prompt` and no retired `basis`, an error part's `error_kind`.
 - **The conformance matrix**: `conformance/checklist.js` lists the 32 adapter-side items of
-  sessions-model v1 (21, and v1.2's `is_error`) and sessions v1 (10); `conformance/matrix.js` says, for every item and
+  sessions-model v1 (21, and the v1.x proposal's `is_error`) and sessions v1 (10); `conformance/matrix.js` says, for every item and
   every harness, what proves it: `generic` (a check in `conformance/generic.js`, run over every
   fixture case), a named test, `n/a` with the reason, or `open` with the reason, for an item
   whose reading waits on a ruling (no cell is `open` today). `docs/conformance-matrix.md` is
@@ -333,7 +333,7 @@ derives it.
 ### devin, opencode, vscode, agy, cursor, cursor-agent and goose: `is_error` is the stored flag
 
 sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
-v1.2: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
+the v1.x proposal: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
 and where its flag is unreliable: a flag that says success beside a shell's non-zero `exit_code`
 is unreliable for that result, so that result's `is_error` is null, and the harness store's other
 results keep the flag. An adapter never derives `is_error` from `exit_code` or from the output's
@@ -508,7 +508,7 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   for either is known, so their results stay `completed` with the store's flag. `docs/live-check.md`
   lists both as not established: what would establish each status, and the mapping that would
   apply (`denied` for a rejection, `cancelled` for an interrupt or an abort, `is_error` null).
-- **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
+- **The conformance matrix gains `M.is-error`**, the sessions-model v1.x proposal's adapter-side `is_error`
   item (sessions-model v1.x proposal (#6), §2.3): every `tool_result` copies the harness store's own flag,
   and is null where the store has none, where the flag says success beside a shell's non-zero
   `exit_code`, and where `status` is `cancelled` or `denied`; a fixture result with a non-zero

@@ -641,7 +641,7 @@ Documentation and tests only: no record, unit or state changes, so no `adapter_v
   `files`: it needs `fixtures/` and `conformance/`, which do not ship either.
 - **Install and deploy** in `AGENTS.md`: from a checkout, by a `file:` path from another project,
   what ships, and what upgrading a consumer asks.
-- **The live check** (`docs/live-check.md`): no live run is made for this release. 40 items are
+- **The live check** (`docs/live-check.md`): no live run is made for this release. 42 items are
   marked not established (no live run), each with what would establish it. One, Zed's checkpoint
   restore and regrow, is marked confirmed by the `zed/restore-lab` capture. A confirmed item is
   now marked, naming its capture or fixture, instead of deleted; no item is deleted.

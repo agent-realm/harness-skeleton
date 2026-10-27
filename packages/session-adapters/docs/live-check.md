@@ -17,7 +17,7 @@ by a capture that is now a fixture, and is marked **confirmed** with that fixtur
 | Status | Items |
 |---|---|
 | Confirmed | 1 |
-| Not established (no live run) | 40 |
+| Not established (no live run) | 42 |
 
 When a live run confirms an item, mark it confirmed and name the capture or fixture that shows
 it; do not delete it. When the real shape differs, fix the adapter and its fixture in the same

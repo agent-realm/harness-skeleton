@@ -522,6 +522,105 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   Over the goldens as they stood before the fixes above, the check finds 19 results in ten
   harnesses; after them, none.
 
+### `cancelled` and `denied`: a harness's own fixed string, matched exactly
+
+sessions-model v1.x proposal (#6), §2.3 (`tool_result`): `cancelled` and `denied` come from a
+structured marker the harness store writes, or from a fixed string the harness itself writes for
+that case (never tool or model output), matched exactly and listed for that harness in the
+sessions-model annex §5, v1.x proposal (#6); never from a pattern searched in free text. Where a
+status goes, `is_error` copies the store's flag. Each adapter below matched text otherwise; each
+bumps its `adapter_ver` once. No key changes. The strings, each read from the harness's source at
+the version the fixtures came from:
+
+| Harness | Text, exactly | Status | Source |
+|---|---|---|---|
+| zed | `Tool canceled by user` | `cancelled` | Zed v1.24.3, `crates/agent/src/thread.rs:73` |
+| zed | `Permission to run tool denied by user` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:6748`, `:6230`, `:6235` |
+| zed | `Permission denied: user sent a follow-up message instead of approving the tool call.` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:74-75` |
+| goose | `The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.` | `denied` | Goose v1.55.0, `crates/goose/src/agents/tool_execution.rs:151-153` |
+| goose | `Tool call was interrupted before completing` (no final period) | `cancelled` | Goose v1.55.0, `crates/goose-agent/src/machine.rs:83-86` |
+| opencode | `The user rejected permission to use this specific tool call.` | `denied` | OpenCode v1.19.3, `packages/core/src/v1/permission.ts:7-11` |
+
+- **zed (adapter_ver 0.2.2 → 0.2.3).** The three texts were compared with the result's content
+  joined into one string, whatever `is_error` said. They now count only in the shape Zed writes
+  them, which is also what Zed's own `is_canceled_tool_result` asks (`thread.rs:1734-1741`):
+  `is_error: true` and a content of exactly that one Text item, the whole text equal. A result that
+  says success, several items that join to the text, or a text that merely contains it is
+  `completed`, with the stored flag (a stored false stays null, as before). A built-in tool's own
+  cancel error (`Edit cancelled by user` and the like) is not one of the three and stays
+  `completed`. A content stored as one Text value rather than a list counts as that one item,
+  still whole, exact and with `is_error: true`: builds before Zed commit bf3fc2336d ("agent: Allow
+  tools to output multiple content parts") stored every tool result's content so, the canned
+  cancel included (`thread.rs:2746` at its parent), and Zed v1.24.3 reads that legacy value as a
+  list of one (`crates/language_model_core/src/request.rs:104-146`).
+  - Goldens: none change; the fixture's two canned results are in Zed's shape. The tests edit a
+    copy for the near misses and for the single-value shape, and the matrix's M.is-error cell for
+    zed names both.
+- **goose (adapter_ver 0.2.1 → 0.2.2).** A result was `cancelled` where its text started with
+  `Tool call was interrupted before completing`, `denied` where it started with `The user has
+  declined to run this tool`, and `cancelled` where it was `(no output)` with `isError` and no exit
+  code (read as Ctrl-C during a shell call). The two texts now count only whole and exact, in the
+  shape goose writes them (an MCP error result, `isError: true`, whose content is that one text
+  block). `(no output)` is the developer shell's output for an empty result (Goose v1.55.0,
+  `crates/goose/src/agents/platform_extensions/developer/shell.rs:736`), so that heuristic is
+  gone: such a call is `completed`, with its `isError`. The stored permission
+  (`toolConfirmationResponse`) still decides first where it says `cancel`, `deny_once` or
+  `always_deny`; goose stores a Cancel at the approval prompt as `deny_once`, and the interrupted
+  text then says `cancelled`, as before.
+  - Fixture: the `features` declined and interrupted results now carry goose's own texts. Before,
+    the declined one held only its first two sentences and the interrupted one a final period.
+  - Goldens: three tool results, `features` session `20261021_2`: `msg_rs` (`call-sleep`, the
+    Ctrl-C): `status` `cancelled` → `completed` and `is_error` `null` → `true`; `msg_rr`
+    (`call-rm`, still `denied`) and `msg_ri` (`call-rm2`, still `cancelled`): `output` and
+    `output_len` (79 → 167, 44 → 43) follow the fixture. Each message's `cmp_sha` and its entry of
+    the session's `fingerprint.cmp_shas` change with them. Nothing else moves; `lab` and
+    `conformance-goose-sentinel` are unchanged.
+- **opencode (adapter_ver 0.2.1 → 0.2.2).** A tool part in `error` was `denied` where its error
+  text contained `rejected permission`, in any case. It is `denied` now only where the stored
+  `state.error` is OpenCode's own text, whole: `PermissionRejectedError`'s message, which OpenCode
+  v1.19.3 stores as the error string (`packages/opencode/src/session/processor.ts:186-194`). An
+  error that contains the words, the text after a prefix, and a rejection with feedback
+  (`PermissionCorrectedError`, whose text embeds the user's words: no fixed string) are
+  `completed`, with the state status as the flag (true). v2 parts (`session_message`) never held
+  the text: a declined permission there halts the loop instead of becoming a tool result.
+  - Goldens: none change for this; the fixture's refused permission is OpenCode's text, whole.
+    The earlier test edited a copy with an `Error: ` prefix before the text and expected
+    `denied`; it now writes the text as OpenCode stores it, and a new test shows the near misses.
+    The matrix's M.is-error cell for opencode names it.
+- **opencode: a call cut off by an interrupt is `cancelled`, by its structured marker (the same
+  adapter_ver, 0.2.2).** After an abort or a retry, OpenCode's cleanup writes every call still
+  open as an `error` part with `metadata.interrupted: true`, beside the text `Tool execution
+  aborted` (OpenCode v1.19.3, `packages/opencode/src/session/processor.ts:591-607`). Such a call
+  was `completed` with `is_error` true. It is `cancelled` now, with `is_error` null, where the
+  part is `error` and `metadata.interrupted` is true, which is OpenCode's own test
+  (`packages/opencode/src/session/prompt.ts:96-100`). The marker decides, never the text: the
+  same text without the marker, or with the marker false or a string, stays `completed` with the
+  flag, and the marker beside another text is `cancelled`. v2 parts are unchanged.
+  - Fixture: `features` gains a session, `Stopped fetch`: a turn stopped while a webfetch call
+    was open, the call written as the cleanup writes it and the message's error a
+    MessageAbortedError. Synthetic, from OpenCode's source; no capture holds an interrupt.
+  - Goldens: `features` gains that session's three records, a user message, an assistant message
+    and the session. The call is `cancelled`, `is_error` null, `output` `Tool execution
+    aborted` (22 bytes), `truncated` and `exit_code` null; the assistant message is
+    `interrupted` and carries the MessageAbortedError as an `error` part. Nothing else moves; the
+    list test counts seven sessions in `features`.
+  - Test: a call cut off by an interrupt is cancelled by its structured marker, with the near
+    misses above; the matrix's M.is-error cell for opencode names it.
+- **agy (adapter_ver 0.2.1 → 0.2.2).** An ERROR step whose error matched `/denied/i` was `denied`
+  with `is_error` null, in the conversation database and in the transcript. agy has no structured
+  denial marker the adapter reads (the step's `permissions` blob is not decoded) and no fixed denial
+  string: its denial error embeds the command, and agy's source is not public. So nothing marks a
+  denial: a denied command is an ERROR step or line, `completed`, with the store's flag, true. A
+  CANCELED or INTERRUPTED step or line is still `cancelled`, from its status.
+  - Goldens: one tool result, `features` session `63e1ede9…`, step G2 (message `d24bade1…`,
+    `call_322814`, the denied command): `status` `denied` → `completed` and `is_error` `null` →
+    `true`, with the message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`.
+    The message's own `status` stays `error`. Nothing else moves.
+- **No other adapter decides `cancelled` or `denied` from text.** claude-code and codex map
+  neither; copilot-cli (`error.code`), cursor (the bubble's status, `rejected`), cursor-agent (the
+  result's oneof case, `outcome`), devin (`cognition.ai/rejected` and `canceled`, the failure
+  reason), gemini-cli (`status`) and vscode (`isConfirmed`, `modelState`) read a structured marker.
+
 ### Guides, examples, how to install, and the live check's status
 
 Documentation and tests only: no record, unit or state changes, so no `adapter_ver` or
@@ -538,7 +637,7 @@ Documentation and tests only: no record, unit or state changes, so no `adapter_v
   one script: `01-describe`, `02-list-sessions`, `03-read-and-derive` (with the session's `kind`,
   each tool result's `status`, `is_error` and `exit_code`, usage by granularity and anchor, and
   the links), `04-incremental-read` (`reset`, `appended`, `unchanged` and a rewrite) and
-  `05-full-pass` (every fixture case of every harness, written as JSON Lines: 1255 records, the
+  `05-full-pass` (every fixture case of every harness, written as JSON Lines: 1258 records, the
   goldens' own). `test/examples.test.js` runs each one, and fails on an exit other than 0, a
   scratch path, home directory, host name or checkout path in the output, a second run that prints
   something else, or a file left in its temp directory. `examples/` is not in the package's

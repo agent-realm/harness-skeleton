@@ -46,21 +46,28 @@ PR, then mark it confirmed. A capture that becomes a fixture is scrubbed first
   command's exit code in an `item_completed` CommandExecution event. In the fixture that event
   names no call id, so `exit_code` stays null there. To establish: check whether a real event
   carries one to join on.
-- `cancelled` and `denied` come only from a structured marker the harness store writes, never
-  from the output's text (sessions-model v1.x proposal (#6), §2.3). For these two harnesses, neither is
-  established (no live run, and no fixture holds the case), so every result is `completed` today:
+- `cancelled` and `denied` come from a structured marker the harness store writes, or from a
+  fixed string the harness itself writes for that case (never tool or model output), matched
+  exactly and listed for that harness in the sessions-model annex §5, v1.x proposal (#6); never
+  from a pattern in free text (sessions-model v1.x proposal (#6), §2.3). For these two harnesses,
+  neither is established (no live run, and no fixture holds the case), so every result is
+  `completed` today:
   - **Claude Code: a user's rejection of a tool call, or an interrupt during one.** Not
     established (no live run). The adapter copies the `tool_result` block's `is_error`. What would
     establish a status: a structured field the store writes for the rejection or the interrupt,
     beside the block rather than in its text. If one is found, a rejection is `denied` and an
     interrupt `cancelled`, each with `is_error` null. If the store tells it only in the result's
-    text, the result stays `completed`, with the block's own flag.
+    text, that text counts only where it is a fixed string Claude Code itself writes for the case,
+    read from a source the annex can cite and matched exactly; otherwise the result stays
+    `completed`, with the block's own flag.
   - **Codex: an aborted call (`aborted`).** Not established (no live run). The adapter copies a
     stored `success` and is null without one. What would establish a status: `aborted` as a field
     or a status of the call's output, or an event that names the call. The `turn_aborted` events
     in the fixtures (`reason: interrupted`) name no call. If such a field is found, the call is
-    `cancelled`, with `is_error` null. If `aborted` is only the output's text, the result stays
-    `completed`, with the store's flag (null where the output keeps none).
+    `cancelled`, with `is_error` null. If `aborted` is only the output's text, it counts only where
+    it is a fixed string Codex itself writes for the case, matched exactly (Codex's source is
+    public); otherwise the result stays `completed`, with the store's flag (null where the output
+    keeps none).
 
 ## Copilot CLI
 
@@ -108,6 +115,11 @@ PR, then mark it confirmed. A capture that becomes a fixture is scrubbed first
   run). To establish: dump OpenCode's own schema and compare it with the fixture's.
 - **A v2 assistant row, which was rebuilt from its events.** Not established (no live run). To
   establish: capture a v2 assistant row before a revert deletes it.
+- **A call cut off by a stopped turn.** Not established (no live run). An `error` part with
+  `metadata.interrupted: true` and the text `Tool execution aborted`, read from OpenCode's source
+  (`packages/opencode/src/session/processor.ts:591-607`). The `features` session `Stopped fetch`
+  is synthetic. The adapter makes such a call `cancelled`, `is_error` null, from the marker. To
+  establish: stop a turn while a call runs and check the stored part.
 
 ## Antigravity (agy)
 
@@ -171,6 +183,11 @@ PR, then mark it confirmed. A capture that becomes a fixture is scrubbed first
 - **Editing and deleting a thread, and the rule that detects a legacy agent-1 thread.** Not
   established (no live run). To establish: edit a sent message, delete a thread, and capture a
   thread in the older agent-1 format.
+- **A canned cancel or denial stored as one Text value rather than a list.** Not established (no
+  live run). Builds before Zed's multi-part tool content (commit bf3fc2336d) wrote it so. It is
+  read from Zed's source history: no fixture or capture holds one, and the test edits a copy. The
+  adapter reads it as Zed v1.24.3 does, a list of one. To establish: open a thread such a build
+  saved with a cancelled call and check the stored content.
 
 ## Devin Local
 

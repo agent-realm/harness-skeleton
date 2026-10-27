@@ -258,14 +258,77 @@ test('zed: is_error is null for Zed\'s canned cancel and denial; a completed cal
       .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
     const r = resultsOf();
     assert.deepEqual([r[C.WAIT], r[C.CLEAN], r[C.TEST]], [['cancelled', null], ['denied', null], ['completed', null]], 'stored true, true, false');
-    // Edited in this copy: the shell's result is stored true (kept), the canned cancel false.
+    // Edited in this copy: the shell's result is stored true (kept). A canned text stored false is
+    // not Zed's write (Zed writes each with true): the next test shows it is completed.
     const t = cartThread();
     const results = (callId) => t.messages.find((m) => m.Agent && m.Agent.tool_results[callId]).Agent.tool_results[callId];
     results(C.TEST).is_error = true;
-    results(C.WAIT).is_error = false;
     save(dir, T.CART, t);
     const e = resultsOf();
     assert.deepEqual([e[C.TEST], e[C.WAIT], e[C.CLEAN]], [['completed', true], ['cancelled', null], ['denied', null]]);
+  });
+});
+
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)). Zed's three are matched only as Zed writes them (Zed v1.24.3,
+// crates/agent/src/thread.rs): `is_error: true` and a content of exactly that one Text item, as
+// Zed's own `is_canceled_tool_result` asks (:1734-1741). Anything else is completed with the
+// store's flag.
+test('zed: a canned result is matched exactly, in the shape Zed writes it (is_error true, that one Text item); a near miss is completed with the store\'s flag', () => {
+  withStore('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[T.CART], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    // The positive control: the fixture's two canned results, as Zed writes them.
+    const r = resultsOf();
+    assert.deepEqual([r[C.WAIT], r[C.CLEAN]], [['cancelled', null], ['denied', null]]);
+    // Edited in this copy.
+    const t = cartThread();
+    const results = (callId) => t.messages.find((m) => m.Agent && m.Agent.tool_results[callId]).Agent.tool_results[callId];
+    const set = (callId, isError, content) => Object.assign(results(callId), { is_error: isError, content });
+    set(C.READ, true, [{ Text: 'Permission denied: user sent a follow-up message instead of approving the tool call.' }]);
+    set(C.TEST, false, [{ Text: 'Tool canceled by user' }]);
+    set(C.WAIT, true, [{ Text: 'Tool canceled' }, { Text: ' by user' }]);
+    set(C.CLEAN, true, [{ Text: 'Permission to run tool denied by user: rm -rf build' }]);
+    set(C.EDIT, true, [{ Text: 'Edit cancelled by user' }]);
+    save(dir, T.CART, t);
+    const e = resultsOf();
+    assert.deepEqual(e[C.READ], ['denied', null], 'the follow-up denial, as Zed writes it: denied');
+    assert.deepEqual(e[C.TEST], ['completed', null], 'the cancel text in a result that says success is a tool\'s output: completed (a stored false is null)');
+    assert.deepEqual(e[C.WAIT], ['completed', true], 'two Text items that join to the cancel text: not Zed\'s shape, completed with the stored true');
+    assert.deepEqual(e[C.CLEAN], ['completed', true], 'a text that merely contains the denial: completed with the stored true');
+    assert.deepEqual(e[C.EDIT], ['completed', true], 'a built-in tool\'s own cancel error is not one of the three: completed with the stored true');
+  });
+});
+
+// The legacy shape of the same rule. Builds before Zed commit bf3fc2336d ("agent: Allow tools to
+// output multiple content parts") stored a tool result's content as one value, not a list: the
+// canned cancel as `is_error: true` and `{"Text": "Tool canceled by user"}` (thread.rs at
+// cb9dc8daf1, :2746). Zed v1.24.3 reads such a value as a list of one
+// (crates/language_model_core/src/request.rs:104-146), and so does the adapter: the whole text,
+// exact, with `is_error: true`. Anything else is completed with the store's flag.
+test('zed: a canned result stored as one Text value, not a list (builds before multi-part tool content), is matched as Zed reads it; a near miss is completed with the store\'s flag', () => {
+  withStore('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[T.CART], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    // Edited in this copy.
+    const t = cartThread();
+    const results = (callId) => t.messages.find((m) => m.Agent && m.Agent.tool_results[callId]).Agent.tool_results[callId];
+    const set = (callId, isError, content) => Object.assign(results(callId), { is_error: isError, content });
+    // The positive control: the cancel and the denial as one Text value each, as those builds wrote
+    // them (a serde externally tagged `{"Text": …}`), and the follow-up denial as a bare string,
+    // which Zed's reader also takes for a Text.
+    set(C.WAIT, true, { Text: 'Tool canceled by user' });
+    set(C.CLEAN, true, { Text: 'Permission to run tool denied by user' });
+    set(C.READ, true, 'Permission denied: user sent a follow-up message instead of approving the tool call.');
+    // Near misses.
+    set(C.TEST, false, { Text: 'Tool canceled by user' });
+    set(C.EDIT, true, { Text: 'Permission to run tool denied by user: rm -rf build' });
+    save(dir, T.CART, t);
+    const e = resultsOf();
+    assert.deepEqual([e[C.WAIT], e[C.CLEAN], e[C.READ]], [['cancelled', null], ['denied', null], ['denied', null]], 'one Text value holding a canned text, with is_error true');
+    assert.deepEqual(e[C.TEST], ['completed', null], 'the cancel text in a single value that says success: completed (a stored false is null)');
+    assert.deepEqual(e[C.EDIT], ['completed', true], 'a single value that merely contains the denial: completed with the stored true');
   });
 });
 

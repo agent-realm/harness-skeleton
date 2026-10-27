@@ -104,7 +104,7 @@ test('opencode: list names each session and its sources; the hint moves with the
   withCase('features', (dir) => {
     const store = storeOf(adapter, storeFile(dir));
     const got = adapter.list(store);
-    assert.equal(got.length, 6);
+    assert.equal(got.length, 7, 'A, P, CH, H, F, V and the interrupted fetch I');
     assert.deepEqual(got.map((s) => s.session_id), [...got.map((s) => s.session_id)].sort());
     const [A] = sessionOf(golden('features'), 'Toy cart work');
     const a = got.find((s) => s.session_id === A);
@@ -313,9 +313,10 @@ test('opencode: is_error is the state status: completed beside a non-zero exit i
 });
 
 // sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
-// completed. A refused permission (an `error` status whose error says so: `denied`) and a call cut
-// off while pending or running (`cancelled`) did not: their is_error is null and the status carries
-// the fact. A call that completed keeps the state status as its flag (the positive control).
+// completed. A refused permission (an `error` status whose error is OpenCode's own text: `denied`)
+// and a call cut off while pending or running (`cancelled`) did not: their is_error is null and the
+// status carries the fact. A call that completed keeps the state status as its flag (the positive
+// control).
 test('opencode: is_error is null where the call did not complete: a refused permission, a call cut off; the status carries the fact', () => {
   withCase('features', (dir) => {
     const resultsOf = () => Object.fromEntries(Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
@@ -323,13 +324,70 @@ test('opencode: is_error is null where the call did not complete: a refused perm
     const r = resultsOf();
     assert.deepEqual(r['chatcmpl-tool-FixtureFixt00050'], ['denied', null], 'the fixture\'s refused permission');
     assert.deepEqual([r['chatcmpl-tool-FixtureFixt00049'], r.call_4b13d21247], [['completed', true], ['completed', false]], 'the positive control: error; completed');
-    // Edited in this copy: the v1 read is refused, and the v1 shell is cut off while running.
+    // Edited in this copy: the v1 read is refused (OpenCode's own text, as OpenCode stores it), and
+    // the v1 shell is cut off while running.
     const w = new DatabaseSync(storeFile(dir));
-    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', 'Error: The user rejected permission to use this specific tool call.') WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run();
+    w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', 'The user rejected permission to use this specific tool call.') WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run();
     w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'running') WHERE json_extract(data, '$.callID') = 'call_bc3a64f28f'").run();
     w.close();
     const e = resultsOf();
     assert.deepEqual([e.call_4b13d21247, e.call_bc3a64f28f], [['denied', null], ['cancelled', null]]);
+  });
+});
+
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)); never from a pattern in free text. OpenCode's text for a refused
+// permission (OpenCode v1.19.3, packages/core/src/v1/permission.ts:7-11) counts only as the whole
+// stored error. An error that merely contains it, or the words, is completed with the state status
+// as its flag (true).
+test('opencode: a refused permission is OpenCode\'s own text, matched exactly as the whole stored error; a near miss is completed with the flag', () => {
+  withCase('features', (dir) => {
+    const resultOf = (call) => Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
+      .filter((p) => p.kind === 'tool_result' && p.call_id === call).map((p) => [p.status, p.is_error])[0];
+    const refuse = (error) => {
+      const w = new DatabaseSync(storeFile(dir));
+      w.prepare("UPDATE part SET data = json_set(data, '$.state.status', 'error', '$.state.error', ?) WHERE json_extract(data, '$.callID') = 'call_4b13d21247'").run(error);
+      w.close();
+      return resultOf('call_4b13d21247');
+    };
+    // The positive control: the fixture's refused permission, and the same text on another call.
+    assert.deepEqual(resultOf('chatcmpl-tool-FixtureFixt00050'), ['denied', null]);
+    assert.deepEqual(refuse('The user rejected permission to use this specific tool call.'), ['denied', null]);
+    // Near misses.
+    assert.deepEqual(refuse('EACCES: rejected permission to open toyshop/cart.py'), ['completed', true], 'a tool\'s error with the words in it');
+    assert.deepEqual(refuse('Error: The user rejected permission to use this specific tool call.'), ['completed', true], 'the text after a prefix: not the whole error');
+    assert.deepEqual(refuse('The user rejected permission to use this specific tool call with the following feedback: run the tests first'), ['completed', true], 'a rejection with feedback embeds the user\'s words: no fixed string');
+  });
+});
+
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` comes from a structured marker the harness
+// store writes. OpenCode's cleanup marks a call cut off by a stopped turn with
+// `metadata.interrupted: true` on an `error` part, beside the text `Tool execution aborted`
+// (OpenCode v1.19.3, packages/opencode/src/session/processor.ts:591-607). The marker decides, as
+// OpenCode's own check reads it (packages/opencode/src/session/prompt.ts:96-100): never the text.
+test('opencode: a call cut off by an interrupt is cancelled by its structured marker, metadata.interrupted, never by its text; a near miss is completed with the flag', () => {
+  withCase('features', (dir) => {
+    const resultOf = (call) => Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))
+      .filter((p) => p.kind === 'tool_result' && p.call_id === call).map((p) => [p.status, p.is_error, p.output])[0];
+    const edit = (status, error, metadata) => {
+      const w = new DatabaseSync(storeFile(dir));
+      w.prepare("UPDATE part SET data = json_set(data, '$.state.status', ?, '$.state.error', ?, '$.state.metadata', json(?)) WHERE json_extract(data, '$.callID') = 'call_4b13d21247'")
+        .run(status, error, JSON.stringify(metadata));
+      w.close();
+      return resultOf('call_4b13d21247').slice(0, 2);
+    };
+    // The positive control: the fixture's interrupted call, as OpenCode writes it, and the marker
+    // on another call, its metadata kept.
+    assert.deepEqual(resultOf('chatcmpl-tool-FixtureFixt00051'), ['cancelled', null, 'Tool execution aborted']);
+    assert.deepEqual(edit('error', 'Tool execution aborted', { output: '3 passed', exit: 0, truncated: false, interrupted: true }), ['cancelled', null]);
+    // The marker decides, not the text: another error text beside it is cancelled too.
+    assert.deepEqual(edit('error', 'Tool execution interrupted', { interrupted: true }), ['cancelled', null], 'the marker with another text');
+    // Near misses: the text without the marker is a tool's error, completed with the flag (true).
+    assert.deepEqual(edit('error', 'Tool execution aborted', {}), ['completed', true], 'the text, no marker');
+    assert.deepEqual(edit('error', 'Tool execution aborted', { interrupted: false }), ['completed', true], 'the text, the marker false');
+    assert.deepEqual(edit('error', 'Tool execution aborted', { interrupted: 'true' }), ['completed', true], 'the text, the marker a string');
+    assert.deepEqual(edit('completed', null, { output: '3 passed', exit: 0, truncated: false, interrupted: true }), ['completed', false], 'the marker on a completed part: not OpenCode\'s write, the flag (false)');
   });
 });
 

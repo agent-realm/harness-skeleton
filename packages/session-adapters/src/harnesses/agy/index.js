@@ -625,13 +625,18 @@ function fromDb(st, sid, me) {
         const output = r.result || (s.status === ST.ERROR ? err : '') || '';
         const exit = exitCodeOf(r, s.status);
         status = doneStatus(s);
-        const result = s.status === ST.ERROR && /denied/i.test(err) ? 'denied' : s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed';
+        // `cancelled` is the step's own status, CANCELED or INTERRUPTED. Nothing marks a denial:
+        // `cancelled` and `denied` come from a structured marker or a fixed string the harness
+        // itself writes, matched exactly (sessions-model v1.x proposal (#6), §2.3, and the
+        // sessions-model annex §5, v1.x proposal (#6)), and agy's denial error embeds the command,
+        // its source is not public and the step's `permissions` blob is not decoded. A denied
+        // command is an ERROR step: `completed`.
+        const result = s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed';
         // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x proposal (#6),
         // §2.3): ERROR gives true, DONE false. A DONE beside a run_command's non-zero `exit_code` is
         // unreliable for that result: its `is_error` is null, and the other results keep the flag.
-        // It describes a call that completed: a CANCELED or INTERRUPTED step (`cancelled`) and a
-        // denied one (`denied`) give null, and the status carries the fact. Never derived from the
-        // exit code or the text.
+        // It describes a call that completed: a CANCELED or INTERRUPTED step (`cancelled`) gives
+        // null, and the status carries the fact. Never derived from the exit code or the text.
         part = {
           kind: 'tool_result', call_id: callId,
           is_error: result !== 'completed' ? null : s.status === ST.ERROR ? true : s.status === ST.DONE && exit !== null && exit !== 0 ? null : false,
@@ -879,15 +884,17 @@ function fromTranscript(st, sid, me) {
       const cancelled = o.status === 'CANCELED' || o.status === 'INTERRUPTED';
       const isError = o.status === 'ERROR' || !!o.error;
       const output = running ? str(o.content) : String(o.content || o.error || '');
-      const result = running ? null : cancelled ? 'cancelled' : isError && /denied/i.test(String(o.error || '')) ? 'denied' : 'completed';
+      // As in the DB: the line's own status says `cancelled`, and nothing marks a denial (a denied
+      // command is an ERROR line: `completed`, with its flag).
+      const result = running ? null : cancelled ? 'cancelled' : 'completed';
       msg = {
         ...base, role: 'tool', source: null, status: running ? 'streaming' : cancelled ? base.status : isError ? 'error' : 'complete',
         parts: [
           {
             // `is_error` describes a call that completed (sessions-model v1.x proposal (#6), §2.3): a
-            // CANCELED or INTERRUPTED line (`cancelled`) and a denied one (`denied`) give null,
-            // whatever an error beside them says, and the status carries the fact. As in the DB, the
-            // status is the line's own field.
+            // CANCELED or INTERRUPTED line (`cancelled`) gives null, whatever an error beside it
+            // says, and the status carries the fact. As in the DB, the status is the line's own
+            // field.
             kind: 'tool_result', call_id: callId, is_error: result === 'completed' ? isError : null,
             status: result,
             output, output_len: utf8Len(output), truncated: null,

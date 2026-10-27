@@ -523,19 +523,35 @@ function resultOf(resp, partId) {
   });
   const sc = isObj(v) && isObj(v.structuredContent) ? v.structuredContent : null;
   const exit = sc && Number.isFinite(sc.exit_code) ? sc.exit_code : null;
+  // The text of an MCP error result that holds one text item and nothing else: the shape goose
+  // writes its own results in (CallToolResult::error with one text block; toolStatus, below).
+  const one = isObj(v) && v.isError === true && content.length === 1 && isObj(content[0]) ? content[0] : null;
+  const sole = one && one.type === 'text' && typeof one.text === 'string' ? one.text : null;
   // A result without `isError` has MCP's default, false: a flag the harness store leaves out where
   // its protocol defines a default has that default (sessions-model v1.x proposal (#6), §2.3). Beside a
   // non-zero `exit_code` it is null, as any flag that says success (build, below).
-  return { output: text.join('\n'), isError: !!(isObj(v) && v.isError === true), exit, files };
+  return { output: text.join('\n'), isError: !!(isObj(v) && v.isError === true), exit, files, sole };
 }
 
-const DECLINED = /^The user has declined to run this tool/;
-const INTERRUPTED = /^Tool call was interrupted before completing/;
+// Goose's own results for a call that did not complete (sessions-model v1.x proposal (#6), §2.3,
+// and the sessions-model annex §5, v1.x proposal (#6)): fixed strings goose itself writes for that
+// case, never a tool's output, each as an MCP error result with that one text block. Matched
+// exactly, only in that shape (`sole`), never as a pattern. Goose v1.55.0 (2bcb8583):
+// - DECLINED: crates/goose/src/agents/tool_execution.rs:151-153 (DECLINED_RESPONSE), written for a
+//   call the user declined (state_machine/ops_toolcalling.rs:951-953, :1050-1054;
+//   ops_remaining_tool_calls.rs:229-232; ops_skills.rs:417-419);
+// - INTERRUPTED: crates/goose-agent/src/machine.rs:83-86, written for every call left without a
+//   result when a run stops (no trailing period).
+const DECLINED = 'The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.';
+const INTERRUPTED = 'Tool call was interrupted before completing';
+// The structured marker first, where it settles the case: the stored toolConfirmationResponse's
+// permission. A Cancel in the approval prompt is stored as deny_once (Goose v1.55.0,
+// crates/goose/src/agents/agent.rs:482-486), and its run stops, so the interrupted result says
+// cancelled before deny_once says denied. Anything else is completed, with the stored `isError`.
 function toolStatus(res, permission) {
-  if (INTERRUPTED.test(res.output)) return 'cancelled';
+  if (res.sole === INTERRUPTED) return 'cancelled';
   if (permission === 'cancel') return 'cancelled';
-  if (permission === 'deny_once' || permission === 'always_deny' || DECLINED.test(res.output)) return 'denied';
-  if (res.isError && res.output === '(no output)' && res.exit === null) return 'cancelled'; // Ctrl-C during a shell call
+  if (permission === 'deny_once' || permission === 'always_deny' || res.sole === DECLINED) return 'denied';
   return 'completed';
 }
 

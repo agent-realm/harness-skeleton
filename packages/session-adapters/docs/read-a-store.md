@@ -196,8 +196,8 @@ lists, reads, derives and validates every fixture case of every harness, and wri
 as JSON Lines. Its last lines:
 
 ```
-46 cases, 124 sessions, 1255 records, 0 findings, 0 errors
-1255 records written as JSON Lines
+46 cases, 125 sessions, 1258 records, 0 findings, 0 errors
+1258 records written as JSON Lines
 ```
 
 `conformance/engine.js` is a minimal consumer that keeps positions, generations and state between

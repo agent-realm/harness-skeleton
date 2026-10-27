@@ -308,7 +308,10 @@ function features() {
 
   // 20261021_2: a confirmation denied, a Ctrl-C during a shell call, a cancel in the approval
   // prompt, a provider error, a reply cut by Ctrl-C (no usage, no ledger row), the output-token
-  // limit.
+  // limit. The declined and the interrupted results carry goose's own texts, exactly as Goose
+  // v1.55.0 writes them (crates/goose/src/agents/tool_execution.rs:151-153,
+  // crates/goose-agent/src/machine.rs:83-86). The Ctrl-C result is the shell's `(no output)` error,
+  // which marks nothing.
   {
     const S2 = '20261021_2';
     const T2 = at(2026, 10, 21, 13, 20, 0);
@@ -318,7 +321,7 @@ function features() {
     s.message(S2, T2 + 2, 'msg_conf', 'assistant', [action({ actionType: 'toolConfirmation', id: 'call-rm', toolName: 'shell', arguments: { command: 'rm README.md' }, prompt: null })], { agentVisible: false });
     s.ledger(S2, T2 + 3, SERVED, 4162, 13, 3072);
     s.message(S2, T2 + 30, `msg_${S2}_35db50cf-7cdf-4c69-9d18-eed5b840014b`, 'user', [action({ actionType: 'toolConfirmationResponse', id: 'call-rm', permission: 'deny_once' })], { userVisible: false, agentVisible: false });
-    s.message(S2, T2 + 30, 'msg_rr', 'user', [resp('call-rm', [text('The user has declined to run this tool. DO NOT attempt to call this tool again.')], { isError: true, resultType: 'complete' })]);
+    s.message(S2, T2 + 30, 'msg_rr', 'user', [resp('call-rm', [text('The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.')], { isError: true, resultType: 'complete' })]);
     s.message(S2, T2 + 32, 'chatcmpl-b2', 'assistant', [text('Not deleted.')], { ...inference(REQ), usage: usage(4200, 5, 3072, 500) });
     s.ledger(S2, T2 + 33, SERVED, 4200, 5, 3072);
     s.message(S2, T2 + 60, 'msg_p2', 'user', [text('Run exactly this shell command: sleep 90; echo late')]);
@@ -329,7 +332,7 @@ function features() {
     s.message(S2, T2 + 82, 'chatcmpl-b4', 'assistant', [req('call-rm2', 'shell', { command: 'rm README.md' }, 'developer')], { ...inference(REQ), usage: usage(4300, 13, 3072, 700) });
     s.ledger(S2, T2 + 83, SERVED, 4300, 13, 3072);
     s.message(S2, T2 + 90, `msg_${S2}_6a1f0c2e-1d3b-4c5a-9e7f-0b1c2d3e4f50`, 'user', [action({ actionType: 'toolConfirmationResponse', id: 'call-rm2', permission: 'deny_once' })], { userVisible: false, agentVisible: false });
-    s.message(S2, T2 + 90, 'msg_ri', 'user', [resp('call-rm2', [text('Tool call was interrupted before completing.')], { isError: true })]);
+    s.message(S2, T2 + 90, 'msg_ri', 'user', [resp('call-rm2', [text('Tool call was interrupted before completing')], { isError: true })]);
     s.message(S2, T2 + 95, 'msg_err', 'assistant', [{ type: 'error', kind: 'other', message: 'Ran into this error: Server error: Server error (503 Service Unavailable) at http://192.0.2.100/v1/chat/completions.' }], { agentVisible: false });
     s.message(S2, T2 + 100, 'msg_p4', 'user', [text('Write a long story about a wooden train.')]);
     s.message(S2, T2 + 105, 'chatcmpl-part', 'assistant', [text('Once upon a time, on the top shelf')], { ...inference(REQ) });

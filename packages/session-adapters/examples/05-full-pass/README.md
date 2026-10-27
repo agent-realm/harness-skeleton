@@ -10,8 +10,8 @@ node examples/05-full-pass/full-pass.js "$(mktemp -d)/records.jsonl"
 ```
 
 - **One row per fixture case:** its sessions, the records derived, and the `validateSession`
-  findings that are not warnings. All are 0. The last line sums them: 46 cases, 124 sessions,
-  1255 records, the same records the reviewed goldens (`fixtures/*/*/expected.json`) hold.
+  findings that are not warnings. All are 0. The last line sums them: 46 cases, 125 sessions,
+  1258 records, the same records the reviewed goldens (`fixtures/*/*/expected.json`) hold.
 - **The JSON Lines file** has one record per line, sealed as `derive` returns it, with its full
   session key. Its `harness_path` names the scratch copy of the case, which is gone once the case
   is done.

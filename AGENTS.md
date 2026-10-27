@@ -11,7 +11,7 @@ working on this repo, and how to install and deploy what it ships.
 - **Adapters**, one per harness, that map the skeleton to and from that harness's native
   layout. `hs` (`bin/hs.js`, `src/`) is the reference adapter, being built one milestone at a
   time; its first driver is Claude Code.
-- **The session adapters**, `packages/session-adapters/` (`@agent-realm/session-adapters`): one
+- **The session adapters**, `packages/harness-session-adapters/` (`@agent-realm/harness-session-adapters`): one
   reader per harness for the sessions contract v0 (`describe`, `list`, `read`, `derive`), with
   the one `host` and `harness_path` implementation. **Maintained with memhouse**: changes there
   go through the package's maintainer. The package imports nothing from `hs` or memhouse; `hs`
@@ -122,7 +122,7 @@ node bin/hs.js describe --harness claude-code --pretty
 
 - **The CLI:** `bin/hs.js`, or `npm link` for an `hs` on PATH. A tool calls it with one `hs/0.2`
   envelope on stdin, or with flags ([`docs/reference/cli-and-protocol.md`](docs/reference/cli-and-protocol.md)).
-- **The packages:** `@agent-realm/session-adapters`, `@agent-realm/skeleton-spec` and
+- **The packages:** `@agent-realm/harness-session-adapters`, `@agent-realm/skeleton-spec` and
   `@agent-realm/scripted-model` are npm workspaces. Another project depends on them through a
   workspace or a `file:` path to this checkout.
 - **Against a real harness:** point `--folder` at a data folder you own. `observe`, `validate`,

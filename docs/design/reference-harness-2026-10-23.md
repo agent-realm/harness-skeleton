@@ -173,7 +173,7 @@ s.close();
 ```
 
 - **Validation:** each call checks its record against the contract before writing, with the
-  package's validator (`@agent-realm/session-adapters/validate`, to be exported at R3 from the
+  package's validator (`@agent-realm/harness-session-adapters/validate`, to be exported at R3 from the
   invariant pass the package runs over every golden). So the writer and the
   conformance checks can never disagree on what a valid record is. An unknown field, a missing
   key, a link without its point, or `source: 'model'` on `role: 'tool'` is a thrown error, never a
@@ -330,12 +330,12 @@ exactly that (§9.2).
 
 ## 8. Language and home
 
-- **Home:** three packages in the harness-skeleton repo, beside `packages/session-adapters`:
+- **Home:** three packages in the harness-skeleton repo, beside `packages/harness-session-adapters`:
   - `packages/sessions-writer`, the writer (§3);
   - `packages/scripted-model` (§5);
   - `packages/reference-harness`, the loop (§4), with the `refh` binary.
 
-  The adapter goes into `packages/session-adapters` (§3.3).
+  The adapter goes into `packages/harness-session-adapters` (§3.3).
 - **Language:** JavaScript on Node.js 22+, ESM, like hs and the package.
   - The hashing, the stream reader, the spec resolver and the conformance runner are already
     there. One language means one implementation of each.

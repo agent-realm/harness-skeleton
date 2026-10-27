@@ -1,11 +1,11 @@
-// The §7.3 shim over the session adapters package (@agent-realm/session-adapters, maintained with
+// The §7.3 shim over the session adapters package (@agent-realm/harness-session-adapters, maintained with
 // memhouse). `hs` reads no harness store itself: its `sessions.*` operations pass sessions v1 §2's
 // JSON straight through to the package, and map the package's typed errors onto the envelope's.
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { ADAPTERS, SessionsError } from '@agent-realm/session-adapters';
-import { harnessPath as storePath } from '@agent-realm/session-adapters/harness-path';
+import { ADAPTERS, SessionsError } from '@agent-realm/harness-session-adapters';
+import { harnessPath as storePath } from '@agent-realm/harness-session-adapters/harness-path';
 import { HsError } from './protocol.js';
 import { harnessPath } from './harness-path.js';
 import { hostId } from './host.js';
@@ -36,7 +36,7 @@ function pass(fn, opts) {
 
 export function adapterFor(harness) {
   const a = ADAPTERS[harness];
-  if (!a) throw new HsError('not_implemented', `no session adapter for ${harness} in @agent-realm/session-adapters yet`, [harness]);
+  if (!a) throw new HsError('not_implemented', `no session adapter for ${harness} in @agent-realm/harness-session-adapters yet`, [harness]);
   return a;
 }
 

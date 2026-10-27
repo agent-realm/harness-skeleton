@@ -17,7 +17,7 @@ The first public cut.
     servers, hooks through a shim, the status line and skills;
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
-  - `@agent-realm/session-adapters`: session readers;
+  - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
 - **Conformance:** eleven tier 1 checks against Claude Code 2.1.307 and Codex 0.160.0, run on

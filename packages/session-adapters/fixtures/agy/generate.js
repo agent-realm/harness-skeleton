@@ -28,6 +28,9 @@
 //              from the scrubbed lab captures
 //              (a fork's transcript after a rewind, a compaction and a resume,
 //              and a transcript sample), not written here.
+//   transcript-cancel
+//              a brain transcript with no DB whose tool results are CANCELED, INTERRUPTED, then
+//              DONE. Synthetic: no capture shows a transcript line with either status.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -237,6 +240,7 @@ export const P = 'ebeea198-9280-4218-ba35-7614e0749736';
 export const C = '9df49d75-5429-4f24-aafb-1dd7442838e0';
 export const R = '5d0c1f9e-2b3a-4c8d-9e7f-6a5b4c3d2e1f';
 export const HUB = 'd6c6acc5-0000-4000-8000-000000000001';
+export const X = '0b5e7c1a-2d4f-4e6a-9c8b-7a6f5e4d3c2b';
 
 export const ID = (k) => cid(`${k}`);
 export const FULL_FIND = `Command exited with code 0.\n\nCommand output:\n${'./toyshop/cart.py\n./toyshop/shelf.py\n./tests/test_cart.py\n./tests/test_shelf.py\n'.repeat(160)}`;
@@ -558,6 +562,33 @@ function transcript() {
   return { dbs: { 'conversation_summaries.db': [SUMMARIES_DDL, sums] }, files: null };
 }
 
+// A DB-less transcript whose tool results did not complete: a command the user stopped (CANCELED),
+// one cut off (INTERRUPTED), then one that ran (DONE). The status is the line's own field, as the
+// DB's step status is the row's (sessions-model v1.x (#6), §2.3).
+function transcriptCancel() {
+  const t = (s) => Date.UTC(2026, 9, 22, 9, 30, 0) + Math.round(s * 1000);
+  const iso = (s) => new Date(t(s)).toISOString().replace(/\.\d+Z$/, 'Z');
+  const req = (s, at) => `<USER_REQUEST>\n${s}\n</USER_REQUEST>\n<ADDITIONAL_METADATA>\nThe current local time is: ${at}.\n</ADDITIONAL_METADATA>`;
+  const run = (cmd) => [{ name: 'run_command', args: { CommandLine: cmd } }];
+  const lines = [
+    { step_index: 0, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: iso(0), content: req('Sleep 90 seconds, then say done.', '2026-10-22T09:30:00+00:00') },
+    { step_index: 1, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: iso(2), input_tokens: 6100, cache_read_tokens: 0, output_tokens: 24, tool_calls: run('sleep 90 && echo done') },
+    { step_index: 2, source: 'MODEL', type: 'GENERIC', status: 'CANCELED', created_at: iso(10) },
+    { step_index: 3, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: iso(60), content: req('Run the tests.', '2026-10-22T09:31:00+00:00') },
+    { step_index: 4, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: iso(62), input_tokens: 6300, cache_read_tokens: 0, output_tokens: 22, tool_calls: run('python3 -m pytest -q') },
+    { step_index: 5, source: 'MODEL', type: 'GENERIC', status: 'INTERRUPTED', created_at: iso(70) },
+    { step_index: 6, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: iso(120), content: req('List the files.', '2026-10-22T09:32:00+00:00') },
+    { step_index: 7, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: iso(122), input_tokens: 6500, cache_read_tokens: 0, output_tokens: 18, tool_calls: run('ls') },
+    { step_index: 8, source: 'MODEL', type: 'GENERIC', status: 'DONE', created_at: iso(123), content: `Created At: ${iso(123).replace('Z', '+00:00')}\nCompleted At: ${iso(123).replace('Z', '+00:00')}\n\nThe command exited with code 0.\nOutput:\ncart.py\ntests\n` },
+    { step_index: 9, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: iso(124), input_tokens: 6700, cache_read_tokens: 0, output_tokens: 9, content: 'cart.py and tests/.' },
+  ];
+  const sums = [summaryInsert(X, { title: 'A stopped sleep', preview: 'Sleep 90 seconds, then say done.', steps: 10, at: '2026-10-22 09:32:04.000000000+00:00' })];
+  return {
+    dbs: { 'conversation_summaries.db': [SUMMARIES_DDL, sums] },
+    files: { [`brain/${X}/.system_generated/logs/transcript_full.jsonl`]: lines.map((l) => JSON.stringify(l) + '\n').join('') },
+  };
+}
+
 function writeCase(name, { dbs, files }) {
   const dir = path.join(HERE, name);
   fs.rmSync(path.join(dir, 'store-sql'), { recursive: true, force: true });
@@ -581,5 +612,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   writeCase('subagent', subagent());
   writeCase('rewind', rewind());
   writeCase('transcript', transcript());
+  writeCase('transcript-cancel', transcriptCancel());
   console.log('agy fixtures written');
 }

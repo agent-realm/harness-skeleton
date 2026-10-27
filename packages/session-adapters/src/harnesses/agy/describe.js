@@ -55,7 +55,8 @@ export const describe = Object.freeze({
     // none); `brain/<id>/` messages, tasks, subagents and
     // artifacts, `transcript.jsonl`, `history.jsonl` and the caches are not read. Without a DB the
     // transcript has no ids, pairs tools by position, never writes a CANCELED step and never
-    // updates a RUNNING one (spec §2, §8).
+    // updates a RUNNING one (spec §2, §8). A CANCELED or INTERRUPTED line, which no capture shows,
+    // is read as the DB's step is: `cancelled` (synthetic fixture: transcript-cancel).
     read: 'lossy',
     reuse: 'impossible', // cascade ids are uuid4, not reused after delete (annex mapping row)
     lifecycle: {

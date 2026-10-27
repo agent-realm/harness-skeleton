@@ -312,6 +312,9 @@ test('vscode: is_error is null where the call did not complete: a denial or a sk
     fs.writeFileSync(file, text);
     const e = resultsOf();
     assert.deepEqual([e.call_A, e.call_C], [['cancelled', null], ['denied', null]]);
+    // A skip beside a `resultError` is still `cancelled`, never `completed` or `denied`, and null.
+    fs.writeFileSync(file, text.replace(`"isConfirmed":{"type":0},"isComplete":true,"source":{"type":"internal","label":"Built-In"},"toolCallId":"call_C"`, `"isConfirmed":{"type":5},"isComplete":true,"source":{"type":"internal","label":"Built-In"},"toolCallId":"call_C"`));
+    assert.deepEqual(resultsOf().call_C, ['cancelled', null], 'a skip beside a resultError');
   });
 });
 

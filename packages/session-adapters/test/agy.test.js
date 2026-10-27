@@ -10,7 +10,7 @@ import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint, filesOf } from '../conformance/runner.js';
 import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
-  A, H, O, F, P, C, R, HUB, ID, SIG, FULL_FIND, T0, E, STATUS, SOURCE, TYPE,
+  A, H, O, F, P, C, R, HUB, X, ID, SIG, FULL_FIND, T0, E, STATUS, SOURCE, TYPE,
   conversation, call, usage, genRow, execRow, enc, anyOf,
 } from '../fixtures/agy/generate.js';
 import { S, ST, decode } from '../src/harnesses/agy/pb.js';
@@ -18,7 +18,7 @@ import { sha256 } from '../src/jcs.js';
 
 const adapter = adapterFor('agy');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'agy');
-const CASES = ['features', 'fork', 'subagent', 'rewind', 'transcript'];
+const CASES = ['features', 'fork', 'subagent', 'rewind', 'transcript', 'transcript-cancel'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const J = 'e96784d2-85ca-49f8-97c0-b271bfad1510';
 const HP = '/home/user/.gemini/antigravity-cli';
@@ -334,6 +334,34 @@ test('agy: is_error is null where the call did not complete: a CANCELED, INTERRU
   ];
   const results = deriveLines(J, lines).changed.filter((r) => r.type === 'message' && r.role === 'tool').map((m) => [m.parts[0].status, m.parts[0].is_error]);
   assert.deepEqual(results, [['denied', null], ['completed', true]]);
+});
+
+// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): a CANCELED or INTERRUPTED transcript
+// line is `cancelled` with is_error null, as the conversation DB's step is. The line's `status` is a
+// structured value the harness store writes, never the output's text. A line that completed keeps
+// its flag (the positive control: DONE false, ERROR true).
+test('agy: transcript only: a CANCELED or INTERRUPTED line is cancelled with is_error null, as in the conversation DB', () => {
+  const tools = (recs) => messages(recs).filter((m) => m.role === 'tool').map((m) => [m.status, m.parts[0].status, m.parts[0].is_error]);
+  // transcript-cancel, a full replay: CANCELED, INTERRUPTED, then DONE.
+  withStore('transcript-cancel', (dir) => {
+    assert.deepEqual(tools(project(fullReplay(adapter, dir).views())[X]), [
+      ['cancelled', 'cancelled', null], ['interrupted', 'cancelled', null], ['complete', 'completed', false],
+    ]);
+  });
+  // Inline: the status wins over an error stored beside it, as in the DB; ERROR and DONE keep the flag.
+  const calls = ['sleep 90', 'pytest', 'make', 'ls'].map((c) => ({ name: 'run_command', args: { CommandLine: c } }));
+  const lines = [
+    { step_index: 0, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: '2026-10-22T09:40:00Z', content: 'Go.' },
+    { step_index: 1, source: 'MODEL', type: 'PLANNER_RESPONSE', status: 'DONE', created_at: '2026-10-22T09:40:01Z', tool_calls: calls },
+    { step_index: 2, source: 'MODEL', type: 'GENERIC', status: 'CANCELED', created_at: '2026-10-22T09:40:02Z', error: 'user denied permission to run command' },
+    { step_index: 3, source: 'MODEL', type: 'GENERIC', status: 'INTERRUPTED', created_at: '2026-10-22T09:40:03Z', error: 'stopped' },
+    { step_index: 4, source: 'MODEL', type: 'GENERIC', status: 'ERROR', created_at: '2026-10-22T09:40:04Z', error: 'make: no rule' },
+    { step_index: 5, source: 'MODEL', type: 'GENERIC', status: 'DONE', created_at: '2026-10-22T09:40:05Z', content: 'cart.py' },
+    { step_index: 6, source: 'USER_EXPLICIT', type: 'USER_INPUT', status: 'DONE', created_at: '2026-10-22T09:40:09Z', content: 'Next.' },
+  ];
+  assert.deepEqual(tools(deriveLines(X, lines).changed), [
+    ['cancelled', 'cancelled', null], ['interrupted', 'cancelled', null], ['error', 'completed', true], ['complete', 'completed', false],
+  ]);
 });
 
 test('agy: automated turns (a task done, a SYSTEM user input), a hidden restart notice', () => {

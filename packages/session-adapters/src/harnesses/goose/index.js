@@ -523,6 +523,9 @@ function resultOf(resp, partId) {
   });
   const sc = isObj(v) && isObj(v.structuredContent) ? v.structuredContent : null;
   const exit = sc && Number.isFinite(sc.exit_code) ? sc.exit_code : null;
+  // A result without `isError` has MCP's default, false: a flag the harness store leaves out where
+  // its protocol defines a default has that default (sessions-model v1.x (#6), §2.3). Beside a
+  // non-zero `exit_code` it is null, as any flag that says success (build, below).
   return { output: text.join('\n'), isError: !!(isObj(v) && v.isError === true), exit, files };
 }
 
@@ -729,9 +732,11 @@ function build(st, key) {
           const status = toolStatus(res, permission.get(str(p.id)));
           toolParts.push({
             part_id: pid, kind: 'tool_result', call_id: claimedBy.get(pk(i, j)) ?? (p.id != null ? str(p.id) : `@${id}:${j}`),
-            // `is_error` is the harness store's own flag, `isError` (sessions-model v1.x (#6), §2.3).
+            // `is_error` is the harness store's own flag, `isError` (sessions-model v1.x (#6), §2.3),
+            // MCP's default false where the result leaves it out (§2.3: a protocol default stands).
             // A flag that says success beside a shell's non-zero `exit_code` is unreliable for that
-            // result: its `is_error` is null, and the other results keep the flag. It describes a
+            // result, the default included: its `is_error` is null, and the other results keep the
+            // flag. It describes a
             // call that completed: a declined (`denied`) or an interrupted (`cancelled`) call's is
             // null, whatever `isError` says, and the status carries the fact.
             is_error: status !== 'completed' || (!res.isError && Number.isInteger(res.exit) && res.exit !== 0) ? null : res.isError,

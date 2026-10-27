@@ -28,6 +28,21 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 - Codex's newer format keeps a command's exit code in an `item_completed` CommandExecution event.
   In the fixture that event names no call id, so `exit_code` stays null there. Check whether a
   real event carries one to join on.
+- `cancelled` and `denied` come only from a structured marker the harness store writes, never
+  from the output's text (sessions-model v1.x (#6), §2.3). For these two harnesses, neither is
+  established (no live run, and no fixture holds the case), so every result is `completed` today:
+  - **Claude Code: a user's rejection of a tool call, or an interrupt during one.** The adapter
+    copies the `tool_result` block's `is_error`. What would establish a status: a structured field
+    the store writes for the rejection or the interrupt, beside the block rather than in its
+    text. If one is found, a rejection is `denied` and an interrupt `cancelled`, each with
+    `is_error` null. If the store tells it only in the result's text, the result stays
+    `completed`, with the block's own flag.
+  - **Codex: an aborted call (`aborted`).** The adapter copies a stored `success` and is null
+    without one. What would establish a status: `aborted` as a field or a status of the call's
+    output, or an event that names the call. The `turn_aborted` events in the fixtures
+    (`reason: interrupted`) name no call. If such a field is found, the call is `cancelled`, with
+    `is_error` null. If `aborted` is only the output's text, the result stays `completed`, with
+    the store's flag (null where the output keeps none).
 
 ## Copilot CLI
 
@@ -45,6 +60,10 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 - `modelState` values other than 1.
 - `kind 3` entries.
 - A `kind 0` in the middle of a file.
+- `isConfirmed.type` 5, read as a skipped tool call: not established (no live run). Only 1 and 4
+  are observed; 5 is the reading the adapter marks UNVERIFIED. The adapter makes such a call
+  `cancelled` with `is_error` null (sessions-model v1.x (#6), §2.3), a `resultError` beside it
+  included. Skip a tool call in a live run and check the stored value.
 
 ## Goose
 
@@ -60,6 +79,8 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 
 - Whether a rewind deletes `gen_metadata` and `executor_metadata` rows.
 - Whether a `response_id` is unique.
+- A transcript line whose `status` is CANCELED or INTERRUPTED: the `transcript-cancel` fixture is
+  synthetic. The adapter reads one as the database reads the step: `cancelled`, `is_error` null.
 
 ## Cursor IDE
 

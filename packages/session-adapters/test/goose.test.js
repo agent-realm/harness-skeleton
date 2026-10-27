@@ -277,6 +277,8 @@ test('goose: is_error is null where the call did not complete: declined, Ctrl-C,
 // sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): a flag that says success beside a
 // shell's non-zero exit_code is unreliable for that result, so its is_error is null; the other
 // results keep `isError`. Never derived from exit_code: `isError: true` beside exit 1 stays true.
+// A result without `isError` has MCP's default, false (§2.3: a flag the harness store leaves out
+// where its protocol defines a default has that default): false beside exit 0, null beside exit 1.
 test('goose: is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null; isError true beside it stays true', () => {
   withStore('features', (dir) => {
     const resultOf = () => ofType(project(fullReplay(adapter, dir).views())[S1], 'message').flatMap((m) => m.parts)

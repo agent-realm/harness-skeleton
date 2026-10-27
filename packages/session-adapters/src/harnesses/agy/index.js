@@ -808,6 +808,8 @@ function fromTranscript(st, sid, me) {
   const rewinds = foldTranscript(L);
   const rewindAt = new Map(rewinds.map((r) => [r.at, r]));
   const idOf = (k) => `@${L[k].off}`;
+  // A line's status, read as the DB's step status is (doneStatus): its own field, never its text.
+  const lineStatus = (s) => (s === 'ERROR' ? 'error' : s === 'CANCELED' ? 'cancelled' : s === 'INTERRUPTED' ? 'interrupted' : 'complete');
   const recs = [];
   const held = noHeld();
   const callOf = new Map(); // GENERIC line -> its planner's call id, by position
@@ -826,7 +828,7 @@ function fromTranscript(st, sid, me) {
     const id = idOf(i);
     const base = {
       type: 'message', message_id: id, parent_id: null, order: pad(L[i].off), agent_id: '',
-      to_user: null, to_model: null, status: o.status === 'ERROR' ? 'error' : 'complete', state: L[i].retracted ? 'retracted' : 'current',
+      to_user: null, to_model: null, status: lineStatus(o.status), state: L[i].retracted ? 'retracted' : 'current',
       on_active_branch: null, ts: isoOf(o.created_at), requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
     };
     let msg;
@@ -874,15 +876,18 @@ function fromTranscript(st, sid, me) {
       if (o.status === 'RUNNING' && i === L.length - 1 && !L[i].retracted) hold = true;
       const callId = callOf.get(i) ?? `@${id}:0`;
       const running = o.status === 'RUNNING';
+      const cancelled = o.status === 'CANCELED' || o.status === 'INTERRUPTED';
       const isError = o.status === 'ERROR' || !!o.error;
       const output = running ? str(o.content) : String(o.content || o.error || '');
-      const result = running ? null : isError && /denied/i.test(String(o.error || '')) ? 'denied' : 'completed';
+      const result = running ? null : cancelled ? 'cancelled' : isError && /denied/i.test(String(o.error || '')) ? 'denied' : 'completed';
       msg = {
-        ...base, role: 'tool', source: null, status: running ? 'streaming' : isError ? 'error' : 'complete',
+        ...base, role: 'tool', source: null, status: running ? 'streaming' : cancelled ? base.status : isError ? 'error' : 'complete',
         parts: [
           {
-            // A denied call did not complete: `is_error` is null, and `denied` carries the fact
-            // (sessions-model v1.x (#6), §2.3).
+            // `is_error` describes a call that completed (sessions-model v1.x (#6), §2.3): a
+            // CANCELED or INTERRUPTED line (`cancelled`) and a denied one (`denied`) give null,
+            // whatever an error beside them says, and the status carries the fact. As in the DB, the
+            // status is the line's own field.
             kind: 'tool_result', call_id: callId, is_error: result === 'completed' ? isError : null,
             status: result,
             output, output_len: utf8Len(output), truncated: null,

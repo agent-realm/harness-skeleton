@@ -390,7 +390,10 @@ a reader that wants a shell's failure reads `exit_code`.
 - **goose (adapter_ver 0.2.1, its one move in this release: see below).** The flag is a tool
   result's `isError`. `isError: false`, or none (read as false), beside a non-zero
   `structuredContent.exit_code` gave false. It gives null. `isError: true` stays true, beside any
-  exit code.
+  exit code. A result without `isError` has MCP's default, false, as sessions-model v1.x (#6),
+  §2.3 now states (a flag the harness store leaves out where its protocol defines a default has
+  that default): false beside exit 0 or no exit code, null beside a non-zero one. The code and the
+  test cite the clause; no behaviour changes for it.
   - Goldens: none change. Both fixture results with exit 1 (`call-1` in `20261021_1` and
     `20261021_8`) carry `isError: true`. The test edits a copy for the other cases.
 
@@ -410,6 +413,19 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `call_213908`, CANCELED) `false` → `null`, and step G2 (message `d24bade1…`, `call_322814`,
     denied) `true` → `null`, with each message's `cmp_sha` and its entry of the session's
     `fingerprint.cmp_shas`. Nothing else moves.
+  - **The transcript reads a CANCELED or INTERRUPTED line as the database reads the step.** A
+    session with no conversation database read such a GENERIC line as `completed` with `false`
+    (`true` beside an `error`), in a `complete` (`error`) message. It is `cancelled` with
+    `is_error` null now, whatever error the line carries, in a `cancelled` or `interrupted`
+    message, as `doneStatus` gives a step; any other line with either status takes the same
+    message status. The status is the line's own field: `cancelled` and `denied` come from a
+    structured marker the harness store writes, never from the output's text (sessions-model v1.x
+    (#6), §2.3). No capture shows such a line.
+  - Goldens: none change; no captured transcript holds either status. One synthetic case is new,
+    `transcript-cancel` (a session with no database, `0b5e7c1a…`: a CANCELED, an INTERRUPTED and a
+    DONE result), with its own golden of 15 records. Its two cancelled results (messages `@552`
+    and `@1192`) are `cancelled`, `null`; the DONE one (`@1818`) is `completed`, `false`. The
+    matrix's M.is-error cell for agy names the new test.
 - **copilot-cli (adapter_ver 0.2.1 → 0.2.2).** A denied call (`error.code: denied`, `denied`) gave
   true from its `success: false`. It gives null, whatever `success` says. A call that completed
   keeps `success` as its flag.
@@ -467,6 +483,9 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   - Goldens: one tool result, `features` session `0a0a0a0a…`, message `response_…048`, `call_D`
     (denied): `parts[2].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab` is unchanged.
+  - A skip's `status` is `cancelled`, never another value, a `resultError` beside it included (the
+    test now shows that case too). The reading of 5 as a skip stays UNVERIFIED: no fixture holds
+    one, and `docs/live-check.md` lists it.
 - **zed (adapter_ver 0.2.1 → 0.2.2).** Zed's canned results, `Tool canceled by user` (`cancelled`)
   and `Permission to run tool denied by user` (`denied`), kept Zed's stored `is_error: true`. They
   give null. A call that completed keeps a stored true, and a stored false stays null (unreliable,
@@ -476,6 +495,12 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `parts[3].is_error` `true` → `null`, with the message's `cmp_sha` and that entry of the
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
     `sentinel` are unchanged.
+- **claude-code and codex: no change.** `cancelled` and `denied` come from a structured marker the
+  harness store writes, never from the output's text (sessions-model v1.x (#6), §2.3). No fixture
+  holds a Claude Code rejection or interrupt, or a Codex `aborted` call, and no structured marker
+  for either is known, so their results stay `completed` with the store's flag. `docs/live-check.md`
+  lists both as not established: what would establish each status, and the mapping that would
+  apply (`denied` for a rejection, `cancelled` for an interrupt or an abort, `is_error` null).
 - **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
   item (sessions-model v1.x (#6), §2.3): every `tool_result` copies the harness store's own flag,
   and is null where the store has none, where the flag says success beside a shell's non-zero

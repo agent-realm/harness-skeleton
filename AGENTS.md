@@ -97,6 +97,10 @@ tools ──depend on──▶ harness-skeleton ◀──implement── adapter
     repository in any form.
   - `node scripts/guard.mjs --self-test` runs the guard's own cases. Add a case with every fix to a
     check.
+  - A push to `main` scans only the commits it brings. **Whenever the guard's rules tighten**, run
+    it over the whole history once: `node scripts/guard.mjs --commits HEAD` locally, or the
+    workflow by hand (Actions, guard, Run workflow). A hit in old history is reported to the
+    maintainer; history is never rewritten to clear it.
 - Harness facts live in a driver's `descriptor.js`, each with its source, never in logic.
 - Conformance runs start real harnesses. They run on disposable benches (a VM made for it, or a
   CI runner), never on a user's workstation and never against a user's real data folder. The

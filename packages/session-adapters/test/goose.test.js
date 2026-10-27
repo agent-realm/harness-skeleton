@@ -275,13 +275,13 @@ test('goose: is_error is null where the call did not complete: declined, a cance
   });
 });
 
-// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
-// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
-// (#6)); never from a pattern in free text. Goose's two texts (Goose v1.55.0: DECLINED_RESPONSE,
-// crates/goose/src/agents/tool_execution.rs:151-153; crates/goose-agent/src/machine.rs:83-86)
-// count only as goose writes them: an MCP error result (`isError: true`) whose content is that one
-// text block. Anything else is completed with the stored `isError`; a stored permission still says
-// denied.
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)); never from a pattern in free text. Goose's two texts (Goose
+// v1.55.0: DECLINED_RESPONSE, crates/goose/src/agents/tool_execution.rs:151-153;
+// crates/goose-agent/src/machine.rs:83-86) count only as goose writes them: an MCP error result
+// (`isError: true`) whose content is that one text block. Anything else is completed with the
+// stored `isError`; a stored permission still says denied.
 test('goose: a declined or an interrupted call is goose\'s own text, matched exactly as goose writes it (isError true, that one text block); a near miss is completed with isError', () => {
   withStore('features', (dir) => {
     const DECLINED = 'The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.';

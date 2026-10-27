@@ -44,10 +44,10 @@ export const sidebarKey = (channel) => `${sidebarRel(channel)}#table:sidebar_thr
 const SIDEBAR_RE = /^db\/([^/\\#]+)\/db\.sqlite#table:sidebar_threads$/;
 // The row's columns, as the table has them (they vary by build, so the table is asked).
 const ROW_COLS = ['id', 'summary', 'updated_at', 'data_type', 'parent_id', 'folder_paths', 'folder_paths_order', 'created_at'];
-// Zed's own results for a call that did not complete (sessions-model v1.x (#6), §2.3, and the
-// sessions-model annex (#6)): fixed strings Zed itself writes for that case, never a tool's output.
-// Each is matched exactly, and only in the shape Zed writes it (cannedStatus, below). Zed v1.24.3
-// (2a857f5f), crates/agent/src/thread.rs:
+// Zed's own results for a call that did not complete (sessions-model v1.x proposal (#6), §2.3, and
+// the sessions-model annex §5, v1.x proposal (#6)): fixed strings Zed itself writes for that case,
+// never a tool's output. Each is matched exactly, and only in the shape Zed writes it
+// (cannedStatus, below). Zed v1.24.3 (2a857f5f), crates/agent/src/thread.rs:
 // - 'Tool canceled by user': :73 (TOOL_CANCELED_MESSAGE), inserted for every call left without a
 //   result when a cancelled turn's message is flushed (:4131-4143);
 // - 'Permission to run tool denied by user': :6748 (the permission prompt's deny), :6230 and :6235

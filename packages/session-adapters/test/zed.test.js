@@ -269,11 +269,12 @@ test('zed: is_error is null for Zed\'s canned cancel and denial; a completed cal
   });
 });
 
-// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
-// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
-// (#6)). Zed's three are matched only as Zed writes them (Zed v1.24.3, crates/agent/src/thread.rs):
-// `is_error: true` and a content of exactly that one Text item, as Zed's own
-// `is_canceled_tool_result` asks (:1734-1741). Anything else is completed with the store's flag.
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)). Zed's three are matched only as Zed writes them (Zed v1.24.3,
+// crates/agent/src/thread.rs): `is_error: true` and a content of exactly that one Text item, as
+// Zed's own `is_canceled_tool_result` asks (:1734-1741). Anything else is completed with the
+// store's flag.
 test('zed: a canned result is matched exactly, in the shape Zed writes it (is_error true, that one Text item); a near miss is completed with the store\'s flag', () => {
   withStore('features', (dir) => {
     const resultsOf = () => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[T.CART], 'message').flatMap((m) => m.parts)

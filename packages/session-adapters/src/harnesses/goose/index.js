@@ -533,10 +533,10 @@ function resultOf(resp, partId) {
   return { output: text.join('\n'), isError: !!(isObj(v) && v.isError === true), exit, files, sole };
 }
 
-// Goose's own results for a call that did not complete (sessions-model v1.x (#6), §2.3, and the
-// sessions-model annex (#6)): fixed strings goose itself writes for that case, never a tool's
-// output, each as an MCP error result with that one text block. Matched exactly, only in that
-// shape (`sole`), never as a pattern. Goose v1.55.0 (2bcb8583):
+// Goose's own results for a call that did not complete (sessions-model v1.x proposal (#6), §2.3,
+// and the sessions-model annex §5, v1.x proposal (#6)): fixed strings goose itself writes for that
+// case, never a tool's output, each as an MCP error result with that one text block. Matched
+// exactly, only in that shape (`sole`), never as a pattern. Goose v1.55.0 (2bcb8583):
 // - DECLINED: crates/goose/src/agents/tool_execution.rs:151-153 (DECLINED_RESPONSE), written for a
 //   call the user declined (state_machine/ops_toolcalling.rs:951-953, :1050-1054;
 //   ops_remaining_tool_calls.rs:229-232; ops_skills.rs:417-419);

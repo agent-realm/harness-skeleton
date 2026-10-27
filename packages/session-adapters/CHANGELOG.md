@@ -517,12 +517,13 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
 
 ### `cancelled` and `denied`: a harness's own fixed string, matched exactly
 
-sessions-model v1.x (#6), §2.3 (`tool_result`): `cancelled` and `denied` come from a structured
-marker the harness store writes, or from a fixed string the harness itself writes for that case
-(never tool or model output), matched exactly and listed for that harness in the sessions-model
-annex (#6); never from a pattern searched in free text. Where a status goes, `is_error` copies the
-store's flag. Each adapter below matched text otherwise; each bumps its `adapter_ver` once. No key
-changes. The strings, each read from the harness's source at the version the fixtures came from:
+sessions-model v1.x proposal (#6), §2.3 (`tool_result`): `cancelled` and `denied` come from a
+structured marker the harness store writes, or from a fixed string the harness itself writes for
+that case (never tool or model output), matched exactly and listed for that harness in the
+sessions-model annex §5, v1.x proposal (#6); never from a pattern searched in free text. Where a
+status goes, `is_error` copies the store's flag. Each adapter below matched text otherwise; each
+bumps its `adapter_ver` once. No key changes. The strings, each read from the harness's source at
+the version the fixtures came from:
 
 | Harness | Text, exactly | Status | Source |
 |---|---|---|---|

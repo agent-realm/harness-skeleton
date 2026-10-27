@@ -324,12 +324,13 @@ test('agy: is_error is null where the call did not complete: a CANCELED or INTER
   });
 });
 
-// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
-// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
-// (#6)); never from a pattern in free text. agy has neither for a denial: its denial error embeds
-// the command (a template), no public source states it, and the step's `permissions` blob is not
-// decoded. A denied command is an ERROR step or line: `completed`, with the store's flag, true. The
-// status alone still says `cancelled` (the positive control), whatever error is beside it.
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)); never from a pattern in free text. agy has neither for a denial:
+// its denial error embeds the command (a template), no public source states it, and the step's
+// `permissions` blob is not decoded. A denied command is an ERROR step or line: `completed`, with
+// the store's flag, true. The status alone still says `cancelled` (the positive control), whatever
+// error is beside it.
 test('agy: no text marks a denial: an ERROR step or transcript line whose error says denied is completed with is_error true; CANCELED is still cancelled', () => {
   const resultOf = (status, extra = {}) => {
     const rows = turn1();

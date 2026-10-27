@@ -335,11 +335,12 @@ test('opencode: is_error is null where the call did not complete: a refused perm
   });
 });
 
-// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
-// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
-// (#6)); never from a pattern in free text. OpenCode's text for a refused permission (OpenCode
-// v1.19.3, packages/core/src/v1/permission.ts:7-11) counts only as the whole stored error. An error
-// that merely contains it, or the words, is completed with the state status as its flag (true).
+// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
+// annex §5, v1.x proposal (#6)); never from a pattern in free text. OpenCode's text for a refused
+// permission (OpenCode v1.19.3, packages/core/src/v1/permission.ts:7-11) counts only as the whole
+// stored error. An error that merely contains it, or the words, is completed with the state status
+// as its flag (true).
 test('opencode: a refused permission is OpenCode\'s own text, matched exactly as the whole stored error; a near miss is completed with the flag', () => {
   withCase('features', (dir) => {
     const resultOf = (call) => Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))

@@ -627,9 +627,10 @@ function fromDb(st, sid, me) {
         status = doneStatus(s);
         // `cancelled` is the step's own status, CANCELED or INTERRUPTED. Nothing marks a denial:
         // `cancelled` and `denied` come from a structured marker or a fixed string the harness
-        // itself writes, matched exactly (sessions-model v1.x (#6), §2.3, and the sessions-model
-        // annex (#6)), and agy's denial error embeds the command, its source is not public and the
-        // step's `permissions` blob is not decoded. A denied command is an ERROR step: `completed`.
+        // itself writes, matched exactly (sessions-model v1.x proposal (#6), §2.3, and the
+        // sessions-model annex §5, v1.x proposal (#6)), and agy's denial error embeds the command,
+        // its source is not public and the step's `permissions` blob is not decoded. A denied
+        // command is an ERROR step: `completed`.
         const result = s.status === ST.CANCELED || s.status === ST.INTERRUPTED ? 'cancelled' : 'completed';
         // `is_error` is the harness store's own flag, the step's status (sessions-model v1.x (#6),
         // §2.3): ERROR gives true, DONE false. A DONE beside a run_command's non-zero `exit_code` is

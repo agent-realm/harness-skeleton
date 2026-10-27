@@ -30,9 +30,10 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
   real event carries one to join on.
 - `cancelled` and `denied` come from a structured marker the harness store writes, or from a
   fixed string the harness itself writes for that case (never tool or model output), matched
-  exactly and listed for that harness in the sessions-model annex (#6); never from a pattern in
-  free text (sessions-model v1.x (#6), §2.3). For these two harnesses, neither is established (no
-  live run, and no fixture holds the case), so every result is `completed` today:
+  exactly and listed for that harness in the sessions-model annex §5, v1.x proposal (#6); never
+  from a pattern in free text (sessions-model v1.x proposal (#6), §2.3). For these two harnesses,
+  neither is established (no live run, and no fixture holds the case), so every result is
+  `completed` today:
   - **Claude Code: a user's rejection of a tool call, or an interrupt during one.** The adapter
     copies the `tool_result` block's `is_error`. What would establish a status: a structured field
     the store writes for the rejection or the interrupt, beside the block rather than in its

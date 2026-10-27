@@ -590,15 +590,15 @@ function attachment(partId, f) {
 // absent from a shell-mode command (spec), so null there too.
 const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 
-// OpenCode's own text for a refused permission (sessions-model v1.x (#6), §2.3, and the
-// sessions-model annex (#6)): a fixed string OpenCode itself writes for that case, matched exactly,
-// never as a pattern. OpenCode v1.19.3 (e3c4eb24): PermissionRejectedError's message,
-// packages/core/src/v1/permission.ts:7-11, stored as a v1 tool part's `state.error` (a string) by
-// packages/opencode/src/session/processor.ts:186-194 through errorMessage (the error's message,
-// packages/tui/src/util/error.ts:136-138). A rejection with feedback (PermissionCorrectedError,
-// permission.ts:13-19) embeds the user's words, so it is no fixed string and stays `completed`. v2
-// (`session_message`) writes no such result: a declined permission halts the loop
-// (packages/core/src/session/runner/llm.ts:143-150).
+// OpenCode's own text for a refused permission (sessions-model v1.x proposal (#6), §2.3, and the
+// sessions-model annex §5, v1.x proposal (#6)): a fixed string OpenCode itself writes for that
+// case, matched exactly, never as a pattern. OpenCode v1.19.3 (e3c4eb24): PermissionRejectedError's
+// message, packages/core/src/v1/permission.ts:7-11, stored as a v1 tool part's `state.error` (a
+// string) by packages/opencode/src/session/processor.ts:186-194 through errorMessage (the error's
+// message, packages/tui/src/util/error.ts:136-138). A rejection with feedback
+// (PermissionCorrectedError, permission.ts:13-19) embeds the user's words, so it is no fixed string
+// and stays `completed`. v2 (`session_message`) writes no such result: a declined permission halts
+// the loop (packages/core/src/session/runner/llm.ts:143-150).
 const REJECTED = 'The user rejected permission to use this specific tool call.';
 
 // A tool's call and result (sessions-model §2.3: one native part holding both becomes

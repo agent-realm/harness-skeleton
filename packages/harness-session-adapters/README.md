@@ -1,6 +1,6 @@
 # @agent-realm/harness-session-adapters
 
-**Status: v0, building.** Twelve harnesses: Claude Code, Codex, Copilot CLI, Gemini CLI, VS Code,
+**Status: 1.0.0.** Twelve harnesses: Claude Code, Codex, Copilot CLI, Gemini CLI, VS Code,
 Goose, OpenCode, Antigravity (agy), Cursor IDE, cursor-agent, Zed and Devin Local.
 
 ## What it is
@@ -9,8 +9,8 @@ The session adapters are one reader per agent harness: Claude Code, Codex, Copil
 the rest. Each reads that harness's own conversation store and gives back the same records:
 sessions, messages and their parts, usage, links and lifecycle events. Two contracts define them:
 
-- [sessions-model][sessions-model] v1, for what the records are and how they are keyed;
-- [sessions][sessions] v1, for the four operations every adapter speaks.
+- [sessions-model][sessions-model] v1.3, for what the records are and how they are keyed;
+- [sessions][sessions] v1.3, for the four operations every adapter speaks.
 
 | Operation | Takes | Gives |
 |---|---|---|
@@ -103,7 +103,7 @@ node conformance/matrix.js --write    # regenerate docs/conformance-matrix.md
 - [`AGENTS.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/harness-session-adapters/AGENTS.md): rules for anyone changing this package, and how to install and deploy
   it.
 
-<!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/main/contracts/.
-     The repository name and the ref are pending its publication; replace the base in every file that defines these links. -->
-[sessions-model]: https://github.com/agent-realm/sessions-model/blob/main/contracts/sessions-model.md
-[sessions]: https://github.com/agent-realm/sessions-model/blob/main/contracts/sessions.md
+<!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/v1.3.0/contracts/,
+     the release this version implements. -->
+[sessions-model]: https://github.com/agent-realm/sessions-model/blob/v1.3.0/contracts/sessions-model.md
+[sessions]: https://github.com/agent-realm/sessions-model/blob/v1.3.0/contracts/sessions.md

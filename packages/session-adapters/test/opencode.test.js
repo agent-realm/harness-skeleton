@@ -313,9 +313,10 @@ test('opencode: is_error is the state status: completed beside a non-zero exit i
 });
 
 // sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
-// completed. A refused permission (an `error` status whose error says so: `denied`) and a call cut
-// off while pending or running (`cancelled`) did not: their is_error is null and the status carries
-// the fact. A call that completed keeps the state status as its flag (the positive control).
+// completed. A refused permission (an `error` status whose error is OpenCode's own text: `denied`)
+// and a call cut off while pending or running (`cancelled`) did not: their is_error is null and the
+// status carries the fact. A call that completed keeps the state status as its flag (the positive
+// control).
 test('opencode: is_error is null where the call did not complete: a refused permission, a call cut off; the status carries the fact', () => {
   withCase('features', (dir) => {
     const resultsOf = () => Object.fromEntries(Object.values(fullReplay(adapter, storeFile(dir)).views()).flatMap((v) => messages([...v.values()]).flatMap((m) => m.parts))

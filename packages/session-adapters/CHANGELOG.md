@@ -521,3 +521,31 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   claude-code gains one: its results copy the block's `is_error`, null where the block has none.
   Over the goldens as they stood before the fixes above, the check finds 19 results in ten
   harnesses; after them, none.
+
+### Guides, examples, how to install, and the live check's status
+
+Documentation and tests only: no record, unit or state changes, so no `adapter_ver` or
+`state_ver` moves.
+
+- **Guides** in `docs/`, each a short tutorial whose commands run as written against the fixtures,
+  with output copied from those runs: `read-a-store.md` (list, read, derive, validate; reading a
+  tool result's `status` and `is_error`, a session's `kind`, usage and links right; reading on
+  from a saved position; the errors), `add-a-harness.md` (the registry id, the files, every list a
+  harness is registered in, what `derive` copies and never invents, fixtures, the golden, the
+  tests and its 32 matrix cells) and `run-the-conformance-matrix.md` (running it, reading the
+  report, the cells by kind, what an `n/a` cell means).
+- **Examples** in `examples/`, from the smallest to a full pass, each a folder with a README and
+  one script: `01-describe`, `02-list-sessions`, `03-read-and-derive` (with the session's `kind`,
+  each tool result's `status`, `is_error` and `exit_code`, usage by granularity and anchor, and
+  the links), `04-incremental-read` (`reset`, `appended`, `unchanged` and a rewrite) and
+  `05-full-pass` (every fixture case of every harness, written as JSON Lines: 1255 records, the
+  goldens' own). `test/examples.test.js` runs each one, and fails on an exit other than 0, a
+  scratch path, home directory, host name or checkout path in the output, a second run that prints
+  something else, or a file left in its temp directory. `examples/` is not in the package's
+  `files`: it needs `fixtures/` and `conformance/`, which do not ship either.
+- **Install and deploy** in `AGENTS.md`: from a checkout, by a `file:` path from another project,
+  what ships, and what upgrading a consumer asks.
+- **The live check** (`docs/live-check.md`): no live run is made for this release. 40 items are
+  marked not established (no live run), each with what would establish it. One, Zed's checkpoint
+  restore and regrow, is marked confirmed by the `zed/restore-lab` capture. A confirmed item is
+  now marked, naming its capture or fixture, instead of deleted; no item is deleted.

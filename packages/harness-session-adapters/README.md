@@ -43,8 +43,8 @@ conformance suite proving it against fixtures.
 ## How
 
 Node.js 22.15 or later (node:sqlite, and zstd in node:zlib for Zed). The package has no dependencies.
-It is to be published to npm as `@agent-realm/harness-session-adapters`; until then, use it from a
-checkout. The examples, the fixtures and the conformance suite stay in the repository: use a checkout of
+Install it from npm with `npm install @agent-realm/harness-session-adapters`. The examples, the fixtures
+and the conformance suite stay in the repository: use a checkout of
 [harness-skeleton](https://github.com/agent-realm/harness-skeleton) for them
 ([`AGENTS.md`, Install and deploy](https://github.com/agent-realm/harness-skeleton/blob/main/packages/harness-session-adapters/AGENTS.md#install-and-deploy)).
 

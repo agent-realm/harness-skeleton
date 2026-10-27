@@ -124,6 +124,11 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 - The `sidebar_threads` schema, which is taken from memhouse's test.
 - A checkpoint restore, and the thread growing again after it.
 - Editing and deleting a thread, and the rule that detects a legacy agent-1 thread.
+- A canned cancel or denial stored as one Text value rather than a list, as builds before Zed's
+  multi-part tool content (commit bf3fc2336d) wrote it. It is read from Zed's source history: no
+  fixture or capture holds one, and the test edits a copy. The adapter reads it as Zed v1.24.3
+  does, a list of one. Open a thread such a build saved with a cancelled call and check the stored
+  content.
 
 ## Devin Local
 

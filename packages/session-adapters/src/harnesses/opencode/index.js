@@ -592,7 +592,7 @@ const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 
 // A tool's call and result (sessions-model §2.3: one native part holding both becomes
 // `<id>:call` + `<id>:result`, sharing the call id). `is_error` is the harness store's own flag,
-// the part's state status (sessions-model v1.x (#6), §2.3): `error` gives true and `completed`
+// the part's state status (sessions-model v1.x proposal (#6), §2.3): `error` gives true and `completed`
 // false, and a status still pending or running gives null. A `completed` status beside a shell's
 // non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the other results
 // keep the flag. It describes a call that completed: a refused permission (`denied`) or a call cut

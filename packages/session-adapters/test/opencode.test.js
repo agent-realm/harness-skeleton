@@ -288,7 +288,7 @@ test('opencode: a tool_result carries the stored exit code (v1 metadata.exit, v2
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): the part's state status is the harness
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the part's state status is the harness
 // store's flag, `error` true and `completed` false. A `completed` beside a shell's non-zero
 // exit_code is unreliable for that result, so its is_error is null; never derived from exit_code.
 test('opencode: is_error is the state status: completed beside a non-zero exit is null, completed is false, error is true', () => {
@@ -312,7 +312,7 @@ test('opencode: is_error is the state status: completed beside a non-zero exit i
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A refused permission (an `error` status whose error says so: `denied`) and a call cut
 // off while pending or running (`cancelled`) did not: their is_error is null and the status carries
 // the fact. A call that completed keeps the state status as its flag (the positive control).

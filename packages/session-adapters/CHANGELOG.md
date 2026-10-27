@@ -6,6 +6,13 @@
 
 ## Unreleased
 
+### Contract citations: the v1.x proposal
+
+- Rules cited as "sessions-model v1.x proposal (#6)" or "sessions v1.x proposal (#6)" follow the
+  v1.x proposal in sessions-model pull request #6. They take effect as cited when that proposal is
+  released; until then the released contract is v1.2.0. The citations here and in the code switch
+  to the released reference when it is.
+
 ### sessions-model v1 (adapter_ver 0.2.0, model_version `sessions-model/1`)
 
 Every adapter's records change for the same units, so every `adapter_ver` moves to 0.2.0 and a
@@ -163,7 +170,7 @@ carries its rollout's file name (sessions-model §1 rule 10). A test now holds e
 
 ### copilot-cli and codex: `is_error` is the stored flag only (adapter_ver 0.2.1 each)
 
-sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): an adapter copies the harness store's
+sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): an adapter copies the harness store's
 success or error flag and never derives `is_error` from the exit code or the text. A flag that says
 success beside a shell's non-zero `exit_code` is unreliable for that result (Copilot CLI and Codex
 store `success: true` so): that result's `is_error` is null, and the harness store's other results
@@ -189,7 +196,7 @@ keep the flag. Both adapters applied an exit-code rule inherited from an earlier
 
 ### cursor-agent, cursor and zed: a sub-agent session's `kind` is null (adapter_ver 0.2.1 each)
 
-sessions-model v1.x (#6), §2.1 (`kind`, the native session type): an adapter never mints a `kind`
+sessions-model v1.x proposal (#6), §2.1 (`kind`, the native session type): an adapter never mints a `kind`
 the harness store does not write, and a flag or a parent reference is not a kind. cursor-agent's
 `subagentInfo`, Cursor IDE's `isSubagent` and Zed's `subagent_context` or `parent_id` leave `kind`
 null, and such a sub-agent session is told by its `subagent` link (§2.5). Each adapter wrote
@@ -215,7 +222,7 @@ null, and such a sub-agent session is told by its `subagent` link (§2.5). Each 
 
 ### zed: per-turn usage where the cumulative total is empty (adapter_ver 0.2.1)
 
-sessions-model v1.x (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where a
+sessions-model v1.x proposal (#6), §2.4 (*No overlap*, whose one Zed record assumes a total): where a
 thread's `cumulative_token_usage` is empty, its `request_token_usage` entries are the usage. The
 adapter emitted no usage at all for such a thread.
 
@@ -242,7 +249,7 @@ adapter emitted no usage at all for such a thread.
 
 ### devin: only the main line tears a read (adapter_ver 0.2.1)
 
-sessions v1.x (#6), §2 (`read` errors, `inconsistent`, whose Devin example is a `main_chain_id`
+sessions v1.x proposal (#6), §2 (`read` errors, `inconsistent`, whose Devin example is a `main_chain_id`
 naming a node not yet written): only the main line itself tears a Devin read, its head and the
 parent links along it. A node the main line only names (a sub-agent head, a compacted history's
 prior nodes, a sub-agent chain a tool result names) that the read lacks does not: derive leaves out
@@ -274,14 +281,14 @@ derives it.
   `switch-compaction`). Such a branch is held where derive wrote it before, and live again once a
   read holds the node.
 - **Records the gap only moves (a message's `order`, the session's `fingerprint`) are revised, and
-  revised back once a later read holds the node and derives it** (sessions v1.x (#6), §2,
+  revised back once a later read holds the node and derives it** (sessions v1.x proposal (#6), §2,
   `inconsistent`). Leaving a piece out moves the `order` of the line messages after it and the
   session's fingerprint. `calm-orchard` without `co:a2` or `co:r1`: `co:si` (its parent is now the
   copy's), `co:cont`, `co:u2`, `co:a3` and the session record. `dusty-lantern` without `dl:sa2` or
   `dl:sr1`: `dl:res`, `dl:a2` and the session record. `keen-ridge` without `kr:a2` or `kr:u2`:
   `kr:si` (its parent is now the copy's), `kr:cont`, `kr:u3`, `kr:a3` and the session record.
 - **Records derive wrote earlier among what it leaves out are held, and so are a compaction record
-  and its summary that point into the missing nodes** (sessions v1.x (#6), §2, `inconsistent`).
+  and its summary that point into the missing nodes** (sessions v1.x proposal (#6), §2, `inconsistent`).
   While a node the main line names dangles, a key written before (live or held in the state derive
   is given) and left out now goes to `held`, not away: its last written version stands (sessions
   §2, `held`). The next read that holds the node releases it, live again, or drops it. Before, a
@@ -320,12 +327,12 @@ derives it.
   budget while `updated_hint` is unchanged is reported, and the consumer stops retrying that
   session until `updated_hint` moves, apart from its scheduled re-read, keeping the last derived
   state. The scheduled re-read is sessions §2's periodic read of every session: one read on the
-  schedule, no backoff retries. sessions v1.x (#6), §2 (`read` errors). Consumer behaviour only:
+  schedule, no backoff retries. sessions v1.x proposal (#6), §2 (`read` errors). Consumer behaviour only:
   no adapter changes.
 
 ### devin, opencode, vscode, agy, cursor, cursor-agent and goose: `is_error` is the stored flag
 
-sessions-model v1.x (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
+sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`), one of the clarifications §8 lists for
 v1.2: `is_error` is the harness store's own flag. It is null where the harness store has no flag,
 and where its flag is unreliable: a flag that says success beside a shell's non-zero `exit_code`
 is unreliable for that result, so that result's `is_error` is null, and the harness store's other
@@ -390,7 +397,7 @@ a reader that wants a shell's failure reads `exit_code`.
 - **goose (adapter_ver 0.2.1, its one move in this release: see below).** The flag is a tool
   result's `isError`. `isError: false`, or none (read as false), beside a non-zero
   `structuredContent.exit_code` gave false. It gives null. `isError: true` stays true, beside any
-  exit code. A result without `isError` has MCP's default, false, as sessions-model v1.x (#6),
+  exit code. A result without `isError` has MCP's default, false, as sessions-model v1.x proposal (#6),
   §2.3 now states (a flag the harness store leaves out where its protocol defines a default has
   that default): false beside exit 0 or no exit code, null beside a non-zero one. The code and the
   test cite the clause; no behaviour changes for it.
@@ -399,7 +406,7 @@ a reader that wants a shell's failure reads `exit_code`.
 
 ### `is_error` is null where a call did not complete
 
-sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 completed. Where a `tool_result`'s `status` is `cancelled` or `denied`, `is_error` is null, and
 the status carries the fact. The adapters below gave false or true there. No key changes; a record
 changes only in that `is_error`, its message's `cmp_sha` and that entry of the session's
@@ -419,8 +426,8 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     `is_error` null now, whatever error the line carries, in a `cancelled` or `interrupted`
     message, as `doneStatus` gives a step; any other line with either status takes the same
     message status. The status is the line's own field: `cancelled` and `denied` come from a
-    structured marker the harness store writes, never from the output's text (sessions-model v1.x
-    (#6), §2.3). No capture shows such a line.
+    structured marker the harness store writes, never from the output's text
+    (sessions-model v1.x proposal (#6), §2.3). No capture shows such a line.
   - Goldens: none change; no captured transcript holds either status. One synthetic case is new,
     `transcript-cancel` (a session with no database, `0b5e7c1a…`: a CANCELED, an INTERRUPTED and a
     DONE result), with its own golden of 15 records. Its two cancelled results (messages `@552`
@@ -496,13 +503,13 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
     session's `fingerprint.cmp_shas`. Nothing else moves; `lab`, `restore`, `restore-lab` and
     `sentinel` are unchanged.
 - **claude-code and codex: no change.** `cancelled` and `denied` come from a structured marker the
-  harness store writes, never from the output's text (sessions-model v1.x (#6), §2.3). No fixture
+  harness store writes, never from the output's text (sessions-model v1.x proposal (#6), §2.3). No fixture
   holds a Claude Code rejection or interrupt, or a Codex `aborted` call, and no structured marker
   for either is known, so their results stay `completed` with the store's flag. `docs/live-check.md`
   lists both as not established: what would establish each status, and the mapping that would
   apply (`denied` for a rejection, `cancelled` for an interrupt or an abort, `is_error` null).
 - **The conformance matrix gains `M.is-error`**, sessions-model v1.2's adapter-side `is_error`
-  item (sessions-model v1.x (#6), §2.3): every `tool_result` copies the harness store's own flag,
+  item (sessions-model v1.x proposal (#6), §2.3): every `tool_result` copies the harness store's own flag,
   and is null where the store has none, where the flag says success beside a shell's non-zero
   `exit_code`, and where `status` is `cancelled` or `denied`; a fixture result with a non-zero
   `exit_code` and no failure flag never has `is_error` true. Every harness's cell is `generic`

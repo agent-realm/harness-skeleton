@@ -52,7 +52,7 @@ export const describe = Object.freeze({
     // tool_result's `exit_code`); archive state lives in another store. A node the main line only
     // names (a `subagent_heads` row's node, a compacted history's prior nodes, a sub-agent chain a
     // tool result names) that the read does not hold is no torn read: what it would have reached is
-    // left out until a read holds it (sessions v1.x (#6), §2 `inconsistent`).
+    // left out until a read holds it (sessions v1.x proposal (#6), §2 `inconsistent`).
     read: 'lossy',
     // A two-word slug, reuse unverified, and no birth marker: incarnation '' (annex mapping row).
     reuse: 'undetectable',

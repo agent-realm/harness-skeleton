@@ -426,7 +426,7 @@ test('copilot-cli: a tool_result carries the stored shellExecution.exitCode; a n
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (tool_result `is_error`): `is_error` copies the stored `success`
+// sessions-model v1.x proposal (#6), §2.3 (tool_result `is_error`): `is_error` copies the stored `success`
 // flag. A flag that says success beside a shell's non-zero `exit_code` is unreliable for that
 // result (Copilot CLI and Codex store `success: true` so): that result's `is_error` is null,
 // `exit_code` carries the failure, and the other results keep the flag. It is never derived from
@@ -457,7 +457,7 @@ test('copilot-cli: is_error copies success; success true with a non-zero shell e
   });
 });
 
-// sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A denied call (`error.code: denied`) did not, so its is_error is null and `denied`
 // carries the fact, whatever `success` says. A call that completed keeps the flag (the positive
 // control: success false with another error code is true, success true false).

@@ -194,7 +194,7 @@ From sessions-model.
 | zed | generic |
 | devin | generic |
 
-## M.is-error: is_error (v1.2): every tool_result copies the store's own flag; null where it has none, where the flag says success beside a shell's non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true
+## M.is-error: is_error (v1.x proposal (#6)): every tool_result copies the store's own flag; null where it has none, where the flag says success beside a shell's non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true
 
 From sessions-model.
 

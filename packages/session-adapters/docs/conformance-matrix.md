@@ -205,7 +205,7 @@ From sessions-model.
 | copilot-cli | generic<br>copilot-cli: “is_error copies success; success true with a non-zero shell exit is null”<br>copilot-cli: “is_error is null for a denied call” |
 | gemini-cli | generic<br>gemini-cli: “is_error is null for a cancelled call” |
 | vscode | generic<br>vscode: “is_error is the stored flag: done beside a non-zero terminal exit is null”<br>vscode: “is_error is null where the call did not complete” |
-| goose | generic<br>goose: “is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null”<br>goose: “is_error is null where the call did not complete” |
+| goose | generic<br>goose: “is_error: isError false, or none, beside a non-zero structuredContent.exit_code is null”<br>goose: “is_error is null where the call did not complete”<br>goose: “a declined or an interrupted call is goose's own text, matched exactly” |
 | opencode | generic<br>opencode: “is_error is the state status: completed beside a non-zero exit is null”<br>opencode: “is_error is null where the call did not complete” |
 | agy | generic<br>agy: “is_error is the step status: DONE beside a non-zero exit is null”<br>agy: “is_error is null where the call did not complete”<br>agy: “transcript only: a CANCELED or INTERRUPTED line is cancelled with is_error null” |
 | cursor | generic<br>cursor: “is_error is the stored status: completed beside a non-zero exit is null”<br>cursor: “is_error is null where the call did not complete” |

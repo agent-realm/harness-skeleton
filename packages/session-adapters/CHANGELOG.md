@@ -529,6 +529,8 @@ changes. The strings, each read from the harness's source at the version the fix
 | zed | `Tool canceled by user` | `cancelled` | Zed v1.24.3, `crates/agent/src/thread.rs:73` |
 | zed | `Permission to run tool denied by user` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:6748`, `:6230`, `:6235` |
 | zed | `Permission denied: user sent a follow-up message instead of approving the tool call.` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:74-75` |
+| goose | `The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.` | `denied` | Goose v1.55.0, `crates/goose/src/agents/tool_execution.rs:151-153` |
+| goose | `Tool call was interrupted before completing` (no final period) | `cancelled` | Goose v1.55.0, `crates/goose-agent/src/machine.rs:83-86` |
 
 - **zed (adapter_ver 0.2.2 → 0.2.3).** The three texts were compared with the result's content
   joined into one string, whatever `is_error` said. They now count only in the shape Zed writes
@@ -540,3 +542,22 @@ changes. The strings, each read from the harness's source at the version the fix
   `completed`.
   - Goldens: none change; the fixture's two canned results are in Zed's shape. The test edits a
     copy for the near misses, and the matrix's M.is-error cell for zed names it.
+- **goose (adapter_ver 0.2.1 → 0.2.2).** A result was `cancelled` where its text started with
+  `Tool call was interrupted before completing`, `denied` where it started with `The user has
+  declined to run this tool`, and `cancelled` where it was `(no output)` with `isError` and no exit
+  code (read as Ctrl-C during a shell call). The two texts now count only whole and exact, in the
+  shape goose writes them (an MCP error result, `isError: true`, whose content is that one text
+  block). `(no output)` is the developer shell's output for an empty result (Goose v1.55.0,
+  `crates/goose/src/agents/platform_extensions/developer/shell.rs:736`), so that heuristic is
+  gone: such a call is `completed`, with its `isError`. The stored permission
+  (`toolConfirmationResponse`) still decides first where it says `cancel`, `deny_once` or
+  `always_deny`; goose stores a Cancel at the approval prompt as `deny_once`, and the interrupted
+  text then says `cancelled`, as before.
+  - Fixture: the `features` declined and interrupted results now carry goose's own texts. Before,
+    the declined one held only its first two sentences and the interrupted one a final period.
+  - Goldens: three tool results, `features` session `20261021_2`: `msg_rs` (`call-sleep`, the
+    Ctrl-C): `status` `cancelled` → `completed` and `is_error` `null` → `true`; `msg_rr`
+    (`call-rm`, still `denied`) and `msg_ri` (`call-rm2`, still `cancelled`): `output` and
+    `output_len` (79 → 167, 44 → 43) follow the fixture. Each message's `cmp_sha` and its entry of
+    the session's `fingerprint.cmp_shas` change with them. Nothing else moves; `lab` and
+    `conformance-goose-sentinel` are unchanged.

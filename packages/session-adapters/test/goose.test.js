@@ -260,17 +260,63 @@ test('goose: compaction: earlier rows flipped in place are to_model false (keys 
 });
 
 // sessions-model v1.x (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
-// completed. A declined call (`denied`), Ctrl-C during a shell call and a cancelled approval
-// (`cancelled`) did not: their is_error is null, though goose stores `isError: true` on each, and
-// the status carries the fact. A call that completed keeps `isError` (the positive control).
-test('goose: is_error is null where the call did not complete: declined, Ctrl-C, a cancelled approval; a completed call keeps isError', () => {
+// completed. A declined call (`denied`) and a cancelled approval (`cancelled`) did not: their
+// is_error is null, though goose stores `isError: true` on each, and the status carries the fact.
+// A call that completed keeps `isError` (the positive control), Ctrl-C during a shell call
+// included: its `(no output)` is the shell's output, which marks nothing (the next test).
+test('goose: is_error is null where the call did not complete: declined, a cancelled approval; a completed call keeps isError, Ctrl-C during a shell call included', () => {
   withStore('features', (dir) => {
     const views = project(fullReplay(adapter, dir).views());
     const results = (sid) => Object.fromEntries(ofType(views[sid], 'message').flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error, p.exit_code]]));
     const s2 = results(S2);
-    assert.deepEqual([s2['call-rm'], s2['call-sleep'], s2['call-rm2']], [['denied', null, null], ['cancelled', null, null], ['cancelled', null, null]]);
+    assert.deepEqual([s2['call-rm'], s2['call-rm2'], s2['call-sleep']], [['denied', null, null], ['cancelled', null, null], ['completed', true, null]]);
     const s1 = results(S1);
     assert.deepEqual([s1['call-1'], s1['call-label'], s1['call-scan']], [['completed', true, 1], ['completed', false, null], ['completed', true, null]], 'isError true beside exit 1; no isError (false, as goose reads it); isError true');
+  });
+});
+
+// sessions-model v1.x (#6), §2.3: `cancelled` and `denied` come from a structured marker, or from a
+// fixed string the harness itself writes for that case, matched exactly (sessions-model annex
+// (#6)); never from a pattern in free text. Goose's two texts (Goose v1.55.0: DECLINED_RESPONSE,
+// crates/goose/src/agents/tool_execution.rs:151-153; crates/goose-agent/src/machine.rs:83-86)
+// count only as goose writes them: an MCP error result (`isError: true`) whose content is that one
+// text block. Anything else is completed with the stored `isError`; a stored permission still says
+// denied.
+test('goose: a declined or an interrupted call is goose\'s own text, matched exactly as goose writes it (isError true, that one text block); a near miss is completed with isError', () => {
+  withStore('features', (dir) => {
+    const DECLINED = 'The user has declined to run this tool. DO NOT attempt to call this tool again. If there are no alternative methods to proceed, clearly explain the situation and STOP.';
+    const INTERRUPTED = 'Tool call was interrupted before completing';
+    const results = (sid) => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[sid], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    // Edited in this copy: a call's result value (content and isError) replaced.
+    const set = (sid, call, content, isError) => {
+      const w = writer(dir);
+      for (const row of w.prepare("SELECT id, content_json FROM messages WHERE session_id = ? AND content_json LIKE '%\"toolResponse\"%'").all(sid)) {
+        const parts = JSON.parse(row.content_json);
+        const hits = parts.filter((p) => p.type === 'toolResponse' && p.id === call);
+        for (const p of hits) Object.assign(p.toolResult.value, { content: content.map((t) => ({ type: 'text', text: t })), isError });
+        if (hits.length) w.prepare('UPDATE messages SET content_json = ? WHERE id = ?').run(JSON.stringify(parts), row.id);
+      }
+      w.close();
+    };
+    // The positive control: each text alone, as goose writes it, on a call with no stored permission.
+    set(S1, 'call-scan', [DECLINED], true);
+    set(S1, 'call-label', [INTERRUPTED], true);
+    let r = results(S1);
+    assert.deepEqual([r['call-scan'], r['call-label']], [['denied', null], ['cancelled', null]]);
+    // Near misses.
+    set(S1, 'call-scan', [DECLINED], false);
+    set(S1, 'call-label', ['Tool call was interrupted before completing.'], true);
+    set(S1, 'call-1', [INTERRUPTED, '1 failed, 2 passed'], true);
+    r = results(S1);
+    assert.deepEqual(r['call-scan'], ['completed', false], 'the declined text in a result that says success is a tool\'s output');
+    assert.deepEqual(r['call-label'], ['completed', true], 'a trailing period: not goose\'s text');
+    assert.deepEqual(r['call-1'], ['completed', true], 'the interrupted text beside another block: not goose\'s shape');
+    set(S1, 'call-scan', ['The user has declined to run this tool.'], true);
+    assert.deepEqual(results(S1)['call-scan'], ['completed', true], 'the start of the declined text only');
+    // A stored permission is a structured marker: deny_once beside a near miss is still denied.
+    set(S2, 'call-rm2', ['Tool call was interrupted before completing.'], true);
+    assert.deepEqual(results(S2)['call-rm2'], ['denied', null]);
   });
 });
 
@@ -303,12 +349,12 @@ test('goose: is_error: isError false, or none, beside a non-zero structuredConte
   });
 });
 
-test('goose: statuses: a declined call is denied, Ctrl-C and a cancelled approval are cancelled; errors, a cut reply, the output-token limit', () => {
+test('goose: statuses: a declined call is denied, a cancelled approval cancelled, Ctrl-C during a shell call completed; errors, a cut reply, the output-token limit', () => {
   const recs = golden('features')[S2];
   const result = (call) => ofType(recs, 'message').flatMap((m) => m.parts).find((p) => p.kind === 'tool_result' && p.call_id === call);
   assert.deepEqual([result('call-rm').status, result('call-rm').is_error], ['denied', null]);
-  assert.equal(result('call-sleep').status, 'cancelled', 'Ctrl-C during a shell call: (no output), no exit code');
-  assert.equal(result('call-rm2').status, 'cancelled', 'Cancel in the approval prompt: interrupted before completing');
+  assert.deepEqual([result('call-sleep').status, result('call-sleep').is_error], ['completed', true], 'Ctrl-C during a shell call: the shell\'s (no output) error marks nothing');
+  assert.equal(result('call-rm2').status, 'cancelled', 'Cancel in the approval prompt: goose\'s interrupted text');
   const conf = msg(recs, 'msg_conf');
   assert.deepEqual([conf.role, conf.source, conf.to_user, conf.parts[0].text], ['assistant', 'system_notice', true, '[toolConfirmation] shell {"command":"rm README.md"}']);
   const err = msg(recs, 'msg_err');

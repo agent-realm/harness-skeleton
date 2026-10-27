@@ -23,7 +23,9 @@ harness.
   beyond the contracts.
 - [The conformance matrix](conformance-matrix.md): what proves each conformance item, per harness.
 - [Live check](live-check.md): the shapes no capture has shown yet, per harness, for a run on a
-  test machine with each harness signed in.
+  test machine with each harness signed in. Each is marked confirmed (naming its capture or
+  fixture) or not established, with what would establish it. No live run was made for this
+  release.
 - [`AGENTS.md`](../AGENTS.md): the rules for changing this package, and the short list of steps
   for adding a harness.
 

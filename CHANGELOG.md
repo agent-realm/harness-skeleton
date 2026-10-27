@@ -22,4 +22,5 @@ The first public cut.
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
 - **Conformance:** eleven tier 1 checks against Claude Code 2.1.307 and Codex 0.160.0, run on
   disposable benches.
-- **Documentation:** a tutorial, guides, a reference, and eight runnable examples.
+- **Documentation:** a tutorial, a concepts page with five diagrams, guides, a reference, and
+  eight runnable examples.

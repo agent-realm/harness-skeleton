@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 352" width="880" height="352" role="img" aria-labelledby="title desc">
+<title id="title">Plan, receipt, apply</title>
+<desc id="desc">Spec layers are validated, then planned; neither step writes anything. The user approves the plan with a receipt bound to its digest. apply takes the folder's lock, journals each step and reads each write back. A plan that cannot be kept is refused with a code, and so is an apply whose receipt or preconditions do not hold.</desc>
+<style>
+:root { --bg:#f6f7f9; --card:#ffffff; --ink:#1b2230; --muted:#5a6475; --line:#c5cbd6;
+  --cfg:#2a55c9; --cfg-t:#e9effd; --no:#b3261e; --no-t:#fcecea; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#10151c; --card:#171d26; --ink:#e3e7ee; --muted:#9ba5b5; --line:#3a4454;
+    --cfg:#86a7ff; --cfg-t:#1a2646; --no:#ff8c84; --no-t:#3a1b19; }
+}
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; fill: var(--ink); }
+.b { font-size: 14px; font-weight: 600; }
+.s { fill: var(--muted); }
+.mb { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; font-weight: 600; }
+.ms { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; }
+.c-cfg { fill: var(--cfg); }
+.c-no { fill: var(--no); }
+.bg { fill: var(--bg); }
+.card { fill: var(--card); stroke: var(--line); }
+.card-strong { fill: var(--card); stroke: var(--ink); stroke-width: 1.5; }
+.box-cfg { fill: var(--cfg-t); stroke: var(--cfg); }
+.box-no { fill: var(--no-t); stroke: var(--no); }
+.rule { stroke: var(--line); fill: none; }
+.ar-ink { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.ar-cfg { stroke: var(--cfg); stroke-width: 2; fill: none; }
+.ar-no { stroke: var(--no); stroke-width: 1.6; fill: none; stroke-dasharray: 4 3; }
+.mk-ink { fill: var(--muted); }
+.mk-cfg { fill: var(--cfg); }
+.mk-no { fill: var(--no); }
+</style>
+<defs>
+  <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-ink"/></marker>
+  <marker id="a-cfg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-cfg"/></marker>
+  <marker id="a-no" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-no"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="880" height="352" rx="12"/>
+
+<text class="s" x="350" y="24" text-anchor="middle">write nothing</text>
+<path class="rule" d="M196 38V32H504V38"/>
+
+<rect class="card" x="24" y="48" width="136" height="80" rx="8"/>
+<text class="b" x="40" y="74">Spec layers</text>
+<text class="s" x="40" y="94">and local.toml</text>
+
+<rect class="box-cfg" x="196" y="48" width="136" height="80" rx="8"/>
+<text class="mb c-cfg" x="212" y="74">validate</text>
+<text class="s" x="212" y="94">refs, items,</text>
+<text class="s" x="212" y="110">layers, AGENTS.md</text>
+
+<rect class="box-cfg" x="368" y="48" width="136" height="80" rx="8"/>
+<text class="mb c-cfg" x="384" y="74">plan</text>
+<text class="s" x="384" y="94">operations, risk</text>
+<text class="s" x="384" y="110">tags, one digest</text>
+
+<rect class="card-strong" x="540" y="48" width="136" height="80" rx="8"/>
+<text class="b" x="556" y="74">The user</text>
+<text class="s" x="556" y="94">a receipt for</text>
+<text class="s" x="556" y="110">that exact digest</text>
+
+<rect class="box-cfg" x="712" y="48" width="136" height="80" rx="8"/>
+<text class="mb c-cfg" x="728" y="74">apply</text>
+<text class="s" x="728" y="94">lock, journal,</text>
+<text class="s" x="728" y="110">write, read back</text>
+
+<path class="ar-ink" d="M160 88H195" marker-end="url(#a-ink)"/>
+<path class="ar-ink" d="M332 88H367" marker-end="url(#a-ink)"/>
+<path class="ar-ink" d="M504 88H539" marker-end="url(#a-ink)"/>
+<path class="ar-ink" d="M676 88H711" marker-end="url(#a-ink)"/>
+
+<!-- refusals -->
+<path class="ar-no" d="M436 128V195" marker-end="url(#a-no)"/>
+<rect class="box-no" x="348" y="196" width="176" height="100" rx="8"/>
+<text class="b c-no" x="364" y="216">refused</text>
+<text class="ms" x="364" y="236">spec_invalid</text>
+<text class="ms" x="364" y="252">item_unsupported</text>
+<text class="ms" x="364" y="268">unowned_conflict</text>
+<text class="ms" x="364" y="284">state_write_refused</text>
+
+<path class="ar-no" d="M800 128V195" marker-end="url(#a-no)"/>
+<rect class="box-no" x="696" y="196" width="160" height="100" rx="8"/>
+<text class="b c-no" x="712" y="216">refused</text>
+<text class="ms" x="712" y="236">receipt_required</text>
+<text class="ms" x="712" y="252">plan_stale</text>
+<text class="ms" x="712" y="268">precondition_failed</text>
+<text class="ms" x="712" y="284">folder_busy</text>
+
+<!-- success -->
+<path class="ar-cfg" d="M740 128V160H608V195" marker-end="url(#a-cfg)"/>
+<rect class="card" x="540" y="196" width="136" height="100" rx="8"/>
+<text class="b" x="556" y="216">Data folder</text>
+<text class="s" x="556" y="236">managed config,</text>
+<text class="s" x="556" y="252">and hs's ledger</text>
+<text class="s" x="556" y="268">and journal</text>
+
+<text class="s" x="24" y="322">An interrupted apply leaves its journal: recover finishes it, and every other apply refuses until it has.</text>
+<text class="s" x="24" y="338">remove takes out one owner's items, only where the installed digest still matches.</text>
+</svg>

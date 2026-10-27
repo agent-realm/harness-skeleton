@@ -4,6 +4,8 @@
 harness. Tier 1 checks do, so they run on a **disposable bench** only: a VM made for it, or a CI
 runner. Never run one on a workstation, and never against a real data folder.
 
+![Tier 0 unit tests run on every pull request with a stub harness; tier 1 starts a real harness on a disposable bench and writes a report per check; no version is certified yet.](../diagrams/conformance.svg)
+
 Every check:
 - refuses to run without `HS_BENCH=1`;
 - works in a fresh scratch directory with its own `HOME` and XDG roots, and removes it after

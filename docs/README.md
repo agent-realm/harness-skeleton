@@ -3,6 +3,7 @@
 One line per page.
 
 - **Tutorials** teach, in order, from nothing to a working setup.
+- **Concepts** show how the parts fit, with diagrams.
 - **Guides** each do one task.
 - **Reference** pages are complete and dry.
 - **Design** notes say why.
@@ -10,6 +11,10 @@ One line per page.
 ## Tutorials
 
 - [first-steps.md](tutorials/first-steps.md): install `hs`, read a harness and a data folder, validate a layer, then deliver it into a scratch folder and take it out again.
+
+## Concepts
+
+- [how-it-works.md](concepts/how-it-works.md): configuration in and state out, the delivery modes, plans and receipts, sessions and conformance, each in a diagram, and what is built today. The diagrams are in [`diagrams/`](diagrams/).
 
 ## Guides
 

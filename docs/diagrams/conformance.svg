@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 304" width="880" height="304" role="img" aria-labelledby="title desc">
+<title id="title">How an adapter is proven</title>
+<desc id="desc">Tier 0 is the unit test suite, run on every pull request with a stub in place of the harness binary. Tier 1 starts a real harness on a disposable bench, with the scripted model when a check needs one, and writes a JSON report per check. A reference harness, planned, will produce every session feature on purpose for fixtures. No version is certified yet.</desc>
+<style>
+:root { --bg:#f6f7f9; --card:#ffffff; --ink:#1b2230; --muted:#5a6475; --line:#c5cbd6;
+  --cfg:#2a55c9; --cfg-t:#e9effd; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#10151c; --card:#171d26; --ink:#e3e7ee; --muted:#9ba5b5; --line:#3a4454;
+    --cfg:#86a7ff; --cfg-t:#1a2646; }
+}
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; fill: var(--ink); }
+.b { font-size: 14px; font-weight: 600; }
+.s { fill: var(--muted); }
+.m { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+.bg { fill: var(--bg); }
+.card { fill: var(--card); stroke: var(--line); }
+.box-cfg { fill: var(--cfg-t); stroke: var(--cfg); }
+.dash { stroke-dasharray: 5 4; }
+.ar-ink { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.mk-ink { fill: var(--muted); }
+</style>
+<defs>
+  <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-ink"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="880" height="304" rx="12"/>
+
+<rect class="card" x="24" y="32" width="250" height="148" rx="8"/>
+<text class="b" x="40" y="58">Tier 0: unit tests</text>
+<text class="m" x="40" y="82">npm test</text>
+<text class="s" x="40" y="100">on every pull request, on Node</text>
+<text class="s" x="40" y="118">22 and 24. A stub script stands</text>
+<text class="s" x="40" y="136">in for the harness binary; no</text>
+<text class="s" x="40" y="154">real data folder is read.</text>
+
+<rect class="box-cfg" x="315" y="32" width="250" height="148" rx="8"/>
+<text class="b" x="331" y="58">Tier 1: a real harness</text>
+<text class="m" x="331" y="82">HS_BENCH=1</text>
+<text class="s" x="331" y="100">on a disposable bench only,</text>
+<text class="s" x="331" y="118">in a scratch HOME and XDG</text>
+<text class="s" x="331" y="136">roots. A check that needs a</text>
+<text class="s" x="331" y="154">model gets the scripted one.</text>
+
+<rect class="card" x="606" y="32" width="250" height="148" rx="8"/>
+<text class="b" x="622" y="58">Evidence</text>
+<text class="m" x="622" y="82">conformance/results/</text>
+<text class="s" x="622" y="100">one JSON report per check.</text>
+<text class="s" x="622" y="118">11 checks pass: 8 on Claude</text>
+<text class="s" x="622" y="136">Code 2.1.307, 3 on Codex</text>
+<text class="s" x="622" y="154">0.160.0.</text>
+
+<path class="ar-ink" d="M274 106H314" marker-end="url(#a-ink)"/>
+<path class="ar-ink" d="M565 106H605" marker-end="url(#a-ink)"/>
+
+<rect class="card dash" x="315" y="216" width="250" height="72" rx="8"/>
+<text class="b" x="331" y="240">Planned: a reference harness</text>
+<text class="s" x="331" y="260">that produces every session feature</text>
+<text class="s" x="331" y="278">on purpose, with a scripted model</text>
+<path class="ar-ink dash" d="M440 216V181" marker-end="url(#a-ink)"/>
+<text class="s" x="448" y="204">fixtures</text>
+
+<text class="s" x="622" y="234">No version is certified yet.</text>
+<text class="s" x="622" y="252">Certification needs the profile's</text>
+<text class="s" x="622" y="270">checks and the acceptance scenario.</text>
+</svg>

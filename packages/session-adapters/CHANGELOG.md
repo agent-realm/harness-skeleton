@@ -574,3 +574,17 @@ changes. The strings, each read from the harness's source at the version the fix
     earlier test edited a copy with an `Error: ` prefix before the text and expected `denied`; it
     now writes the text as OpenCode stores it, and a new test shows the near misses. The matrix's
     M.is-error cell for opencode names it.
+- **agy (adapter_ver 0.2.1 → 0.2.2).** An ERROR step whose error matched `/denied/i` was `denied`
+  with `is_error` null, in the conversation database and in the transcript. agy has no structured
+  denial marker the adapter reads (the step's `permissions` blob is not decoded) and no fixed denial
+  string: its denial error embeds the command, and agy's source is not public. So nothing marks a
+  denial: a denied command is an ERROR step or line, `completed`, with the store's flag, true. A
+  CANCELED or INTERRUPTED step or line is still `cancelled`, from its status.
+  - Goldens: one tool result, `features` session `63e1ede9…`, step G2 (message `d24bade1…`,
+    `call_322814`, the denied command): `status` `denied` → `completed` and `is_error` `null` →
+    `true`, with the message's `cmp_sha` and that entry of the session's `fingerprint.cmp_shas`.
+    The message's own `status` stays `error`. Nothing else moves.
+- **No other adapter decides `cancelled` or `denied` from text.** claude-code and codex map
+  neither; copilot-cli (`error.code`), cursor (the bubble's status, `rejected`), cursor-agent (the
+  result's oneof case, `outcome`), devin (`cognition.ai/rejected` and `canceled`, the failure
+  reason), gemini-cli (`status`) and vscode (`isConfirmed`, `modelState`) read a structured marker.

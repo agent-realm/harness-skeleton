@@ -3,6 +3,8 @@
 **Goal:** write a spec into a data folder, so a bare start of the harness gets it too, and take it
 out again cleanly. This is the `materialize` mode: for a folder a tool owns.
 
+![validate and plan write nothing; the user approves the plan with a receipt bound to its digest; apply writes under a lock with a journal, or refuses with a code.](../diagrams/plan-and-receipt.svg)
+
 **1. Plan:**
 
 ```sh

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 456" width="880" height="456" role="img" aria-labelledby="title desc">
+<title id="title">The three delivery modes</title>
+<desc id="desc">overlay carries the spec at launch, as argv, environment and temp files, and writes nothing into the data folder. materialize regenerates the managed config files of a folder the tool owns before each launch. reconcile, designed and not built yet, merges managed keys into the user's own folder three ways. No mode writes state.</desc>
+<style>
+:root { --bg:#f6f7f9; --card:#ffffff; --ink:#1b2230; --muted:#5a6475; --line:#c5cbd6;
+  --cfg:#2a55c9; --cfg-t:#e9effd; --st:#a3520a; --st-t:#fcf0e2; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#10151c; --card:#171d26; --ink:#e3e7ee; --muted:#9ba5b5; --line:#3a4454;
+    --cfg:#86a7ff; --cfg-t:#1a2646; --st:#f0a55a; --st-t:#33250f; }
+}
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; fill: var(--ink); }
+.b { font-size: 13px; font-weight: 600; }
+.s { fill: var(--muted); }
+.mb { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 16px; font-weight: 600; }
+.c-cfg { fill: var(--cfg); }
+.c-st { fill: var(--st); }
+.bg { fill: var(--bg); }
+.card { fill: var(--card); stroke: var(--line); }
+.well { fill: var(--bg); stroke: var(--line); }
+.cell { fill: var(--card); stroke: var(--line); }
+.pill { fill: var(--cfg-t); stroke: var(--cfg); }
+.pill-off { fill: var(--card); stroke: var(--line); stroke-dasharray: 4 3; }
+.box-cfg { fill: var(--cfg-t); stroke: var(--cfg); }
+.box-st { fill: var(--st-t); stroke: var(--st); }
+.dash { stroke-dasharray: 5 4; }
+.ar-cfg { stroke: var(--cfg); stroke-width: 2; fill: none; }
+.mk-cfg { fill: var(--cfg); }
+</style>
+<defs>
+  <marker id="a-cfg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-cfg"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="880" height="456" rx="12"/>
+
+<!-- overlay -->
+<rect class="card" x="24" y="24" width="264" height="376" rx="8"/>
+<text class="mb" x="40" y="54">overlay</text>
+<rect class="pill" x="220" y="40" width="52" height="20" rx="10"/>
+<text class="c-cfg" x="246" y="54" text-anchor="middle">built</text>
+<text class="s" x="40" y="78">folder owner: anyone</text>
+<rect class="well" x="40" y="94" width="232" height="32" rx="6"/>
+<text x="156" y="114" text-anchor="middle">hs, with the resolved spec</text>
+<path class="ar-cfg" d="M90 126V159" marker-end="url(#a-cfg)"/>
+<rect class="box-cfg" x="40" y="160" width="100" height="64" rx="6"/>
+<text class="b c-cfg" x="52" y="181">launch</text>
+<text class="s" x="52" y="199">argv, env,</text>
+<text class="s" x="52" y="215">temp files</text>
+<rect class="well" x="152" y="160" width="120" height="132" rx="6"/>
+<rect class="cell" x="160" y="168" width="104" height="52" rx="4"/>
+<text class="b" x="170" y="188">config</text>
+<text class="s" x="170" y="206">unchanged*</text>
+<rect class="box-st" x="160" y="226" width="104" height="44" rx="4"/>
+<text class="b c-st" x="170" y="244">state</text>
+<text class="s" x="170" y="261">untouched*</text>
+<text class="s" x="212" y="286" text-anchor="middle">data folder</text>
+<text x="40" y="322">Writes nothing into the folder.*</text>
+<text x="40" y="340">Drift: none possible.</text>
+<text x="40" y="358">An item it cannot carry falls back</text>
+<text x="40" y="376">to materialize, or is refused.</text>
+
+<!-- materialize -->
+<rect class="card" x="308" y="24" width="264" height="376" rx="8"/>
+<text class="mb" x="324" y="54">materialize</text>
+<rect class="pill" x="504" y="40" width="52" height="20" rx="10"/>
+<text class="c-cfg" x="530" y="54" text-anchor="middle">built</text>
+<text class="s" x="324" y="78">folder owner: the tool</text>
+<rect class="well" x="324" y="94" width="232" height="32" rx="6"/>
+<text x="440" y="114" text-anchor="middle">hs, with the resolved spec</text>
+<rect class="cell" x="324" y="160" width="100" height="64" rx="6"/>
+<text class="b" x="336" y="181">launch</text>
+<text class="s" x="336" y="199">the harness</text>
+<text class="s" x="336" y="215">starts</text>
+<rect class="well" x="436" y="160" width="120" height="132" rx="6"/>
+<rect class="box-cfg" x="444" y="168" width="104" height="52" rx="4"/>
+<text class="b c-cfg" x="454" y="188">config</text>
+<text class="s" x="454" y="206">managed files</text>
+<rect class="box-st" x="444" y="226" width="104" height="44" rx="4"/>
+<text class="b c-st" x="454" y="244">state</text>
+<text class="s" x="454" y="261">untouched*</text>
+<text class="s" x="496" y="286" text-anchor="middle">data folder</text>
+<path class="ar-cfg" d="M496 126V167" marker-end="url(#a-cfg)"/>
+<text x="324" y="322">Regenerates the managed files</text>
+<text x="324" y="340">before each launch; keeps the rest.</text>
+<text x="324" y="358">Drift: reset at the next launch,</text>
+<text x="324" y="376">and reported.</text>
+
+<!-- reconcile -->
+<rect class="card dash" x="592" y="24" width="264" height="376" rx="8"/>
+<text class="mb" x="608" y="54">reconcile</text>
+<rect class="pill-off" x="768" y="40" width="72" height="20" rx="10"/>
+<text class="s" x="804" y="54" text-anchor="middle">designed</text>
+<text class="s" x="608" y="78">folder owner: the user</text>
+<rect class="well" x="608" y="94" width="232" height="32" rx="6"/>
+<text x="724" y="114" text-anchor="middle">hs, with the resolved spec</text>
+<rect class="cell" x="608" y="160" width="100" height="64" rx="6"/>
+<text class="b" x="620" y="181">launch</text>
+<text class="s" x="620" y="199">the harness</text>
+<text class="s" x="620" y="215">starts</text>
+<rect class="well" x="720" y="160" width="120" height="132" rx="6"/>
+<rect class="box-cfg dash" x="728" y="168" width="104" height="52" rx="4"/>
+<text class="b c-cfg" x="738" y="188">config</text>
+<text class="s" x="738" y="206">managed keys</text>
+<rect class="box-st" x="728" y="226" width="104" height="44" rx="4"/>
+<text class="b c-st" x="738" y="244">state</text>
+<text class="s" x="738" y="261">untouched*</text>
+<text class="s" x="780" y="286" text-anchor="middle">data folder</text>
+<path class="ar-cfg dash" d="M780 126V167" marker-end="url(#a-cfg)"/>
+<text x="608" y="322">Merges managed keys three-way:</text>
+<text x="608" y="340">spec, observed, last delivered.</text>
+<text x="608" y="358">Conflicts are reported: keep-native,</text>
+<text x="608" y="376">take-spec, or adopt into a layer.</text>
+
+<text class="s" x="24" y="424">* Exceptions, each listed in the plan: under overlay, a [state] key whose value keeps at least what is in effect;</text>
+<text class="s" x="24" y="440">in any mode, Claude Code's cached account state, cleared before a launch through an endpoint.</text>
+</svg>

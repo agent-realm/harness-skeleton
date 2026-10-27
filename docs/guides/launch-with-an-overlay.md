@@ -3,6 +3,8 @@
 **Goal:** start a harness with a spec carried at launch. Nothing is written into its data
 folder, so the folder may be the user's own.
 
+![overlay carries the spec at launch and writes nothing into the data folder; materialize writes the managed files of a folder the tool owns; reconcile is designed, not built. No mode writes state.](../diagrams/delivery-modes.svg)
+
 ```sh
 node bin/hs.js launch-spec --harness claude-code --folder ./claude-data \
   --layer ./team --local ./local.toml --pretty

@@ -20,7 +20,7 @@
 // - ONE source, `sessions.db#table:message_nodes`: main, snapshot, a `rows-json` unit of the
 //   session's row, nodes, tool states and sub-agent heads, read in one transaction (sessions
 //   §1). Per-table deltas would split the pointer from the nodes across reads;
-// - only the main line itself tears a read (sessions v1.x proposal (#6), §2 `inconsistent`): a dangling
+// - only the main line itself tears a read (sessions v1.3, §2 `inconsistent`): a dangling
 //   main_chain_id, or a parent link along the line, is the retryable `inconsistent`, found in
 //   `read`, never an empty or shorter session. A node the main line only names (a running
 //   sub-agent's head in `subagent_heads`, a compacted history's prior nodes, a sub-agent chain a
@@ -249,7 +249,7 @@ function walk(t, id, what) {
 // (its head and the parent links along it) must resolve: a pointer there that this read cannot
 // follow is `inconsistent`. A node the main line only names (a compacted history's prior nodes, a
 // sub-agent chain a tool result names) that the read does not hold whole tears nothing: that piece
-// is left out of the plan, and `torn` says so (sessions v1.x proposal (#6), §2 `inconsistent`). A loop is
+// is left out of the plan, and `torn` says so (sessions v1.3, §2 `inconsistent`). A loop is
 // still damaged. `{items, torn, tornCompaction}`, or null when the session has no turn yet.
 function plan(t) {
   if (!t.row || t.row.main_chain_id == null) return null;
@@ -323,7 +323,7 @@ function plan(t) {
 }
 
 // The chain ending at a node the main line only names, or null when this read does not hold it
-// whole (a save in progress). Only the main line itself tears a read (sessions v1.x proposal (#6), §2
+// whole (a save in progress). Only the main line itself tears a read (sessions v1.3, §2
 // `inconsistent`). A loop is still damaged.
 function tryWalk(t, id, what) {
   try {
@@ -499,7 +499,7 @@ export function derive(session, input, state) {
   if (sessionRec) put({ ...sessionRec, fingerprint: { cmp_shas: line.map((x) => x[1]) } });
 
   // While a node the main line names dangles, derive leaves out what that node would have reached
-  // (sessions v1.x proposal (#6), §2 `inconsistent`). Records derive wrote earlier among them are held, not
+  // (sessions v1.3, §2 `inconsistent`). Records derive wrote earlier among them are held, not
   // tombstoned, and so are a compaction record and its summary that point into the missing nodes:
   // the last written version stands, and the next read that holds the node releases it (live
   // again) or drops it (sessions §2, `held`). Records the gap only moves (a message's order, the
@@ -568,7 +568,7 @@ function typedText(n) {
 }
 
 // A tool node's outcome: rejected is denied, canceled is cancelled; a non-zero exit stays completed
-// (fixture captures). `is_error` is the harness store's own flag (sessions-model v1.x proposal (#6), §2.3):
+// (fixture captures). `is_error` is the harness store's own flag (sessions-model v1.3, §2.3):
 // true where the store says failure (`chisel/tool_result_meta.success: false`, a `failed` final
 // status), false where it says success (`success: true`, a `completed` final status), and null
 // where it keeps no flag. A flag that says success beside a shell's non-zero `exit_code` is
@@ -788,7 +788,7 @@ function build(body) {
     for (const h of t.heads) markUp(h.node);
     // A node the main line names that the read does not hold whole: its chain cannot be walked, so
     // its nodes cannot be named, and its held nodes would read as an abandoned branch. derive leaves
-    // out what it would have reached (sessions v1.x proposal (#6), §2 `inconsistent`): while something
+    // out what it would have reached (sessions v1.3, §2 `inconsistent`): while something
     // dangles, a node is left out when no valid head reaches its tree and no tree holding a
     // main-line node contains it.
     const kept = partial ? keptTrees(t, seenNodes, { priorLinks: !p.tornCompaction }) : null;

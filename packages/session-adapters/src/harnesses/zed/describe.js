@@ -71,7 +71,7 @@ export const describe = Object.freeze({
     // (annex §4 finding 6): `request_token_usage` holds a turn's last request, part of that total
     // and not a turn total (annex §2), so beside a total it reaches no record (it stays in the raw
     // unit). Where the cumulative is empty, each entry is one per_turn record anchored to its User
-    // message, an orphaned entry anchored to its gone User id (sessions-model v1.x proposal (#6), §2.4;
+    // message, an orphaned entry anchored to its gone User id (sessions-model v1.3, §2.4;
     // fixtures: features, restore).
     // `ui_scroll_position`, `sandbox_grants`, `speed` and the row / thread `updated_at` reach no
     // record either.

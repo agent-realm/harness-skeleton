@@ -102,7 +102,7 @@ Four fields are easy to misread. The same script prints each.
 `is_error` is the harness store's own flag for a call that completed, copied, never worked out
 from the exit code or the output's text. It is null where the store keeps no flag, where the flag
 says success beside a shell's non-zero `exit_code`, and wherever `status` is `cancelled` or
-`denied` (sessions-model v1.x proposal (#6), §2.3). To know whether a shell failed, read
+`denied` (sessions-model v1.3, §2.3). To know whether a shell failed, read
 `exit_code`.
 
 ```sh
@@ -122,7 +122,7 @@ completed  false  0     chatcmpl-tool-feat-a
 ```
 
 **The session's `kind`** is the harness's own session type, and null where the store writes none
-(sessions-model v1.x proposal (#6), §2.1). A sub-agent session is told by its `subagent` link, not
+(sessions-model v1.3, §2.1). A sub-agent session is told by its `subagent` link, not
 by its kind.
 
 **Usage.** Each usage record has a `granularity` (`per_response`, `per_message`, `per_turn` or

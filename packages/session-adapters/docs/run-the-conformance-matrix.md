@@ -9,7 +9,7 @@ runs against the package's synthetic fixtures.
 ## What it is
 
 - **`conformance/checklist.js`** lists the 32 adapter-side items: 22 of sessions-model (`M.*`),
-  that is the 21 of v1 and `M.is-error` of the sessions-model v1.x proposal (#6), and 10 of
+  that is the 21 of v1 and `M.is-error` of the sessions-model v1.3, and 10 of
   sessions v1 (`S.*`).
 - **`conformance/matrix.js`** gives each item a cell for each of the twelve harnesses: what proves
   the item there, or why it does not apply.
@@ -82,7 +82,7 @@ node conformance/matrix.js | grep -A8 '^## M.is-error:'
 ```
 
 ```
-## M.is-error: is_error (v1.x proposal (#6)): every tool_result copies the store's own flag; null where it has none, where the flag says success beside a shell's non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true
+## M.is-error: is_error (v1.3): every tool_result copies the store's own flag; null where it has none, where the flag says success beside a shell's non-zero exit_code, and where status is cancelled or denied; a fixture result with a non-zero exit_code and no failure flag never has is_error true
 
 From sessions-model.
 

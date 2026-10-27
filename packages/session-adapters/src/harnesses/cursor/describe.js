@@ -75,7 +75,7 @@ export const describe = Object.freeze({
     // read in this version; `agentKv:blob:*` is not read; images are a path, no bytes; a tool's
     // toolFormerData beyond name, args, status and result (whose `exitCode` is the tool_result's
     // `exit_code`), and a sub-agent's `isSubagent` and `subagentTypeName` reach no record (they
-    // stay in the raw unit: a flag is not a kind, sessions-model v1.x proposal (#6), §2.1; the parent's
+    // stay in the raw unit: a flag is not a kind, sessions-model v1.3, §2.1; the parent's
     // `subagent` link states the sub-agent); usage is `{0,0}` on the free plan; the volatile fields
     // above are not read.
     read: 'lossy',

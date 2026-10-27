@@ -511,7 +511,7 @@ function foldEvent(ctx, o, sk, unitKey) {
       const output = resultText(d);
       const exit = d.shellExecution && typeof d.shellExecution === 'object' ? num(d.shellExecution.exitCode) : null;
       const exitCode = Number.isInteger(exit) ? exit : null;
-      // `is_error` is the harness store's own flag (sessions-model v1.x proposal (#6), §2.3): the stored
+      // `is_error` is the harness store's own flag (sessions-model v1.3, §2.3): the stored
       // `success` copied, false giving true and true giving false; without a flag it is null. A flag
       // that says success beside a shell's non-zero `exit_code` is unreliable for that result, as
       // §2.3 rules for Copilot CLI and Codex alike: that result's `is_error` is null, `exit_code`

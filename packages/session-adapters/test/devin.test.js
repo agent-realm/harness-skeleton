@@ -162,7 +162,7 @@ test('devin: tool outcomes: rejected is denied, canceled is cancelled (its reply
   assert.equal(msg(recs, ID('ah:a3')).status, 'complete');
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, copied.
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): the harness store's own flag, copied.
 // A flag that says success beside a shell's non-zero exit_code is unreliable for that result, so
 // its is_error is null; a store that keeps no flag gives null. Never derived from exit_code or text.
 test('devin: is_error is the stored flag: success true beside a non-zero exit is null, a failure flag is true, no flag is null', () => {
@@ -188,7 +188,7 @@ test('devin: is_error is the stored flag: success true beside a non-zero exit is
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A rejection (`denied`) and a cancel (`cancelled`), from the tool node or from
 // tool_call_state, did not; their is_error is null and the status carries the fact, whatever
 // `success` says beside them. A call that completed keeps the flag (the positive control).
@@ -347,7 +347,7 @@ test('devin: a session saved before its first turn is its session record alone',
 
 // ---- torn reads, list and read ------------------------------------------------------------------
 
-// sessions v1.x proposal (#6), §2 `read` errors, `inconsistent`: only the main line itself (its head and the
+// sessions v1.3, §2 `read` errors, `inconsistent`: only the main line itself (its head and the
 // parent links along it) tears a Devin read. A subagent_heads row naming a node the read does not
 // hold tears nothing: derive leaves out what that node would have reached (the sub-agent chain),
 // and a later read that holds the node derives it.
@@ -406,7 +406,7 @@ test('devin: a dangling sub-agent head is no torn read: derive leaves its chain 
   }
 });
 
-// sessions v1.x proposal (#6), §2 `inconsistent`, with sessions §2 `held`: a read with a dangling head that
+// sessions v1.3, §2 `inconsistent`, with sessions §2 `held`: a read with a dangling head that
 // follows a whole read must not tombstone what the whole read wrote. Records derive wrote earlier
 // among what it leaves out are held: the last written version stands. The next read that holds the
 // head releases them, unchanged.
@@ -452,7 +452,7 @@ test('devin: derived from a whole read\'s state, a dangling head holds the keys 
   }
 });
 
-// sessions v1.x proposal (#6), §2 `inconsistent`: while a head dangles, derive leaves out only what that
+// sessions v1.3, §2 `inconsistent`: while a head dangles, derive leaves out only what that
 // head would have reached: nodes no valid head reaches, in no tree that holds a main-line node.
 // An off-line tree that exists without the dangling head keeps its normal treatment. amber-harbor
 // is the mode-switch shape: the line runs through prefix copies (`compact/prior_node_ids`), and the
@@ -493,7 +493,7 @@ test('devin: a dangling sub-agent head leaves a mode switch\'s old root alone: t
   });
 });
 
-// sessions v1.x proposal (#6), §2 `inconsistent`: only the main line itself tears a Devin read, its head and
+// sessions v1.3, §2 `inconsistent`: only the main line itself tears a Devin read, its head and
 // the parent links along it (after a compaction or a mode switch, the re-rooted copies are that
 // line). A loop anywhere is no committed tree: damaged.
 test('devin: a torn main line is inconsistent, never an empty or shorter session: its head, a parent link along it; a loop is damaged', () => {
@@ -521,7 +521,7 @@ test('devin: a torn main line is inconsistent, never an empty or shorter session
   });
 });
 
-// sessions v1.x proposal (#6), §2 `inconsistent`: a node the main line only names (a compacted history's
+// sessions v1.3, §2 `inconsistent`: a node the main line only names (a compacted history's
 // prior nodes, a sub-agent chain a tool result names) that the read lacks tears nothing. derive
 // leaves out what that node would have reached, and the raw unit keeps the naming row. Records
 // derive wrote earlier among them are held, and so are a compaction record and its summary that
@@ -587,7 +587,7 @@ test('devin: a sub-agent chain a tool result names that the read does not hold w
   for (const mid of ['dl:sa2', 'dl:sr1']) namedNodeMissing('dusty-lantern', ID(mid), chain);
 });
 
-// sessions v1.x proposal (#6), §2 `inconsistent`, a side effect of leaving a compacted history out. A
+// sessions v1.3, §2 `inconsistent`, a side effect of leaving a compacted history out. A
 // compaction re-roots the line as a mode switch does, so while the history tears, a tree named
 // only through its prefix copies is left out with it. In `switch-compaction` that tree is a mode
 // switch's old root, and the turn abandoned there goes with it. Records derive wrote earlier among

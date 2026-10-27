@@ -590,8 +590,8 @@ function attachment(partId, f) {
 // absent from a shell-mode command (spec), so null there too.
 const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 
-// OpenCode's own text for a refused permission (sessions-model v1.x proposal (#6), §2.3, and the
-// sessions-model annex §5, v1.x proposal (#6)): a fixed string OpenCode itself writes for that
+// OpenCode's own text for a refused permission (sessions-model v1.3, §2.3, and the
+// sessions-model annex §5, v1.3): a fixed string OpenCode itself writes for that
 // case, matched exactly, never as a pattern. OpenCode v1.19.3 (e3c4eb24): PermissionRejectedError's
 // message, packages/core/src/v1/permission.ts:7-11, stored as a v1 tool part's `state.error` (a
 // string) by packages/opencode/src/session/processor.ts:186-194 through errorMessage (the error's
@@ -601,8 +601,8 @@ const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 // the loop (packages/core/src/session/runner/llm.ts:143-150).
 const REJECTED = 'The user rejected permission to use this specific tool call.';
 
-// A call cut off by an interrupt, by OpenCode's structured marker (sessions-model v1.x proposal
-// (#6), §2.3). After an abort or a retry, OpenCode's cleanup writes every call still open as an
+// A call cut off by an interrupt, by OpenCode's structured marker (sessions-model v1.3,
+// §2.3). After an abort or a retry, OpenCode's cleanup writes every call still open as an
 // `error` part whose `metadata.interrupted` is true, beside the error text `Tool execution
 // aborted` (OpenCode v1.19.3, packages/opencode/src/session/processor.ts:591-607, run when every
 // turn ends, :691). The marker decides, never the text, as OpenCode's own test reads it
@@ -612,7 +612,7 @@ const interruptedOf = (status, meta) => status === 'error' && meta.interrupted =
 
 // A tool's call and result (sessions-model §2.3: one native part holding both becomes
 // `<id>:call` + `<id>:result`, sharing the call id). `is_error` is the harness store's own flag,
-// the part's state status (sessions-model v1.x proposal (#6), §2.3): `error` gives true and
+// the part's state status (sessions-model v1.3, §2.3): `error` gives true and
 // `completed` false, and a status still pending or running gives null. A `completed` status beside
 // a shell's non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the
 // other results keep the flag. It describes a call that completed: a refused permission

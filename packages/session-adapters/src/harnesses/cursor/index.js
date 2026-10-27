@@ -423,7 +423,7 @@ function toolParts(tfd, partId) {
     const exit = isObj(res) && Number.isFinite(res.exitCode) ? res.exitCode : null;
     const denied = st === 'rejected' || (isObj(res) && res.rejected === true);
     const status = denied ? 'denied' : st === 'cancelled' || st === 'aborted' ? 'cancelled' : 'completed';
-    // `is_error` is the harness store's own flag (sessions-model v1.x proposal (#6), §2.3): an `error`
+    // `is_error` is the harness store's own flag (sessions-model v1.3, §2.3): an `error`
     // status, the tool's or `additionalData`'s, gives true, and `completed` false. A `completed`
     // beside a shell's non-zero `exit_code` is unreliable for that result: its `is_error` is null,
     // and the other results keep the flag. It describes a call that completed: a denial
@@ -669,7 +669,7 @@ function build(st, key) {
     mode: str(c.unifiedMode || hv.unifiedMode) || null,
     // `kind` is the native session type, and a flag is not a kind: the header's `isSubagent`
     // leaves it null. The sub-agent fact is the parent's `subagent` link naming this chat (above;
-    // a child names no parent). sessions-model v1.x proposal (#6), §2.1.
+    // a child names no parent). sessions-model v1.3, §2.1.
     kind: null,
     reuse: 'impossible',
     ts_source: 'event',

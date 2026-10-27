@@ -63,14 +63,13 @@ For an adapter with file sources, also add its expected source kinds to `EXPECT`
   - a tool result's `is_error` is the store's own flag. It is null where the store keeps none,
     where the flag says success beside a shell's non-zero `exit_code`, and where `status` is
     `cancelled` or `denied`; never worked out from the exit code or the output's text
-    (sessions-model v1.x proposal (#6), §2.3);
+    (sessions-model v1.3, §2.3);
   - `cancelled` and `denied` come from a structured marker the store writes, or from a fixed
     string the harness itself writes for that case, matched exactly and listed for it in the
-    sessions-model annex §5, v1.x proposal (#6); never from a pattern in free text (the same
+    sessions-model annex §5, v1.3; never from a pattern in free text (the same
     clause);
   - the session's `kind` is the store's own session type, null where it writes none. A sub-agent
-    flag or a parent reference is a `subagent` link, not a kind (sessions-model v1.x proposal
-    (#6), §2.1);
+    flag or a parent reference is a `subagent` link, not a kind (sessions-model v1.3, §2.1);
   - usage carries only the granularities and anchors the harness declares, and one session's usage
     records never overlap.
 - **`unitsFromBytes`**, for file sources only, shares `read`'s split through `splitLines` and

@@ -564,7 +564,7 @@ function transcript() {
 
 // A DB-less transcript whose tool results did not complete: a command the user stopped (CANCELED),
 // one cut off (INTERRUPTED), then one that ran (DONE). The status is the line's own field, as the
-// DB's step status is the row's (sessions-model v1.x proposal (#6), §2.3).
+// DB's step status is the row's (sessions-model v1.3, §2.3).
 function transcriptCancel() {
   const t = (s) => Date.UTC(2026, 9, 22, 9, 30, 0) + Math.round(s * 1000);
   const iso = (s) => new Date(t(s)).toISOString().replace(/\.\d+Z$/, 'Z');

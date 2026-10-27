@@ -555,7 +555,7 @@ const allowArgs = (o) => Object.fromEntries(Object.entries(o || {}).filter(([k])
 const NAMES = { update_todos: 'TodoWrite', read_todos: 'TodoRead', get_mcp_tools: 'GetDynamicTools', ls: 'LS', mcp: 'CallMcpTool' };
 const pascal = (k) => k.split('_').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
 
-// `is_error` is the harness store's own flag (sessions-model v1.x proposal (#6), §2.3): a result's oneof
+// `is_error` is the harness store's own flag (sessions-model v1.3, §2.3): a result's oneof
 // case (a success or a failure), or the model context's `isError`; null where neither is stored. A
 // flag that says success beside a shell's non-zero `exit_code` is unreliable for that result: its
 // `is_error` is null, and the other results keep the flag. It describes a call that completed: a
@@ -1066,7 +1066,7 @@ function fold(st, key) {
         // none when the output blob does not decode.
         const exit = outMsg ? (outMsg.num(3) ?? 0) : null;
         // The fields read here (#1 stdout, #2 stderr, #3 exit_code) hold no success or failure flag,
-        // so `is_error` is null: never derived from the exit code (sessions-model v1.x proposal (#6), §2.3).
+        // so `is_error` is null: never derived from the exit code (sessions-model v1.3, §2.3).
         parts.push({ part_id: '0:result', kind: 'tool_result', call_id: callId, is_error: null, status: 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exit });
       }
       // Still running while it is the last turn: held; a later turn ends it, interrupted.
@@ -1203,7 +1203,7 @@ function fold(st, key) {
     session: {
       title: str(meta.name), cwd, last_cwd: mj ? str(mj.cwd) : null, created_at: iso(meta.createdAt || root.num(26)),
       // `kind` is the native session type, and cursor-agent stores none: a flag or a parent
-      // reference is not a kind (sessions-model v1.x proposal (#6), §2.1). A sub-agent is told by its §2.5
+      // reference is not a kind (sessions-model v1.3, §2.1). A sub-agent is told by its §2.5
       // link from meta.subagentInfo, above.
       client: str(root.str(22)), kind: null,
     },

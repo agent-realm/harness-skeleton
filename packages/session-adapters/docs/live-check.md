@@ -17,7 +17,7 @@ by a capture that is now a fixture, and is marked **confirmed** with that fixtur
 | Status | Items |
 |---|---|
 | Confirmed | 1 |
-| Not established (no live run) | 40 |
+| Not established (no live run) | 42 |
 
 When a live run confirms an item, mark it confirmed and name the capture or fixture that shows
 it; do not delete it. When the real shape differs, fix the adapter and its fixture in the same
@@ -48,8 +48,8 @@ PR, then mark it confirmed. A capture that becomes a fixture is scrubbed first
   carries one to join on.
 - `cancelled` and `denied` come from a structured marker the harness store writes, or from a
   fixed string the harness itself writes for that case (never tool or model output), matched
-  exactly and listed for that harness in the sessions-model annex §5, v1.x proposal (#6); never
-  from a pattern in free text (sessions-model v1.x proposal (#6), §2.3). For these two harnesses,
+  exactly and listed for that harness in the sessions-model annex §5, v1.3; never
+  from a pattern in free text (sessions-model v1.3, §2.3). For these two harnesses,
   neither is established (no live run, and no fixture holds the case), so every result is
   `completed` today:
   - **Claude Code: a user's rejection of a tool call, or an interrupt during one.** Not
@@ -98,7 +98,7 @@ PR, then mark it confirmed. A capture that becomes a fixture is scrubbed first
   fixture shows one. To establish: capture a chat file in which VS Code wrote one.
 - **`isConfirmed.type` 5, read as a skipped tool call.** Not established (no live run). Only 1 and
   4 are observed; 5 is the reading the adapter marks UNVERIFIED. The adapter makes such a call
-  `cancelled` with `is_error` null (sessions-model v1.x proposal (#6), §2.3), a `resultError` beside it
+  `cancelled` with `is_error` null (sessions-model v1.3, §2.3), a `resultError` beside it
   included. To establish: skip a tool call in a live run and check the stored value.
 
 ## Goose

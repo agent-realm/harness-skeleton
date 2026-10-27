@@ -514,3 +514,29 @@ cursor-agent, devin, opencode, vscode, above) keeps it; any other moves once.
   claude-code gains one: its results copy the block's `is_error`, null where the block has none.
   Over the goldens as they stood before the fixes above, the check finds 19 results in ten
   harnesses; after them, none.
+
+### `cancelled` and `denied`: a harness's own fixed string, matched exactly
+
+sessions-model v1.x (#6), §2.3 (`tool_result`): `cancelled` and `denied` come from a structured
+marker the harness store writes, or from a fixed string the harness itself writes for that case
+(never tool or model output), matched exactly and listed for that harness in the sessions-model
+annex (#6); never from a pattern searched in free text. Where a status goes, `is_error` copies the
+store's flag. Each adapter below matched text otherwise; each bumps its `adapter_ver` once. No key
+changes. The strings, each read from the harness's source at the version the fixtures came from:
+
+| Harness | Text, exactly | Status | Source |
+|---|---|---|---|
+| zed | `Tool canceled by user` | `cancelled` | Zed v1.24.3, `crates/agent/src/thread.rs:73` |
+| zed | `Permission to run tool denied by user` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:6748`, `:6230`, `:6235` |
+| zed | `Permission denied: user sent a follow-up message instead of approving the tool call.` | `denied` | Zed v1.24.3, `crates/agent/src/thread.rs:74-75` |
+
+- **zed (adapter_ver 0.2.2 → 0.2.3).** The three texts were compared with the result's content
+  joined into one string, whatever `is_error` said. They now count only in the shape Zed writes
+  them, which is also what Zed's own `is_canceled_tool_result` asks (`thread.rs:1734-1741`):
+  `is_error: true` and a content of exactly that one Text item, the whole text equal. A result that
+  says success, several items that join to the text, or a text that merely contains it is
+  `completed`, with the stored flag (a stored false stays null, as before). A built-in tool's own
+  cancel error (`Edit cancelled by user` and the like) is not one of the three and stays
+  `completed`.
+  - Goldens: none change; the fixture's two canned results are in Zed's shape. The test edits a
+    copy for the near misses, and the matrix's M.is-error cell for zed names it.

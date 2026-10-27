@@ -105,7 +105,7 @@ export const MATRIX = {
     agy: [G, t('agy', 'is_error is the step status: DONE beside a non-zero exit is null'), t('agy', 'is_error is null where the call did not complete'), t('agy', 'transcript only: a CANCELED or INTERRUPTED line is cancelled with is_error null')],
     cursor: [G, t('cursor', 'is_error is the stored status: completed beside a non-zero exit is null'), t('cursor', 'is_error is null where the call did not complete')],
     'cursor-agent': [G, t('cursor-agent', 'is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null'), t('cursor-agent', 'is_error is null where the call did not complete')],
-    zed: [G, t('zed', 'is_error is null for Zed\'s canned cancel and denial; a completed call keeps a stored true'), t('zed', 'statuses: false is null')],
+    zed: [G, t('zed', 'is_error is null for Zed\'s canned cancel and denial; a completed call keeps a stored true'), t('zed', 'statuses: false is null'), t('zed', 'a canned result is matched exactly, in the shape Zed writes it')],
     devin: [G, t('devin', 'is_error is the stored flag: success true beside a non-zero exit is null'), t('devin', 'is_error is null where the call did not complete')],
   },
   'M.folding': {

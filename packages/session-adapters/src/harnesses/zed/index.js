@@ -44,11 +44,20 @@ export const sidebarKey = (channel) => `${sidebarRel(channel)}#table:sidebar_thr
 const SIDEBAR_RE = /^db\/([^/\\#]+)\/db\.sqlite#table:sidebar_threads$/;
 // The row's columns, as the table has them (they vary by build, so the table is asked).
 const ROW_COLS = ['id', 'summary', 'updated_at', 'data_type', 'parent_id', 'folder_paths', 'folder_paths_order', 'created_at'];
-// Zed's own canned tool results (memhouse normaliser, read from Zed's source).
-const CANCELLED = new Set(['Tool canceled by user']);
-const DENIED = new Set([
-  'Permission to run tool denied by user',
-  'Permission denied: user sent a follow-up message instead of approving the tool call.',
+// Zed's own results for a call that did not complete (sessions-model v1.x (#6), §2.3, and the
+// sessions-model annex (#6)): fixed strings Zed itself writes for that case, never a tool's output.
+// Each is matched exactly, and only in the shape Zed writes it (cannedStatus, below). Zed v1.24.3
+// (2a857f5f), crates/agent/src/thread.rs:
+// - 'Tool canceled by user': :73 (TOOL_CANCELED_MESSAGE), inserted for every call left without a
+//   result when a cancelled turn's message is flushed (:4131-4143);
+// - 'Permission to run tool denied by user': :6748 (the permission prompt's deny), :6230 and :6235
+//   (the sandbox prompt's deny);
+// - 'Permission denied: user sent a follow-up message instead of approving the tool call.': :74-75,
+//   returned at :1193-1194 when the user answers the prompt with a new message.
+const CANNED = new Map([
+  ['Tool canceled by user', 'cancelled'],
+  ['Permission to run tool denied by user', 'denied'],
+  ['Permission denied: user sent a follow-up message instead of approving the tool call.', 'denied'],
 ]);
 
 export function describe() {
@@ -374,18 +383,29 @@ function argsOf(tu) {
   return {};
 }
 
+// One LanguageModelToolResultContent item's text, in any of serde's accepted shapes for Text, or
+// null where the item is no Text.
+function itemText(c) {
+  if (typeof c === 'string') return c;
+  if (!isObj(c)) return null;
+  const key = (n) => Object.keys(c).find((k) => k.toLowerCase() === n);
+  const t = key('text');
+  return t && typeof c[t] === 'string' && (Object.keys(c).length === 1 || String(c[key('type')] || '').toLowerCase() === 'text') ? c[t] : null;
+}
+
 // LanguageModelToolResultContent, one or a list: Text | Image, in any of serde's accepted shapes.
 function resultText(content) {
-  const one = (c) => {
-    if (typeof c === 'string') return c;
-    if (!isObj(c)) return '';
-    const key = (n) => Object.keys(c).find((k) => k.toLowerCase() === n);
-    const t = key('text');
-    if (t && typeof c[t] === 'string' && (Object.keys(c).length === 1 || String(c[key('type')] || '').toLowerCase() === 'text')) return c[t];
-    if (key('image')) return '[image]';
-    return '';
-  };
+  const one = (c) => itemText(c) ?? (isObj(c) && Object.keys(c).some((k) => k.toLowerCase() === 'image') ? '[image]' : '');
   return Array.isArray(content) ? content.map(one).join('') : one(content);
+}
+
+// `cancelled` or `denied` where the result is one of Zed's own (CANNED) in the shape Zed writes it:
+// `is_error: true` and a content of exactly that one Text item, as Zed's own check asks
+// (`is_canceled_tool_result`, thread.rs:1734-1741). The whole text must be equal: a tool output that
+// contains or resembles one, joins to one from several items, or says success, is not Zed's.
+function cannedStatus(r) {
+  if (r.is_error !== true || !Array.isArray(r.content) || r.content.length !== 1) return null;
+  return CANNED.get(itemText(r.content[0])) ?? null;
 }
 
 // A content item the model has no kind for: kept as a notice (sessions-model §2.3, never dropped).
@@ -462,7 +482,7 @@ function agentParts(msg, messageId) {
       }
       if (v.is_input_complete === false) open = true;
       const output = resultText(r.content);
-      const status = CANCELLED.has(output) ? 'cancelled' : DENIED.has(output) ? 'denied' : 'completed';
+      const status = cannedStatus(r) ?? 'completed';
       parts.push({
         part_id: `${pid}:result`, kind: 'tool_result', call_id: callId,
         // Unreliable as stored (a failing command has false, annex §2): kept only when true. It

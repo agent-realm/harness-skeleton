@@ -9,7 +9,7 @@ const SIDEBAR = 'db/<channel>/db.sqlite#table:sidebar_threads';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/session-adapters/zed',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.2.3',
   model_version: 'sessions-model/1',
   harness: 'zed',
   state_ver: 1,

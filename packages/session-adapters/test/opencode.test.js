@@ -288,7 +288,7 @@ test('opencode: a tool_result carries the stored exit code (v1 metadata.exit, v2
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the part's state status is the harness
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): the part's state status is the harness
 // store's flag, `error` true and `completed` false. A `completed` beside a shell's non-zero
 // exit_code is unreliable for that result, so its is_error is null; never derived from exit_code.
 test('opencode: is_error is the state status: completed beside a non-zero exit is null, completed is false, error is true', () => {
@@ -312,7 +312,7 @@ test('opencode: is_error is the state status: completed beside a non-zero exit i
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A refused permission (an `error` status whose error is OpenCode's own text: `denied`)
 // and a call cut off while pending or running (`cancelled`) did not: their is_error is null and the
 // status carries the fact. A call that completed keeps the state status as its flag (the positive
@@ -335,9 +335,9 @@ test('opencode: is_error is null where the call did not complete: a refused perm
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// sessions-model v1.3, §2.3: `cancelled` and `denied` come from a structured marker,
 // or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
-// annex §5, v1.x proposal (#6)); never from a pattern in free text. OpenCode's text for a refused
+// annex §5, v1.3); never from a pattern in free text. OpenCode's text for a refused
 // permission (OpenCode v1.19.3, packages/core/src/v1/permission.ts:7-11) counts only as the whole
 // stored error. An error that merely contains it, or the words, is completed with the state status
 // as its flag (true).
@@ -361,7 +361,7 @@ test('opencode: a refused permission is OpenCode\'s own text, matched exactly as
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3: `cancelled` comes from a structured marker the harness
+// sessions-model v1.3, §2.3: `cancelled` comes from a structured marker the harness
 // store writes. OpenCode's cleanup marks a call cut off by a stopped turn with
 // `metadata.interrupted: true` on an `error` part, beside the text `Tool execution aborted`
 // (OpenCode v1.19.3, packages/opencode/src/session/processor.ts:591-607). The marker decides, as

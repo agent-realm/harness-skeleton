@@ -34,7 +34,7 @@ export const describe = Object.freeze({
     // (fixture: live) has exit_code null, since the `item_completed` CommandExecution that carries
     // one names no call_id to join on; no fixture output carries a success flag, so `is_error` is
     // null there, never derived from the exit code, and a stored success beside a non-zero exit
-    // code is null too (sessions-model v1.x proposal (#6), §2.3); an image given by URL rather than a data
+    // code is null too (sessions-model v1.3, §2.3); an image given by URL rather than a data
     // URL is not kept.
     read: 'lossy',
     reuse: 'impossible',

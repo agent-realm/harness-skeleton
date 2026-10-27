@@ -196,7 +196,7 @@ test('cursor-agent: lab case: subagentInfo.parentAgentId de1be1a9… + toolCallI
   assert.equal(ofType(recsOf('subagent', SUB), 'session')[0].kind, null, 'no kind field: the sub-agent fact is the link');
 });
 
-// sessions-model v1.x proposal (#6), §2.1 (`kind`, the native session type): cursor-agent stores no kind
+// sessions-model v1.3, §2.1 (`kind`, the native session type): cursor-agent stores no kind
 // field, and a flag or a parent reference is not a kind, so a session's `kind` is null. A sub-agent
 // stays a sub-agent through the §2.5 link that meta.subagentInfo states.
 test('cursor-agent: kind is null for every session, a sub-agent included; meta.subagentInfo stays the child-side subagent link', () => {
@@ -807,7 +807,7 @@ test('cursor-agent: describe states every facet, and each explicit claim has a f
   }
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the harness store's own flag, a step
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): the harness store's own flag, a step
 // result's case (ShellSuccess, ShellFailure) or the model context's `isError`. A flag that says
 // success beside a shell's non-zero exit_code is unreliable for that result, so its is_error is
 // null; a shell-mode turn's ShellOutput keeps no flag, so null. Never derived from exit_code.
@@ -844,7 +844,7 @@ test('cursor-agent: is_error is the stored flag: ShellSuccess or isError false b
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A rejected shell (`denied`), a cancelled ShellFailure (#11) and a timeout (`cancelled`)
 // did not; their is_error is null and the status carries the fact, the model context's `isError`
 // beside them included. A call that completed keeps the flag (the positive control: ShellFailure

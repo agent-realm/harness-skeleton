@@ -259,7 +259,7 @@ test('goose: compaction: earlier rows flipped in place are to_model false (keys 
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A declined call (`denied`) and a cancelled approval (`cancelled`) did not: their
 // is_error is null, though goose stores `isError: true` on each, and the status carries the fact.
 // A call that completed keeps `isError` (the positive control), Ctrl-C during a shell call
@@ -275,9 +275,9 @@ test('goose: is_error is null where the call did not complete: declined, a cance
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// sessions-model v1.3, §2.3: `cancelled` and `denied` come from a structured marker,
 // or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
-// annex §5, v1.x proposal (#6)); never from a pattern in free text. Goose's two texts (Goose
+// annex §5, v1.3); never from a pattern in free text. Goose's two texts (Goose
 // v1.55.0: DECLINED_RESPONSE, crates/goose/src/agents/tool_execution.rs:151-153;
 // crates/goose-agent/src/machine.rs:83-86) count only as goose writes them: an MCP error result
 // (`isError: true`) whose content is that one text block. Anything else is completed with the
@@ -320,7 +320,7 @@ test('goose: a declined or an interrupted call is goose\'s own text, matched exa
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): a flag that says success beside a
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): a flag that says success beside a
 // shell's non-zero exit_code is unreliable for that result, so its is_error is null; the other
 // results keep `isError`. Never derived from exit_code: `isError: true` beside exit 1 stays true.
 // A result without `isError` has MCP's default, false (§2.3: a flag the harness store leaves out

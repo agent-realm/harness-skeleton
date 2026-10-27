@@ -161,7 +161,7 @@ test('gemini-cli: a record\'s model is the requested model: the message\'s reque
   }
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A cancelled call did not: its is_error is null and `cancelled` carries the fact,
 // whether its response holds an `error` or an output. A call that completed keeps the flag (the
 // positive control: an `error` status true, `success` false).

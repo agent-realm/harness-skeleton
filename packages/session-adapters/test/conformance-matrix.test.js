@@ -206,7 +206,7 @@ test('matrix: generic checks catch broken tool links, foreign usage shapes and u
   }
 });
 
-// The is_error check (M.is-error, sessions-model v1.x proposal (#6)) fails on each break it exists for: a flag on
+// The is_error check (M.is-error, sessions-model v1.3) fails on each break it exists for: a flag on
 // a result that did not complete, a false beside a non-zero exit_code, and a true beside one that
 // no failure flag backs. A listed failure flag is excused in its own session only.
 test('matrix: the is_error check catches a flag on a cancelled or denied result, and a false or an unlisted true beside a non-zero exit_code', async () => {

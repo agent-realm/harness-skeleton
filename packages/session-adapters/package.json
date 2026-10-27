@@ -1,10 +1,9 @@
 {
   "name": "@agent-realm/session-adapters",
-  "version": "0.0.1",
-  "description": "Session adapters: one reader per agent harness, speaking sessions v1 (describe, list, read, derive) over sessions-model v1.1 records",
+  "version": "1.0.0",
+  "description": "Session adapters: one reader per agent harness, speaking sessions v1.3 (describe, list, read, derive) over sessions-model v1.3 records",
   "license": "Apache-2.0",
   "type": "module",
-  "private": true,
   "engines": {
     "node": ">=22.15"
   },
@@ -21,5 +20,8 @@
   ],
   "scripts": {
     "test": "node --test 'test/*.test.js'"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

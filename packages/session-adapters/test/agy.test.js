@@ -279,7 +279,7 @@ test('agy: a tool_result carries its RunCommand exit_code; a stored unknown is n
   assert.equal(exitOf({}, STATUS.ERROR), null, 'a command that did not finish stored no code: none');
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): the step's status is the harness store's
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): the step's status is the harness store's
 // flag, ERROR true and DONE false. A DONE beside a run_command's non-zero exit_code is unreliable
 // for that result, so its is_error is null. Never derived from exit_code or the text.
 test('agy: is_error is the step status: DONE beside a non-zero exit is null, DONE is false, ERROR is true', () => {
@@ -301,7 +301,7 @@ test('agy: is_error is the step status: DONE beside a non-zero exit is null, DON
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): `is_error` describes a call that
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): `is_error` describes a call that
 // completed. A CANCELED or INTERRUPTED step is `cancelled`: its is_error is null, and the status
 // carries the fact. A call that completed keeps the step's flag (the positive control: ERROR true,
 // DONE false). A denied command is one: the next test.
@@ -324,9 +324,9 @@ test('agy: is_error is null where the call did not complete: a CANCELED or INTER
   });
 });
 
-// sessions-model v1.x proposal (#6), §2.3: `cancelled` and `denied` come from a structured marker,
+// sessions-model v1.3, §2.3: `cancelled` and `denied` come from a structured marker,
 // or from a fixed string the harness itself writes for that case, matched exactly (sessions-model
-// annex §5, v1.x proposal (#6)); never from a pattern in free text. agy has neither for a denial:
+// annex §5, v1.3); never from a pattern in free text. agy has neither for a denial:
 // its denial error embeds the command (a template), no public source states it, and the step's
 // `permissions` blob is not decoded. A denied command is an ERROR step or line: `completed`, with
 // the store's flag, true. The status alone still says `cancelled` (the positive control), whatever
@@ -362,7 +362,7 @@ test('agy: no text marks a denial: an ERROR step or transcript line whose error 
   assert.deepEqual(results, [['completed', true], ['completed', true], ['cancelled', null]]);
 });
 
-// sessions-model v1.x proposal (#6), §2.3 (`tool_result.is_error`): a CANCELED or INTERRUPTED transcript
+// sessions-model v1.3, §2.3 (`tool_result.is_error`): a CANCELED or INTERRUPTED transcript
 // line is `cancelled` with is_error null, as the conversation DB's step is. The line's `status` is a
 // structured value the harness store writes, never the output's text. A line that completed keeps
 // its flag (the positive control: DONE false, ERROR true).

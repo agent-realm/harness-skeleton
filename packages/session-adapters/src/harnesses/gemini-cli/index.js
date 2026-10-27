@@ -547,7 +547,7 @@ function toolParts(id, name, args, tc, echo) {
     const status = st === 'cancelled' ? 'cancelled' : 'completed';
     parts.push({
       part_id: `${id}:result`, kind: 'tool_result', call_id: id,
-      // `is_error` describes a call that completed (sessions-model v1.x proposal (#6), §2.3): a cancelled
+      // `is_error` describes a call that completed (sessions-model v1.3, §2.3): a cancelled
       // call's is null, whatever its response says, and `cancelled` carries the fact.
       is_error: status === 'cancelled' ? null : st === 'error' || (result != null && resultIsError(result)),
       status,

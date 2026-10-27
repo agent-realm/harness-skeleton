@@ -76,21 +76,24 @@ const CHECKS = {
 const EMAIL_OK = /^([0-9]+\+)?[A-Za-z0-9-]+@users\.noreply\.github\.com$|^noreply@(github|anthropic)\.com$/;
 
 // Per check: a line pattern, or { path, line } to limit it to one tracked file.
-const LEAK_TEST = 'packages/session-adapters/test/public-fixtures.test.js';   // tests a leak finder
+// The session adapters package's folder, under its name and the name it is renamed to: the base's
+// copy of this file guards a pull request, so the rename needs both until it is merged.
+const PKGS = ['packages/session-adapters', 'packages/harness-session-adapters'];
+const LEAK_TESTS = PKGS.map((p) => `${p}/test/public-fixtures.test.js`);   // tests a leak finder
 const ALLOW = {
   'process wording': [
     { path: 'scripts/guard.mjs', line: /^\s*\/\\bpilot\\b\|\\\x5bvia / },   // the pattern above
     { path: 'conformance/tier1/hooks-persisted.mjs', line: /\bcanon\(/ },   // a function: canonical JSON
   ],
-  'credential shape': [
-    { path: 'packages/session-adapters/src/harnesses/zed/describe.js', line: /^\s*\/\/ .*`https:\/\/user:token@host\// },
-  ],
+  'credential shape': PKGS.map((p) => (
+    { path: `${p}/src/harnesses/zed/describe.js`, line: /^\s*\/\/ .*`https:\/\/user:token@host\// }
+  )),
   'home path with a user name': [
-    { path: 'packages/session-adapters/test/host.test.js', line: /C:\\\\[U]sers\\\\u\\\\/ },
-    { path: LEAK_TEST, line: /\bfindings\(|^\s*const (leak|doc) = / },
+    ...PKGS.map((p) => ({ path: `${p}/test/host.test.js`, line: /C:\\\\[U]sers\\\\u\\\\/ })),
+    ...LEAK_TESTS.map((path) => ({ path, line: /\bfindings\(|^\s*const (leak|doc) = / })),
   ],
-  'private IP address': [{ path: LEAK_TEST, line: /\bfindings\(/ }],
-  'e-mail address': [{ path: LEAK_TEST, line: /\bfindings\(/ }],
+  'private IP address': LEAK_TESTS.map((path) => ({ path, line: /\bfindings\(/ })),
+  'e-mail address': LEAK_TESTS.map((path) => ({ path, line: /\bfindings\(/ })),
 };
 
 // Cases for --self-test: [line, check, expected]. Paths, addresses and secret shapes are split so

@@ -26,8 +26,8 @@ harness.
   test machine with each harness signed in. Each is marked confirmed (naming its capture or
   fixture) or not established, with what would establish it. No live run was made for this
   release.
-- [`AGENTS.md`](../AGENTS.md): the rules for changing this package, and the short list of steps
-  for adding a harness.
+- [`AGENTS.md`](../AGENTS.md): the rules for changing this package, the short list of steps for
+  adding a harness, and how to install and deploy it.
 
 Per harness, `src/harnesses/<harness-id>/describe.js` states the sources, facets and redaction
 paths, each with its source.

@@ -43,6 +43,8 @@ conformance suite proving it against fixtures.
 ## How
 
 Node.js 22.15 or later (node:sqlite, and zstd in node:zlib for Zed). The package has no dependencies.
+It is not published to npm: use it from a checkout of this repository
+([`AGENTS.md`, Install and deploy](AGENTS.md#install-and-deploy)).
 
 ```js
 import { adapterFor, host, harnessPath } from '@agent-realm/session-adapters';
@@ -96,7 +98,8 @@ node conformance/matrix.js --write    # regenerate docs/conformance-matrix.md
 - [`docs/conformance-matrix.md`](docs/conformance-matrix.md): what proves each conformance item,
   per harness.
 - [`CHANGELOG.md`](CHANGELOG.md): what changed, with a migration note for every key change.
-- [`AGENTS.md`](AGENTS.md): rules for anyone changing this package.
+- [`AGENTS.md`](AGENTS.md): rules for anyone changing this package, and how to install and deploy
+  it.
 
 <!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/main/contracts/.
      The repository name and the ref are pending its publication; replace the base in every file that defines these links. -->

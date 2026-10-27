@@ -1509,5 +1509,130 @@
       "model": "fake-1",
       "tool_prompt": null
     }
+  ],
+  "ses_15e9d604a001RpxXd8FrhGO9zZ": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d604a001RpxXd8FrhGO9zZ",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9d6432001DN2zdTciOJYpXY",
+      "order": "1|0001792588735538|msg_15e9d6432001DN2zdTciOJYpXY",
+      "ts": "2026-10-21T13:18:55.538Z",
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9d6432033XGbI1kuK8YXcfM",
+          "kind": "text",
+          "text": "Fetch the cart spec from the docs site."
+        }
+      ],
+      "cmp_sha": "f18f71733af2ef18b5fd20a08d835764e99b99b287c8432727361b63a3c53267"
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9d604a001RpxXd8FrhGO9zZ",
+      "incarnation": "",
+      "parent_id": "msg_15e9d6432001DN2zdTciOJYpXY",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "interrupted",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9d681a001ECjdEfdDJiC0NZ",
+      "aliases": [],
+      "message_id": "msg_15e9d681a001ECjdEfdDJiC0NZ",
+      "order": "1|0001792588736538|msg_15e9d681a001ECjdEfdDJiC0NZ",
+      "ts": "2026-10-21T13:18:56.538Z",
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9d681b034B7epmPYTWjzB2s",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9d68250352lTb32TeVS5yVM:call",
+          "kind": "tool_call",
+          "call_id": "chatcmpl-tool-FixtureFixt00051",
+          "name": "webfetch",
+          "args": {
+            "url": "https://docs.example.com/cart-spec",
+            "format": "markdown"
+          },
+          "server": null
+        },
+        {
+          "part_id": "prt_15e9d68250352lTb32TeVS5yVM:result",
+          "kind": "tool_result",
+          "call_id": "chatcmpl-tool-FixtureFixt00051",
+          "is_error": null,
+          "status": "cancelled",
+          "output": "Tool execution aborted",
+          "output_ref": null,
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "error",
+          "kind": "error",
+          "error_kind": "MessageAbortedError",
+          "message": "Aborted",
+          "http_status": null
+        }
+      ],
+      "cmp_sha": "1b6e7fad04a41e9a453725fb71bc0c058755bf5b6329c45674b706de1f090c13"
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9d604a001RpxXd8FrhGO9zZ",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Stopped fetch",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:54.538Z",
+      "updated_at": "2026-10-21T13:18:56.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "f18f71733af2ef18b5fd20a08d835764e99b99b287c8432727361b63a3c53267",
+          "1b6e7fad04a41e9a453725fb71bc0c058755bf5b6329c45674b706de1f090c13"
+        ]
+      },
+      "setup": null
+    }
   ]
 }

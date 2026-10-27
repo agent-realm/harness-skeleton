@@ -576,10 +576,29 @@ the version the fixtures came from:
   (`PermissionCorrectedError`, whose text embeds the user's words: no fixed string) are
   `completed`, with the state status as the flag (true). v2 parts (`session_message`) never held
   the text: a declined permission there halts the loop instead of becoming a tool result.
-  - Goldens: none change; the fixture's refused permission is OpenCode's text, whole. The
-    earlier test edited a copy with an `Error: ` prefix before the text and expected `denied`; it
-    now writes the text as OpenCode stores it, and a new test shows the near misses. The matrix's
-    M.is-error cell for opencode names it.
+  - Goldens: none change for this; the fixture's refused permission is OpenCode's text, whole.
+    The earlier test edited a copy with an `Error: ` prefix before the text and expected
+    `denied`; it now writes the text as OpenCode stores it, and a new test shows the near misses.
+    The matrix's M.is-error cell for opencode names it.
+- **opencode: a call cut off by an interrupt is `cancelled`, by its structured marker (the same
+  adapter_ver, 0.2.2).** After an abort or a retry, OpenCode's cleanup writes every call still
+  open as an `error` part with `metadata.interrupted: true`, beside the text `Tool execution
+  aborted` (OpenCode v1.19.3, `packages/opencode/src/session/processor.ts:591-607`). Such a call
+  was `completed` with `is_error` true. It is `cancelled` now, with `is_error` null, where the
+  part is `error` and `metadata.interrupted` is true, which is OpenCode's own test
+  (`packages/opencode/src/session/prompt.ts:96-100`). The marker decides, never the text: the
+  same text without the marker, or with the marker false or a string, stays `completed` with the
+  flag, and the marker beside another text is `cancelled`. v2 parts are unchanged.
+  - Fixture: `features` gains a session, `Stopped fetch`: a turn stopped while a webfetch call
+    was open, the call written as the cleanup writes it and the message's error a
+    MessageAbortedError. Synthetic, from OpenCode's source; no capture holds an interrupt.
+  - Goldens: `features` gains that session's three records, a user message, an assistant message
+    and the session. The call is `cancelled`, `is_error` null, `output` `Tool execution
+    aborted` (22 bytes), `truncated` and `exit_code` null; the assistant message is
+    `interrupted` and carries the MessageAbortedError as an `error` part. Nothing else moves; the
+    list test counts seven sessions in `features`.
+  - Test: a call cut off by an interrupt is cancelled by its structured marker, with the near
+    misses above; the matrix's M.is-error cell for opencode names it.
 - **agy (adapter_ver 0.2.1 → 0.2.2).** An ERROR step whose error matched `/denied/i` was `denied`
   with `is_error` null, in the conversation database and in the transcript. agy has no structured
   denial marker the adapter reads (the step's `permissions` blob is not decoded) and no fixed denial

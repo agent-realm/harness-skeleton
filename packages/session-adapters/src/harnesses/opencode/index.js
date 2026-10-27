@@ -601,22 +601,32 @@ const exitOf = (meta) => (Number.isInteger(meta.exit) ? meta.exit : null);
 // the loop (packages/core/src/session/runner/llm.ts:143-150).
 const REJECTED = 'The user rejected permission to use this specific tool call.';
 
+// A call cut off by an interrupt, by OpenCode's structured marker (sessions-model v1.x proposal
+// (#6), §2.3). After an abort or a retry, OpenCode's cleanup writes every call still open as an
+// `error` part whose `metadata.interrupted` is true, beside the error text `Tool execution
+// aborted` (OpenCode v1.19.3, packages/opencode/src/session/processor.ts:591-607, run when every
+// turn ends, :691). The marker decides, never the text, as OpenCode's own test reads it
+// (isOrphanedInterruptedTool, packages/opencode/src/session/prompt.ts:96-100): status `error` and
+// `metadata.interrupted === true`.
+const interruptedOf = (status, meta) => status === 'error' && meta.interrupted === true;
+
 // A tool's call and result (sessions-model §2.3: one native part holding both becomes
 // `<id>:call` + `<id>:result`, sharing the call id). `is_error` is the harness store's own flag,
-// the part's state status (sessions-model v1.x (#6), §2.3): `error` gives true and `completed`
-// false, and a status still pending or running gives null. A `completed` status beside a shell's
-// non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the other results
-// keep the flag. It describes a call that completed: a refused permission (`denied`) or a call cut
-// off (`cancelled`) gives null, and the status carries the fact. Never derived from the exit code
-// or the text.
-function toolPair(pid, callId, name, args, status, { output, error, truncated, outputRef, exitCode = null }) {
+// the part's state status (sessions-model v1.x proposal (#6), §2.3): `error` gives true and
+// `completed` false, and a status still pending or running gives null. A `completed` status beside
+// a shell's non-zero `exit_code` is unreliable for that result: its `is_error` is null, and the
+// other results keep the flag. It describes a call that completed: a refused permission
+// (`denied`) or a call cut off (`cancelled`: still pending or running, or marked interrupted) gives
+// null, and the status carries the fact. Never derived from the exit code or the text.
+function toolPair(pid, callId, name, args, status, { output, error, truncated, outputRef, exitCode = null, interrupted = false }) {
   const done = status === 'completed';
   const failed = status === 'error';
   const err = failed ? errorText(error) : '';
   const out = done ? String(output ?? '') : failed ? (typeof output === 'string' && output ? output : err) : null;
-  // A refused permission is `denied`: the stored error is OpenCode's own text, whole (REJECTED). A
-  // call still pending or running when its message ended was cut off: cancelled.
-  const result = failed && error === REJECTED ? 'denied' : done || failed ? 'completed' : 'cancelled';
+  // A call OpenCode marked interrupted (interruptedOf), or one still pending or running when its
+  // message ended, was cut off: cancelled. A refused permission is `denied`: the stored error is
+  // OpenCode's own text, whole (REJECTED).
+  const result = failed && interrupted ? 'cancelled' : failed && error === REJECTED ? 'denied' : done || failed ? 'completed' : 'cancelled';
   return [
     { part_id: `${pid}:call`, kind: 'tool_call', call_id: callId, name, args, server: null },
     {
@@ -661,6 +671,7 @@ function v1Part(p, j, ctx) {
       const parts = toolPair(pid, callId, str(x.tool) || 'unknown', st.input ?? {}, st.status, {
         output: st.output, error: st.error, outputRef: ref, exitCode: exitOf(meta),
         truncated: typeof meta.truncated === 'boolean' ? meta.truncated : ref ? true : null,
+        interrupted: interruptedOf(st.status, meta),
       });
       const atts = st.status === 'completed' && Array.isArray(st.attachments) ? st.attachments : [];
       atts.forEach((a, k) => {

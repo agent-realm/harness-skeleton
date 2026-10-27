@@ -147,7 +147,7 @@ const PNG = Buffer.from('\x89PNG\r\n\x1a\n synthetic label for the toyshop cart'
 const SPILL_LINES = Array.from({ length: 400 }, (_, i) => `${i + 1}_cart_line_qty_ok`).join('\n') + '\n';
 const DATA_HOME = '/home/user/.local/share/opencode';
 
-// ---- features: v1 records, links, shell mode, a fork, a v2 spill ------------------------------
+// ---- features: v1 records, links, shell mode, a fork, a v2 spill, an interrupted call ---------
 
 function features() {
   const db = new Ops();
@@ -261,6 +261,17 @@ function features() {
   const vu2 = sm('user', T0 + 73000, { time: { created: T0 + 73000 }, text: 'Now count them.' });
   sm('assistant', T0 + 74000, { time: { created: T0 + 74000, completed: T0 + 74300 }, agent: 'build', model: { id: 'fake-1', providerID: 'fake' }, content: [{ type: 'text', id: 'text-0', text: '400 lines.' }], finish: 'stop', cost: 0, tokens: { input: 900, output: 5, reasoning: 0, cache: { read: 300, write: 0 } } });
   db.event(V, 'session.next.revert.staged.1', { timestamp: T0 + 75000, sessionID: V, revert: { messageID: vu2, snapshot: SNAP, diff: '', files: [] } }, T0 + 75000);
+
+  // I: a turn the user stopped while a call was still open. OpenCode's cleanup writes that call as
+  // `error`, `Tool execution aborted`, its metadata kept and `interrupted: true` added
+  // (packages/opencode/src/session/processor.ts:591-607), and the message's error is
+  // MessageAbortedError. Source-read: no capture holds an interrupt.
+  const I = db.session(mkId('ses', T0 + 80000, 1, 'I'), T0 + 80000, { title: 'Stopped fetch', slug: 'calm-meadow' });
+  const ui = db.user(I, T0 + 81000, [text('Fetch the cart spec from the docs site.')]);
+  db.assistant(I, T0 + 82000, ui.id, [
+    stepStart(),
+    { type: 'tool', tool: 'webfetch', callID: 'chatcmpl-tool-FixtureFixt00051', state: { status: 'error', input: { url: 'https://docs.example.com/cart-spec', format: 'markdown' }, error: 'Tool execution aborted', metadata: { interrupted: true }, time: { start: T0 + 82011, end: T0 + 82890 } } },
+  ], { extra: { finish: undefined, error: { name: 'MessageAbortedError', data: { message: 'Aborted' } } } });
   return { dbs: { 'opencode.db': db }, files };
 }
 

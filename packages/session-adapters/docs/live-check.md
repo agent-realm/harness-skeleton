@@ -80,6 +80,11 @@ fixture in the same PR, then delete it. A capture that becomes a fixture is scru
 
 - The DDL, which was rebuilt from the spec and the captured columns.
 - A v2 assistant row, which was rebuilt from its events.
+- A call cut off by a stopped turn: an `error` part with `metadata.interrupted: true` and the
+  text `Tool execution aborted`, read from OpenCode's source
+  (`packages/opencode/src/session/processor.ts:591-607`). The `features` session `Stopped
+  fetch` is synthetic. The adapter makes such a call `cancelled`, `is_error` null, from the
+  marker. Stop a turn while a call runs and check the stored part.
 
 ## Antigravity (agy)
 

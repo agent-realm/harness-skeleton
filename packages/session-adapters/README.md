@@ -43,8 +43,10 @@ conformance suite proving it against fixtures.
 ## How
 
 Node.js 22.15 or later (node:sqlite, and zstd in node:zlib for Zed). The package has no dependencies.
-It is not published to npm: use it from a checkout of this repository
-([`AGENTS.md`, Install and deploy](AGENTS.md#install-and-deploy)).
+Install it from npm with `npm install @agent-realm/session-adapters`. The examples, the fixtures
+and the conformance suite stay in the repository: use a checkout of
+[harness-skeleton](https://github.com/agent-realm/harness-skeleton) for them
+([`AGENTS.md`, Install and deploy](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/AGENTS.md#install-and-deploy)).
 
 ```js
 import { adapterFor, host, harnessPath } from '@agent-realm/session-adapters';
@@ -77,7 +79,7 @@ const findings = validateSession(records, { harness: 'claude-code', sessionId })
 // registry value such as a new harness or ts_source, which a v1 reader accepts)
 ```
 
-[`docs/conformance-matrix.md`](docs/conformance-matrix.md) says, for each of the 32 adapter-side
+[`docs/conformance-matrix.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/conformance-matrix.md) says, for each of the 32 adapter-side
 conformance items of sessions-model and sessions and each of the twelve harnesses, what proves it:
 a generic check run over every fixture case, a named test, or the reason the item does not apply.
 It is generated from `conformance/matrix.js`, and `npm test` fails when it is stale.
@@ -90,15 +92,15 @@ node conformance/matrix.js --write    # regenerate docs/conformance-matrix.md
 
 ## Where next
 
-- [`docs/`](docs/README.md): the guides ([read a store](docs/read-a-store.md),
-  [add a harness](docs/add-a-harness.md), [run the conformance matrix](docs/run-the-conformance-matrix.md)),
+- [`docs/`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/README.md): the guides ([read a store](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/read-a-store.md),
+  [add a harness](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/add-a-harness.md), [run the conformance matrix](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/run-the-conformance-matrix.md)),
   the adapter interface and the live check.
-- [`examples/`](examples/README.md): from `describe` to a full pass over every harness, each
+- [`examples/`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/examples/README.md): from `describe` to a full pass over every harness, each
   runnable against the fixtures.
-- [`docs/conformance-matrix.md`](docs/conformance-matrix.md): what proves each conformance item,
+- [`docs/conformance-matrix.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/docs/conformance-matrix.md): what proves each conformance item,
   per harness.
-- [`CHANGELOG.md`](CHANGELOG.md): what changed, with a migration note for every key change.
-- [`AGENTS.md`](AGENTS.md): rules for anyone changing this package, and how to install and deploy
+- [`CHANGELOG.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/CHANGELOG.md): what changed, with a migration note for every key change.
+- [`AGENTS.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/session-adapters/AGENTS.md): rules for anyone changing this package, and how to install and deploy
   it.
 
 <!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/main/contracts/.

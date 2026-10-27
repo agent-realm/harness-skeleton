@@ -79,8 +79,10 @@ The full walk-through, with every list a harness is registered in, is
 
 ## Install and deploy
 
-The package is not published to npm. Use it from a checkout of this repository, on Node.js 22.15
-or later. It has no dependencies of its own.
+The package is published to npm as `@agent-realm/session-adapters`: `npm install
+@agent-realm/session-adapters`, on Node.js 22.15 or later. It has no dependencies of its own. The
+examples, the fixtures and the conformance suite are not in the published package; use a checkout
+of this repository for them.
 
 ```sh
 git clone https://github.com/agent-realm/harness-skeleton
@@ -92,12 +94,15 @@ node examples/01-describe/describe.js     # the first example
 ```
 
 - **In this repository**, `hs` imports it through the npm workspace.
-- **In another project**, depend on it by a `file:` path to the package in a checkout, then import
-  it by name, with `import` or, from CommonJS, `require`:
+- **In another project**, depend on it from npm (`npm install @agent-realm/session-adapters`),
+  then import it by name, with `import` or, from CommonJS, `require`:
 
   ```json
-  { "dependencies": { "@agent-realm/session-adapters": "file:../harness-skeleton/packages/session-adapters" } }
+  { "dependencies": { "@agent-realm/session-adapters": "^1.0.0" } }
   ```
+
+  To work against an unreleased change, depend on a checkout instead, by a `file:` path to
+  `packages/session-adapters`.
 
   It ships `src/`, `LICENSE`, `NOTICE`, `README.md` and `package.json` (`files`). `examples/`,
   `fixtures/`, `conformance/` and the tests stay in the checkout.

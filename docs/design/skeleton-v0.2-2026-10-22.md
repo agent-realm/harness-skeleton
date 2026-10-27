@@ -736,7 +736,7 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
 
 A third party can ship a driver as its own executable speaking the same protocol.
 
-**The session adapters** (sessions@v0's `describe`, `list`, `read`, `derive`, one reader per harness) live in this repository as their own package, `packages/session-adapters/` (`@agent-realm/session-adapters`), maintained with memhouse (section 13). The package imports nothing from `hs` or memhouse, holds the one `host` and `harness_path` implementation, and carries the fixtures and the conformance runner. memhouse consumes it; `hs` wraps it, and its `sessions.*` operations pass through to it. `hs` never reads a harness store itself.
+**The session adapters** (sessions@v0's `describe`, `list`, `read`, `derive`, one reader per harness) live in this repository as their own package, `packages/harness-session-adapters/` (`@agent-realm/harness-session-adapters`), maintained with memhouse (section 13). The package imports nothing from `hs` or memhouse, holds the one `host` and `harness_path` implementation, and carries the fixtures and the conformance runner. memhouse consumes it; `hs` wraps it, and its `sessions.*` operations pass through to it. `hs` never reads a harness store itself.
 
 Since milestone 5 (`build-v0-2026-10-22.md`):
 - `hs` takes `host` and `harness_path` from the package, keeping only its own refusal of Windows (section 2).
@@ -842,7 +842,7 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - an injected crash mid-apply is finished by `recover`;
   - `import` of fixtures is best-effort and reports its losses;
   - every `sessions`, `history` and `credentials` path in the fixture is unchanged after `apply`, `recover` and `remove`: by digest, except `credentials`, which are compared by size and mtime only.
-- **Sessions at tier 0** run the adapter-side Conformance lists of sessions-model@v0 and sessions@v0 unchanged, against the session adapters' fixtures (`packages/session-adapters/fixtures/`). Among them:
+- **Sessions at tier 0** run the adapter-side Conformance lists of sessions-model@v0 and sessions@v0 unchanged, against the session adapters' fixtures (`packages/harness-session-adapters/fixtures/`). Among them:
   - replay: `derive` from empty state equals every incremental split;
   - stable keys, and one harness store giving two sessions under two hosts;
   - the positive controls (`appended` for streams; unchanged earlier keys for delta and snapshot sources) and the negative control (`reset`);
@@ -961,7 +961,7 @@ The decisions that shaped this note, by date.
 | 2026-10-22 | keys use the bound folder's real path, `harness_path`, not a label; "harness store" is the prose noun for what `store` identifies |
 | 2026-10-22 | license: Apache 2.0, for harness-skeleton and sessions-sql |
 | 2026-10-22 | the v0 build starts: `hs`, a reference adapter, built in this repository, one PR per milestone (`build-v0-2026-10-22.md`); the retention default is one constant, 9999, until question 8 is answered |
-| 2026-10-22 | the session adapters get one home: a self-contained package in this repository, `packages/session-adapters/` (`@agent-realm/session-adapters`). It holds the one `host` and `harness_path` implementation and imports nothing from `hs` or memhouse; memhouse consumes it, and `hs` wraps it (section 7.3) |
+| 2026-10-22 | the session adapters get one home: a self-contained package in this repository, `packages/harness-session-adapters/` (`@agent-realm/harness-session-adapters`). It holds the one `host` and `harness_path` implementation and imports nothing from `hs` or memhouse; memhouse consumes it, and `hs` wraps it (section 7.3) |
 | 2026-10-22 | question 8: the retention default is 9999 days in folders a tool owns |
 | 2026-10-23 | the repository is published as a fresh public repository, together with the session contracts and sessions-sql |
 

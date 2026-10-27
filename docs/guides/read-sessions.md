@@ -6,7 +6,7 @@ define them.
 ![hs lists, reads and derives sessions through the session adapters package, which reads harness stores without writing them; the consumer keeps cursors and revisions, and passes the position back on the next read.](../diagrams/sessions.svg)
 
 `hs` hands these operations to the session adapters package
-([`packages/session-adapters/`](../../packages/session-adapters/)), one reader per harness. It
+([`packages/harness-session-adapters/`](../../packages/harness-session-adapters/)), one reader per harness. It
 reads no harness store itself.
 
 **List:**

@@ -3,7 +3,7 @@
 // vectors test. hs covers macOS and Linux only (design note §2), so it refuses Windows before
 // asking the package, which defines Windows too.
 
-import { host as packageHost, hostFromMachineId, HOST_SALT } from '@agent-realm/session-adapters/host';
+import { host as packageHost, hostFromMachineId, HOST_SALT } from '@agent-realm/harness-session-adapters/host';
 import { HsError } from './protocol.js';
 import { toHsError } from './sessions.js';
 

@@ -1,7 +1,7 @@
 # 07: list and read sessions
 
 `hs` reads a harness's sessions through the session adapters package
-([`packages/session-adapters/`](../../packages/session-adapters/)), one reader per harness, as the
+([`packages/harness-session-adapters/`](../../packages/harness-session-adapters/)), one reader per harness, as the
 `sessions` contract defines them.
 
 ```sh

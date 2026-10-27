@@ -22,7 +22,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repo = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const pkg = path.join(repo, 'packages', 'session-adapters');
+const pkg = path.join(repo, 'packages', 'harness-session-adapters');
 // Never allowed, even when listed as a dependency: the package depends on neither tool.
 const FORBIDDEN = ['harness-skeleton', 'memhouse'];
 
@@ -200,7 +200,7 @@ export function checkPackage(dir) {
 
 test('the session adapters package loads only builtins, its own files and its own dependencies', () => {
   const { meta, offenders } = checkPackage(pkg);
-  assert.equal(meta.name, '@agent-realm/session-adapters');
+  assert.equal(meta.name, '@agent-realm/harness-session-adapters');
   assert.deepEqual(offenders, []);
 });
 
@@ -211,11 +211,11 @@ test('the guard catches every way out of the package (a review\'s three findings
       fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
       fs.writeFileSync(path.join(dir, rel), text);
     };
-    put('package.json', JSON.stringify({ name: '@agent-realm/session-adapters', dependencies: { allowed: '1.0.0' } }));
+    put('package.json', JSON.stringify({ name: '@agent-realm/harness-session-adapters', dependencies: { allowed: '1.0.0' } }));
     put('src/ok.js', [
       "import fs from 'node:fs';",
       "import { a } from './harnesses/claude-code/index.js';",
-      "import self from '@agent-realm/session-adapters/host';",
+      "import self from '@agent-realm/harness-session-adapters/host';",
       "import x from 'allowed/sub';",
       "export * from './errors.js';",
       'const h = await import(`./harnesses/${id}/index.js`);',
@@ -257,7 +257,7 @@ test('the guard catches every way out of the package (a review\'s three findings
       "eval(src);",
     ].join('\n'));
     fs.symlinkSync('/tmp', path.join(dir, 'src', 'escape'));
-    put('package.json', JSON.stringify({ name: '@agent-realm/session-adapters', dependencies: { allowed: '1.0.0', memhouse: '0.20.0' }, exports: { '.': './src/index.js', './escape': '../../outside.js' } }));
+    put('package.json', JSON.stringify({ name: '@agent-realm/harness-session-adapters', dependencies: { allowed: '1.0.0', memhouse: '0.20.0' }, exports: { '.': './src/index.js', './escape': '../../outside.js' } }));
     const { offenders } = checkPackage(dir);
     for (const needle of ['../../src/host.js', 'file:///repo', '/abs/src/host.js', 'memhouse/editors', 'smol-toml', '../../outside.js',
       'non-literal specifier (name)', '`../${x}`', 'harness-skeleton/src/host.js', 'fixtures/claude-code/helper.cjs', 'package.json depends on memhouse',

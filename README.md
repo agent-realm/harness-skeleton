@@ -75,7 +75,7 @@ checks pass on real harnesses; no version range is certified yet.
 - **Not an orchestrator.** `launch-spec` returns the arguments and environment, and the caller
   starts the harness.
 - **Not a database layout.** Captured sessions go into tables through
-  [sessions-sql](https://github.com/agent-realm/sessions-sql).
+  [harness-sessions-sql](https://github.com/agent-realm/harness-sessions-sql).
 
 ## Where next
 
@@ -87,7 +87,7 @@ checks pass on real harnesses; no version range is certified yet.
 - [`docs/`](docs/README.md): the guides, the reference and the design notes.
 - [`AGENTS.md`](AGENTS.md): conventions for contributors, and how to install and deploy.
 - [`packages/`](packages/):
-  - `session-adapters`: session readers for twelve harnesses;
+  - `harness-session-adapters`: session readers for twelve harnesses;
   - `skeleton-spec`: the spec as code;
   - `scripted-model`: a model endpoint that answers from a script, for tests.
 

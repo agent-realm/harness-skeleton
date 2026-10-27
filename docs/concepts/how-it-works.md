@@ -80,7 +80,7 @@ Two contracts define sessions, both kept in the
 [sessions-model](https://github.com/agent-realm/sessions-model) repository: the **sessions-model**
 contract for the records and their keys, and the **sessions** contract for the four operations.
 `hs` answers the operations through
-[`@agent-realm/session-adapters`](../../packages/session-adapters/), and reads no harness store
+[`@agent-realm/harness-session-adapters`](../../packages/harness-session-adapters/), and reads no harness store
 itself.
 
 - **`sessions.read` never writes.** It takes no lock, opens SQLite stores read-only, and may run
@@ -90,7 +90,7 @@ itself.
   empty gives the same records as any incremental path.
 - **The consumer keeps the state of reading**: cursors, generations, each record's `rev`, and
   its archive of raw units. A database for those records is mapped by
-  [sessions-sql](https://github.com/agent-realm/sessions-sql).
+  [harness-sessions-sql](https://github.com/agent-realm/harness-sessions-sql).
 
 The package reads twelve harnesses: Claude Code, Codex, Copilot CLI, Gemini CLI, VS Code, Goose,
 OpenCode, Antigravity, Cursor IDE, cursor-agent, Zed and Devin Local. `hs` answers `sessions.*`
@@ -144,4 +144,4 @@ Guide: [run a conformance check](../guides/run-a-conformance-check.md).
   environment, and the caller starts the harness.
 - **Not a translation that guesses.** A capability a harness lacks is refused with a reason, or
   marked `lossy` with what is dropped. It is never approximated.
-- **Not a database layout.** Captured sessions go into tables through sessions-sql.
+- **Not a database layout.** Captured sessions go into tables through harness-sessions-sql.

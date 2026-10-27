@@ -5,7 +5,7 @@
 # A data folder holding one synthetic session, copied from the session adapters' fixtures.
 F="$WORK/claude-data"
 mkdir -p "$F"
-cp -R "$EXAMPLES/../packages/session-adapters/fixtures/claude-code/basic/store/projects" "$F/"
+cp -R "$EXAMPLES/../packages/harness-session-adapters/fixtures/claude-code/basic/store/projects" "$F/"
 
 echo "== sessions.list"
 hs sessions.list --harness claude-code --folder "$F" > "$WORK/list.json"

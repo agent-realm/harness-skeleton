@@ -1,5 +1,5 @@
 // sessions-model's known-answer vectors for `host` and `harness_path` (contracts/sessions-model.md,
-// "Known-answer vectors", in agent-realm/sessions-model), so memhouse, hs and the session-adapters
+// "Known-answer vectors", in agent-realm/sessions-model), so memhouse, hs and the harness-session-adapters
 // package agree byte for byte. The machine ids are synthetic. hs now takes
 // both from the package; these run through hs's own entry points, as a consumer sees them.
 
@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { hostFromMachineId, hostId } from '../src/host.js';
-import { readMachineId } from '@agent-realm/session-adapters/host';
+import { readMachineId } from '@agent-realm/harness-session-adapters/host';
 import { harnessPath } from '../src/harness-path.js';
 
 test('host: the known answers', () => {

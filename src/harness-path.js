@@ -3,7 +3,7 @@
 // trailing slash), one implementation for every reader and for hs.
 
 import fs from 'node:fs';
-import { harnessPath as packageHarnessPath } from '@agent-realm/session-adapters/harness-path';
+import { harnessPath as packageHarnessPath } from '@agent-realm/harness-session-adapters/harness-path';
 import { toHsError } from './sessions.js';
 import { HsError } from './protocol.js';
 

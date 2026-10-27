@@ -1,4 +1,4 @@
-// Milestone 5: hs's sessions.* operations are the §7.3 shim over @agent-realm/session-adapters.
+// Milestone 5: hs's sessions.* operations are the §7.3 shim over @agent-realm/harness-session-adapters.
 // They must give exactly what the package gives, refuse a session key of another harness store,
 // and map the package's errors onto the envelope. The package's own fixture is used.
 
@@ -7,17 +7,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { adapterFor } from '@agent-realm/session-adapters';
+import { adapterFor } from '@agent-realm/harness-session-adapters';
 import { handle } from '../src/hs.js';
 import { PROTOCOL } from '../src/protocol.js';
 import { toHsError } from '../src/sessions.js';
-import { SessionsError } from '@agent-realm/session-adapters';
+import { SessionsError } from '@agent-realm/harness-session-adapters';
 import { tmpdir } from './fixtures.js';
 import { linuxHost } from './sandbox.js';
-import { ADAPTERS } from '@agent-realm/session-adapters';
+import { ADAPTERS } from '@agent-realm/harness-session-adapters';
 
 const repo = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const FIXTURE = path.join(repo, 'packages', 'session-adapters', 'fixtures', 'claude-code', 'basic', 'store');
+const FIXTURE = path.join(repo, 'packages', 'harness-session-adapters', 'fixtures', 'claude-code', 'basic', 'store');
 const HOST = 'd1073ef8de4b1a552a089f5890c636a2';
 
 function call(op, args) {
@@ -110,9 +110,9 @@ test('describe carries the package\'s sessions describe for both harnesses', () 
 
 // ---- database-file stores (OpenCode; sessions-model §1) -------------------------------------
 
-const OC = path.join(repo, 'packages', 'session-adapters', 'fixtures', 'opencode');
+const OC = path.join(repo, 'packages', 'harness-session-adapters', 'fixtures', 'opencode');
 async function opencodeFolder(root, name) {
-  const { prepareStore } = await import('../packages/session-adapters/conformance/sql-store.js');
+  const { prepareStore } = await import('../packages/harness-session-adapters/conformance/sql-store.js');
   const folder = path.join(root, 'opencode-data');
   prepareStore(path.join(OC, name), folder);
   return fs.realpathSync.native(folder);

@@ -74,6 +74,41 @@ value, because naming one would publish it.
    and the explicit facets.
 5. `npm test` from the repo root. CI runs the same.
 
+The full walk-through, with every list a harness is registered in, is
+[`docs/add-a-harness.md`](docs/add-a-harness.md).
+
+## Install and deploy
+
+The package is not published to npm. Use it from a checkout of this repository, on Node.js 22.15
+or later. It has no dependencies of its own.
+
+```sh
+git clone https://github.com/agent-realm/harness-skeleton
+cd harness-skeleton
+npm ci --ignore-scripts                   # hs's one dependency; this package needs none
+npm test                                  # hs and every package, this one included
+cd packages/session-adapters
+node examples/01-describe/describe.js     # the first example
+```
+
+- **In this repository**, `hs` imports it through the npm workspace.
+- **In another project**, depend on it by a `file:` path to the package in a checkout, then import
+  it by name, with `import` or, from CommonJS, `require`:
+
+  ```json
+  { "dependencies": { "@agent-realm/session-adapters": "file:../harness-skeleton/packages/session-adapters" } }
+  ```
+
+  It ships `src/`, `LICENSE`, `NOTICE`, `README.md` and `package.json` (`files`). `examples/`,
+  `fixtures/`, `conformance/` and the tests stay in the checkout.
+- **Against a real harness store** it only reads: `read` opens files and databases read-only and
+  leaves nothing beside them. [Read a store](docs/read-a-store.md) walks through a consumer's
+  passes.
+- **Upgrading** a consumer to a newer checkout: compare each harness's `adapter_ver` and
+  `state_ver` with the ones it stored, and re-derive or refold as
+  [Versions](docs/adapter-interface.md#versions) says. A key change carries a migration note in
+  [`CHANGELOG.md`](CHANGELOG.md).
+
 ## Git and review
 
 Branch and worktree conventions are the repo's. Each PR is one or a few harnesses. Every PR is

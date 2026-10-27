@@ -89,6 +89,8 @@ node conformance/matrix.js --write    # regenerate docs/conformance-matrix.md
 ## Where next
 
 - [`docs/`](docs/README.md): the adapter interface, how to add a harness, and the port notes.
+- [`examples/`](examples/README.md): from `describe` to a full pass over every harness, each
+  runnable against the fixtures.
 - [`docs/conformance-matrix.md`](docs/conformance-matrix.md): what proves each conformance item,
   per harness.
 - [`CHANGELOG.md`](CHANGELOG.md): what changed, with a migration note for every key change.

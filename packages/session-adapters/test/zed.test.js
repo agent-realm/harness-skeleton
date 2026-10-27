@@ -301,6 +301,37 @@ test('zed: a canned result is matched exactly, in the shape Zed writes it (is_er
   });
 });
 
+// The legacy shape of the same rule. Builds before Zed commit bf3fc2336d ("agent: Allow tools to
+// output multiple content parts") stored a tool result's content as one value, not a list: the
+// canned cancel as `is_error: true` and `{"Text": "Tool canceled by user"}` (thread.rs at
+// cb9dc8daf1, :2746). Zed v1.24.3 reads such a value as a list of one
+// (crates/language_model_core/src/request.rs:104-146), and so does the adapter: the whole text,
+// exact, with `is_error: true`. Anything else is completed with the store's flag.
+test('zed: a canned result stored as one Text value, not a list (builds before multi-part tool content), is matched as Zed reads it; a near miss is completed with the store\'s flag', () => {
+  withStore('features', (dir) => {
+    const resultsOf = () => Object.fromEntries(ofType(project(fullReplay(adapter, dir).views())[T.CART], 'message').flatMap((m) => m.parts)
+      .filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
+    // Edited in this copy.
+    const t = cartThread();
+    const results = (callId) => t.messages.find((m) => m.Agent && m.Agent.tool_results[callId]).Agent.tool_results[callId];
+    const set = (callId, isError, content) => Object.assign(results(callId), { is_error: isError, content });
+    // The positive control: the cancel and the denial as one Text value each, as those builds wrote
+    // them (a serde externally tagged `{"Text": …}`), and the follow-up denial as a bare string,
+    // which Zed's reader also takes for a Text.
+    set(C.WAIT, true, { Text: 'Tool canceled by user' });
+    set(C.CLEAN, true, { Text: 'Permission to run tool denied by user' });
+    set(C.READ, true, 'Permission denied: user sent a follow-up message instead of approving the tool call.');
+    // Near misses.
+    set(C.TEST, false, { Text: 'Tool canceled by user' });
+    set(C.EDIT, true, { Text: 'Permission to run tool denied by user: rm -rf build' });
+    save(dir, T.CART, t);
+    const e = resultsOf();
+    assert.deepEqual([e[C.WAIT], e[C.CLEAN], e[C.READ]], [['cancelled', null], ['denied', null], ['denied', null]], 'one Text value holding a canned text, with is_error true');
+    assert.deepEqual(e[C.TEST], ['completed', null], 'the cancel text in a single value that says success: completed (a stored false is null)');
+    assert.deepEqual(e[C.EDIT], ['completed', true], 'a single value that merely contains the denial: completed with the stored true');
+  });
+});
+
 test('zed: reasoning: Thinking text, signature-only and RedactedThinking opaque; reasoning_details only without Thinking; a Mention and an Image', () => {
   const recs = golden('features')[T.NOTES];
   const r = (n) => msg(recs, A(U.U4, n)).parts.filter((p) => p.kind === 'reasoning').map((p) => [p.part_id, p.text ?? null, !!p.opaque]);

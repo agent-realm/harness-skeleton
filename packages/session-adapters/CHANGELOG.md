@@ -541,9 +541,14 @@ the version the fixtures came from:
   says success, several items that join to the text, or a text that merely contains it is
   `completed`, with the stored flag (a stored false stays null, as before). A built-in tool's own
   cancel error (`Edit cancelled by user` and the like) is not one of the three and stays
-  `completed`.
-  - Goldens: none change; the fixture's two canned results are in Zed's shape. The test edits a
-    copy for the near misses, and the matrix's M.is-error cell for zed names it.
+  `completed`. A content stored as one Text value rather than a list counts as that one item,
+  still whole, exact and with `is_error: true`: builds before Zed commit bf3fc2336d ("agent: Allow
+  tools to output multiple content parts") stored every tool result's content so, the canned
+  cancel included (`thread.rs:2746` at its parent), and Zed v1.24.3 reads that legacy value as a
+  list of one (`crates/language_model_core/src/request.rs:104-146`).
+  - Goldens: none change; the fixture's two canned results are in Zed's shape. The tests edit a
+    copy for the near misses and for the single-value shape, and the matrix's M.is-error cell for
+    zed names both.
 - **goose (adapter_ver 0.2.1 → 0.2.2).** A result was `cancelled` where its text started with
   `Tool call was interrupted before completing`, `denied` where it started with `The user has
   declined to run this tool`, and `cancelled` where it was `(no output)` with `isError` and no exit

@@ -403,9 +403,18 @@ function resultText(content) {
 // `is_error: true` and a content of exactly that one Text item, as Zed's own check asks
 // (`is_canceled_tool_result`, thread.rs:1734-1741). The whole text must be equal: a tool output that
 // contains or resembles one, joins to one from several items, or says success, is not Zed's.
+// A content stored as one Text value, not a list, is that one item. Builds before Zed commit
+// bf3fc2336d ("agent: Allow tools to output multiple content parts") stored every tool result's
+// content as a single value, the canned cancel included (thread.rs at its parent, cb9dc8daf1:
+// `content: LanguageModelToolResultContent::Text(TOOL_CANCELED_MESSAGE.into())`, :2746, with
+// `is_error: true`). Zed v1.24.3 still reads that legacy single value as a list of one
+// (crates/language_model_core/src/request.rs:104-146, tool_result_content_vec), so its own check
+// matches it too.
 function cannedStatus(r) {
-  if (r.is_error !== true || !Array.isArray(r.content) || r.content.length !== 1) return null;
-  return CANNED.get(itemText(r.content[0])) ?? null;
+  if (r.is_error !== true) return null;
+  const items = Array.isArray(r.content) ? r.content : [r.content];
+  if (items.length !== 1) return null;
+  return CANNED.get(itemText(items[0])) ?? null;
 }
 
 // A content item the model has no kind for: kept as a notice (sessions-model §2.3, never dropped).

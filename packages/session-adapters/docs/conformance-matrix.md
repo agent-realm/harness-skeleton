@@ -210,7 +210,7 @@ From sessions-model.
 | agy | generic<br>agy: “is_error is the step status: DONE beside a non-zero exit is null”<br>agy: “is_error is null where the call did not complete”<br>agy: “transcript only: a CANCELED or INTERRUPTED line is cancelled with is_error null”<br>agy: “no text marks a denial” |
 | cursor | generic<br>cursor: “is_error is the stored status: completed beside a non-zero exit is null”<br>cursor: “is_error is null where the call did not complete” |
 | cursor-agent | generic<br>cursor-agent: “is_error is the stored flag: ShellSuccess or isError false beside a non-zero exit is null”<br>cursor-agent: “is_error is null where the call did not complete” |
-| zed | generic<br>zed: “is_error is null for Zed's canned cancel and denial; a completed call keeps a stored true”<br>zed: “statuses: false is null”<br>zed: “a canned result is matched exactly, in the shape Zed writes it” |
+| zed | generic<br>zed: “is_error is null for Zed's canned cancel and denial; a completed call keeps a stored true”<br>zed: “statuses: false is null”<br>zed: “a canned result is matched exactly, in the shape Zed writes it”<br>zed: “a canned result stored as one Text value, not a list” |
 | devin | generic<br>devin: “is_error is the stored flag: success true beside a non-zero exit is null”<br>devin: “is_error is null where the call did not complete” |
 
 ## M.folding: Folding: a repeated native id yields one record per key, in its last state

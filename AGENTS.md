@@ -110,7 +110,9 @@ tools ──depend on──▶ harness-skeleton ◀──implement── adapter
 
 ## Install and deploy
 
-`hs` and the packages are not published to npm. Use them from a checkout:
+`hs` is not published to npm, and neither are `@agent-realm/skeleton-spec` and
+`@agent-realm/scripted-model`: use them from a checkout. The session adapters package is on npm
+(below). The checkout:
 
 ```sh
 git clone https://github.com/agent-realm/harness-skeleton
@@ -123,8 +125,9 @@ node bin/hs.js describe --harness claude-code --pretty
 - **The CLI:** `bin/hs.js`, or `npm link` for an `hs` on PATH. A tool calls it with one `hs/0.2`
   envelope on stdin, or with flags ([`docs/reference/cli-and-protocol.md`](docs/reference/cli-and-protocol.md)).
 - **The packages:** `@agent-realm/harness-session-adapters`, `@agent-realm/skeleton-spec` and
-  `@agent-realm/scripted-model` are npm workspaces. Another project depends on them through a
-  workspace or a `file:` path to this checkout.
+  `@agent-realm/scripted-model` are npm workspaces. Another project depends on the session
+  adapters from npm (`npm install @agent-realm/harness-session-adapters`), and on the other two
+  through a workspace or a `file:` path to this checkout.
 - **Against a real harness:** point `--folder` at a data folder you own. `observe`, `validate`,
   `launch-spec` and the `sessions.*` operations never write it. `plan` writes nothing, and
   `apply` writes only under a receipt. Try writes on a scratch folder first, as the

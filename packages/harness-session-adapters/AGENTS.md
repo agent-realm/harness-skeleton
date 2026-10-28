@@ -79,11 +79,10 @@ The full walk-through, with every list a harness is registered in, is
 
 ## Install and deploy
 
-The package is to be published to npm as `@agent-realm/harness-session-adapters`, for Node.js
-22.15 or later. It has no dependencies of its own. Until it is on npm, use it from a checkout of
-this repository, or pack it there (`npm pack` in this folder) and install the tarball. The
-examples, the fixtures and the conformance suite will not be in the published package; use a
-checkout for them.
+The package is published to npm as `@agent-realm/harness-session-adapters`: `npm install
+@agent-realm/harness-session-adapters`, on Node.js 22.15 or later. It has no dependencies of its
+own. The examples, the fixtures and the conformance suite are not in the published package; use a
+checkout of this repository for them.
 
 ```sh
 git clone https://github.com/agent-realm/harness-skeleton
@@ -95,9 +94,8 @@ node examples/01-describe/describe.js     # the first example
 ```
 
 - **In this repository**, `hs` imports it through the npm workspace.
-- **In another project**, depend on it from npm once it is published (`npm install
-  @agent-realm/harness-session-adapters`; until then, install the packed tarball), then import it
-  by name, with `import` or, from CommonJS, `require`:
+- **In another project**, depend on it from npm (`npm install @agent-realm/harness-session-adapters`),
+  then import it by name, with `import` or, from CommonJS, `require`:
 
   ```json
   { "dependencies": { "@agent-realm/harness-session-adapters": "^1.0.0" } }

@@ -4,6 +4,16 @@
 (sessions-model §1 rule 8): the harness, the `adapter_ver` and how old keys map to new ones. See
 [Versions](docs/adapter-interface.md#versions) for what each version bump asks of a consumer.
 
+## 1.0.1 (2026-10-29)
+
+- **zed and agy: `read` answers `source_unknown` for a side source that holds no row of the
+  session**, as `list` already leaves it out: a Zed channel's `sidebar_threads` without the
+  thread's rows, and agy's `conversation_summaries` without the conversation's row. Both used to
+  read as an empty snapshot, so a consumer could not tell a source that went from one that reads
+  empty, and could never confirm it gone. The consumer now handles it under its vanish policy.
+  No `adapter_ver` change: for every source `list` names, the units and the records are the same
+  ([Versions](docs/adapter-interface.md#versions)).
+
 ## 1.0.0 (2026-10-27)
 
 The first release. It implements sessions-model v1.3 and sessions v1.3 for twelve harnesses; the

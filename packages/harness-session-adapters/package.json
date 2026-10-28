@@ -1,6 +1,6 @@
 {
   "name": "@agent-realm/harness-session-adapters",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Session adapters: one reader per agent harness, speaking sessions v1.3 (describe, list, read, derive) over sessions-model v1.3 records",
   "license": "Apache-2.0",
   "repository": {

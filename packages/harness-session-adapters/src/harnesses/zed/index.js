@@ -274,12 +274,15 @@ export function read(store, session, sourceKey, from = null, known = null) {
   const m = SIDEBAR_RE.exec(String(sourceKey));
   if (sourceKey !== MAIN && !m) throw new SessionsError('source_unknown', `${sourceKey} is not a zed source`, [sourceKey]);
   if (sourceKey === MAIN) return readThread(root, sid, from);
-  // A sidebar source: the thread must still be there; then this channel's rows for it (none once
-  // they are gone: a snapshot of no rows).
+  // A sidebar source: the thread must still be there; then this channel's rows for it. A channel
+  // with no row for the thread is not one of its sources, as in `list`: `source_unknown`, so a
+  // consumer can tell a source that went from one that reads empty.
   const rows = readThreads(root, sid);
   if (!rows || !rows.length) throw noSession(sid);
   if (!isRealFile(root, sidebarRel(m[1]))) throw new SessionsError('source_unknown', `${sourceKey} is not there`, [sourceKey]);
-  return readRowsSnapshot(sourceKey, { sidebar_threads: sidebarRows(root, m[1], sid) }, from);
+  const side = sidebarRows(root, m[1], sid);
+  if (!side.length) throw new SessionsError('source_unknown', `${sourceKey} holds no row for ${sid}`, [sourceKey]);
+  return readRowsSnapshot(sourceKey, { sidebar_threads: side }, from);
 }
 
 // ---- derive -----------------------------------------------------------------------------------

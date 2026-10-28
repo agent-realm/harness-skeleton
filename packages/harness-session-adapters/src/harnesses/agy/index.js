@@ -226,8 +226,11 @@ export function read(store, session, sourceKey, from = null, known = null) {
   const unknown = () => new SessionsError('source_unknown', `${sourceKey} is not a source of ${sid}`, [sourceKey]);
   if (sourceKey === SUMMARY_KEY) {
     if (!isRealFile(root, SUMMARIES)) throw unknown();
-    // This session's row, or none once it is gone (a snapshot of no rows).
-    return readRowsSnapshot(SUMMARY_KEY, { conversation_summaries: [...readSummaries(root, sid).values()] }, from);
+    // This session's row. Without one the source is not the session's, as in `list`:
+    // `source_unknown`, so a consumer can tell a source that went from one that reads empty.
+    const rows = [...readSummaries(root, sid).values()];
+    if (!rows.length) throw unknown();
+    return readRowsSnapshot(SUMMARY_KEY, { conversation_summaries: rows }, from);
   }
   const table = TABLES.find((t) => sourceKey === tableKey(sid, t));
   if (table) {

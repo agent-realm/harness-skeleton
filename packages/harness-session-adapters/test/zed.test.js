@@ -749,6 +749,21 @@ test('zed: damaged: an undecodable blob is listed and reads damaged; a corrupt p
   });
 });
 
+test('zed: list and read agree on a sidebar source: a channel without the thread\'s rows is source_unknown', () => {
+  withStore('features', (dir) => {
+    const store = storeOf(adapter, dir);
+    const sources = () => adapter.list(store).find((x) => x.session_id === T.CART).sources.map((s) => s.source_key);
+    assert.ok(sources().includes(STABLE) && sources().includes(PREVIEW), 'the fixture lists both channels');
+    const key = keyOf(store, adapter.list(store).find((x) => x.session_id === T.CART));
+    const w = writer(dir, sidebarRel('0-stable'));
+    w.prepare('DELETE FROM sidebar_threads WHERE session_id = ?').run(T.CART);
+    w.close();
+    assert.ok(!sources().includes(STABLE), 'list no longer names the channel');
+    assert.throws(() => adapter.read(store, key, STABLE), { code: 'source_unknown' }, 'and read does not serve it as an empty snapshot');
+    assert.equal(adapter.read(store, key, PREVIEW).units.length, 1, 'the other channel still reads');
+  });
+});
+
 test('zed: errors: an unknown session or source, a legacy thread, a channel with no DB, a deleted thread', () => {
   withStore('features', (dir) => {
     const store = storeOf(adapter, dir);

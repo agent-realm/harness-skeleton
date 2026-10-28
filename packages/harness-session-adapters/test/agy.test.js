@@ -687,6 +687,22 @@ test('agy: errors: an unknown session, an unknown source, a deleted session', ()
   });
 });
 
+test('agy: list and read agree on the summaries source: without the session\'s row it is source_unknown', () => {
+  withStore('features', (dir) => {
+    const store = storeOf(adapter, dir);
+    const SUMMARIES = 'conversation_summaries.db#table:conversation_summaries';
+    const sources = () => adapter.list(store).find((x) => x.session_id === A).sources.map((s) => s.source_key);
+    assert.ok(sources().includes(SUMMARIES), 'the fixture lists it');
+    const k = { ...store, session_id: A, incarnation: '' };
+    assert.equal(adapter.read(store, k, SUMMARIES).units.length, 1);
+    const d = new DatabaseSync(path.join(dir, 'conversation_summaries.db'));
+    d.prepare('DELETE FROM conversation_summaries WHERE conversation_id = ?').run(A);
+    d.close();
+    assert.ok(!sources().includes(SUMMARIES), 'list no longer names it');
+    assert.throws(() => adapter.read(store, k, SUMMARIES), { code: 'source_unknown' }, 'and read does not serve it as an empty snapshot');
+  });
+});
+
 test('agy: a locked store is busy, a damaged one or an undecodable step is damaged; never fewer steps', () => {
   withStore('features', (dir) => {
     const store = storeOf(adapter, dir);

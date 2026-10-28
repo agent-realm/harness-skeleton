@@ -22,7 +22,7 @@
   "private": true,
   "dependencies": {
     "smol-toml": "1.9.1",
-    "@agent-realm/harness-session-adapters": "1.0.0",
+    "@agent-realm/harness-session-adapters": "1.0.1",
     "@agent-realm/skeleton-spec": "0.0.1"
   },
   "workspaces": [

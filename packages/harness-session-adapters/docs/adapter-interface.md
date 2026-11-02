@@ -160,7 +160,9 @@ sessions-model §2 lists each record's fields. Where it leaves a JSON shape open
   - `describe().native` is `{session: [...], message: [...], part: [...]}`, the dotted native paths
     an adapter carries per record type. Left out, it declares none, and no record carries `native`.
   - `nativeOf(nativeRecord, paths)` (in `src/records.js`) builds the object: each declared path the
-    native record holds, keyed by the path, and nothing else.
+    native record holds, keyed by the path, and nothing else. A value is a leaf (string, number,
+    boolean or null): an object or a list at a declared path is dropped, so no subtree rides along
+    on an allowlisted path. Declare each leaf you carry.
   - `units` are `[source_key, generation, unit_key]` triples. `seal()` sorts them, drops a repeated
     triple, keeps them out of `content_sha`, and throws on a malformed one.
   - `validateSession(records, {native})` holds `native` keys to the declared paths. Without

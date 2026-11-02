@@ -46,8 +46,8 @@ const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
  * they are valid when every finding is a warning.
  * @param {object[]} records every record of one session (as derive's view holds them)
  * The two v1.4 fields (sessions-model §2.7) are checked where they appear: `units` is a sorted list
- * of distinct [source_key, generation, unit_key] triples, and `native` an object, on session and
- * message records and parts only. Given `native` (the adapter's `describe().native`), every key of
+ * of distinct [source_key, generation, unit_key] triples, and `native` an object of leaf values
+ * (string, number, boolean, null), on session and message records and parts only. Given `native` (the adapter's `describe().native`), every key of
  * a `native` must be a path declared for its record type. A record without either is unaffected,
  * so a v1.3 record and a v1.4 one validate alike.
  * @param {{harness?: string, sessionId?: string, native?: {session?: string[], message?: string[], part?: string[]}}} [expect]
@@ -210,6 +210,9 @@ function checkUnits(at, units, bad) {
 // keyed by those paths only. An adapter that declares none carries no `native`.
 function checkNative(at, native, declared, known, bad) {
   if (!isObject(native)) return bad(at, `native ${JSON.stringify(native)} is not an object`);
+  for (const [k, v] of Object.entries(native)) {
+    if (!(v === null || ['string', 'number', 'boolean'].includes(typeof v))) bad(at, `native ${JSON.stringify(k)} holds ${Array.isArray(v) ? 'a list' : 'an object'}, not a leaf value (sessions-model §2.7)`);
+  }
   if (!known) return;
   if (!declared?.length) return bad(at, 'native on a record type the adapter declares no paths for');
   const allowed = new Set(declared);

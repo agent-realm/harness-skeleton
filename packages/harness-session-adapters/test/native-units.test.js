@@ -52,10 +52,13 @@ test('native and units: seal keeps units out of content_sha, sorted with no trip
 });
 
 test('native and units: nativeOf carries the declared paths a record holds, and nothing else', () => {
-  const rec = { gitBranch: 'main', env: { TOKEN: 'x' }, turn: { sandbox_policy: { mode: 'read-only' }, cwd: '/home/user/p' }, n: null, list: [{ a: 1 }] };
-  assert.deepEqual(nativeOf(rec, ['gitBranch', 'turn.sandbox_policy', 'n', 'missing', 'list.0.a']), {
-    gitBranch: 'main', 'turn.sandbox_policy': { mode: 'read-only' }, n: null,
+  const rec = { gitBranch: 'main', env: { TOKEN: 'x' }, turn: { sandbox_policy: { mode: 'read-only', writable_roots: ['/home/user/p'] }, cwd: '/home/user/p' }, n: null, list: [{ a: 1 }], ok: true, k: 3 };
+  assert.deepEqual(nativeOf(rec, ['gitBranch', 'turn.sandbox_policy.mode', 'n', 'ok', 'k', 'missing', 'list.0.a']), {
+    gitBranch: 'main', 'turn.sandbox_policy.mode': 'read-only', n: null, ok: true, k: 3,
   });
+  // Leaf values only: a declared object or list is dropped, so its subtree (writable_roots, paths)
+  // never rides along on an allowlisted path.
+  assert.deepEqual(nativeOf(rec, ['turn.sandbox_policy', 'env', 'list', 'turn']), {});
   assert.deepEqual(nativeOf(rec, []), {}, 'no declared path: an empty object');
   assert.deepEqual(nativeOf(rec, undefined), {});
   assert.ok(!('env' in nativeOf(rec, ['gitBranch'])), 'an undeclared field is dropped');
@@ -83,9 +86,12 @@ test('native and units: validateSession finds malformed units and undeclared or 
     const [s, m] = session();
     assert.ok(problems([s, { ...m, units }]).some((p) => p.startsWith('units')), JSON.stringify(units));
   }
-  // native: not an object, on a usage record, a path not declared, a type that declares none.
+  // native: not an object, a value that is not a leaf, on a usage record, a path not declared, a
+  // type that declares none.
   const [s, m] = session();
   assert.ok(problems([s, { ...m, native: ['x'] }]).some((p) => p.startsWith('native')));
+  assert.ok(problems([s, { ...m, native: { 'turn.sandbox_policy': { writable_roots: ['/home/user/p'] } } }]).some((p) => p.includes('not a leaf value')));
+  assert.ok(problems([s, { ...m, native: { tags: ['a'] } }]).some((p) => p.includes('not a leaf value')));
   const usage = seal({ type: 'usage', ...KEY, usage_id: 'u1', granularity: 'per_response', anchor: { response_id: 'r1' }, input: 1, output: 1, cache_read: null, cache_write: null, reasoning: null, cost: null, native: {} });
   assert.ok(problems([s, m, usage]).some((p) => p.startsWith('native on a usage record')));
   const declared = { session: [], message: ['gitBranch'], part: [] };
@@ -118,6 +124,10 @@ test('native and units: the generic checks catch an undeclared native path and a
     assert.ok(genericChecks(bogus, store)['M.units-input']?.length > 0);
     const staleGen = withRecords((rec, input) => ({ ...rec, units: [[input[0].source_key, input[0].generation + 5, (input[0].units ?? [])[0]?.unit_key ?? '0']] }));
     assert.ok(genericChecks(staleGen, store)['M.units-input']?.length > 0);
+    // A native value that is not a leaf fails it even where the path is declared.
+    const subtree = withRecords((rec) => (rec.type === 'message' ? { ...rec, native: { gitBranch: { name: 'main' } } } : rec));
+    const declaresSubtree = { ...subtree, describe: () => ({ ...a.describe(), native: { session: [], message: ['gitBranch'], part: [] } }) };
+    assert.ok(genericChecks(declaresSubtree, store)['M.native-declared']?.some((f) => f.includes('not a leaf value')));
     // A native object on a message, where claude-code declares no native paths.
     const undeclared = withRecords((rec) => (rec.type === 'message' ? { ...rec, native: { gitBranch: 'main' } } : rec));
     assert.ok(genericChecks(undeclared, store)['M.native-declared']?.length > 0);

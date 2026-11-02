@@ -62,7 +62,11 @@ export function normaliseUnits(units) {
 
 // The declared native fields of a native record (sessions-model §2.7): for each declared dotted
 // path that the record holds, its value, keyed by the path; nothing else. `{}` when it holds none.
-// A path walks objects only, as the redaction paths do (§4).
+// A path walks objects only, as the redaction paths do (§4). Values are leaf scalars only (string,
+// number, boolean, null): an object or a list at a declared path is dropped, since it would carry
+// its whole subtree, and any field added to it later, past the allowlist.
+export const isScalar = (v) => v === null || ['string', 'number', 'boolean'].includes(typeof v);
+
 export function nativeOf(record, paths) {
   const out = {};
   for (const path of paths ?? []) {
@@ -71,7 +75,7 @@ export function nativeOf(record, paths) {
       if (v === null || typeof v !== 'object' || Array.isArray(v) || !Object.hasOwn(v, seg)) { v = undefined; break; }
       v = v[seg];
     }
-    if (v !== undefined) out[path] = v;
+    if (isScalar(v)) out[path] = v;
   }
   return out;
 }

@@ -10,8 +10,10 @@
   adapter emits either field yet, so no record changes and no `adapter_ver` moves.
   - `seal()` keeps `units` out of `content_sha`, sorts the triples, drops a repeated one, and
     throws on a malformed one.
-  - `nativeOf(nativeRecord, paths)` builds a `native` object from declared paths.
-  - `validateSession` accepts both fields and checks their shape. Given `native` (an adapter's
+  - `nativeOf(nativeRecord, paths)` builds a `native` object from declared paths, leaf values
+    only: an object or a list at a declared path is dropped.
+  - `validateSession` accepts both fields and checks their shape, a `native` value that is not a
+    leaf included. Given `native` (an adapter's
     `describe().native`), it holds `native` keys to the declared paths. Records without the
     fields validate as before.
   - The conformance checklist gains M.native-declared and M.units-input, proved by generic

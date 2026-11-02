@@ -103,7 +103,7 @@ node conformance/matrix.js --write    # regenerate docs/conformance-matrix.md
 - [`AGENTS.md`](https://github.com/agent-realm/harness-skeleton/blob/main/packages/harness-session-adapters/AGENTS.md): rules for anyone changing this package, and how to install and deploy
   it.
 
-<!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/v1.4.2/contracts/,
+<!-- The contract links: one base, https://github.com/agent-realm/sessions-model/blob/v1.4.3/contracts/,
      the release this version implements. -->
-[sessions-model]: https://github.com/agent-realm/sessions-model/blob/v1.4.2/contracts/sessions-model.md
-[sessions]: https://github.com/agent-realm/sessions-model/blob/v1.4.2/contracts/sessions.md
+[sessions-model]: https://github.com/agent-realm/sessions-model/blob/v1.4.3/contracts/sessions-model.md
+[sessions]: https://github.com/agent-realm/sessions-model/blob/v1.4.3/contracts/sessions.md

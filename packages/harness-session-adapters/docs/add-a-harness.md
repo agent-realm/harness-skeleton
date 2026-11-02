@@ -134,8 +134,11 @@ the errors, the explicit facets and `is_error`.
   `content_sha`, so the view keeps the units of its last write (sessions-model §2.7), and each must
   still name a unit the engine holds.
 - A snapshot source has one unit, keyed by its `source_key`, and a delta row keeps its key when it
-  changes (sessions §2): their triples name the slot, and a resume moves only what another unit
-  gives (a new row, an archiving sidebar row).
+  changes (sessions §1): their triples name the slot, and a reader resolves the version by ingest
+  order (sessions-model v1.4.3, §2.7). A resume moves only what another unit gives (a new row, an
+  archiving sidebar row). A content-addressed unit (cursor-agent's blobs) names its version.
+- Where `describe().native` declares paths for a record type, every record of that type carries
+  `native`, `{}` when it holds none; `validateSession` reports one without it.
 - The reset control compares records without `units` and checks that every triple names the new
   generation.
 

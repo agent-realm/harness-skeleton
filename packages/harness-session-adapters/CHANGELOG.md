@@ -4,10 +4,14 @@
 (sessions-model §1 rule 8): the harness, the `adapter_ver` and how old keys map to new ones. See
 [Versions](docs/adapter-interface.md#versions) for what each version bump asks of a consumer.
 
-## Unreleased
+## 1.1.0 (2026-11-02)
 
-- **sessions-model v1.4 and sessions v1.4: `native` and `units`, the infrastructure** (§2.7). No
-  adapter emits either field yet, so no record changes and no `adapter_ver` moves.
+sessions-model v1.4.3 and sessions v1.4: every adapter emits `units`, and seven declare `native`
+(§2.7). Every `adapter_ver` moves to 0.3.0 and every `state_ver` moves, so a consumer re-derives each
+harness's sessions from its archived units and drops the saved state ([Versions](docs/adapter-interface.md#versions)).
+No key changes, so no key migration; `content_sha` moves only for records that gained `native`.
+
+- **The two fields** (sessions-model §2.7).
   - `seal()` keeps `units` out of `content_sha`, sorts the triples, drops a repeated one, and
     throws on a malformed one. The strings sort in Unicode code-point order, the byte order of
     their UTF-8 (sessions-model v1.4.2), not by UTF-16 code units; `validateSession` checks the
@@ -15,18 +19,18 @@
   - `nativeOf(nativeRecord, paths)` builds a `native` object from declared paths, leaf values
     only: an object or a list at a declared path is dropped.
   - `validateSession` accepts both fields and checks their shape, a `native` value that is not a
-    leaf included. Given `native` (an adapter's
-    `describe().native`), it holds `native` keys to the declared paths. Records without the
-    fields validate as before.
-  - The conformance checklist gains M.native-declared and M.units-input, proved by generic
-    checks over every fixture case.
+    leaf included. Given `native` (an adapter's `describe().native`), it holds `native` keys to the
+    declared paths, and reports a record or part without `native` where its type declares paths
+    (`{}` when it holds none). Records without the fields validate as before.
+  - The conformance checklist gains M.native-declared and M.units-input, proved by generic checks
+    over every fixture case.
   - The contract links point at sessions-model v1.4.3.
-- **claude-code, codex, gemini-cli and copilot-cli emit `units`, and three of them `native`**
-  (sessions-model v1.4.2, §2.7). Every record of the four names the lines its own fields were taken
-  from; the session record names those behind its title, `cwd`, `last_cwd`, `created_at`,
-  `updated_at`, `harness_version` (and the client, mode, kind or native fields it has), never the
-  fingerprint's messages. No key changes, so no migration note; `content_sha` moves only where
-  `native` is added.
+- **What `units` name.** Every record names the units its own fields were taken from (v1.4.1); the
+  session record names those behind its title, `cwd`, `last_cwd`, `created_at`, `updated_at`,
+  `harness_version` (and the client, mode, kind, state or native fields it has), never the
+  fingerprint's messages. A snapshot's or a delta row's triple names its slot (v1.4.3). Each adapter
+  has a `resume` fixture case: a later launch moves session fields, and the units follow them.
+- **claude-code, codex, gemini-cli and copilot-cli.**
   - **claude-code** `adapter_ver` 0.3.0, `state_ver` 3: each session field keeps its line's
     position, and the last compact boundary its line, for a summary's `through_id`. A message
     names its line, plus the boundary for a compaction summary; a usage record names the line whose
@@ -48,42 +52,7 @@
     snapshot when it gave the title or the client. `native` on messages: `data.interactionId`,
     `data.turnId`, `data.trigger`; on the session: `data.producer`, `data.selectedModel`, the later
     event's winning.
-  - Each has a `resume` fixture case: a later launch moves session fields, and the session record's
-    units follow them.
-- **goose, opencode, agy and cursor-agent emit `units`, and opencode `native`** (sessions-model
-  v1.4.3, §2.7), completing the twelve adapters. As before: every record names the units its own
-  fields came from, the session record never the fingerprint's. No key changes; `content_sha` moves
-  only where `native` is added.
-  - **goose** `adapter_ver` 0.3.0, `state_ver` 2: a message names its row, plus the ledger row of
-    its served model, the sessions row of its effort, and the confirmation row behind a denied or
-    cancelled result; a usage record its ledger row or its message row; links and the session the
-    sessions row, an origin link the rows that deliver the child. No `native`.
-  - **opencode** `adapter_ver` 0.3.0, `state_ver` 2: a message names its message and part rows,
-    the spill files its results read, the revert that set its state, the parent row whose model and
-    variant it took, and the trigger of a summary's `replaces`; a usage record its row and the
-    step-finish rows it sums; edit and rewind records their events; the session its row and the row
-    of its latest message. `native` on messages, from the message's `data`: `finish`.
-  - **agy** `adapter_ver` 0.3.0, `state_ver` 3: a message names its step row, plus the generation
-    row of its models or usage, the result step that names a call's server and a spilled output; a
-    rewind its transcript line, a fork its parent_references row; the session the trajectory,
-    summaries and annotation rows behind its fields and the step of its latest message. The
-    transcript-only path names lines. No `native`.
-  - **cursor-agent** `adapter_ver` 0.3.0, `state_ver` 2: a record names the blobs it is built from,
-    marked while it is built (turn, step and user-message blobs, the model-context blobs of its calls,
-    results, images and model, the root), plus the meta row and meta.json where a field comes from
-    them. Blobs are content-addressed, so these triples name versions. No `native`.
-  - Each has a `resume` fixture case.
-- **The validator reports a missing `native`** on a record or part whose type the adapter declares
-  paths for (§2.7: `{}` when it holds none), and M.native-declared with it.
-- **Conformance runner, for 2d.** `project()` writes a triple path under a file-bound store's folder
-  (OpenCode's spilled `tool-output/`) as `<harness dir>/…`, so a golden holds no machine's path.
-  opencode's and cursor-agent's growth checks use `units: 'valid'`: a usage record's counts move
-  from the message row to its step-finish rows (opencode), and one model-context message can sit in
-  several blobs (cursor-agent), both without the record changing.
-- **vscode, zed, cursor and devin emit `units`, and three of them `native`** (sessions-model
-  v1.4.2, §2.7). As for the first four: every record names the units its own fields came from, the
-  session record never the fingerprint's. No key changes; `content_sha` moves only where `native` is
-  added.
+- **vscode, zed, cursor and devin.**
   - **vscode** `adapter_ver` 0.3.0, `state_ver` 2: the change-log fold keeps, per request, the ops
     that wrote it whole and the ops at each of its keys, and per top-level key the last op that wrote
     it. A prompt names the ops behind its own keys (`message`, `variableData`, `timestamp`,
@@ -102,16 +71,38 @@
     session names the header or composerData row behind each field. No `native`.
   - **devin** `adapter_ver` 0.3.0, `state_ver` 2: every record names the session's one snapshot.
     `native` on the session, its `sessions` row: `backend_type`, `model`.
-  - Each has a `resume` fixture case.
-- **Conformance runner, for 2c.** The growth check's exact mode compares each triple's source and
-  unit keys and checks its generation against the engine's (a generation counts the engine's resets,
-  so a snapshot read torn in one pass is numbered apart from a full replay). `sqlGrowthCheck` has
-  the same `units` modes, and `sqlResumeCheck` is `resumeCheck` for database stores.
-- **Conformance runner: `units` beside the record comparisons.** `project(views, {units: false})`
-  leaves them out. The reset control compares records without them and requires every triple to
-  name the new generation. `growthCheck`'s `units: 'valid'` is for a source that can rewrite a
-  stored record without changing the derived one (Gemini CLI); the default holds units to the full
-  replay. `resumeCheck` grows one source in a second pass and returns the session records of both.
+- **goose, opencode, agy and cursor-agent.**
+  - **goose** `adapter_ver` 0.3.0, `state_ver` 2: a message names its row, plus the ledger row of
+    its served model, the sessions row of its effort, and the confirmation row behind a denied or
+    cancelled result; a usage record its ledger row or its message row; links and the session the
+    sessions row, an origin link the rows that deliver the child. No `native`.
+  - **opencode** `adapter_ver` 0.3.0, `state_ver` 2: a message names its message and part rows,
+    the spill files its results read, the revert that set its state, the parent row whose model and
+    variant it took, and the trigger of a summary's `replaces`; a usage record its row and the
+    step-finish rows it sums; edit and rewind records their events; the session its row and the row
+    of its latest message. `native` on messages, from the message's `data`: `finish`.
+  - **agy** `adapter_ver` 0.3.0, `state_ver` 3: a message names its step row, plus the generation
+    row of its models or usage, the result step that names a call's server and a spilled output; a
+    rewind its transcript line, a fork its parent_references row; the session the trajectory,
+    summaries and annotation rows behind its fields and the step of its latest message. The
+    transcript-only path names lines. No `native`.
+  - **cursor-agent** `adapter_ver` 0.3.0, `state_ver` 2: a record names the blobs it is built from,
+    marked while it is built (turn, step and user-message blobs, the model-context blobs of its calls,
+    results, images and model, the root), plus the meta row and meta.json where a field comes from
+    them. Blobs are content-addressed, so these triples name versions. No `native`.
+- **Conformance runner: `units` beside the record comparisons.**
+  - `project(views, {units})`: `false` leaves them out, `'keys'` keeps each triple's source and unit
+    keys. A triple path under a file-bound store's folder (OpenCode's spilled `tool-output/`) is
+    written `<harness dir>/…`, so a golden holds no machine's path.
+  - The growth checks (`growthCheck`, `sqlGrowthCheck`) hold units to the full replay's by source
+    and unit key, and check each generation against the engine's own reset count, which a fresh
+    replay cannot know. `units: 'valid'` is for a units-only change (sessions-model §2.7), where
+    records are compared exactly and every triple must name a held unit: Gemini CLI's `$patch`,
+    OpenCode's step-finish rows, cursor-agent's model context in several blobs.
+  - The reset control compares records without units and requires every triple to name the new
+    generation.
+  - `resumeCheck` and `sqlResumeCheck` grow one store in a second pass and return the session
+    records of both.
 
 ## 1.0.1 (2026-10-29)
 

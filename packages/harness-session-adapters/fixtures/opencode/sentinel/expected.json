@@ -21,6 +21,7 @@
       "order": "1|0001792588655538|msg_15e9c2bb2001iQFav0x9ezQe8i",
       "ts": "2026-10-21T13:17:35.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -69,7 +70,44 @@
           "bytes_len": null
         }
       ],
-      "cmp_sha": "55d9746527ceb2a5e9aa9411dd311273fa6cddf8f6da184d212659a3aa5ebf4e"
+      "cmp_sha": "55d9746527ceb2a5e9aa9411dd311273fa6cddf8f6da184d212659a3aa5ebf4e",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2bb2001iQFav0x9ezQe8i"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb20024RvxfN9exRFEYQ"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb3003apopGDEGUT7P4W"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb4004pe8pl3C0wuL7ER"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb5005FutiVl3E8uuCeU"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb6006Hye8bOSU8MAW2S"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb7007l6c6yxlgzoS6qd"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -92,6 +130,7 @@
       "order": "1|0001792588656538|msg_15e9c2f9a0019QKr990UmtTgJo",
       "ts": "2026-10-21T13:17:36.538Z",
       "role": "assistant",
+      "native": {},
       "source": "model",
       "parts": [
         {
@@ -102,7 +141,19 @@
           "http_status": 401
         }
       ],
-      "cmp_sha": "f2b679d061229c3e60e4994f5bd09e7c6d87ce824f3b8d7980f116fb99ceea1c"
+      "cmp_sha": "f2b679d061229c3e60e4994f5bd09e7c6d87ce824f3b8d7980f116fb99ceea1c",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2bb2001iQFav0x9ezQe8i"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2f9a0019QKr990UmtTgJo"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -125,6 +176,7 @@
       "order": "1|0001792588657538|msg_15e9c3382001QCZbwXFLap462x",
       "ts": "2026-10-21T13:17:37.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -133,7 +185,19 @@
           "text": "Read the label image from the docs site."
         }
       ],
-      "cmp_sha": "db2709c7411e6beac77f5b5d9e95a00bd7426c54fc107cb7812a52ae8874658a"
+      "cmp_sha": "db2709c7411e6beac77f5b5d9e95a00bd7426c54fc107cb7812a52ae8874658a",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c3382001QCZbwXFLap462x"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c3382008gRQxxLZTV2MH4S"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -156,6 +220,9 @@
       "order": "1|0001792588658538|msg_15e9c376a001KMYT52oMF9PI1N",
       "ts": "2026-10-21T13:17:38.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -215,7 +282,44 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "d46b8ff38a992a2965dcd488e4042d09e713524c3ee24e9fb177b5c175976462"
+      "cmp_sha": "d46b8ff38a992a2965dcd488e4042d09e713524c3ee24e9fb177b5c175976462",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c3382001QCZbwXFLap462x"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c376a001KMYT52oMF9PI1N"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c376b0090WhCCU6ckNMJ9i"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c377500anv996LgwNilyVn"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c377f00b5Ace5ke20kt3zP"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c378900c9kJhcwho41gx64"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c379300dZB5azQwZP8LJpW"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -246,7 +350,19 @@
           "d46b8ff38a992a2965dcd488e4042d09e713524c3ee24e9fb177b5c175976462"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c376a001KMYT52oMF9PI1N"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -267,7 +383,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c376a001KMYT52oMF9PI1N"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c379300dZB5azQwZP8LJpW"
+        ]
+      ]
     }
   ]
 }

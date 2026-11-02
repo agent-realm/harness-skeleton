@@ -403,6 +403,22 @@ function sentinel() {
 
 // ---- writing -----------------------------------------------------------------------------------
 
+// ---- resume: a session reopened in a later launch (sessions-model §2.7 units) -----------------
+
+// The second launch renames the session and adds a turn. The session row is a snapshot, so its
+// triple names the slot in both launches while the title moves; updated_at moves to the second
+// turn's message row, and the session record's units with it. The resume test
+// (test/opencode.test.js) builds the store with the statements before the rename.
+function resume() {
+  const db = new Ops();
+  const R = db.session(mkId('ses', T0 + 40000, 1, 'R'), T0 + 40000, { title: 'Count the files', slug: 'quiet-heron' });
+  turn(db, R, T0 + 41000, 'Count the files.', 'Two files.');
+  // The second launch, a day later.
+  db.sessionUpdate(R, { title: 'Count the files and tests' }, T0 + 86400000);
+  turn(db, R, T0 + 86401000, 'And in tests?', 'One file.');
+  return { dbs: { 'opencode.db': db }, files: {} };
+}
+
 function writeCase(name, { dbs, files }) {
   const dir = path.join(HERE, name);
   fs.rmSync(path.join(dir, 'store-sql'), { recursive: true, force: true });
@@ -430,6 +446,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   writeCase('edits', edits());
   writeCase('channels', nested());
   writeCase('sentinel', sentinel());
+  writeCase('resume', resume());
   // The lab cases keep their committed ops; only their schema is written here.
   for (const name of ['basic', 'v2']) {
     fs.writeFileSync(path.join(HERE, name, 'store-sql', 'opencode.db.schema.sql'), SCHEMA);

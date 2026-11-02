@@ -12,7 +12,14 @@
       },
       "at": "msg_15ea4352c001AH04W9dY8oFYMP",
       "ts": "2026-10-21T13:26:39.523Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "table:event",
+          1,
+          "30"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -36,6 +43,7 @@
       "ts": "2026-10-21T13:25:56.768Z",
       "role": "user",
       "source": "user",
+      "native": {},
       "parts": [
         {
           "part_id": "0",
@@ -43,7 +51,14 @@
           "text": "SCN_TOOL v2 engine run"
         }
       ],
-      "cmp_sha": "6b8cc5eb3d14fd5d43c8a75722df072a090a5e431a1b9a490777f3f32fb3f800"
+      "cmp_sha": "6b8cc5eb3d14fd5d43c8a75722df072a090a5e431a1b9a490777f3f32fb3f800",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea3d19f001OJq1AqxanQPlXj"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -67,6 +82,9 @@
       "ts": "2026-10-21T13:25:57.565Z",
       "role": "assistant",
       "source": "model",
+      "native": {
+        "finish": "tool-calls"
+      },
       "parts": [
         {
           "part_id": "text-0",
@@ -97,7 +115,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "f7837f03e2e275fa407a6fe8adc9dafcb00c4f1f3c4fe4ca885bd1baf14bc7e0"
+      "cmp_sha": "f7837f03e2e275fa407a6fe8adc9dafcb00c4f1f3c4fe4ca885bd1baf14bc7e0",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea3d4bd001b7ZKvzPiw8sh8J"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -121,6 +146,9 @@
       "ts": "2026-10-21T13:25:58.491Z",
       "role": "assistant",
       "source": "model",
+      "native": {
+        "finish": "stop"
+      },
       "parts": [
         {
           "part_id": "text-0",
@@ -128,7 +156,14 @@
           "text": "Synthetic reply bb9bff. synthetic reply te"
         }
       ],
-      "cmp_sha": "c5199cf677fb54d225077f42216c9fa0249db4cb268a8f874bcda7292b340800"
+      "cmp_sha": "c5199cf677fb54d225077f42216c9fa0249db4cb268a8f874bcda7292b340800",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea3d85a001uDhDzL6ZoTtn61"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -152,6 +187,7 @@
       "ts": "2026-10-21T13:26:18.202Z",
       "role": "user",
       "source": "user",
+      "native": {},
       "parts": [
         {
           "part_id": "0",
@@ -159,7 +195,14 @@
           "text": "SCN_REASON v2 reasoning"
         }
       ],
-      "cmp_sha": "735c21f64d9d676d64d0d467ed1add8442ee969df18a74921b23f2ab5ed37948"
+      "cmp_sha": "735c21f64d9d676d64d0d467ed1add8442ee969df18a74921b23f2ab5ed37948",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea42559001supOUDB0CEtv5Q"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -183,6 +226,9 @@
       "ts": "2026-10-21T13:26:18.992Z",
       "role": "assistant",
       "source": "model",
+      "native": {
+        "finish": "stop"
+      },
       "parts": [
         {
           "part_id": "reasoning-0",
@@ -196,7 +242,14 @@
           "text": "Synthetic reply 090b53. synthetic reply text for"
         }
       ],
-      "cmp_sha": "d4770f0afca400326821054738cc8f8a34203e8e603cc1418a544da8772239fc"
+      "cmp_sha": "d4770f0afca400326821054738cc8f8a34203e8e603cc1418a544da8772239fc",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea42870001TjW50nVdZPZ5Ol"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -220,6 +273,7 @@
       "ts": "2026-10-21T13:26:22.253Z",
       "role": "user",
       "source": "user",
+      "native": {},
       "parts": [
         {
           "part_id": "0",
@@ -227,7 +281,14 @@
           "text": "SCN_FILTER v2 filter"
         }
       ],
-      "cmp_sha": "e434e56fd6a6aca4a21cbe3c6657b3d3e903204a506d619da0f5991f0809cc19"
+      "cmp_sha": "e434e56fd6a6aca4a21cbe3c6657b3d3e903204a506d619da0f5991f0809cc19",
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea4352c001AH04W9dY8oFYMP"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -260,7 +321,19 @@
           "e434e56fd6a6aca4a21cbe3c6657b3d3e903204a506d619da0f5991f0809cc19"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:session",
+          1,
+          "table:session"
+        ],
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea4352c001AH04W9dY8oFYMP"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -281,7 +354,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea3d4bd001b7ZKvzPiw8sh8J"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -302,7 +382,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea3d85a001uDhDzL6ZoTtn61"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -323,7 +410,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:session_message",
+          1,
+          "session_message:msg_15ea42870001TjW50nVdZPZ5Ol"
+        ]
+      ]
     }
   ]
 }

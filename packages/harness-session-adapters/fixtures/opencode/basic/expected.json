@@ -21,6 +21,7 @@
       "order": "1|0001792449632917|msg_15652da95001FJqQVxQhMCQHEP",
       "ts": "2026-10-19T22:40:32.917Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -29,7 +30,19 @@
           "text": "Read src/cli.js and list its commands."
         }
       ],
-      "cmp_sha": "f4672f4106d1e3a1f96063fb42ad597607e006711e14b228f100e104f6dbf7bc"
+      "cmp_sha": "f4672f4106d1e3a1f96063fb42ad597607e006711e14b228f100e104f6dbf7bc",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652da95001FJqQVxQhMCQHEP"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652da990017WEGbDZr3CgbKC"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -52,6 +65,9 @@
       "order": "1|0001792449632958|msg_15652dabe001t5hI0FeJnOs00k",
       "ts": "2026-10-19T22:40:32.958Z",
       "role": "assistant",
+      "native": {
+        "finish": "tool-calls"
+      },
       "source": "model",
       "parts": [
         {
@@ -91,7 +107,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "15605c5651decbe9b3134c67c87d889f9d59905ea9af5831477aa2951e1452ea"
+      "cmp_sha": "15605c5651decbe9b3134c67c87d889f9d59905ea9af5831477aa2951e1452ea",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652da95001FJqQVxQhMCQHEP"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15652dabe001t5hI0FeJnOs00k"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652f593001IxR49V5OLp5uFZ"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652f81a001dPt2TdYWi1iXw8"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652f9da001Dq1sABliQX5aVW"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -114,6 +157,9 @@
       "order": "1|0001792449640987|msg_15652fa1b001kl5O69z4RpsOtn",
       "ts": "2026-10-19T22:40:40.987Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -136,7 +182,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "05cb17acb981c632c31fc1465f97edfd57c1399560c71b1820866de7ea9a8d4b"
+      "cmp_sha": "05cb17acb981c632c31fc1465f97edfd57c1399560c71b1820866de7ea9a8d4b",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652da95001FJqQVxQhMCQHEP"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15652fa1b001kl5O69z4RpsOtn"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652fd4e001XoisiuAG2Nh5OD"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_156530101001B0v7NGONGjQ8N1"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15653075a001PUQxrme7BCGkjD"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -166,7 +239,19 @@
           "05cb17acb981c632c31fc1465f97edfd57c1399560c71b1820866de7ea9a8d4b"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652fa1b001kl5O69z4RpsOtn"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -187,7 +272,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652dabe001t5hI0FeJnOs00k"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15652f9da001Dq1sABliQX5aVW"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -208,7 +305,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15652fa1b001kl5O69z4RpsOtn"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15653075a001PUQxrme7BCGkjD"
+        ]
+      ]
     }
   ],
   "ses_ea9d23a54ffeUVqa5eusfwC17c": [
@@ -230,7 +339,14 @@
       "at": "",
       "inherits": null,
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -253,6 +369,7 @@
       "order": "1|0001792447202749|msg_1562dc5bb0012ZytoWgjMFRqDV",
       "ts": "2026-10-19T22:00:02.749Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -261,7 +378,19 @@
           "text": "List every file in the repository at /home/user/work/toyshop (excluding the .git directory), and count the number of lines in each file. Do not modify anything — this is research only. Return a concise report with each file path and its line count (e.g., \"file.py: 24 lines\"), plus the total number of files and total lines."
         }
       ],
-      "cmp_sha": "393a25fcacd40ee9b4ffaf50d02a72e98532c6f7dc1babffd083901845e9b094"
+      "cmp_sha": "393a25fcacd40ee9b4ffaf50d02a72e98532c6f7dc1babffd083901845e9b094",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562dc5bb0012ZytoWgjMFRqDV"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562dc5c3001Hrl2iGtEPIkMXH"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -284,6 +413,9 @@
       "order": "1|0001792447202785|msg_1562dc5e10010yn7mrgTPb3MNl",
       "ts": "2026-10-19T22:00:02.785Z",
       "role": "assistant",
+      "native": {
+        "finish": "tool-calls"
+      },
       "source": "model",
       "parts": [
         {
@@ -324,7 +456,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "556f37ce691f1999239db7b63d134e4e94ab6274c853cdffb320750dd97b6f2c"
+      "cmp_sha": "556f37ce691f1999239db7b63d134e4e94ab6274c853cdffb320750dd97b6f2c",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562dc5bb0012ZytoWgjMFRqDV"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_1562dc5e10010yn7mrgTPb3MNl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562dd3bc001T8sRFTrFHRvrYd"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e2d6e001FoB9OVUez9UnNY"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e33a0001eP6K77o5fglx3Q"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -347,6 +506,9 @@
       "order": "1|0001792447230989|msg_1562e340d0011Jgj4gLWXpON9V",
       "ts": "2026-10-19T22:00:30.989Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -369,7 +531,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "ca34ad3d61489794f5827ac4d1ab602e90521c65692ba41b9443f6d2dec9436d"
+      "cmp_sha": "ca34ad3d61489794f5827ac4d1ab602e90521c65692ba41b9443f6d2dec9436d",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562dc5bb0012ZytoWgjMFRqDV"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_1562e340d0011Jgj4gLWXpON9V"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e373c001CSm2npHV4uWmGl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e4167001IYxxhi2GNtyGES"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e553c001KgrxBsrTl1Ifd4"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -399,7 +588,19 @@
           "ca34ad3d61489794f5827ac4d1ab602e90521c65692ba41b9443f6d2dec9436d"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562e340d0011Jgj4gLWXpON9V"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -420,7 +621,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562dc5e10010yn7mrgTPb3MNl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e33a0001eP6K77o5fglx3Q"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -441,7 +654,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_1562e340d0011Jgj4gLWXpON9V"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_1562e553c001KgrxBsrTl1Ifd4"
+        ]
+      ]
     }
   ]
 }

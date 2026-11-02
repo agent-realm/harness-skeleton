@@ -5,10 +5,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/gemini-cli',
-  adapter_ver: '0.2.3',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'gemini-cli',
-  state_ver: 1,
+  state_ver: 2,
   // No harness version is certified until conformance runs against a real Gemini CLI. The fixtures
   // come from 0.64.0 (rewind) and 0.65.0 (pass3) captures, scrubbed.
   versions: { certified: [], compatible: [] },

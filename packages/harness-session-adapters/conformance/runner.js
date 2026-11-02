@@ -43,20 +43,37 @@ export function storeOf(adapter, harnessPath) {
 
 // The records of every session, sorted by type and key, without the fields that depend on where
 // the fixture was copied: `host`, `harness_path`, and `content_sha` (which hashes both).
-export function project(views) {
+// `units: false` leaves each record's `units` out, for views whose sources sit at different
+// generations.
+export function project(views, { units = true } = {}) {
   const out = {};
   for (const sid of Object.keys(views).sort()) {
     out[sid] = [...views[sid].values()]
       .sort((a, b) => (a.type + '\u0000' + recordKey(a) < b.type + '\u0000' + recordKey(b) ? -1 : 1))
-      .map(({ host: _h, harness_path: _p, content_sha: _c, ...r }) => r);
+      .map(({ host: _h, harness_path: _p, content_sha: _c, units: u, ...r }) => (units && u !== undefined ? { ...r, units: u } : r));
   }
   return out;
 }
 
-function compareViews(a, b) {
-  const pa = JSON.stringify(project(a));
-  const pb = JSON.stringify(project(b));
+function compareViews(a, b, opts) {
+  const pa = JSON.stringify(project(a, opts));
+  const pb = JSON.stringify(project(b, opts));
   return pa === pb;
+}
+
+// The units triples of an engine's views that name no unit its sources hold now, in the generation
+// they are at: after a reset, every record must name the new generation.
+function staleUnits(e) {
+  const out = [];
+  for (const [id, held] of e.sessions) {
+    for (const r of held.view.values()) {
+      for (const [sk, gen, uk] of r.units ?? []) {
+        const cur = held.sources.get(sk);
+        if (!cur || cur.generation !== gen || !cur.units.has(uk)) out.push(`${id.split('\u0000')[0]}: ${r.type}: [${sk}, ${gen}, ${uk}]`);
+      }
+    }
+  }
+  return out;
 }
 
 // Full replay: one pass of a fresh engine over the whole store.
@@ -70,7 +87,11 @@ export function fullReplay(adapter, harnessPath) {
 // fraction of its length, so cuts land inside lines too. The final view must equal the full
 // replay (sessions-model §3: every incremental path folds to the same state), a further pass must
 // read `unchanged` everywhere, and no partial line may ever be returned.
-export function growthCheck(adapter, fixtureStore, { steps = 24 } = {}) {
+// `units: 'exact'` holds `units` to the full replay's too. `units: 'valid'` is for an adapter whose
+// units can move while a record's content does not (sessions-model §2.7: a units-only change is
+// not a revision, so the view keeps the triples of the record's last write): the records are
+// compared without them, and every triple must still name a unit the engine holds.
+export function growthCheck(adapter, fixtureStore, { steps = 24, units = 'exact' } = {}) {
   const dir = tmpStore();
   try {
     const files = filesOf(fixtureStore).map((rel) => ({ rel, data: fs.readFileSync(path.join(fixtureStore, rel)) }));
@@ -84,10 +105,12 @@ export function growthCheck(adapter, fixtureStore, { steps = 24 } = {}) {
       e.pass();
     }
     const whole = fullReplay(adapter, dir);
-    const equal = compareViews(e.views(), whole.views());
+    const opts = { units: units === 'exact' };
+    const stale = staleUnits(e);
+    const equal = compareViews(e.views(), whole.views(), opts) && !stale.length;
     e.pass();
     const notUnchanged = e.log.filter((l) => l.continuity !== 'unchanged');
-    return { equal, notUnchanged, incremental: project(e.views()), full: project(whole.views()) };
+    return { equal, notUnchanged, stale, incremental: project(e.views(), opts), full: project(whole.views(), opts) };
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -95,7 +118,9 @@ export function growthCheck(adapter, fixtureStore, { steps = 24 } = {}) {
 
 // Negative control: rewrite one stream file shorter, through a new inode, between two passes.
 // The read must be `reset`, and the re-derived view must equal a full replay of the shorter
-// store: exactly the vanished keys are gone.
+// store: exactly the vanished keys are gone. `units` are compared apart: the engine's source is at
+// a new generation, where a full replay's is at its first, so each record's triples must name units
+// of the new generation instead (sessions-model §2.7: a reset re-keys the units, not the records).
 export function rewriteCheck(adapter, fixtureStore, rel, keepLines) {
   const dir = tmpStore();
   try {
@@ -110,7 +135,33 @@ export function rewriteCheck(adapter, fixtureStore, rel, keepLines) {
     e.pass();
     const continuity = e.log.find((l) => file.endsWith(l.source_key))?.continuity;
     const whole = fullReplay(adapter, dir);
-    return { continuity, equal: compareViews(e.views(), whole.views()) };
+    const stale = staleUnits(e);
+    return { continuity, equal: compareViews(e.views(), whole.views(), { units: false }) && !stale.length, stale };
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+// A resume (sessions-model §2.7 units): one source grows in a later launch. The store is copied
+// with `rel` cut after its first `lines` lines, read in one pass, then made whole and read again.
+// Returns each pass's session records, projected, by session id: their `units` must follow the
+// fields that moved, and the second view must equal a full replay.
+export function resumeCheck(adapter, fixtureStore, rel, lines) {
+  const dir = tmpStore();
+  try {
+    copyTree(fixtureStore, dir);
+    const file = path.join(dir, rel);
+    const whole = fs.readFileSync(file, 'utf8');
+    const head = whole.split('\n').slice(0, lines).map((l) => l + '\n').join('');
+    if (!whole.startsWith(head)) throw new Error(`${rel} has fewer than ${lines} whole lines`);
+    fs.writeFileSync(file, head);
+    const e = new MiniEngine(adapter, storeOf(adapter, dir));
+    const sessions = () => Object.fromEntries(Object.entries(project(e.views())).map(([sid, rs]) => [sid, rs.find((r) => r.type === 'session')]));
+    e.pass();
+    const before = sessions();
+    fs.appendFileSync(file, whole.slice(head.length));
+    e.pass();
+    return { before, after: sessions(), equal: compareViews(e.views(), fullReplay(adapter, dir).views()) };
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

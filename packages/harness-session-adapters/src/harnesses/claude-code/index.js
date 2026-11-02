@@ -10,12 +10,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
 import { readStream, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'claude-code';
-const STATE_VER = 2;
+const STATE_VER = 3;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function describe() {
@@ -165,16 +165,18 @@ function emptyState() {
     state_ver: STATE_VER,
     // A unit's position is kept as [source index, unit key], and its `order` string rebuilt from it
     // (orderOf), so a big session's state does not repeat the source path per record.
-    sources: {}, // source_key -> { first_ts, i }
+    sources: {}, // source_key -> { first_ts, i, g }: g is the source's generation (unitOf)
     srcs: [], // source index -> source_key
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
     usage: {}, // usage_id -> [input, output, cache_read, cache_write] of the largest report
     cmp: {}, // message_id -> [source index, unit key, cmp_sha], main-conversation messages only
     order: {}, // record uuid -> [source index, unit key] of the occurrence kept (the lowest order)
     // Session fields, each kept with the sort key of the record it came from, so the result does
-    // not depend on the order sources are folded in: [ts|order, value].
+    // not depend on the order sources are folded in: [ts|order, value, position].
     session: { title: null, ai_title: null, cwd: null, last_cwd: null, created_at: null, updated_at: null, harness_version: null },
-    through: {}, // source_key -> the last compact boundary's logicalParentUuid, for the summary after it
+    // source_key -> [the last compact boundary's logicalParentUuid, its unit key], for the summary
+    // after it.
+    through: {},
     first: {}, // source_key -> the source's first message id, for the compaction range
   };
 }
@@ -205,7 +207,7 @@ export function derive(session, input, state) {
       const o = jsonOf(u);
       if (!o || typeof o !== 'object') continue;
       if (!st.sources[sk]) {
-        st.sources[sk] = { first_ts: isoTs(o.timestamp) ?? '', i: st.srcs.length };
+        st.sources[sk] = { first_ts: isoTs(o.timestamp) ?? '', i: st.srcs.length, g: src.generation };
         st.srcs.push(sk);
       }
       const pos = [st.sources[sk].i, u.unit_key];
@@ -213,8 +215,12 @@ export function derive(session, input, state) {
     }
   }
 
-  // The session record: always re-sealed, since updated_at and the fingerprint move.
+  // The session record: always re-sealed, since updated_at and the fingerprint move. Its units are
+  // the lines its own fields came from (sessions-model v1.4.1, §2.7), never the fingerprint's.
   const s = Object.fromEntries(Object.entries(st.session).map(([k, v]) => [k, v ? v[1] : null]));
+  const titleField = s.title ? 'title' : 'ai_title';
+  const fieldUnits = ['harness_version', titleField, 'cwd', 'last_cwd', 'created_at', 'updated_at']
+    .filter((k) => st.session[k]).map((k) => unitOf(st, st.session[k][2]));
   const cmpShas = Object.values(st.cmp).map(([i, uk, sha]) => [orderOf(st, [i, uk]), sha])
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]);
   put({
@@ -236,6 +242,7 @@ export function derive(session, input, state) {
     ts_source: 'event',
     aliases: [],
     fingerprint: { cmp_shas: cmpShas },
+    units: fieldUnits,
   });
 
   const live = {};
@@ -260,23 +267,30 @@ function orderOf(st, [i, unitKey]) {
   return `${st.sources[sk].first_ts}|${sk}|${unitKey.padStart(12, '0')}`;
 }
 
-// Keep the value from the earliest (`first`) or latest record by (ts, order).
-function keep(s, field, value, sortKey, first) {
-  const cur = s[field];
-  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value];
+// A position's `units` triple: [source_key, generation, unit_key] (sessions-model §2.7).
+function unitOf(st, [i, unitKey]) {
+  const sk = st.srcs[i];
+  return [sk, st.sources[sk].g, unitKey];
 }
 
-function noteSession(st, o, ts, order) {
+// Keep the value from the earliest (`first`) or latest record by (ts, order), with the position of
+// the line it came from.
+function keep(s, field, value, sortKey, first, pos) {
+  const cur = s[field];
+  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value, pos];
+}
+
+function noteSession(st, o, ts, order, pos) {
   const s = st.session;
   const sk = `${ts ?? ''}|${order}`;
-  if (typeof o.version === 'string' && o.version) keep(s, 'harness_version', o.version, sk, false);
+  if (typeof o.version === 'string' && o.version) keep(s, 'harness_version', o.version, sk, false, pos);
   if (typeof o.cwd === 'string' && o.cwd) {
-    keep(s, 'cwd', o.cwd, sk, true);
-    keep(s, 'last_cwd', o.cwd, sk, false);
+    keep(s, 'cwd', o.cwd, sk, true, pos);
+    keep(s, 'last_cwd', o.cwd, sk, false, pos);
   }
   if (ts) {
-    keep(s, 'created_at', ts, ts, true);
-    keep(s, 'updated_at', ts, ts, false);
+    keep(s, 'created_at', ts, ts, true, pos);
+    keep(s, 'updated_at', ts, ts, false, pos);
   }
 }
 
@@ -285,14 +299,17 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
   const agentId = agentDefault || (o.isSidechain && typeof o.agentId === 'string' ? o.agentId : '');
   const parent = typeof o.parentUuid === 'string' && o.parentUuid ? o.parentUuid : null;
   const uuid = typeof o.uuid === 'string' && o.uuid ? o.uuid : null;
+  // Every record of this line comes from it alone, except a compaction summary, which also takes
+  // the boundary's `through_id`.
+  const own = unitOf(st, pos);
 
   // Session metadata records: titles. The user's own title wins over the generated one.
   if (o.type === 'custom-title' && typeof o.customTitle === 'string') {
-    keep(st.session, 'title', o.customTitle, `|${order}`, false);
-    put({ type: 'lifecycle', lifecycle_id: `${sk}@${unitKey}#1`, op: 'rename', target: { session: true }, at: null, ts, evidence: 'explicit' });
+    keep(st.session, 'title', o.customTitle, `|${order}`, false, pos);
+    put({ type: 'lifecycle', lifecycle_id: `${sk}@${unitKey}#1`, op: 'rename', target: { session: true }, at: null, ts, evidence: 'explicit', units: [own] });
     return;
   }
-  if (o.type === 'ai-title' && typeof o.aiTitle === 'string') { keep(st.session, 'ai_title', o.aiTitle, `|${order}`, false); return; }
+  if (o.type === 'ai-title' && typeof o.aiTitle === 'string') { keep(st.session, 'ai_title', o.aiTitle, `|${order}`, false, pos); return; }
 
   // One record per uuid. Claude Code re-appends records verbatim, and one uuid can sit in two main
   // sources. The occurrence with the lowest `order` is kept, whichever arrives first, so the result
@@ -305,12 +322,13 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
   } else {
     return; // bookkeeping records (file-history-snapshot, progress, …) make no record
   }
-  noteSession(st, o, ts, order);
+  noteSession(st, o, ts, order, pos);
 
   const base = {
     message_id: msgId, parent_id: parent, order, agent_id: agentId,
     to_user: null, to_model: null, status: 'complete', state: 'current', on_active_branch: null, ts,
     requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
+    native: nativeOf(o, describeData.native.message), units: [own],
   };
   const emitMessage = (m) => {
     const r = put({ type: 'message', ...m });
@@ -337,7 +355,7 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
     emitMessage({ ...base, role: 'system', source: 'system_notice', parts: [part] });
     if (subtype === 'compact_boundary') {
       const through = typeof o.logicalParentUuid === 'string' && o.logicalParentUuid ? o.logicalParentUuid : null;
-      st.through[sk] = through;
+      st.through[sk] = [through, unitKey];
       put({
         type: 'lifecycle',
         lifecycle_id: msgId,
@@ -346,6 +364,7 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
         at: null,
         ts,
         evidence: 'explicit',
+        units: [own],
       });
     }
     return;
@@ -356,11 +375,15 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
     const blocks = typeof content === 'string' ? [{ type: 'text', text: content }] : Array.isArray(content) ? content : [];
     const userParts = [];
     const toolParts = [];
+    // A compaction summary's `through_id` is the boundary line's.
+    const [throughId, throughUnit] = st.through[sk] ?? [null, null];
+    let fromBoundary = false;
     blocks.forEach((b, i) => {
       if (!b || typeof b !== 'object') return;
       if (b.type === 'text') {
+        if (o.isCompactSummary && throughId) fromBoundary = true;
         userParts.push(o.isCompactSummary
-          ? { part_id: String(i), kind: 'summary', text: b.text ?? '', replaces: st.through[sk] ? { through_id: st.through[sk] } : 'unknown' }
+          ? { part_id: String(i), kind: 'summary', text: b.text ?? '', replaces: throughId ? { through_id: throughId } : 'unknown' }
           : { part_id: String(i), kind: 'text', text: b.text ?? '' });
       } else if (b.type === 'image' && b.source && b.source.type === 'base64' && typeof b.source.data === 'string') {
         userParts.push({ part_id: String(i), kind: 'attachment', media_type: b.source.media_type ?? null, inline: b.source.data, bytes_len: Buffer.from(b.source.data, 'base64').length });
@@ -380,7 +403,8 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
     const source = o.isCompactSummary ? 'automated' : o.isMeta ? 'injected' : 'user';
     const vis = o.isMeta ? { to_user: false, to_model: true } : {};
     const msgs = [];
-    if (userParts.length) msgs.push({ role: 'user', source, ...vis, parts: userParts });
+    const userUnits = fromBoundary ? [own, unitOf(st, [st.sources[sk].i, throughUnit])] : [own];
+    if (userParts.length) msgs.push({ role: 'user', source, ...vis, parts: userParts, units: userUnits });
     // A tool result is written by the harness running the tool: no `source` value fits it.
     if (toolParts.length) msgs.push({ role: 'tool', source: null, parts: toolParts });
     if (!userFirst) msgs.reverse();
@@ -435,6 +459,7 @@ function foldRecord(st, put, o, { sk, unitKey, order, pos, agentDefault }) {
         const rec = {
           type: 'usage', usage_id: usageId, anchor: { response_id: respId },
           ...next, reasoning: null, cost: null, input_includes_cache: false, output_includes_reasoning: true, granularity: 'per_response', model,
+          units: [own],
         };
         st.usage[usageId] = [next.input, next.output, next.cache_read, next.cache_write];
         put(rec);

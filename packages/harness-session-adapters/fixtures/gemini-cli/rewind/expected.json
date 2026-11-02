@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "1890"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -29,7 +36,14 @@
       },
       "at": "a4c79de5-f3fc-4cb6-b61d-02973e2a7b84",
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "3090"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -43,7 +57,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "4442"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -57,7 +78,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "4442"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -71,7 +99,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "4442"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -85,7 +120,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "4442"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -118,7 +160,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b"
+      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "2566"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -149,7 +198,14 @@
           "text": "Say resumed-ok and nothing else."
         }
       ],
-      "cmp_sha": "0799f109871afa935732296b268b53a0095c19ddc9cc30ed9b8972f691e0a454"
+      "cmp_sha": "0799f109871afa935732296b268b53a0095c19ddc9cc30ed9b8972f691e0a454",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "5170"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -182,7 +238,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546"
+      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "3195"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -215,7 +278,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "bd95ba4a6cb7c9e9776a179c35cf7898fedfd824ae7740916663496d23c66ef0"
+      "cmp_sha": "bd95ba4a6cb7c9e9776a179c35cf7898fedfd824ae7740916663496d23c66ef0",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "3760"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -246,7 +316,14 @@
           "text": "Fix the bug in toyshop/cart.py total_cents so it accounts for qty (if already fixed, add a docstring instead). Then run: python3 -m pytest -q  and report the exact error. Then run: ls /nonexistent-dir"
         }
       ],
-      "cmp_sha": "6b11e185c2af29dac9d9065c13e17a437543b9a66d01edca4997d7af2673b09e"
+      "cmp_sha": "6b11e185c2af29dac9d9065c13e17a437543b9a66d01edca4997d7af2673b09e",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "1515"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -279,7 +356,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b"
+      "cmp_sha": "fcf880982cca3dc3b2978d7d523168e43a53c6c3eed1c63cccb0429d849c5a8b",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "3475"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -310,7 +394,14 @@
           "text": "What is in this repo. Two sentences."
         }
       ],
-      "cmp_sha": "7af5c20f8320a89b9b1944ec5d18655b74c1cb47f4b23186d2db94530a9195e1"
+      "cmp_sha": "7af5c20f8320a89b9b1944ec5d18655b74c1cb47f4b23186d2db94530a9195e1",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "814"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -341,7 +432,14 @@
           "text": "Synthetic reply d4f134. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy s"
         }
       ],
-      "cmp_sha": "7067d7129df87038dc2d0c686231a3fd32f62cade30752b04ed500158119ebc1"
+      "cmp_sha": "7067d7129df87038dc2d0c686231a3fd32f62cade30752b04ed500158119ebc1",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "1025"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -372,7 +470,14 @@
           "text": "Explain in three sentences why carts multiply price by quantity."
         }
       ],
-      "cmp_sha": "0ed45e89061eebe4c0d7fb06f003f1d6d068158c16f1800124024eb5c880fb79"
+      "cmp_sha": "0ed45e89061eebe4c0d7fb06f003f1d6d068158c16f1800124024eb5c880fb79",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "2851"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -405,7 +510,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546"
+      "cmp_sha": "0e596faaadf1570f22c50145eb8069a32b6e821b9059212f899cb5eb8c66c546",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "2286"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -438,7 +550,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "4540aa0c3259be7697518155aea647a2c8b5c6cd961b4e2f11a6641f25fadf75"
+      "cmp_sha": "4540aa0c3259be7697518155aea647a2c8b5c6cd961b4e2f11a6641f25fadf75",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "3974"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -469,7 +588,14 @@
           "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, October 20, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).…[cut]"
         }
       ],
-      "cmp_sha": "ad0a9cbcbd6b2cef63981bc3be13a922744410dbf7ebd2ce49a141bd30b49856"
+      "cmp_sha": "ad0a9cbcbd6b2cef63981bc3be13a922744410dbf7ebd2ce49a141bd30b49856",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "228"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -500,7 +626,14 @@
           "text": "Synthetic "
         }
       ],
-      "cmp_sha": "9df9a0efa7884aa6f199b7cbcd2658ac84051b7138512b5d3f83e6017da08a70"
+      "cmp_sha": "9df9a0efa7884aa6f199b7cbcd2658ac84051b7138512b5d3f83e6017da08a70",
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "5377"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -532,7 +665,24 @@
           "9df9a0efa7884aa6f199b7cbcd2658ac84051b7138512b5d3f83e6017da08a70"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "228"
+        ],
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "5377"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -553,7 +703,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "1025"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -574,7 +731,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop/chats/session-2026-10-19T22-18-56749748.jsonl",
+          1,
+          "5377"
+        ]
+      ]
     }
   ]
 }

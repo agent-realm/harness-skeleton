@@ -5,11 +5,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { adapterFor } from '../src/index.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, growthCheck, rewriteCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { fullReplay, project, growthCheck, rewriteCheck, resumeCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { normaliseUnits } from '../src/records.js';
 
 const adapter = adapterFor('codex');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'codex');
-const CASES = ['basic', 'no-ids', 'live', 'features'];
+const CASES = ['basic', 'no-ids', 'live', 'features', 'resume'];
 
 function withCopy(name, fn) {
   const dir = tmpStore();
@@ -66,19 +67,43 @@ test('codex: a rewrite of a rollout (new inode, shorter) is a reset, and vanishe
   assert.ok(r.equal);
 });
 
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a resumed launch moves last_cwd,
+// updated_at and the native fields to its own lines, and the session record's units follow them.
+test('codex: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = '3f405162-7c8d-4e9f-8a0b-2c3d4e5f6071';
+  const rel = `sessions/2026/02/20/rollout-2026-02-20T09-00-00-${sid}.jsonl`;
+  const lines = fs.readFileSync(path.join(FIX, 'resume', 'store', rel), 'utf8').split('\n');
+  const unit = (n) => [rel, 1, String(Buffer.byteLength(lines.slice(0, n).map((l) => l + '\n').join('')))];
+  const r = resumeCheck(adapter, path.join(FIX, 'resume', 'store'), rel, 7);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  // First launch: the session_meta line (created_at, cwd, client, harness_version), the
+  // turn_context (last_cwd, native) and the last line (updated_at).
+  assert.deepEqual([b.last_cwd, b.native], ['/work/toy-repo', { 'payload.approval_policy': 'never', 'payload.sandbox_policy.type': 'read-only' }]);
+  assert.deepEqual(b.units, normaliseUnits([unit(0), unit(2), unit(6)]));
+  // Resumed: the second turn_context and the second launch's last line take their place.
+  assert.deepEqual([a.cwd, a.last_cwd, a.native], ['/work/toy-repo', '/work/toy-repo/src', { 'payload.approval_policy': 'on-request', 'payload.sandbox_policy.type': 'workspace-write' }]);
+  assert.deepEqual(a.units, normaliseUnits([unit(0), unit(8), unit(12)]));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
+});
+
 test('codex: archiving moves the rollout; the re-derive keeps every key and only the session state changes', () => {
   withCopy('basic', (dir) => {
     const store = storeOf(adapter, dir);
     const e = new MiniEngine(adapter, store);
     e.pass();
-    const before = project(e.views());
+    const before = project(e.views(), { units: false });
     const rel = adapter.list(store)[0].sources[0].source_key;
     assert.ok(rel.startsWith('sessions/'));
     fs.mkdirSync(path.join(dir, 'archived_sessions'), { recursive: true });
     fs.renameSync(path.join(dir, rel), path.join(dir, 'archived_sessions', path.basename(rel)));
     e.pass();
     assert.deepEqual(e.log.map((l) => l.continuity), ['reset']);
-    const after = project(e.views());
+    // The records' units name the rollout where it is now (sessions-model §2.7: a reset re-keys the
+    // units, not the records); everything else is compared without them.
+    const archived = `archived_sessions/${path.basename(rel)}`;
+    const triples = Object.values(project(e.views())).flat().flatMap((r) => r.units ?? []);
+    assert.ok(triples.length > 0 && triples.every(([sk, gen]) => sk === archived && gen === 1), 'every triple names the archived rollout');
+    const after = project(e.views(), { units: false });
     assert.deepEqual(Object.keys(after), Object.keys(before));
     for (const sid of Object.keys(before)) {
       const strip = (recs) => recs.filter((r) => r.type !== 'session');

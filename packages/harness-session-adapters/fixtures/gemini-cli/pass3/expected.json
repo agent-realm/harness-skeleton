@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4191"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -26,7 +33,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4191"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -40,7 +54,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4191"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -54,7 +75,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4191"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -85,7 +113,14 @@
           "text": "Say ok please."
         }
       ],
-      "cmp_sha": "9e612edeb2e9ee5ce06da9db85703d60f86d4cdce9625add4c1d0fca47976fb0"
+      "cmp_sha": "9e612edeb2e9ee5ce06da9db85703d60f86d4cdce9625add4c1d0fca47976fb0",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "814"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -116,7 +151,14 @@
           "text": "open toyshop/cart.py"
         }
       ],
-      "cmp_sha": "5b2c4639bc90e3c8b469897c58758d87e66e921c452ae0ccbbdf931f9e3f45a2"
+      "cmp_sha": "5b2c4639bc90e3c8b469897c58758d87e66e921c452ae0ccbbdf931f9e3f45a2",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "1298"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -149,7 +191,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "b41d45e7479d3c6ad122b1bdec8a33d431652bbf008365428090b09f02265a0b"
+      "cmp_sha": "b41d45e7479d3c6ad122b1bdec8a33d431652bbf008365428090b09f02265a0b",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3899"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -180,7 +229,14 @@
           "text": "OK"
         }
       ],
-      "cmp_sha": "584079da69cd9a6281d24fe81118cd855d47725b4477b376f5d0b05d78b5ce2c"
+      "cmp_sha": "584079da69cd9a6281d24fe81118cd855d47725b4477b376f5d0b05d78b5ce2c",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "1003"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -211,7 +267,14 @@
           "text": "make notes-mock.txt."
         }
       ],
-      "cmp_sha": "6fc1dad3f1fdc2b9515b3eab2c3aff659ee08f339d859ad07322dc091f5a3f7f"
+      "cmp_sha": "6fc1dad3f1fdc2b9515b3eab2c3aff659ee08f339d859ad07322dc091f5a3f7f",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3222"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -242,7 +305,14 @@
           "text": "describe the toy"
         }
       ],
-      "cmp_sha": "3d5e1d911be969b9a68b8ee0c3f17fd6ae037b680a9047e29382134187bd77f7"
+      "cmp_sha": "3d5e1d911be969b9a68b8ee0c3f17fd6ae037b680a9047e29382134187bd77f7",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4434"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -273,7 +343,14 @@
           "text": "Synthetic reply 55d80b. synthetic reply text for the toy sh"
         }
       ],
-      "cmp_sha": "0a1ed2a6a6da51907cf994eee97fb628ad32dbc2e396440be51435a4f2613871"
+      "cmp_sha": "0a1ed2a6a6da51907cf994eee97fb628ad32dbc2e396440be51435a4f2613871",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4625"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -304,7 +381,19 @@
           "text": "Synthetic reply 9"
         }
       ],
-      "cmp_sha": "4f55490db60159e7abfb58800b8877717a32989f4a88c714e98fd40af8afd554"
+      "cmp_sha": "4f55490db60159e7abfb58800b8877717a32989f4a88c714e98fd40af8afd554",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3365"
+        ],
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4191"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -337,7 +426,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "83745d4fe15cb45b9682832f2af9c94ce0436771e4371816c8e8ca317c166bcc"
+      "cmp_sha": "83745d4fe15cb45b9682832f2af9c94ce0436771e4371816c8e8ca317c166bcc",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4029"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -370,7 +466,14 @@
           "native_type": "info"
         }
       ],
-      "cmp_sha": "606ea59dde1dd0394e2e2dcef3b792fcb2e47d1518206bc2802adc4c54b6df50"
+      "cmp_sha": "606ea59dde1dd0394e2e2dcef3b792fcb2e47d1518206bc2802adc4c54b6df50",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3616"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -401,7 +504,14 @@
           "text": "add a toy helper."
         }
       ],
-      "cmp_sha": "45d421ec2e4f738ac5ab8747d34a4ea11bcc67f2a7a4ca332302ed425f9ae34c"
+      "cmp_sha": "45d421ec2e4f738ac5ab8747d34a4ea11bcc67f2a7a4ca332302ed425f9ae34c",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3759"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -432,7 +542,14 @@
           "text": "<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Wednesday, October 21, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop-1\n- **Workspace Directories:**\n  - /home/user/work/gm3/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + f…[cut]"
         }
       ],
-      "cmp_sha": "346441df3003995e31f8009ac0243c4cb53d26e9c4e26423a6d09c9f05325e14"
+      "cmp_sha": "346441df3003995e31f8009ac0243c4cb53d26e9c4e26423a6d09c9f05325e14",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "228"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -479,7 +596,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "abc34e68baf9d604200d2a8dd5957abf425e1f22a7a564ec9a5dcc551cc078cd"
+      "cmp_sha": "abc34e68baf9d604200d2a8dd5957abf425e1f22a7a564ec9a5dcc551cc078cd",
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "1441"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -516,7 +640,24 @@
           "0a1ed2a6a6da51907cf994eee97fb628ad32dbc2e396440be51435a4f2613871"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "228"
+        ],
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4625"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -537,7 +678,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "1003"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -558,7 +706,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "4625"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -579,7 +734,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "3365"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -600,7 +762,14 @@
       "input_includes_cache": true,
       "output_includes_reasoning": false,
       "granularity": "per_response",
-      "model": null
+      "model": null,
+      "units": [
+        [
+          "tmp/toyshop-1/chats/session-2026-10-21T19-56-bcda44a6.jsonl",
+          1,
+          "1441"
+        ]
+      ]
     }
   ]
 }

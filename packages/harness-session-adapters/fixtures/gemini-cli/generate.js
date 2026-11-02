@@ -292,6 +292,31 @@ function legacy() {
   ];
 }
 
+// ---- resume -----------------------------------------------------------------------------------
+
+// A session resumed in a later launch: the chat file grows by a second prompt, its reply and a new
+// summary. The session record's title and updated_at move to the second launch's lines, and its
+// units with them; created_at stays on the header, cwd on the session context. The resume test
+// (test/gemini-cli.test.js) cuts the file after its first six lines.
+function resume() {
+  const sid = '8091a2b3-c4d5-4e6f-8a7b-9c0d1e2f3a4b';
+  const T1 = Date.UTC(2026, 1, 9, 9, 0, 0);
+  const T2 = Date.UTC(2026, 1, 10, 15, 0, 0);
+  const id = (n) => `00000000-0000-4000-8000-0000000e${String(n).padStart(4, '0')}`;
+  const recs = [
+    header(sid, T1), ctx(T1 + 1), user(id(1), T1 + 1000, 'Count the files.'),
+    { $set: { lastUpdated: iso(T1 + 1001) } },
+    gemini(id(2), T1 + 2000, 'Two files.'),
+    { $set: { lastUpdated: iso(T1 + 2001), summary: 'Count the files' } },
+    // The second launch.
+    user(id(3), T2, 'And in tests?'),
+    gemini(id(4), T2 + 1000, 'One file.'),
+    { $set: { lastUpdated: iso(T2 + 1001), summary: 'Count the files and tests' } },
+  ];
+  return [[`tmp/toyshop/chats/session-2026-02-09T09-00-${sid.slice(0, 8)}.jsonl`, jsonl(recs)]];
+}
+
 writeCase('pass3', pass3());
 writeCase('features', features());
 writeCase('legacy', legacy());
+writeCase('resume', resume());

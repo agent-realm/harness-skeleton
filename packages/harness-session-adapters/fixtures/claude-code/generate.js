@@ -154,6 +154,24 @@ function features() {
   return { sid, cwd, lines: lines.map((o) => JSON.stringify(o)) };
 }
 
+// A session resumed in a later launch: the same file grows by a second part, written by a newer
+// Claude Code in a subfolder. The session record's last_cwd, harness_version and updated_at move to
+// the second part's lines, and its units with them; created_at and cwd stay on line 0. The resume
+// test (test/claude-code.test.js) cuts the file after its first two lines.
+function resume() {
+  const sid = '5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f';
+  const u = (n) => `00000000-0000-4000-a000-0000000e${String(n).padStart(4, '0')}`;
+  const first = { isSidechain: false, userType: 'external', cwd: '/work/toy-repo', sessionId: sid, version: '2.1.9' };
+  const later = { ...first, cwd: '/work/toy-repo/src', version: '2.1.10' };
+  const lines = [
+    { ...first, parentUuid: null, type: 'user', uuid: u(1), timestamp: iso(Date.UTC(2026, 0, 6, 9, 0, 0)), message: { role: 'user', content: 'count the files' } },
+    { ...first, parentUuid: u(1), type: 'assistant', uuid: u(2), timestamp: iso(Date.UTC(2026, 0, 6, 9, 0, 3)), requestId: 'req_resume_1', message: { id: 'msg_resume_1', role: 'assistant', model: 'claude-opus-4-1', content: [{ type: 'text', text: 'two files' }], stop_reason: 'end_turn', usage: { input_tokens: 8, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, output_tokens: 3 } } },
+    { ...later, parentUuid: u(2), type: 'user', uuid: u(3), timestamp: iso(Date.UTC(2026, 0, 7, 14, 0, 0)), message: { role: 'user', content: 'and in src?' } },
+    { ...later, parentUuid: u(3), type: 'assistant', uuid: u(4), timestamp: iso(Date.UTC(2026, 0, 7, 14, 0, 2)), requestId: 'req_resume_2', message: { id: 'msg_resume_2', role: 'assistant', model: 'claude-opus-4-1', content: [{ type: 'text', text: 'one file' }], stop_reason: 'end_turn', usage: { input_tokens: 12, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, output_tokens: 3 } } },
+  ];
+  return { sid, cwd: first.cwd, lines: lines.map((o) => JSON.stringify(o)) };
+}
+
 function writeCase(name, files) {
   const dir = path.join(HERE, name, 'store');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -175,3 +193,6 @@ writeCase('basic', [
 
 const feat = features();
 writeCase('features', [[`projects/${encodeCwd(feat.cwd)}/${feat.sid}.jsonl`, feat.lines.join('\n') + '\n']]);
+
+const res = resume();
+writeCase('resume', [[`projects/${encodeCwd(res.cwd)}/${res.sid}.jsonl`, res.lines.join('\n') + '\n']]);

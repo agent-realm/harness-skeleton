@@ -13,7 +13,7 @@ import { ADAPTERS } from '../src/index.js';
 import { seal, nativeOf, normaliseUnits, compareCodePoints } from '../src/records.js';
 import { validateSession } from '../src/validate.js';
 import { genericChecks } from '../conformance/generic.js';
-import { tmpStore, copyTree } from '../conformance/runner.js';
+import { tmpStore, copyTree, nameLint } from '../conformance/runner.js';
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures');
 const KEY = { host: '0d0d3eefb2fba3434590abdc952a7ef7', harness: 'codex', harness_path: '/home/user/.codex', session_id: 's1', incarnation: '' };
@@ -89,6 +89,12 @@ test('native and units: nativeOf carries the declared paths a record holds, and 
   assert.ok(!('env' in nativeOf(rec, ['gitBranch'])), 'an undeclared field is dropped');
 });
 
+// `native` is a field like every other: each adapter's name-lint test walks it (sessions-model §2.7,
+// §4.3), so a declared path whose value sits under a secret-looking name fails that test.
+test('native and units: the name lint reads native values', () => {
+  assert.deepEqual(nameLint({ native: { 'auth.token': 'x', userType: 'external', 'usage.tokens': 3 } }), ['native.auth.token']);
+});
+
 test('native and units: a v1.3 reader validates records with both fields as it does records without', () => {
   assert.deepEqual(validateSession(session()), []);
   const both = session({
@@ -153,7 +159,7 @@ test('native and units: the generic checks catch an undeclared native path and a
     const subtree = withRecords((rec) => (rec.type === 'message' ? { ...rec, native: { gitBranch: { name: 'main' } } } : rec));
     const declaresSubtree = { ...subtree, describe: () => ({ ...a.describe(), native: { session: [], message: ['gitBranch'], part: [] } }) };
     assert.ok(genericChecks(declaresSubtree, store)['M.native-declared']?.some((f) => f.includes('not a leaf value')));
-    // A native object on a message, where claude-code declares no native paths.
+    // A native path on a message that claude-code does not declare.
     const undeclared = withRecords((rec) => (rec.type === 'message' ? { ...rec, native: { gitBranch: 'main' } } : rec));
     assert.ok(genericChecks(undeclared, store)['M.native-declared']?.length > 0);
     // Declared, it passes.

@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": "2026-10-20T13:16:55.895Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "22051"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -38,7 +45,14 @@
         "usage_copied": true
       },
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "22051"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -65,6 +79,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "899649bd-c236-44c9-ac4b-54fb9b80f2c4",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -74,7 +92,14 @@
           "text": "What commands does src/cli.js support, and what does get print for an unknown SKU? Two lines."
         }
       ],
-      "cmp_sha": "66167c17af01c17352a3ae88839b0386517ee529ad009ea3c8af458babdcc11c"
+      "cmp_sha": "66167c17af01c17352a3ae88839b0386517ee529ad009ea3c8af458babdcc11c",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "2295"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -96,6 +121,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "899649bd-c236-44c9-ac4b-54fb9b80f2c4",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -111,7 +140,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "aed6fbd0f0bd250978f9945700515ff45b50fab211df8e37cc1e42029a863a9d"
+      "cmp_sha": "aed6fbd0f0bd250978f9945700515ff45b50fab211df8e37cc1e42029a863a9d",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "13704"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -133,6 +169,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "4ae571f8-6406-4f77-8d3a-0872c4b340fc",
+        "data.turnId": "3"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -148,7 +188,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "4d15b921aaaefab748db9446457a314572fd9ecefe64c474f07843d003f04a74"
+      "cmp_sha": "4d15b921aaaefab748db9446457a314572fd9ecefe64c474f07843d003f04a74",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "22892"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -175,6 +222,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "899649bd-c236-44c9-ac4b-54fb9b80f2c4",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -211,7 +262,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "dacb5b7011f443cd81148519833269260573909f150e6266a3e2eb2d98ed9c88"
+      "cmp_sha": "dacb5b7011f443cd81148519833269260573909f150e6266a3e2eb2d98ed9c88",
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "5324"
+        ],
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "8109"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -242,7 +305,28 @@
           "4d15b921aaaefab748db9446457a314572fd9ecefe64c474f07843d003f04a74"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "auto"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "22051"
+        ],
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/workspace.yaml",
+          1,
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/workspace.yaml"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -263,7 +347,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "GPT-6 Luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/92b4b5fb-3d26-4492-9722-6d6e3bcaf8aa/events.jsonl",
+          1,
+          "5324"
+        ]
+      ]
     }
   ],
   "d1753871-734e-4ca5-8026-75182b7e3002": [
@@ -291,7 +382,23 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "auto"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/d1753871-734e-4ca5-8026-75182b7e3002/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/d1753871-734e-4ca5-8026-75182b7e3002/workspace.yaml",
+          1,
+          "session-state/d1753871-734e-4ca5-8026-75182b7e3002/workspace.yaml"
+        ]
+      ]
     }
   ]
 }

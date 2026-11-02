@@ -3,10 +3,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/codex',
-  adapter_ver: '0.2.1',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'codex',
-  state_ver: 2,
+  state_ver: 3,
   // No harness version is certified until conformance runs against a real Codex.
   versions: { certified: [], compatible: [] },
   // `harness_path` is CODEX_HOME. Both trees are walked recursively for `rollout-*.jsonl`; several
@@ -23,6 +23,18 @@ export const describe = Object.freeze({
     // is never read (sessions-model §4.7): only `rollout-*.jsonl` files are opened.
     paths: [],
     exemptions: [],
+  },
+  // The native fields the session record carries (sessions-model §2.7): leaf values of the
+  // session_meta and turn_context lines that no other field maps, the latest line's winning. Each is
+  // a fixed value set, never user content or a path: `sandbox_policy.writable_roots`, `cwd`,
+  // `git.*` and `instructions` stay out.
+  native: {
+    session: [
+      'payload.approval_policy', // when Codex asks before running a command: on-request, never, …
+      'payload.sandbox_policy.type', // the sandbox mode: read-only, workspace-write, danger-full-access
+    ],
+    message: [],
+    part: [],
   },
   facets: {
     list: 'exact',

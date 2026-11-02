@@ -332,3 +332,39 @@ writeTree(path.join(HERE, 'conformance-copilot-reuse', 'first'), [[`session-stat
   life('e1000000', reuseStart('068bddb5-a920-46c5-a6e8-f950d2fa9084', '2026-10-21T22:41:34.610Z', '2026-10-21T22:41:34.751Z'), Date.parse('2026-10-21T22:41:35.000Z'), 'first')]]);
 writeTree(path.join(HERE, 'conformance-copilot-reuse', 'store'), [[`session-state/${REUSE}/events.jsonl`,
   life('e2000000', reuseStart('80797e76-f7a4-4f25-b73e-272e54d1e5b7', '2026-10-21T22:42:38.450Z', '2026-10-21T22:42:38.582Z'), Date.parse('2026-10-21T22:42:39.000Z'), 'second')]]);
+
+// ---- resume ------------------------------------------------------------------------------------
+
+// A session resumed in a later launch: events.jsonl grows by a session.resume in a subfolder with
+// another model, a second prompt and its reply. The session record's last_cwd, updated_at and
+// `data.selectedModel` move to the second launch's events, and its units with them; created_at,
+// cwd, harness_version and `data.producer` stay on session.start. The resume test
+// (test/copilot-cli.test.js) cuts the file after its first seven lines.
+const RS = 'e5e5e5e5-0000-4000-8000-000000000006';
+function resumed() {
+  const s = stream('e5000000');
+  let t = T0 + 10800 * 1000;
+  const at = () => (t += 1000);
+  s.add('session.start', t, start(RS, t));
+  s.add('user.message', at(), user('Count the files.'));
+  s.add('assistant.turn_start', at(), turnStart);
+  s.add('session.usage_record', at(), usage('api-rs-1', [600, 4]));
+  s.add('assistant.message', at(), reply('api-rs-1', 'Two files.'));
+  s.add('assistant.turn_end', at(), turnEnd);
+  s.add('session.shutdown', at(), { shutdownType: 'routine' });
+  // The second launch, a day later.
+  t += 86400 * 1000;
+  s.add('session.resume', at(), { resumeTime: iso(t), eventCount: 7, selectedModel: 'gateway/toy-model-b', context: { cwd: `${CWD}/toyshop`, gitRoot: CWD, branch: 'main' } });
+  s.add('user.message', at(), user('And in toyshop?', { interactionId: 'i-2' }));
+  s.add('assistant.turn_start', at(), { turnId: '0', interactionId: 'i-2' });
+  s.add('session.usage_record', at(), usage('api-rs-2', [700, 3]));
+  s.add('assistant.message', at(), { ...reply('api-rs-2', 'One file.'), interactionId: 'i-2' });
+  s.add('assistant.turn_end', at(), turnEnd);
+  s.add('session.shutdown', at(), { shutdownType: 'routine' });
+  return s;
+}
+const rs = resumed();
+writeTree(path.join(HERE, 'resume', 'store'), [
+  [`session-state/${RS}/events.jsonl`, rs.text()],
+  [`session-state/${RS}/workspace.yaml`, ws(RS, 'Count the files.', 'false', T0 + 10800 * 1000)],
+]);

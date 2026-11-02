@@ -15,7 +15,14 @@
       },
       "at": null,
       "ts": "2026-01-05T10:00:11.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5980"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -29,7 +36,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "4176"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -51,6 +65,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -60,7 +77,14 @@
           "text": "list the files in the toy repo"
         }
       ],
-      "cmp_sha": "0919747cb8e2917a48985e409a34da9974dccea595ad28965f1687c64b701419"
+      "cmp_sha": "0919747cb8e2917a48985e409a34da9974dccea595ad28965f1687c64b701419",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -82,6 +106,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "injected",
       "parts": [
@@ -91,7 +118,14 @@
           "text": "<system-reminder>synthetic reminder</system-reminder>"
         }
       ],
-      "cmp_sha": "3b6b132375cd997979df5f585b8e458a26f3a978485739593bec7b7a51fe2429"
+      "cmp_sha": "3b6b132375cd997979df5f585b8e458a26f3a978485739593bec7b7a51fe2429",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "341"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -113,6 +147,9 @@
       "effort": null,
       "response_id": "msg_feat_001",
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -123,7 +160,14 @@
           "signature_len": 4
         }
       ],
-      "cmp_sha": "4292213bad43de1402d1ca59b124a3810557e97c1366a156d4abdc869b6be081"
+      "cmp_sha": "4292213bad43de1402d1ca59b124a3810557e97c1366a156d4abdc869b6be081",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "778"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -145,6 +189,10 @@
       "effort": null,
       "response_id": "msg_feat_001",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "tool_use"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -169,7 +217,14 @@
           "server": "toyserver"
         }
       ],
-      "cmp_sha": "58d56a9db577b7e5fa842d0584c09c0f9f25e1d1d609255f96e67c51db0dffdd"
+      "cmp_sha": "58d56a9db577b7e5fa842d0584c09c0f9f25e1d1d609255f96e67c51db0dffdd",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "1355"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -191,6 +246,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -217,7 +275,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "2d545354a2faa34e88a16d7a8064a58ac2b960dcbdbbf022289acce327d807c3"
+      "cmp_sha": "2d545354a2faa34e88a16d7a8064a58ac2b960dcbdbbf022289acce327d807c3",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "2068"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -239,6 +304,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -248,7 +316,14 @@
           "text": "also show the image"
         }
       ],
-      "cmp_sha": "68aa4dc89a08b8ffb3ded09a708825461146e1ca07d104aa3afdbbe910b75ec2"
+      "cmp_sha": "68aa4dc89a08b8ffb3ded09a708825461146e1ca07d104aa3afdbbe910b75ec2",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "2068"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -270,6 +345,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -281,7 +359,14 @@
           "bytes_len": 29
         }
       ],
-      "cmp_sha": "e9cec653fed9ac66513e45cb5487c5963c5b53be9059687939f5e3d8539d9771"
+      "cmp_sha": "e9cec653fed9ac66513e45cb5487c5963c5b53be9059687939f5e3d8539d9771",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "2673"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -303,6 +388,9 @@
       "effort": null,
       "response_id": "msg_feat_err",
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -314,7 +402,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "76c3597c2ee4778744eb123eaf5c85c84b7dd8fd44550201b81ed9ffdbd85eaa"
+      "cmp_sha": "76c3597c2ee4778744eb123eaf5c85c84b7dd8fd44550201b81ed9ffdbd85eaa",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "3599"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -336,6 +431,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "system",
       "source": "system_notice",
       "parts": [
@@ -347,7 +445,14 @@
           "native_type": "local_command"
         }
       ],
-      "cmp_sha": "dbe77a76860137bcbcaafeb4e6f885e58e05b180965cb30d45078e49d15f809b"
+      "cmp_sha": "dbe77a76860137bcbcaafeb4e6f885e58e05b180965cb30d45078e49d15f809b",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "4279"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -369,6 +474,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -378,7 +486,14 @@
           "text": "actually, only count the files"
         }
       ],
-      "cmp_sha": "c3196ae359e3b94ef0beaae92307629df4bcb41a2e17824058d72e073ca40334"
+      "cmp_sha": "c3196ae359e3b94ef0beaae92307629df4bcb41a2e17824058d72e073ca40334",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "4677"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -400,6 +515,10 @@
       "effort": null,
       "response_id": "msg_feat_002",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "end_turn"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -409,7 +528,14 @@
           "text": "there are two entries"
         }
       ],
-      "cmp_sha": "0ada190962de324f849617c70f84c2489f328aa85b8e6196dfa23ce70746b3a1"
+      "cmp_sha": "0ada190962de324f849617c70f84c2489f328aa85b8e6196dfa23ce70746b3a1",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5052"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -431,6 +557,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -440,7 +569,14 @@
           "text": "sidechain prompt"
         }
       ],
-      "cmp_sha": "cf1e5b80edcce6e41af7cf0b8a666efcc561bac59c07d6dc02ef08fdadd7cecd"
+      "cmp_sha": "cf1e5b80edcce6e41af7cf0b8a666efcc561bac59c07d6dc02ef08fdadd7cecd",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5632"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -462,6 +598,11 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "compactMetadata.trigger": "manual",
+        "compactMetadata.preTokens": 1234
+      },
       "role": "system",
       "source": "system_notice",
       "parts": [
@@ -473,7 +614,14 @@
           "native_type": "compact_boundary"
         }
       ],
-      "cmp_sha": "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607"
+      "cmp_sha": "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5980"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -495,6 +643,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "automated",
       "parts": [
@@ -507,7 +658,19 @@
           }
         }
       ],
-      "cmp_sha": "d2064a6a88cf6c897d38ef5ec5d2f2a779f8ec1614f2a0d9b50044c66f95e0da"
+      "cmp_sha": "d2064a6a88cf6c897d38ef5ec5d2f2a779f8ec1614f2a0d9b50044c66f95e0da",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5980"
+        ],
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "6448"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -529,6 +692,10 @@
       "effort": null,
       "response_id": "msg_feat_003",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "end_turn"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -559,7 +726,14 @@
           "text": "the toy repo holds a README and a src folder"
         }
       ],
-      "cmp_sha": "0d5362d45cd4aa49957da20fadac64016fbd27bfb78ebcdd6471f163d38e5378"
+      "cmp_sha": "0d5362d45cd4aa49957da20fadac64016fbd27bfb78ebcdd6471f163d38e5378",
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "6895"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -600,7 +774,24 @@
           "0d5362d45cd4aa49957da20fadac64016fbd27bfb78ebcdd6471f163d38e5378"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "4176"
+        ],
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "6895"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -621,7 +812,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "1355"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -642,7 +840,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "5052"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -663,7 +868,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/0f5e1c2a-7b3d-4e8f-a9c1-2d3e4f5a6b7c.jsonl",
+          1,
+          "6895"
+        ]
+      ]
     }
   ]
 }

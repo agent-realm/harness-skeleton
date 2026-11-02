@@ -6,10 +6,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/copilot-cli',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'copilot-cli',
-  state_ver: 1,
+  state_ver: 2,
   // Observed on 1.0.100 and 1.0.101 (CLI) and 1.0.95-0.unstable (VS Code's agent host); none is
   // certified until conformance runs against a real Copilot CLI.
   versions: { certified: [], compatible: [] },
@@ -30,6 +30,22 @@ export const describe = Object.freeze({
     // record's token-detail type (vscode-host), and a shell permission request's argv words
     // (`permissionRequest.commandSegments[].staticTokens`; basic, pass2).
     exemptions: ['tokenAccountingBasis', 'tokenType', 'staticTokens'],
+  },
+  // The native fields the records carry (sessions-model §2.7): leaf values of an event that no
+  // other field maps. Each is an id or a fixed value set, never user content or a path:
+  // `context.cwd`, `context.gitRoot`, `context.branch` and `context.headCommit` stay out.
+  native: {
+    // From session.start and session.resume; the later event wins.
+    session: [
+      'data.producer', // the program that wrote the session: copilot-agent
+      'data.selectedModel', // the model picked for the session, or `auto`
+    ],
+    message: [
+      'data.interactionId', // the id Copilot gives one prompt and every event answering it
+      'data.turnId', // the turn's index within the interaction
+      'data.trigger', // what started a compaction: manual or threshold
+    ],
+    part: [],
   },
   facets: {
     // Every `session-state/<sid>/` with an events.jsonl whose line 1 is a complete

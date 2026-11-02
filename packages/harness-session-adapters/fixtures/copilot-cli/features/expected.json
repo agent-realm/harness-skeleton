@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:01:17.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -26,7 +33,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:01:20.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "30311"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -40,7 +54,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:01:21.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "30600"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -66,7 +87,14 @@
         "usage_copied": true
       },
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "30311"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -92,7 +120,14 @@
         "usage_copied": true
       },
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "30600"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -119,6 +154,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -128,7 +167,14 @@
           "text": "List the files and summarise toyshop/cart.py."
         }
       ],
-      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26"
+      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "1113"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -155,6 +201,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -177,7 +227,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b"
+      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "2055"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "2642"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -204,6 +266,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "automated",
       "parts": [
@@ -213,7 +279,14 @@
           "text": "List the files and summarise cart.py."
         }
       ],
-      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946"
+      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "3827"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -240,6 +313,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -265,7 +342,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741"
+      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "4702"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "5411"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -287,6 +376,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -302,7 +395,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c"
+      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "6517"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -324,6 +424,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -339,7 +443,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed"
+      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "7375"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -366,6 +477,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -375,7 +490,19 @@
           "text": "cart.py and __init__.py; Cart holds a list of items."
         }
       ],
-      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad"
+      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "8022"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "8707"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -397,6 +524,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -412,7 +543,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b"
+      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "9702"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -439,6 +577,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -448,7 +590,19 @@
           "text": "Two files; Cart holds a list of items."
         }
       ],
-      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe"
+      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "10478"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "11066"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -475,6 +629,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -491,7 +649,19 @@
           "bytes_len": 29
         }
       ],
-      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a"
+      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "11671"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "12033"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -518,6 +688,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -533,7 +707,19 @@
           "text": "A blank one-pixel label."
         }
       ],
-      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7"
+      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "12952"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "13541"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -560,6 +746,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -569,7 +759,14 @@
           "text": "Run the tests, then look up TOY-1 in the stock server."
         }
       ],
-      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245"
+      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "14174"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -596,6 +793,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -610,7 +811,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df"
+      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "14886"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "15479"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -632,6 +845,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -647,7 +864,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979"
+      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "16788"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -674,6 +898,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -688,7 +916,24 @@
           "server": "skustock"
         }
       ],
-      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c"
+      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "17593"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "18187"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "18682"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -710,6 +955,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -725,7 +974,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a"
+      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "19030"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -752,6 +1008,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -766,7 +1026,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946"
+      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "19770"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "20364"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -788,6 +1060,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -803,7 +1079,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82"
+      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "21422"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -830,6 +1113,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -845,7 +1132,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126"
+      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "22234"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "22828"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -867,6 +1166,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -882,7 +1185,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32"
+      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "23347"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -909,6 +1219,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -938,7 +1252,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b"
+      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "24140"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "24735"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -960,6 +1286,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -975,7 +1305,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e"
+      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "25607"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -997,6 +1334,7 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {},
       "role": "system",
       "source": "injected",
       "parts": [
@@ -1008,7 +1346,14 @@
           "native_type": "shell_completed"
         }
       ],
-      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d"
+      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "26453"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1030,6 +1375,7 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {},
       "role": "system",
       "source": "injected",
       "parts": [
@@ -1041,7 +1387,14 @@
           "native_type": "shell_completed"
         }
       ],
-      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289"
+      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "26820"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1068,6 +1421,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -1077,7 +1434,14 @@
           "text": "Write a very long essay about carts."
         }
       ],
-      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552"
+      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "27322"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1099,6 +1463,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.trigger": "manual"
+      },
       "role": "system",
       "source": "automated",
       "parts": [
@@ -1111,7 +1478,14 @@
           }
         }
       ],
-      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
+      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b",
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1159,7 +1533,33 @@
           "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "29849"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "31086"
+        ],
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/workspace.yaml",
+          1,
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/workspace.yaml"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1180,7 +1580,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "2055"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1201,7 +1608,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "24140"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1222,7 +1636,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "27998"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1243,7 +1664,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "4702"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1264,7 +1692,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "8022"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1285,7 +1720,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "10478"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1306,7 +1748,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "12952"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1327,7 +1776,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "14886"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1348,7 +1804,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "17593"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1369,7 +1832,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "19770"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1390,7 +1860,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "22234"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1411,7 +1888,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/a0a0a0a0-0000-4000-8000-000000000001/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     }
   ],
   "b0b0b0b0-0000-4000-8000-000000000004": [
@@ -1440,6 +1924,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -1449,7 +1937,14 @@
           "text": "Explore the repo with a sub-agent."
         }
       ],
-      "cmp_sha": "4c86eb9c2dc19bd9a5e2fa5c70580844168dd247572e6fa6fa8b5a7ba3316bc8"
+      "cmp_sha": "4c86eb9c2dc19bd9a5e2fa5c70580844168dd247572e6fa6fa8b5a7ba3316bc8",
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "541"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1476,6 +1971,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "automated",
       "parts": [
@@ -1485,7 +1984,14 @@
           "text": "Explore the repo."
         }
       ],
-      "cmp_sha": "6e2c8e403dd5d2830195645ac0db1580d9b696b7b0b876f3354749575dbf799e"
+      "cmp_sha": "6e2c8e403dd5d2830195645ac0db1580d9b696b7b0b876f3354749575dbf799e",
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "2546"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1512,6 +2018,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -1521,7 +2031,19 @@
           "text": "It holds cart.py."
         }
       ],
-      "cmp_sha": "a7777a6b7ce62b1c593d3f442f43ce3a6e64e95ffedc7eeb7833301d2f35e2cf"
+      "cmp_sha": "a7777a6b7ce62b1c593d3f442f43ce3a6e64e95ffedc7eeb7833301d2f35e2cf",
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "3078"
+        ],
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "3762"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1549,7 +2071,23 @@
           "4c86eb9c2dc19bd9a5e2fa5c70580844168dd247572e6fa6fa8b5a7ba3316bc8"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "4255"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1570,7 +2108,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "1213"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1591,7 +2136,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/b0b0b0b0-0000-4000-8000-000000000004/events.jsonl",
+          1,
+          "3078"
+        ]
+      ]
     }
   ],
   "c2c2c2c2-0000-4000-8000-000000000003": [
@@ -1607,7 +2159,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:01:17.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -1621,7 +2180,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:01:21.010Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "30600"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -1647,7 +2213,14 @@
         "usage_copied": true
       },
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "30600"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1674,6 +2247,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -1683,7 +2260,14 @@
           "text": "List the files and summarise toyshop/cart.py."
         }
       ],
-      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26"
+      "cmp_sha": "993cb17d4c2be406dae49ffe6a0388aa96902ace0ef54af4a37be13c14b2de26",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "1113"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1710,6 +2294,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -1732,7 +2320,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b"
+      "cmp_sha": "53258c48e760b0a85ca85cd359bac2c61ed8414ed295657b36dd2779cc7cda4b",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "2055"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "2642"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1759,6 +2359,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "automated",
       "parts": [
@@ -1768,7 +2372,14 @@
           "text": "List the files and summarise cart.py."
         }
       ],
-      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946"
+      "cmp_sha": "7e757d0ba10aafd756bd05ed2d0457d927d981e5a91e564bae4f62a50f46f946",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "3827"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1795,6 +2406,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -1820,7 +2435,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741"
+      "cmp_sha": "fe2d47d0ffdcb5db2f7d3cf30c71b458239124837df88670162f985a8e7bc741",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "4702"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "5411"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1842,6 +2469,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -1857,7 +2488,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c"
+      "cmp_sha": "d406a40dfa1d7bc42617771502d2ba5bfb45fbb209bd93b4ebab9fc5597ac71c",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "6517"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1879,6 +2517,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -1894,7 +2536,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed"
+      "cmp_sha": "10eaac54f0eeef33be02353ff2aeb37a4aef5f7002d795d5732c72a92f3cfaed",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "7375"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1921,6 +2570,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -1930,7 +2583,19 @@
           "text": "cart.py and __init__.py; Cart holds a list of items."
         }
       ],
-      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad"
+      "cmp_sha": "6c02ff4bc54208e8af8576edb40860498af9aad128e444246afb6c8d28cfdbad",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "8022"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "8707"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1952,6 +2617,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -1967,7 +2636,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b"
+      "cmp_sha": "7eb36ae84a32294feee5430c06fbe83515dc41541bbe3447b519afb1b32bec6b",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "9702"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1994,6 +2670,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2003,7 +2683,19 @@
           "text": "Two files; Cart holds a list of items."
         }
       ],
-      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe"
+      "cmp_sha": "39fa361c42e31eae5b37b7c17a9ace209f0fd5164e58ba29b7a64f0100cf1dbe",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "10478"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "11066"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2030,6 +2722,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -2046,7 +2742,19 @@
           "bytes_len": 29
         }
       ],
-      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a"
+      "cmp_sha": "4d71579992c14b1cd1984277a93ff093db3446924593f521896edd20f081217a",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "11671"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "12033"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2073,6 +2781,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2088,7 +2800,19 @@
           "text": "A blank one-pixel label."
         }
       ],
-      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7"
+      "cmp_sha": "259d44c44403cf720142c8eb2f59e9b71938fc4b6ab178a2e0d2d435555e5ae7",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "12952"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "13541"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2115,6 +2839,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -2124,7 +2852,14 @@
           "text": "Run the tests, then look up TOY-1 in the stock server."
         }
       ],
-      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245"
+      "cmp_sha": "acc8bb4175211e870831676381d49d40070a7c6ed4a26f5c9fafa7a71fe63245",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "14174"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2151,6 +2886,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2165,7 +2904,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df"
+      "cmp_sha": "d56df5c903cbb08c790156c81e4f154cdf223daa1f395d8d014b4722bdc386df",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "14886"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "15479"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2187,6 +2938,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -2202,7 +2957,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979"
+      "cmp_sha": "d59f176da06184179ef31e7c54e30d8d594cafc2fe1c0b1204cfa5e38eca5979",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "16788"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2229,6 +2991,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2243,7 +3009,24 @@
           "server": "skustock"
         }
       ],
-      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c"
+      "cmp_sha": "3052cf3a67a56054b6ad7d3a37c63be587948baafe09f0028edc34e70e91994c",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "17593"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "18187"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "18682"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2265,6 +3048,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -2280,7 +3067,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a"
+      "cmp_sha": "a3b9a48de87cd0c46da5079edf5ba434727701b66fd7be49942bb46233def84a",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "19030"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2307,6 +3101,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2321,7 +3119,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946"
+      "cmp_sha": "648652edb0e7c978f1f98a90e37660be1a8e34051645791977b8bd7f3c89e946",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "19770"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "20364"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2343,6 +3153,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -2358,7 +3172,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82"
+      "cmp_sha": "8e22d54dec28d982a8a62a2c1f480e8840bb7ac9d37f0bc61e9121eb74652b82",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "21422"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2385,6 +3206,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2400,7 +3225,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126"
+      "cmp_sha": "28ceb90057375f4cf2e8a23d6838a33d14f2dea828b47a7c8f749951f0ab0126",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "22234"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "22828"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2422,6 +3259,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -2437,7 +3278,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32"
+      "cmp_sha": "73d020263ac631b26b4fca938539da075730454dc97feb79518017507f217c32",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "23347"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2464,6 +3312,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2493,7 +3345,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b"
+      "cmp_sha": "5a1a15addad3bb0425a965068a02bc30bb3ef3c17259d4736ac726b78bcd211b",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "24140"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "24735"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2515,6 +3379,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -2530,7 +3398,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e"
+      "cmp_sha": "6124b0130180efa33ef9e93e620fe0d775a99ddb610a9493314214d8b801a70e",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "25607"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2552,6 +3427,7 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {},
       "role": "system",
       "source": "injected",
       "parts": [
@@ -2563,7 +3439,14 @@
           "native_type": "shell_completed"
         }
       ],
-      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d"
+      "cmp_sha": "3b045f8792c9e5b54ab5dbf44c6b92529e4739b2bc6cebd1cb131d24e9c6cb3d",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "26453"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2585,6 +3468,7 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {},
       "role": "system",
       "source": "injected",
       "parts": [
@@ -2596,7 +3480,14 @@
           "native_type": "shell_completed"
         }
       ],
-      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289"
+      "cmp_sha": "33d2cb82bded45eaf7b04930b89c205617d840e4fa4c7bfd620556b9a0457289",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "26820"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2623,6 +3514,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -2632,7 +3527,14 @@
           "text": "Write a very long essay about carts."
         }
       ],
-      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552"
+      "cmp_sha": "bbf89a0ff05f9bbd99d8041d37ccf0088b568a861fc155c3b7eb6cb10ac8d552",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "27322"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2654,6 +3556,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.trigger": "manual"
+      },
       "role": "system",
       "source": "automated",
       "parts": [
@@ -2666,7 +3571,14 @@
           }
         }
       ],
-      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b"
+      "cmp_sha": "45c177b7dfb181aab042603e7a02e4c05a979d8f19e59aaa7276bddf9345106b",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2693,6 +3605,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -2702,7 +3618,14 @@
           "text": "Now only count the files."
         }
       ],
-      "cmp_sha": "18217c20af56072b2cc132186249b32342dbeac4bc8fedb6de16c4c62a76e802"
+      "cmp_sha": "18217c20af56072b2cc132186249b32342dbeac4bc8fedb6de16c4c62a76e802",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "30869"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2729,6 +3652,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -2738,7 +3665,19 @@
           "text": "Two files."
         }
       ],
-      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "31523"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "32109"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2788,7 +3727,38 @@
           "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "29849"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "30069"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "32501"
+        ],
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/workspace.yaml",
+          1,
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/workspace.yaml"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2809,7 +3779,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "2055"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2830,7 +3807,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "24140"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2851,7 +3835,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "27998"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2872,7 +3863,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "4702"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2893,7 +3891,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "8022"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2914,7 +3919,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "10478"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2935,7 +3947,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "12952"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2956,7 +3975,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "14886"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2977,7 +4003,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "17593"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2998,7 +4031,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "19770"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -3019,7 +4059,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "22234"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -3040,7 +4087,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "31523"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -3061,7 +4115,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/c2c2c2c2-0000-4000-8000-000000000003/events.jsonl",
+          1,
+          "29003"
+        ]
+      ]
     }
   ]
 }

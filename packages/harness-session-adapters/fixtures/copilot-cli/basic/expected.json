@@ -25,6 +25,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "1"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -41,7 +45,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "86df43f3c942a03312dd0e05fff250282f8178453ccc79865e8b2c3ac327eb7b"
+      "cmp_sha": "86df43f3c942a03312dd0e05fff250282f8178453ccc79865e8b2c3ac327eb7b",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "11036"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "9808"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -68,6 +84,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "565b256e-8ade-491b-9410-18800cfbf544",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -77,7 +97,19 @@
           "text": "Synthetic reply 8bacdb. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture"
         }
       ],
-      "cmp_sha": "3b56e810bdedf69e59f20bbbfd8b7ab4d70ce7f5e71f7c6c37c3cd1ce6fb6a56"
+      "cmp_sha": "3b56e810bdedf69e59f20bbbfd8b7ab4d70ce7f5e71f7c6c37c3cd1ce6fb6a56",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "2741"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "3944"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -104,6 +136,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "3"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -120,7 +156,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "af41cb6360fe0a8081026003239ae5b9ea82bf561347896430142d7f40a2a2ed"
+      "cmp_sha": "af41cb6360fe0a8081026003239ae5b9ea82bf561347896430142d7f40a2a2ed",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "24779"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "25998"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -147,6 +195,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "565b256e-8ade-491b-9410-18800cfbf544",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -156,7 +208,14 @@
           "text": "What is in this repo? Two sentences, no tools."
         }
       ],
-      "cmp_sha": "b6f3c6a345bcc09b1a7902f27b51f3ba229a23d6067f595e88064b520fc68658"
+      "cmp_sha": "b6f3c6a345bcc09b1a7902f27b51f3ba229a23d6067f595e88064b520fc68658",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "1119"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -183,6 +242,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "4"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -192,7 +255,19 @@
           "text": "Synthetic reply 5c0e93. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fix"
         }
       ],
-      "cmp_sha": "b95903ba1cc3bea0d201f19294d0c5aa6ae1ee6bfbae66889dd5b4c1f7d74df5"
+      "cmp_sha": "b95903ba1cc3bea0d201f19294d0c5aa6ae1ee6bfbae66889dd5b4c1f7d74df5",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "29962"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "31167"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -214,6 +289,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "2"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -229,7 +308,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "a14b706dbb569d158bb619fdc2890658250a18947c9ed64cb11fdcc29781abba"
+      "cmp_sha": "a14b706dbb569d158bb619fdc2890658250a18947c9ed64cb11fdcc29781abba",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "23484"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -251,6 +337,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "3"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -266,7 +356,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "b1be8241c5b520ee26525faa89116649baf1d6c3f126520a871e76f2bc59f3ca"
+      "cmp_sha": "b1be8241c5b520ee26525faa89116649baf1d6c3f126520a871e76f2bc59f3ca",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "28654"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -288,6 +385,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "1"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -303,7 +404,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "756b97beceaf9f4e163aa8c9fdab0b83e64bb6ac013fe0207e3c50e87f4a27d2"
+      "cmp_sha": "756b97beceaf9f4e163aa8c9fdab0b83e64bb6ac013fe0207e3c50e87f4a27d2",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "17524"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -330,6 +438,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -339,7 +451,14 @@
           "text": "Add a docstring to Cart.apply_coupon in toyshop/cart.py saying it is not implemented yet. Then run: python3 -m pytest -q   and then run: cat /etc/nonexistent-file"
         }
       ],
-      "cmp_sha": "a014a849aad004a1f342c2c319c1863d9fbe6cfd646a7488be4287b93af8ddfb"
+      "cmp_sha": "a014a849aad004a1f342c2c319c1863d9fbe6cfd646a7488be4287b93af8ddfb",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "4801"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -361,6 +480,10 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "0"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -376,7 +499,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "6dcc81feea60646e3f5bc3da7848ea1263a69302bb94388528706fb9c536f543"
+      "cmp_sha": "6dcc81feea60646e3f5bc3da7848ea1263a69302bb94388528706fb9c536f543",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "8321"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -403,6 +533,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "2"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -419,7 +553,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "cc9f040690e1f23b01d7d128df1a0ab6748870834c302c544664eb262028daf1"
+      "cmp_sha": "cc9f040690e1f23b01d7d128df1a0ab6748870834c302c544664eb262028daf1",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "19583"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "20794"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -446,6 +592,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "d9ea4856-3099-4335-8265-f9fcf2665ec6",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -455,7 +605,14 @@
           "text": "Use a subagent (your task/explore agent tool) to count the lines of every file under toyshop/, then report its result in one line."
         }
       ],
-      "cmp_sha": "d3311703729c907f535ca78d659b3f90cddd4881ad36190b419126b145de1934"
+      "cmp_sha": "d3311703729c907f535ca78d659b3f90cddd4881ad36190b419126b145de1934",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "32112"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -482,6 +639,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "ce9c2a59-143a-4641-a08d-1b7dc44f7b2a",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -501,7 +662,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "b73529b0487476b50ab821742f1bdd122abb1e3ed58abd3fa0f922f863634582"
+      "cmp_sha": "b73529b0487476b50ab821742f1bdd122abb1e3ed58abd3fa0f922f863634582",
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "5874"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "7103"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -541,7 +714,28 @@
           "d3311703729c907f535ca78d659b3f90cddd4881ad36190b419126b145de1934"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model-a"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "32112"
+        ],
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/workspace.yaml",
+          1,
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/workspace.yaml"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -562,7 +756,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "9808"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -583,7 +784,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "29962"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -604,7 +812,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "19583"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -625,7 +840,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "5874"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -646,7 +868,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "2741"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -667,7 +896,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model-a",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/8259ca5e-606a-43e3-8753-6d6b97ebb992/events.jsonl",
+          1,
+          "24779"
+        ]
+      ]
     }
   ]
 }

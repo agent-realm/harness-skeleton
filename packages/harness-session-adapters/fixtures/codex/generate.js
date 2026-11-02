@@ -247,6 +247,36 @@ function features() {
   ];
 }
 
+// A session resumed in a later launch: the rollout grows by a second turn, in a subfolder, under
+// another approval policy and sandbox. The session record's last_cwd, updated_at and native fields
+// move to the second launch's lines, and its units with them; created_at, cwd, client and
+// harness_version stay on the session_meta line. The resume test (test/codex.test.js) cuts the
+// rollout after its first seven lines.
+function resume() {
+  const sid = '3f405162-7c8d-4e9f-8a0b-2c3d4e5f6071';
+  const ts = (d, s) => iso(Date.UTC(2026, 1, d, 9, 0, s));
+  const L = (d, s, type, payload) => JSON.stringify({ timestamp: ts(d, s), type, payload });
+  const cwd = '/work/toy-repo';
+  const tc = (input, output) => ({ type: 'token_count', info: { last_token_usage: { input_tokens: input, cached_input_tokens: 0, output_tokens: output, reasoning_output_tokens: 0, total_tokens: input + output }, model_context_window: 200000 }, rate_limits: null });
+  const lines = [
+    L(20, 0, 'session_meta', { id: sid, timestamp: ts(20, 0), cwd, originator: 'codex_cli_rs', cli_version: '0.50.0' }),
+    L(20, 1, 'event_msg', { type: 'task_started', turn_id: 'turn_r1', model_context_window: 200000 }),
+    L(20, 1, 'turn_context', { turn_id: 'turn_r1', cwd, model: 'gpt-5', effort: 'low', approval_policy: 'never', sandbox_policy: { type: 'read-only' } }),
+    L(20, 2, 'response_item', { type: 'message', role: 'user', id: 'msg_r1_u', content: [{ type: 'input_text', text: 'count the files' }] }),
+    L(20, 3, 'response_item', { type: 'message', role: 'assistant', id: 'msg_r1_a', content: [{ type: 'output_text', text: 'two files' }] }),
+    L(20, 3, 'event_msg', tc(300, 4)),
+    L(20, 4, 'event_msg', { type: 'task_complete', turn_id: 'turn_r1', last_agent_message: 'two files' }),
+    // The second launch.
+    L(21, 0, 'event_msg', { type: 'task_started', turn_id: 'turn_r2', model_context_window: 200000 }),
+    L(21, 0, 'turn_context', { turn_id: 'turn_r2', cwd: `${cwd}/src`, model: 'gpt-5-codex', effort: 'medium', approval_policy: 'on-request', sandbox_policy: { type: 'workspace-write', writable_roots: [`${cwd}/src`] } }),
+    L(21, 1, 'response_item', { type: 'message', role: 'user', id: 'msg_r2_u', content: [{ type: 'input_text', text: 'and in src?' }] }),
+    L(21, 2, 'response_item', { type: 'message', role: 'assistant', id: 'msg_r2_a', content: [{ type: 'output_text', text: 'one file' }] }),
+    L(21, 2, 'event_msg', tc(320, 3)),
+    L(21, 3, 'event_msg', { type: 'task_complete', turn_id: 'turn_r2', last_agent_message: 'one file' }),
+  ];
+  return [[rolloutPath(Date.UTC(2026, 1, 20, 9, 0, 0), sid), lines]];
+}
+
 function writeCase(name, files) {
   const dir = path.join(HERE, name, 'store');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -266,3 +296,5 @@ const live = codexLiveRollout();
 writeCase('live', [[rolloutPath(live.start, live.sid), live.lines]]);
 
 writeCase('features', features());
+
+writeCase('resume', resume());

@@ -15,7 +15,14 @@
       },
       "at": "00000000-0000-4000-9000-00000000f004",
       "ts": "2026-10-20T13:19:10.714Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "45319"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -46,7 +53,15 @@
           "text": "Explain the duplicate-SKU fix in one sentence."
         }
       ],
-      "cmp_sha": "0696484db7b678fd8d8f0cb140be4f307830ad9985ea4302a72e622dbe38a662"
+      "native": {},
+      "cmp_sha": "0696484db7b678fd8d8f0cb140be4f307830ad9985ea4302a72e622dbe38a662",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -77,7 +92,15 @@
           "text": "Run the tests again."
         }
       ],
-      "cmp_sha": "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224"
+      "native": {},
+      "cmp_sha": "63fdf440c9f9d84789cc64be7248f3cada23a160b6637d9c18050df5aaddd224",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -108,7 +131,15 @@
           "text": "Reply with the single word RESTOK1."
         }
       ],
-      "cmp_sha": "4096142da50120e8d9ebd08863ac864144ccf2c152ba22c85a4da806ed430cec"
+      "native": {},
+      "cmp_sha": "4096142da50120e8d9ebd08863ac864144ccf2c152ba22c85a4da806ed430cec",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -139,7 +170,15 @@
           "text": "Reply with the single word RESTOK."
         }
       ],
-      "cmp_sha": "66b7a44fb48d13b0c2a2415be194759499e0b5876020375dde45a6a8ddb2fae9"
+      "native": {},
+      "cmp_sha": "66b7a44fb48d13b0c2a2415be194759499e0b5876020375dde45a6a8ddb2fae9",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -160,6 +199,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:05:25.294Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.082356,
+        "result.timings.firstProgress": 2778,
+        "result.timings.totalElapsed": 2790
+      },
       "message_id": "00000000-0000-4000-9000-00000000f002",
       "parent_id": "00000000-0000-4000-9000-000000000002",
       "order": "00000001:0001",
@@ -170,7 +215,14 @@
           "text": "Synthetic reply 1558fb. syntheti"
         }
       ],
-      "cmp_sha": "d7bba85befe210ae23a07329edd94b7d63633b3ca2a77d4842f063e4bbfe1f78"
+      "cmp_sha": "d7bba85befe210ae23a07329edd94b7d63633b3ca2a77d4842f063e4bbfe1f78",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -191,6 +243,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:07:05.294Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.082356,
+        "result.timings.firstProgress": 2778,
+        "result.timings.totalElapsed": 2790
+      },
       "message_id": "00000000-0000-4000-9000-00000000f003",
       "parent_id": "00000000-0000-4000-9000-000000000003",
       "order": "00000002:0001",
@@ -201,7 +259,14 @@
           "text": "Synthetic reply"
         }
       ],
-      "cmp_sha": "e463469359821b3ce7ca58b26bdbdc2c5e6d3611a66455ba5df1e027dc69eb11"
+      "cmp_sha": "e463469359821b3ce7ca58b26bdbdc2c5e6d3611a66455ba5df1e027dc69eb11",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -222,6 +287,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:08:45.294Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.082356,
+        "result.timings.firstProgress": 2778,
+        "result.timings.totalElapsed": 2790
+      },
       "message_id": "00000000-0000-4000-9000-00000000f004",
       "parent_id": "00000000-0000-4000-9000-000000000004",
       "order": "00000003:0001",
@@ -232,7 +303,14 @@
           "text": "Synthet"
         }
       ],
-      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -253,6 +331,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:10:25.294Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.082356,
+        "result.timings.firstProgress": 2778,
+        "result.timings.totalElapsed": 2790
+      },
       "message_id": "00000000-0000-4000-9000-00000000f005",
       "parent_id": "00000000-0000-4000-9000-000000000005",
       "order": "00000004:0001",
@@ -263,7 +347,14 @@
           "text": "Synthe"
         }
       ],
-      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -294,7 +385,15 @@
           "text": "Now fix the qty bug in cart.py so adding the same SKU twice increments qty, then run python3 -m pytest -q and show the result."
         }
       ],
-      "cmp_sha": "17245de1d392b0805909a0ef1ad014dc8428923fe2aba7527acc71cd6948ff03"
+      "native": {},
+      "cmp_sha": "17245de1d392b0805909a0ef1ad014dc8428923fe2aba7527acc71cd6948ff03",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -315,6 +414,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:02:05.294Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.609004,
+        "result.timings.firstProgress": 3718,
+        "result.timings.totalElapsed": 102865
+      },
       "message_id": "5e1f0000-0000-4000-8000-000000000082",
       "parent_id": "5e1f0000-0000-4000-8000-000000000081",
       "order": "00000000:0001",
@@ -379,7 +484,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "d300029b6b5d69e86d2564fc81899fa1a53e88818dc25bc88b76e3ff21d3443a"
+      "cmp_sha": "d300029b6b5d69e86d2564fc81899fa1a53e88818dc25bc88b76e3ff21d3443a",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -410,7 +522,15 @@
           "text": "Reply with the single word RESTOK2."
         }
       ],
-      "cmp_sha": "3073d9d4c8e73e039ad79b03b75ff8c783912417c68a5636957aae241773e7bd"
+      "native": {},
+      "cmp_sha": "3073d9d4c8e73e039ad79b03b75ff8c783912417c68a5636957aae241773e7bd",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "45319"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -431,6 +551,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T13:19:10.714Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.082356,
+        "result.timings.firstProgress": 2778,
+        "result.timings.totalElapsed": 2790
+      },
       "message_id": "response_5e1f0000-0000-4000-8000-000000000148",
       "parent_id": "request_5e1f0000-0000-4000-8000-000000000147",
       "order": "00000005:0001",
@@ -441,7 +567,14 @@
           "text": "Synthet"
         }
       ],
-      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6",
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "45319"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -478,7 +611,24 @@
           "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "45319"
+        ],
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/workspace.json",
+          1,
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/workspace.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -499,7 +649,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -520,7 +677,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -541,7 +705,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -562,7 +733,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -583,7 +761,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -604,7 +789,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/5713330e632ae5a68083fe78c96b67ba/chatSessions/65a4e98a-a792-4f21-8b88-91971aa08c28.jsonl",
+          1,
+          "45319"
+        ]
+      ]
     }
   ],
   "f0da568c-8ed3-4480-b0b4-787ca035cc3c": [
@@ -620,7 +812,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1891"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -651,7 +850,15 @@
           "text": "Reply with exactly: vscode-copilot-ok"
         }
       ],
-      "cmp_sha": "d5cd615e7e350da137599918ec7651bba7727f5e6dc5efe81db91eb4098f73ad"
+      "native": {},
+      "cmp_sha": "d5cd615e7e350da137599918ec7651bba7727f5e6dc5efe81db91eb4098f73ad",
+      "units": [
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1952"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -672,6 +879,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-10-20T12:23:10.509Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.2159175,
+        "result.timings.firstProgress": 3993,
+        "result.timings.totalElapsed": 4015
+      },
       "message_id": "response_5e1f0000-0000-4000-8000-000000000153",
       "parent_id": "request_5e1f0000-0000-4000-8000-000000000152",
       "order": "00000000:0001",
@@ -682,7 +895,14 @@
           "text": "Synthetic reply a"
         }
       ],
-      "cmp_sha": "d7b17ad4a36c312ad47b1728870ab2e74a5a981519f2ff19ba8ae243ab499c9b"
+      "cmp_sha": "d7b17ad4a36c312ad47b1728870ab2e74a5a981519f2ff19ba8ae243ab499c9b",
+      "units": [
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1952"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -711,7 +931,29 @@
           "d7b17ad4a36c312ad47b1728870ab2e74a5a981519f2ff19ba8ae243ab499c9b"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1891"
+        ],
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1952"
+        ],
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/workspace.json",
+          1,
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/workspace.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -732,7 +974,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/ef73fdb910bc7d73f611948f243bc8c5/chatSessions/f0da568c-8ed3-4480-b0b4-787ca035cc3c.jsonl",
+          1,
+          "1952"
+        ]
+      ]
     }
   ]
 }

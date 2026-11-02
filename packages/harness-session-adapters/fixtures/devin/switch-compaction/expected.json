@@ -15,7 +15,14 @@
       },
       "at": null,
       "ts": "2026-10-20T10:01:31.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -52,7 +59,14 @@
           "text": "Added tests/test_rounding.py."
         }
       ],
-      "cmp_sha": "687907d1eabd82e03a30052d8c5cf9d2ed290a7bf39d92936feae12d4f70f9a6"
+      "cmp_sha": "687907d1eabd82e03a30052d8c5cf9d2ed290a7bf39d92936feae12d4f70f9a6",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -83,7 +97,14 @@
           "text": "You are continuing work from a previous conversation thread. Below is a summary of the previous conversation thread:\nFull conversation history saved at /home/user/.local/share/devin/cli/summaries/history_toy.md.\nSummary:\n<summary>\n1. Request and Intent: the user asked how discounts round; they now round half up.\n</summary>"
         }
       ],
-      "cmp_sha": "1c70c453cacaed5c0a2c8321abf438e71c9a6697f9e0435dff146bd282451ac6"
+      "cmp_sha": "1c70c453cacaed5c0a2c8321abf438e71c9a6697f9e0435dff146bd282451ac6",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -120,7 +141,14 @@
           "text": "Discounts would round down to the cent."
         }
       ],
-      "cmp_sha": "2d539e82de8f89d8f0abc3aafce7bbddfbd5a37fb2a866fcec5368e9586d20c8"
+      "cmp_sha": "2d539e82de8f89d8f0abc3aafce7bbddfbd5a37fb2a866fcec5368e9586d20c8",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -151,7 +179,14 @@
           "text": "Round discounts half up instead."
         }
       ],
-      "cmp_sha": "3aa451bcf9c2c7852ac6223148da18f27580df47e3f5c7b479ac7884749cd89e"
+      "cmp_sha": "3aa451bcf9c2c7852ac6223148da18f27580df47e3f5c7b479ac7884749cd89e",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -182,7 +217,14 @@
           "text": "Round discounts down to the cent."
         }
       ],
-      "cmp_sha": "09e7b76211785ff4428109d814595f5b55d185a80c482b6da1cc2b5a45cbb4b3"
+      "cmp_sha": "09e7b76211785ff4428109d814595f5b55d185a80c482b6da1cc2b5a45cbb4b3",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -219,7 +261,14 @@
           "text": "Discounts now round half up to the cent."
         }
       ],
-      "cmp_sha": "fa71849c6d43b52075d46377fec1e007fb01ab73a876823bae2481391bde92a4"
+      "cmp_sha": "fa71849c6d43b52075d46377fec1e007fb01ab73a876823bae2481391bde92a4",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -256,7 +305,14 @@
           "text": "It sums integer cents, so nothing is rounded yet."
         }
       ],
-      "cmp_sha": "70ca40838ebb607bd21a6a9a50071e5a749a14efb14835aca4fa31a7507e430d"
+      "cmp_sha": "70ca40838ebb607bd21a6a9a50071e5a749a14efb14835aca4fa31a7507e430d",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -290,7 +346,14 @@
           }
         }
       ],
-      "cmp_sha": "c464f5abf173c531c67c34aae2a7bf0f182016280c40e36a74dad2f593c6b396"
+      "cmp_sha": "c464f5abf173c531c67c34aae2a7bf0f182016280c40e36a74dad2f593c6b396",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -321,7 +384,14 @@
           "text": "Add a test for the half-up rounding."
         }
       ],
-      "cmp_sha": "0eae4e41295ef2b228300d04dd16b35dc491e98e120193f1f47bd35a93d02d77"
+      "cmp_sha": "0eae4e41295ef2b228300d04dd16b35dc491e98e120193f1f47bd35a93d02d77",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -352,7 +422,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -383,7 +460,14 @@
           "text": "How does Cart.total round a discount?"
         }
       ],
-      "cmp_sha": "4debe86fbf71227a1c0ba59e9403fa97371adea8327b93cef5a267481ae80e23"
+      "cmp_sha": "4debe86fbf71227a1c0ba59e9403fa97371adea8327b93cef5a267481ae80e23",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -406,6 +490,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -419,7 +507,14 @@
           "687907d1eabd82e03a30052d8c5cf9d2ed290a7bf39d92936feae12d4f70f9a6"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -440,7 +535,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -461,7 +563,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -482,7 +591,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -503,7 +619,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -524,7 +647,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "compactor",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ]
 }

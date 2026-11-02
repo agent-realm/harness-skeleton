@@ -8,11 +8,11 @@ import { adapterFor } from '../src/index.js';
 import { DB_REL, HEADERS, composerDataSource, bubblesSource, BUBBLE_KEY_SQL } from '../src/harnesses/cursor/index.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck } from '../conformance/sql-store.js';
 
 const adapter = adapterFor('cursor');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'cursor');
-const CASES = ['lab', 'features'];
+const CASES = ['lab', 'features', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 // The features case's chats and bubbles (fixtures/cursor/generate.js).
 const uuid = (p8, n) => `${p8}-0000-4000-8000-${String(n).padStart(12, '0')}`;
@@ -797,7 +797,8 @@ test('cursor: is_error is null where the call did not complete: a denial, a canc
 });
 
 test('cursor: a tool_result carries the stored result.exitCode; a result without one has none', () => {
-  for (const name of CASES) {
+  // The behaviour cases (`resume` covers units only).
+  for (const name of ['lab', 'features']) {
     withStore(name, (dir) => {
       const views = project(fullReplay(adapter, dir).views());
       const results = (sid) => ofType(views[sid], 'message').flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result');
@@ -813,4 +814,22 @@ test('cursor: a tool_result carries the stored result.exitCode; a result without
       }
     });
   }
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a chat reopened in a later launch.
+// The header and composerData are snapshots, so their triples name the same slots in both launches
+// while the mode they give moves; the second turn's messages name its new bubble rows and the
+// composerData that orders them.
+test('cursor: resume: the second launch\'s records name its new bubble rows; the session keeps its snapshot slots', () => {
+  const cid = 'c0c0a009-0000-4000-8000-000000000009';
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [DB_REL]: 8 });
+  const [b, a] = [r.before[cid], r.after[cid]];
+  const slots = [[HEADERS, 1, HEADERS], [composerDataSource(cid), 1, composerDataSource(cid)]].sort((x, y) => (x[0] < y[0] ? -1 : 1));
+  assert.deepEqual([b.mode, b.units], ['agent', slots]);
+  assert.deepEqual([a.mode, a.units], ['ask', slots]);
+  const reply = r.last[cid].find((m) => m.type === 'message' && m.role === 'assistant' && m.message_id.startsWith('b0b0b002'));
+  const bsk = bubblesSource(cid);
+  assert.ok(reply.units.some(([sk, , uk]) => sk === bsk && uk.startsWith(`bubbleId:${cid}:b0b0b002`)), 'the second reply names its bubble rows');
+  assert.ok(reply.units.some(([sk]) => sk === composerDataSource(cid)), 'and the composerData that orders them');
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

@@ -29,7 +29,14 @@
           "text": "Name the cart module."
         }
       ],
-      "cmp_sha": "3b0813cdf61eab6b68a8c8d877bdb9ee1ab14d41884ed4f401d9ec3410f80088"
+      "cmp_sha": "3b0813cdf61eab6b68a8c8d877bdb9ee1ab14d41884ed4f401d9ec3410f80088",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -60,7 +67,14 @@
           "text": "toyshop/cart.py."
         }
       ],
-      "cmp_sha": "553f0d9d7bdd59e2e75af865452a6cc22b6ca364e0c656a53bfa88b046720ad9"
+      "cmp_sha": "553f0d9d7bdd59e2e75af865452a6cc22b6ca364e0c656a53bfa88b046720ad9",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -91,7 +105,14 @@
           "text": "Add a qty check, with a test."
         }
       ],
-      "cmp_sha": "9a915454defc985b5a47ed50e6edbe074dacc30ecabe022073f9b8142943b423"
+      "cmp_sha": "9a915454defc985b5a47ed50e6edbe074dacc30ecabe022073f9b8142943b423",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -122,7 +143,14 @@
           "text": "Added the check and a test."
         }
       ],
-      "cmp_sha": "e2d5914ef989d6fdbd5e2285e046278443e9bd6a0c194853d9d710af701a3e47"
+      "cmp_sha": "e2d5914ef989d6fdbd5e2285e046278443e9bd6a0c194853d9d710af701a3e47",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -145,6 +173,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "3b0813cdf61eab6b68a8c8d877bdb9ee1ab14d41884ed4f401d9ec3410f80088",
@@ -153,7 +188,14 @@
           "e2d5914ef989d6fdbd5e2285e046278443e9bd6a0c194853d9d710af701a3e47"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -174,7 +216,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -195,7 +244,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ]
 }

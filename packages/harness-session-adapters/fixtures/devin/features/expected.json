@@ -35,7 +35,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "588a8d5280b0bf072eaacfa4f267948564b5868b2076d79c81d87aff8032b6d6"
+      "cmp_sha": "588a8d5280b0bf072eaacfa4f267948564b5868b2076d79c81d87aff8032b6d6",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -66,7 +73,14 @@
           "text": "<rules type=\"always-on\">\n<rule name=\"AGENTS\" path=\"/home/user/work/toyshop/AGENTS.md\">\n# Project Notes for toyshop\n- Tests use unittest.\n</rule>\n</rules>"
         }
       ],
-      "cmp_sha": "176c13936e76951332f54b9c24d21307e378f8e931a25704101cfb8bb247593f"
+      "cmp_sha": "176c13936e76951332f54b9c24d21307e378f8e931a25704101cfb8bb247593f",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -97,7 +111,14 @@
           "text": "Install pytest, then run the slow test."
         }
       ],
-      "cmp_sha": "301b6e597273d6286dbe675bc926132e1259e334623467d8aa0891e2222091ea"
+      "cmp_sha": "301b6e597273d6286dbe675bc926132e1259e334623467d8aa0891e2222091ea",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -134,7 +155,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "c9d54e0df532f39acc18077ea55a298d406e540dcf7de02508a8a6061b2af8d3"
+      "cmp_sha": "c9d54e0df532f39acc18077ea55a298d406e540dcf7de02508a8a6061b2af8d3",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -165,7 +193,14 @@
           "text": "Fix the qty bug in cart.py."
         }
       ],
-      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -222,7 +257,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "ca27ba1fd5369235d3ce15d972dff5a08a434a99e95cfb77e1bad1f2395c1300"
+      "cmp_sha": "ca27ba1fd5369235d3ce15d972dff5a08a434a99e95cfb77e1bad1f2395c1300",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -259,7 +301,14 @@
           "text": "The total ignored qty; it now multiplies price by qty."
         }
       ],
-      "cmp_sha": "1ee532e1dba28ca2b9329c22442d29c4099b0b6932f5e2d6b52c1512ad17295a"
+      "cmp_sha": "1ee532e1dba28ca2b9329c22442d29c4099b0b6932f5e2d6b52c1512ad17295a",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -301,7 +350,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "5574c2462a5715a80403ef7bd4fee94d48c8300ddae133f5c6521481734d0f8a"
+      "cmp_sha": "5574c2462a5715a80403ef7bd4fee94d48c8300ddae133f5c6521481734d0f8a",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -332,7 +388,14 @@
           "text": "Stop."
         }
       ],
-      "cmp_sha": "ec882a4a052daa6e25ae4b05ef46692b6587e48a4c72eaa6eba6df5e5954a85e"
+      "cmp_sha": "ec882a4a052daa6e25ae4b05ef46692b6587e48a4c72eaa6eba6df5e5954a85e",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -363,7 +426,14 @@
           "text": "<available_skills>\n- toy-count: Count Python files in the toyshop repo\n</available_skills>"
         }
       ],
-      "cmp_sha": "5c9ecd53017d40882fa7c8c03f612be543fa0a52311878e6bb2cdec3837900cd"
+      "cmp_sha": "5c9ecd53017d40882fa7c8c03f612be543fa0a52311878e6bb2cdec3837900cd",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -405,7 +475,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "d16d16f826e5d26997a145bd7f1fba0c61776fb656a8a2c8feb919d1098bda01"
+      "cmp_sha": "d16d16f826e5d26997a145bd7f1fba0c61776fb656a8a2c8feb919d1098bda01",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -436,7 +513,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -473,7 +557,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "d9790b76fe043dbe6abe42b0de8eefca8dd3b39fb0aa504fb8668e39d159b505"
+      "cmp_sha": "d9790b76fe043dbe6abe42b0de8eefca8dd3b39fb0aa504fb8668e39d159b505",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -510,7 +601,14 @@
           "text": "Stopped; nothing was installed."
         }
       ],
-      "cmp_sha": "b143047bef37c18482bdd8d391affc4860c6c278c28ff1010669bdf674144773"
+      "cmp_sha": "b143047bef37c18482bdd8d391affc4860c6c278c28ff1010669bdf674144773",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -547,7 +645,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "57174971023c27f4017672363333e648699523f6eb76de9b90a0f00f35b9a0d9"
+      "cmp_sha": "57174971023c27f4017672363333e648699523f6eb76de9b90a0f00f35b9a0d9",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -570,6 +675,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -589,7 +698,14 @@
           "b143047bef37c18482bdd8d391affc4860c6c278c28ff1010669bdf674144773"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -610,7 +726,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -631,7 +754,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -652,7 +782,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -673,7 +810,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -694,7 +838,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "brisk-meadow": [
@@ -727,7 +878,14 @@
           "text": "What does Cart.total return?"
         }
       ],
-      "cmp_sha": "937b5caa788f3f22517289ef10d0c4a424860b1f86cee8058a42d84f8063dc86"
+      "cmp_sha": "937b5caa788f3f22517289ef10d0c4a424860b1f86cee8058a42d84f8063dc86",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -764,7 +922,14 @@
           "text": "Wrote NOTES.txt."
         }
       ],
-      "cmp_sha": "fb9b322374c1fe38debee06b5375c97f340984f59f437f2339793f50c3c301a1"
+      "cmp_sha": "fb9b322374c1fe38debee06b5375c97f340984f59f437f2339793f50c3c301a1",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -801,7 +966,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7095caa2ec4b4a0a695135e5b6661361ae2638039db75fa2efff9cdb2bae94df"
+      "cmp_sha": "7095caa2ec4b4a0a695135e5b6661361ae2638039db75fa2efff9cdb2bae94df",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -832,7 +1004,14 @@
           "text": "Say hello instead."
         }
       ],
-      "cmp_sha": "3b8bfbc93f6cc1c45fca309ea6594a7fe3b50443545aaeb071454c2ff60c3414"
+      "cmp_sha": "3b8bfbc93f6cc1c45fca309ea6594a7fe3b50443545aaeb071454c2ff60c3414",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -869,7 +1048,14 @@
           "text": "Hello!"
         }
       ],
-      "cmp_sha": "25e8e7ef063e3a10e7d717fe224d2d9e42f03234fd99340983fa2c61deeccb25"
+      "cmp_sha": "25e8e7ef063e3a10e7d717fe224d2d9e42f03234fd99340983fa2c61deeccb25",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -906,7 +1092,14 @@
           "text": "The sum of price_cents times qty over the items."
         }
       ],
-      "cmp_sha": "0b6aa1f380d3566173cbd2961e561c0da65b6040de8b8d4af8fc046303db972f"
+      "cmp_sha": "0b6aa1f380d3566173cbd2961e561c0da65b6040de8b8d4af8fc046303db972f",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -937,7 +1130,14 @@
           "text": "Write NOTES.txt with \"checkpoint\"."
         }
       ],
-      "cmp_sha": "35b3dfb76c10327145c8e97be905d8ed57c35a304431413a820c3842bd6a2d2e"
+      "cmp_sha": "35b3dfb76c10327145c8e97be905d8ed57c35a304431413a820c3842bd6a2d2e",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -968,7 +1168,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1011,7 +1218,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "4d1e3b658f58233757e90870d1a4e61f135e62ca90bb9fa8d56345b32df16fae"
+      "cmp_sha": "4d1e3b658f58233757e90870d1a4e61f135e62ca90bb9fa8d56345b32df16fae",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1034,6 +1248,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -1043,7 +1261,14 @@
           "25e8e7ef063e3a10e7d717fe224d2d9e42f03234fd99340983fa2c61deeccb25"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1064,7 +1289,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1085,7 +1317,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1106,7 +1345,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1127,7 +1373,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "calm-orchard": [
@@ -1146,7 +1399,14 @@
       },
       "at": null,
       "ts": "2026-10-20T10:21:11.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1183,7 +1443,14 @@
           "text": "Added tests/test_coupon.py."
         }
       ],
-      "cmp_sha": "9940153f50439674066baae09879d6494c1d8f665e18465ce53a3d21c0f8b675"
+      "cmp_sha": "9940153f50439674066baae09879d6494c1d8f665e18465ce53a3d21c0f8b675",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1214,7 +1481,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1251,7 +1525,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "d481142a454fac6ecb679834947a87ddd324209373acf8434e257127eab8a94d"
+      "cmp_sha": "d481142a454fac6ecb679834947a87ddd324209373acf8434e257127eab8a94d",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1288,7 +1569,14 @@
           "text": "All 3 tests pass."
         }
       ],
-      "cmp_sha": "9e5df9e7ae88906f19677bd67c90adb9d1337eb2544fbedaedbc77918fccd510"
+      "cmp_sha": "9e5df9e7ae88906f19677bd67c90adb9d1337eb2544fbedaedbc77918fccd510",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1319,7 +1607,14 @@
           "text": "Now add a coupon test."
         }
       ],
-      "cmp_sha": "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a"
+      "cmp_sha": "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1350,7 +1645,14 @@
           "text": "Run the tests."
         }
       ],
-      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1392,7 +1694,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "5467c3e944eb3e4c0f74e79806e0c373a34a81817a40024688bfcc3d79823fdf"
+      "cmp_sha": "5467c3e944eb3e4c0f74e79806e0c373a34a81817a40024688bfcc3d79823fdf",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1423,7 +1732,14 @@
           "text": "You are continuing work from a previous conversation thread. Below is a summary of the previous conversation thread:\nFull conversation history saved at /home/user/.local/share/devin/cli/summaries/history_toy.md.\nSummary:\n<summary>\n1. Request and Intent: the user asked to run the tests; all 3 pass.\n</summary>"
         }
       ],
-      "cmp_sha": "0e8835834cbbc6156e9f26a2f6255b27eab261b6049ce0801eb1802183305c34"
+      "cmp_sha": "0e8835834cbbc6156e9f26a2f6255b27eab261b6049ce0801eb1802183305c34",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1457,7 +1773,14 @@
           }
         }
       ],
-      "cmp_sha": "feac382006c501e62652be600d2aaa3bab40b2d548212146a178c88d148e6541"
+      "cmp_sha": "feac382006c501e62652be600d2aaa3bab40b2d548212146a178c88d148e6541",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1488,7 +1811,14 @@
           "text": "<rules type=\"always-on\">\n<rule name=\"AGENTS\" path=\"/home/user/work/toyshop/AGENTS.md\">\n# Project Notes for toyshop\n- Tests use unittest.\n</rule>\n</rules>"
         }
       ],
-      "cmp_sha": "176c13936e76951332f54b9c24d21307e378f8e931a25704101cfb8bb247593f"
+      "cmp_sha": "176c13936e76951332f54b9c24d21307e378f8e931a25704101cfb8bb247593f",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1511,6 +1841,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -1525,7 +1859,14 @@
           "9940153f50439674066baae09879d6494c1d8f665e18465ce53a3d21c0f8b675"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1546,7 +1887,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1567,7 +1915,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1588,7 +1943,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1609,7 +1971,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "compactor",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "dusty-lantern": [
@@ -1642,7 +2011,14 @@
           "text": "Explore the repository at /home/user/work/toyshop and list every file in it."
         }
       ],
-      "cmp_sha": "67e07da2b468cee6adf36dfc562a0ad5667935bc4492a8fac508783e309fcdf2"
+      "cmp_sha": "67e07da2b468cee6adf36dfc562a0ad5667935bc4492a8fac508783e309fcdf2",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1679,7 +2055,14 @@
           "text": "Two files: cart.py and test_cart.py."
         }
       ],
-      "cmp_sha": "761011366de737e1a09560bde3cc62a2cb22c3aa3612f38a18bc4db512e7cbfe"
+      "cmp_sha": "761011366de737e1a09560bde3cc62a2cb22c3aa3612f38a18bc4db512e7cbfe",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1721,7 +2104,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "7209cdde8c65cc620a68651bd230f1a55e421fee33972246609ebb4405d9ad28"
+      "cmp_sha": "7209cdde8c65cc620a68651bd230f1a55e421fee33972246609ebb4405d9ad28",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1752,7 +2142,14 @@
           "text": "List every file in the repo."
         }
       ],
-      "cmp_sha": "195478dad85dac4e8d252bdf508d3215f213bc2ac571b50522a0b209213d718e"
+      "cmp_sha": "195478dad85dac4e8d252bdf508d3215f213bc2ac571b50522a0b209213d718e",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1783,7 +2180,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1820,7 +2224,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "0788ec928620499fcca46b35348012e0f489036b05e6f925accb343470e0edc4"
+      "cmp_sha": "0788ec928620499fcca46b35348012e0f489036b05e6f925accb343470e0edc4",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1857,7 +2268,14 @@
           "text": "cart.py and test_cart.py."
         }
       ],
-      "cmp_sha": "eac7ba2d0c15c353f17d20667f1c55573d35ca026787d4a779ade177cfa65957"
+      "cmp_sha": "eac7ba2d0c15c353f17d20667f1c55573d35ca026787d4a779ade177cfa65957",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1905,7 +2323,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "e006186f61766f298a8b39fb4638d6f89646e64b395fd654e7ad52be2cbcd0f2"
+      "cmp_sha": "e006186f61766f298a8b39fb4638d6f89646e64b395fd654e7ad52be2cbcd0f2",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1942,7 +2367,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "3e63a4c6ca4e8e3ef98f8700d4e812ca00605672effc92bcd1951a36abefb6a3"
+      "cmp_sha": "3e63a4c6ca4e8e3ef98f8700d4e812ca00605672effc92bcd1951a36abefb6a3",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1965,6 +2397,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -1978,7 +2414,14 @@
           "761011366de737e1a09560bde3cc62a2cb22c3aa3612f38a18bc4db512e7cbfe"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1999,7 +2442,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2020,7 +2470,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "Subagent Default",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2041,7 +2498,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "Subagent Default",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2062,7 +2526,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "eager-falcon": [
@@ -2095,7 +2566,14 @@
           "text": "Summarize the conversation so far for a fork."
         }
       ],
-      "cmp_sha": "4f2da005b0841d354f7c29c45ceb42e40d69debe913548592801681e11fb1a96"
+      "cmp_sha": "4f2da005b0841d354f7c29c45ceb42e40d69debe913548592801681e11fb1a96",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2126,7 +2604,14 @@
           "text": "<summary>The user fixed the qty bug in cart.py.</summary>"
         }
       ],
-      "cmp_sha": "5bfa5614bf5a79f4c2755dbdd037f383d3def6a063b7a61147f7893b9be9a7e0"
+      "cmp_sha": "5bfa5614bf5a79f4c2755dbdd037f383d3def6a063b7a61147f7893b9be9a7e0",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2149,13 +2634,24 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "4f2da005b0841d354f7c29c45ceb42e40d69debe913548592801681e11fb1a96",
           "5bfa5614bf5a79f4c2755dbdd037f383d3def6a063b7a61147f7893b9be9a7e0"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2176,7 +2672,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "fern-tundra": [
@@ -2209,7 +2712,14 @@
           "text": "Unknown command: /wd2. Use /help to see available commands."
         }
       ],
-      "cmp_sha": "4b218963cb9b1d9e2b1bf29c32dc30eff4089e3c678734bcbfdb878a096042a7"
+      "cmp_sha": "4b218963cb9b1d9e2b1bf29c32dc30eff4089e3c678734bcbfdb878a096042a7",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2246,7 +2756,14 @@
           "text": "There are 4 Python files in the repository."
         }
       ],
-      "cmp_sha": "e9ed7286ee77e8d3d2fea97641a9692fdb5d073770fecdfad06fa0ac2cf52be2"
+      "cmp_sha": "e9ed7286ee77e8d3d2fea97641a9692fdb5d073770fecdfad06fa0ac2cf52be2",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2283,7 +2800,14 @@
           "text": "The cart module defines Item and Cart. Cart keeps"
         }
       ],
-      "cmp_sha": "5cca63b82e28f128161bbe978b45cc04729f0f6f6dc6c9a452ad19ed6c06f857"
+      "cmp_sha": "5cca63b82e28f128161bbe978b45cc04729f0f6f6dc6c9a452ad19ed6c06f857",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2314,7 +2838,14 @@
           "text": "/wd2"
         }
       ],
-      "cmp_sha": "a18cdb02b3927a7f2daf42f8d21d8950f3e855b086701787d15dd399770488cd"
+      "cmp_sha": "a18cdb02b3927a7f2daf42f8d21d8950f3e855b086701787d15dd399770488cd",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2345,7 +2876,14 @@
           "text": "Explain the cart module in detail."
         }
       ],
-      "cmp_sha": "13b6b10ab9bc5069fe01b08b302fbd0bb0eebefa16a69e957764a52220744e31"
+      "cmp_sha": "13b6b10ab9bc5069fe01b08b302fbd0bb0eebefa16a69e957764a52220744e31",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2382,7 +2920,14 @@
           "text": "The label shows a red square and a blue circle. Below them it reads SKU-0042."
         }
       ],
-      "cmp_sha": "8c1720ef2ee96d9453f5232e064792557f68d42cb043b7a5d8763fd91b6a5b67"
+      "cmp_sha": "8c1720ef2ee96d9453f5232e064792557f68d42cb043b7a5d8763fd91b6a5b67",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2420,7 +2965,14 @@
           "native_type": "chisel/acp-content-blocks"
         }
       ],
-      "cmp_sha": "9e08321f72ddd18331cbc532de9684eea59e1c6fbd4c421c1e9a989f3fa03a57"
+      "cmp_sha": "9e08321f72ddd18331cbc532de9684eea59e1c6fbd4c421c1e9a989f3fa03a57",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2473,7 +3025,14 @@
           "native_type": "image.caption"
         }
       ],
-      "cmp_sha": "ff502b3186b5f23b1a34067881dfe7c8713e26340c594db36266c97c57ad4b63"
+      "cmp_sha": "ff502b3186b5f23b1a34067881dfe7c8713e26340c594db36266c97c57ad4b63",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2506,7 +3065,14 @@
           "native_type": "interrupt"
         }
       ],
-      "cmp_sha": "01fd7b522ce5a142673736015faef5b9110fc386c26bf369808032c739235c50"
+      "cmp_sha": "01fd7b522ce5a142673736015faef5b9110fc386c26bf369808032c739235c50",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2537,7 +3103,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2560,6 +3133,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -2574,7 +3151,14 @@
           "01fd7b522ce5a142673736015faef5b9110fc386c26bf369808032c739235c50"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2595,7 +3179,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2616,7 +3207,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "swe-1-6-slow",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "gentle-harvest": [
@@ -2649,7 +3247,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2686,7 +3291,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "3c1a737748f21171eedb15822ab699772adfda446a22906f02a03211576fb6d5"
+      "cmp_sha": "3c1a737748f21171eedb15822ab699772adfda446a22906f02a03211576fb6d5",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2717,7 +3329,14 @@
           "text": "Run the slow tests and read README.md."
         }
       ],
-      "cmp_sha": "4f693faa39c89e0487036e4b7cc3e9fa847634b1ccf3581793fe2777edf6e3ef"
+      "cmp_sha": "4f693faa39c89e0487036e4b7cc3e9fa847634b1ccf3581793fe2777edf6e3ef",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2740,6 +3359,10 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
@@ -2747,7 +3370,14 @@
           "3c1a737748f21171eedb15822ab699772adfda446a22906f02a03211576fb6d5"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "hollow-pine": [
@@ -2780,7 +3410,14 @@
           "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
         }
       ],
-      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad"
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2811,7 +3448,14 @@
           "text": "Print the numbers 1 to 50, one per line."
         }
       ],
-      "cmp_sha": "71805e0d36de7c52cd4ec4184f2c73ee77f4f83c5dd5fca86e4096136bac583a"
+      "cmp_sha": "71805e0d36de7c52cd4ec4184f2c73ee77f4f83c5dd5fca86e4096136bac583a",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2834,13 +3478,24 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
       "fingerprint": {
         "cmp_shas": [
           "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
           "71805e0d36de7c52cd4ec4184f2c73ee77f4f83c5dd5fca86e4096136bac583a"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ],
   "idle-quarry": [
@@ -2865,10 +3520,21 @@
       "reuse": "undetectable",
       "ts_source": "reset_on_save",
       "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": ""
+      },
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
     }
   ]
 }

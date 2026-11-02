@@ -9,10 +9,10 @@ const SIDEBAR = 'db/<channel>/db.sqlite#table:sidebar_threads';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/zed',
-  adapter_ver: '0.2.3',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'zed',
-  state_ver: 1,
+  state_ver: 2,
   // The lab fixture comes from Zed 1.24.3 (thread format 0.3.0); none is certified until
   // conformance
   // runs against a real Zed.
@@ -53,6 +53,22 @@ export const describe = Object.freeze({
       { source: '<OS keyring>', path: '*', opened: false },
     ],
     exemptions: [],
+  },
+  // The native fields the session record carries (sessions-model §2.7): leaf values of the thread
+  // row that no other field maps, as paths into the row like the redaction paths above. Each is a
+  // version or a flag, never a path or user content: `data.draft_prompt`,
+  // `data.sandboxed_terminal_temp_dir`, `data.sandbox_grants.write_paths` and the provider name
+  // (`data.model.provider`, which a user can name) stay out.
+  native: {
+    session: [
+      'data.version', // the thread's format version (0.3.0), not Zed's
+      'data.thinking_enabled', // whether extended thinking was on
+      'data.sandbox_grants.allow_fs_write_all', // the sandbox lets the agent write anywhere
+      'data.sandbox_grants.network_any_host', // the sandbox lets the agent reach any host
+      'data.sandbox_grants.unsandboxed', // the agent ran outside the sandbox
+    ],
+    message: [],
+    part: [],
   },
   facets: {
     // Every threads row whose blob is a thread of format 0.3.0 (or an unreadable one, which read

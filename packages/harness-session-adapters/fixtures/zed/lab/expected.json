@@ -18,7 +18,14 @@
       "at": "",
       "inherits": null,
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -49,7 +56,14 @@
           "text": "Read the file /home/user/work/inventory-cli/package.json and report the \"bin\" field's name (the command name the package exposes). Just report the bin name (and its target path if present) in your final message. Do not modify anything."
         }
       ],
-      "cmp_sha": "1e42008dbf161d6ca080871270bdde06b0c0e6952831076eaf92437193387fa6"
+      "cmp_sha": "1e42008dbf161d6ca080871270bdde06b0c0e6952831076eaf92437193387fa6",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -96,7 +110,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "c51587da74ee4dad3943b3f89b6cd3610b002554dc4982ba33206850eef64be4"
+      "cmp_sha": "c51587da74ee4dad3943b3f89b6cd3610b002554dc4982ba33206850eef64be4",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -127,7 +148,14 @@
           "text": "Synthetic reply aa68b4. synthetic reply text for the toy shop fixture synthetic"
         }
       ],
-      "cmp_sha": "df21bd36a1735571c82e8ca6862aec8551f58c9a71984ef540661f7f1b3aa98c"
+      "cmp_sha": "df21bd36a1735571c82e8ca6862aec8551f58c9a71984ef540661f7f1b3aa98c",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -150,6 +178,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "1e42008dbf161d6ca080871270bdde06b0c0e6952831076eaf92437193387fa6",
@@ -157,7 +192,14 @@
           "df21bd36a1735571c82e8ca6862aec8551f58c9a71984ef540661f7f1b3aa98c"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -178,7 +220,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_session",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "89a7f120-e9ac-4ed6-9738-070990d1e4db": [
@@ -211,7 +260,14 @@
           "text": "What does this CLI do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801"
+      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -242,7 +298,14 @@
           "text": "What does this CLI do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801"
+      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -273,7 +336,14 @@
           "text": "What does this CLI do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801"
+      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -304,7 +374,14 @@
           "text": "Synthetic reply 142e4d. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply tex"
         }
       ],
-      "cmp_sha": "771b8f3b3f0144ce35593a68ba1a023fc54b53f72f0981bc69fca59d01694083"
+      "cmp_sha": "771b8f3b3f0144ce35593a68ba1a023fc54b53f72f0981bc69fca59d01694083",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -335,7 +412,14 @@
           "text": "Add a \"count\" command to src/cli.js that prints how many skus exist. Then run in the terminal: node src/cli.js count   and then run: node src/cli.js get B-2 && exit 3"
         }
       ],
-      "cmp_sha": "0d8a180400a5a2b60fc873bef330e77c042e5ba5cf7d332374099aa0ae4c4e4d"
+      "cmp_sha": "0d8a180400a5a2b60fc873bef330e77c042e5ba5cf7d332374099aa0ae4c4e4d",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -387,7 +471,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "d329b06089df78a6f92051d58811467ad4372e23b65fb1f5f918d8b666bb8ef4"
+      "cmp_sha": "d329b06089df78a6f92051d58811467ad4372e23b65fb1f5f918d8b666bb8ef4",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -445,7 +536,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "b1e1861b2f17f1bf556b74d119a740e6e43f4c587b1b4cb853ae819a2fcf31aa"
+      "cmp_sha": "b1e1861b2f17f1bf556b74d119a740e6e43f4c587b1b4cb853ae819a2fcf31aa",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -493,7 +591,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "661b022b8a1a5d6227a3c28f355899ed91c8d41da21005d087cb0d9d2d7fd9fb"
+      "cmp_sha": "661b022b8a1a5d6227a3c28f355899ed91c8d41da21005d087cb0d9d2d7fd9fb",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -541,7 +646,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "4938f14a0fea2a6e6b3211a1cea846432bcd433dbfe7d716a89e28f7edadcf4d"
+      "cmp_sha": "4938f14a0fea2a6e6b3211a1cea846432bcd433dbfe7d716a89e28f7edadcf4d",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -572,7 +684,14 @@
           "text": "Synthetic reply b18cbe. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply t"
         }
       ],
-      "cmp_sha": "9407d8f7283e4a0d47ba03e2b7d9ff340245f4714adbfe131933f4f2d958b100"
+      "cmp_sha": "9407d8f7283e4a0d47ba03e2b7d9ff340245f4714adbfe131933f4f2d958b100",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -603,7 +722,14 @@
           "text": "Say hello in five words."
         }
       ],
-      "cmp_sha": "402cef5eef0bf8ccf255a7c81979a7488ecde55c579f30b0575084b8475413ae"
+      "cmp_sha": "402cef5eef0bf8ccf255a7c81979a7488ecde55c579f30b0575084b8475413ae",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -634,7 +760,14 @@
           "text": "Synthetic reply 4c3c5a. s"
         }
       ],
-      "cmp_sha": "56cee1160447f4b99391e334d4d3c144c90b1ac833a86e1ebc51303a95206fb7"
+      "cmp_sha": "56cee1160447f4b99391e334d4d3c144c90b1ac833a86e1ebc51303a95206fb7",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -657,6 +790,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801",
@@ -673,7 +813,14 @@
           "56cee1160447f4b99391e334d4d3c144c90b1ac833a86e1ebc51303a95206fb7"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -694,7 +841,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_session",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ]
 }

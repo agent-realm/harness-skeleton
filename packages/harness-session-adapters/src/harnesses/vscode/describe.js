@@ -6,10 +6,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/vscode',
-  adapter_ver: '0.2.1',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'vscode',
-  state_ver: 1,
+  state_ver: 2,
   // Observed on VS Code 1.142 with built-in Copilot Chat 0.70.0 (spec; fixture `lab`). Nothing is
   // certified until conformance runs against a real VS Code.
   versions: { certified: [], compatible: [] },
@@ -47,6 +47,19 @@ export const describe = Object.freeze({
     // URI, fixture `lab`), `tokenizer`, `tokenType`, and a URI's `authority` (in an object with a
     // `scheme`).
     exemptions: ['cacheKey', 'tokenizer', 'tokenType', 'authority'],
+  },
+  // The native fields the reply message carries (sessions-model §2.7): leaf values of its request
+  // that no other field maps. Each is an id or a number, none under the redacted `selectedModel`;
+  // the prompt and a sub-agent's messages hold none of them.
+  native: {
+    session: [],
+    message: [
+      'agent.id', // the chat participant that answered: github.copilot.editsAgent, …
+      'copilotCredits', // the Copilot credits the request used, not money (no usage field)
+      'result.timings.firstProgress', // ms to the reply's first progress
+      'result.timings.totalElapsed', // ms the reply took
+    ],
+    part: [],
   },
   facets: {
     // A delete removes the chat file (spec, "Lifecycle"); every chat file is listed.

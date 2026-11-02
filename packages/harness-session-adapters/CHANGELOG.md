@@ -50,6 +50,33 @@
     event's winning.
   - Each has a `resume` fixture case: a later launch moves session fields, and the session record's
     units follow them.
+- **vscode, zed, cursor and devin emit `units`, and three of them `native`** (sessions-model
+  v1.4.2, §2.7). As for the first four: every record names the units its own fields came from, the
+  session record never the fingerprint's. No key changes; `content_sha` moves only where `native` is
+  added.
+  - **vscode** `adapter_ver` 0.3.0, `state_ver` 2: the change-log fold keeps, per request, the ops
+    that wrote it whole and the ops at each of its keys, and per top-level key the last op that wrote
+    it. A prompt names the ops behind its own keys (`message`, `variableData`, `timestamp`,
+    `requestId`, `hiddenFromTranscript`); the reply, its usage and its compaction record the ops at
+    every other key. The session names the ops behind `creationDate`, `customTitle`, the latest
+    `ts`, the version's `agent` and the mode's `modeInfo`, and workspace.json for its cwd; a legacy
+    `.json` gives every field from its one unit. `native` on the reply message: `agent.id`,
+    `copilotCredits`, `result.timings.firstProgress`, `result.timings.totalElapsed`.
+  - **zed** `adapter_ver` 0.3.0, `state_ver` 2: every record names the thread row; an archive record,
+    and the session's archived `state`, the sidebar row that says so. `native` on the session:
+    `data.version`, `data.thinking_enabled`, `data.sandbox_grants.allow_fs_write_all`,
+    `data.sandbox_grants.network_any_host`, `data.sandbox_grants.unsandboxed`.
+  - **cursor** `adapter_ver` 0.3.0, `state_ver` 2: a message names its bubble rows (or the
+    composerData that holds them inline) and the composerData that orders them; a reply also the
+    user bubble whose model it took; a usage record the bubbles it sums and its model's row. The
+    session names the header or composerData row behind each field. No `native`.
+  - **devin** `adapter_ver` 0.3.0, `state_ver` 2: every record names the session's one snapshot.
+    `native` on the session, its `sessions` row: `backend_type`, `model`.
+  - Each has a `resume` fixture case.
+- **Conformance runner, for 2c.** The growth check's exact mode compares each triple's source and
+  unit keys and checks its generation against the engine's (a generation counts the engine's resets,
+  so a snapshot read torn in one pass is numbered apart from a full replay). `sqlGrowthCheck` has
+  the same `units` modes, and `sqlResumeCheck` is `resumeCheck` for database stores.
 - **Conformance runner: `units` beside the record comparisons.** `project(views, {units: false})`
   leaves them out. The reset control compares records without them and requires every triple to
   name the new generation. `growthCheck`'s `units: 'valid'` is for a source that can rewrite a

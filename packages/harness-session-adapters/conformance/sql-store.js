@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { MiniEngine } from './engine.js';
-import { filesOf, storeOf, tmpStore, project, fullReplay, copyTree } from './runner.js';
+import { filesOf, storeOf, tmpStore, project, fullReplay, copyTree, staleUnits } from './runner.js';
 
 function param(v) {
   if (v && typeof v === 'object' && typeof v.$b64 === 'string') return Buffer.from(v.$b64, 'base64');
@@ -73,7 +73,10 @@ export function prepareStore(caseDir, dst) {
 // The growth check for database stores: every database is rebuilt with the first fraction of its
 // statements, in `steps` passes, and the final incremental view must equal a full replay; a
 // further pass must read `unchanged` everywhere. Plain files under `store/` are copied whole first.
-export function sqlGrowthCheck(adapter, caseDir, { steps = 12 } = {}) {
+// `units` is growthCheck's (conformance/runner.js): 'exact' compares each triple's source and unit
+// keys and checks its generation against the engine's own reset count, which a fresh replay cannot
+// know; 'valid' compares records without them.
+export function sqlGrowthCheck(adapter, caseDir, { steps = 12, units = 'exact' } = {}) {
   const dir = tmpStore();
   try {
     if (fs.existsSync(path.join(caseDir, 'store'))) copyTree(path.join(caseDir, 'store'), dir);
@@ -84,11 +87,39 @@ export function sqlGrowthCheck(adapter, caseDir, { steps = 12 } = {}) {
       e.pass();
     }
     const whole = fullReplay(adapter, caseHarnessPath(caseDir, dir));
-    const incremental = project(e.views());
-    const full = project(whole.views());
+    const opts = { units: units === 'exact' ? 'keys' : false };
+    const incremental = project(e.views(), opts);
+    const full = project(whole.views(), opts);
+    const stale = staleUnits(e);
     e.pass();
     const notUnchanged = e.log.filter((l) => l.continuity !== 'unchanged');
-    return { equal: JSON.stringify(incremental) === JSON.stringify(full), incremental, full, notUnchanged };
+    return { equal: JSON.stringify(incremental) === JSON.stringify(full) && !stale.length, incremental, full, notUnchanged, stale };
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+// A resume for database stores (sessions-model §2.7 units): each database named in `upto` is built
+// with its first `upto[rel]` statements and read in one pass, then built whole and read again. Returns
+// each pass's session records, projected, by session id, and whether the second view equals a full
+// replay (units by source and unit key, each at the generation the engine holds).
+export function sqlResumeCheck(adapter, caseDir, upto) {
+  const dir = tmpStore();
+  try {
+    if (fs.existsSync(path.join(caseDir, 'store'))) copyTree(path.join(caseDir, 'store'), dir);
+    const dbs = sqlFilesOf(caseDir);
+    const e = new MiniEngine(adapter, storeOf(adapter, caseHarnessPath(caseDir, dir)));
+    const sessions = () => Object.fromEntries(Object.entries(project(e.views())).map(([sid, rs]) => [sid, rs.find((r) => r.type === 'session')]));
+    for (const db of dbs) buildDb(dir, db, upto[db.rel] ?? db.ops.length);
+    e.pass();
+    const before = sessions();
+    const views = () => project(e.views());
+    const first = views();
+    for (const db of dbs) buildDb(dir, db);
+    e.pass();
+    const opts = { units: 'keys' };
+    const equal = JSON.stringify(project(e.views(), opts)) === JSON.stringify(project(fullReplay(adapter, caseHarnessPath(caseDir, dir)).views(), opts)) && !staleUnits(e).length;
+    return { before, after: sessions(), first, last: views(), equal };
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

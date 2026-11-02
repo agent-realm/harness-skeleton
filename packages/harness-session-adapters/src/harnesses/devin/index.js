@@ -38,12 +38,12 @@
 import { SessionsError } from '../../errors.js';
 import { isRealFile, jsonOf } from '../../sources.js';
 import { openReadOnly, withRead, hasTable, readRowsSnapshot, textOf } from '../../sqlite.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256, jcs } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'devin';
-const STATE_VER = 1;
+const STATE_VER = 2;
 export const DB_REL = 'sessions.db';
 export const SOURCE = `${DB_REL}#table:message_nodes`;
 const INTERRUPTED = /^\s*\[Response interrupted by user\]\s*$/;
@@ -448,6 +448,7 @@ function emptyState() {
   return {
     state_ver: STATE_VER,
     body: null, // the snapshot unit, parsed
+    unit: null, // its units triple: every record comes from it (sessions-model §2.7)
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -465,9 +466,14 @@ export function derive(session, input, state) {
     if (src.source_key !== SOURCE) continue;
     const units = src.units ?? [];
     if (units.length) {
-      const o = jsonOf(units[units.length - 1]);
+      const u = units[units.length - 1];
+      const o = jsonOf(u);
       st.body = isObj(o) ? o : null;
-    } else if (src.complete) st.body = null;
+      st.unit = st.body ? [src.source_key, src.generation, u.unit_key] : null;
+    } else if (src.complete) {
+      st.body = null;
+      st.unit = null;
+    }
   }
 
   const { out, held, partial } = build(st.body);
@@ -475,7 +481,7 @@ export function derive(session, input, state) {
   const changed = [];
   const live = noHeld();
   const put = (r) => {
-    const sealed = seal({ type: r.type, ...key, ...r });
+    const sealed = seal({ type: r.type, ...key, ...r, units: [st.unit] });
     const k = recordKey(sealed);
     live[sealed.type].push(k);
     if (st.emitted[sealed.type][k] !== sealed.content_sha) {
@@ -847,6 +853,8 @@ function build(body) {
     reuse: 'undetectable',
     ts_source: 'reset_on_save',
     aliases: [],
+    // The session's native record is its `sessions` row.
+    native: nativeOf(row, describeData.native.session),
   });
   return { out, held, partial };
 }

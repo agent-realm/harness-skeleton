@@ -8,10 +8,10 @@ const SOURCE = 'sessions.db#table:message_nodes';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/devin',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'devin',
-  state_ver: 1,
+  state_ver: 2,
   // The fixtures are generated in the store's shape from the spec and the scrubbed lab samples;
   // none is certified until conformance runs against a real Devin Local.
   versions: { certified: [], compatible: [] },
@@ -38,6 +38,18 @@ export const describe = Object.freeze({
     // `affogato/cog-context` extension's `key` names a context slot (`workspace/context`; the
     // scrubbed system_info sample).
     exemptions: ['affogato/cog-context.key'],
+  },
+  // The native fields the session record carries (sessions-model §2.7): leaf columns of the
+  // session's `sessions` row (its native record) that no other field maps. Each is a fixed value
+  // set or a model id: `working_directory`, `workspace_dirs`, `cogs_json` (permission globs over
+  // paths) and `metadata` stay out.
+  native: {
+    session: [
+      'backend_type', // the backend the session runs on: windsurf, …
+      'model', // the model picked for the session: swe-1-6-slow, …
+    ],
+    message: [],
+    part: [],
   },
   facets: {
     // Every sessions row, hidden summary-agent sessions included (spec, "Store").

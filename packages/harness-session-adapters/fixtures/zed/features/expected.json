@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "db/0-stable/db.sqlite#table:sidebar_threads",
+          1,
+          "db/0-stable/db.sqlite#table:sidebar_threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -43,7 +50,14 @@
           "text": "What does this cart do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02"
+      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -74,7 +88,14 @@
           "text": "What does this cart do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02"
+      "cmp_sha": "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -111,7 +132,14 @@
           "text": "A toy shopping cart: items, qty, totals."
         }
       ],
-      "cmp_sha": "730686b0661748258654af4f170934f3f705f893f9be61c3fe04b305bb74267d"
+      "cmp_sha": "730686b0661748258654af4f170934f3f705f893f9be61c3fe04b305bb74267d",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -142,7 +170,14 @@
           "text": "Fix total_cents to use qty, then run: python3 -m pytest -q && exit 3"
         }
       ],
-      "cmp_sha": "84cd0abfde54dbad5be027c9b2201c97eae4dbfdf66febf3f0592156205ea1d7"
+      "cmp_sha": "84cd0abfde54dbad5be027c9b2201c97eae4dbfdf66febf3f0592156205ea1d7",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -194,7 +229,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7d7093a583a43887a0c62bbbd38b97b3307eee3f004a3ed6753094957a7b18f9"
+      "cmp_sha": "7d7093a583a43887a0c62bbbd38b97b3307eee3f004a3ed6753094957a7b18f9",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -252,7 +294,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "84b39b5b1550272642b9035e55685899574f142e96a43e0fa1bb6dbc03de3533"
+      "cmp_sha": "84b39b5b1550272642b9035e55685899574f142e96a43e0fa1bb6dbc03de3533",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -300,7 +349,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "69c7a6f7a0e2beb690475241b456de630a238d1a5371aa201f38863b7d2cfaa9"
+      "cmp_sha": "69c7a6f7a0e2beb690475241b456de630a238d1a5371aa201f38863b7d2cfaa9",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -337,7 +393,14 @@
           "text": "Fixed: total_cents multiplies by qty; the tests pass, then the shell exits 3 as asked."
         }
       ],
-      "cmp_sha": "cbce2fde02b915ba85f0813ffdd4a5422e18e47a15e28671a3fedc321aaa8b17"
+      "cmp_sha": "cbce2fde02b915ba85f0813ffdd4a5422e18e47a15e28671a3fedc321aaa8b17",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -368,7 +431,14 @@
           "text": "Wait 90 s, then clean the build."
         }
       ],
-      "cmp_sha": "d78bfbb731fab7dc6365953207883089c99aaeb27c13c6da069aa425a48e1f76"
+      "cmp_sha": "d78bfbb731fab7dc6365953207883089c99aaeb27c13c6da069aa425a48e1f76",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -438,7 +508,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "ed0681ab0533d27dbede719eaf737953d472fa0ab0ab4589dbe977bb0cb8234a"
+      "cmp_sha": "ed0681ab0533d27dbede719eaf737953d472fa0ab0ab4589dbe977bb0cb8234a",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -469,7 +546,14 @@
           "text": "Stopped: nothing ran."
         }
       ],
-      "cmp_sha": "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0"
+      "cmp_sha": "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -492,6 +576,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": true,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "35344ad6fca43139493804367fe8cdc3c4a0b116d3b8462ce109efd661969c02",
@@ -507,7 +598,19 @@
           "e04b4170900c794f5294dc90809c8b1a5a1021759e49dbf84eff958d851270a0"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "db/0-stable/db.sqlite#table:sidebar_threads",
+          1,
+          "db/0-stable/db.sqlite#table:sidebar_threads"
+        ],
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -528,7 +631,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_session",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "5a1e0000-0000-4000-8000-0000000000c2": [
@@ -575,7 +685,14 @@
           "bytes_len": 21
         }
       ],
-      "cmp_sha": "cceb19405ae626bd73e75b426e63017da79d2540fa4c9eedb1d16499af49eb0a"
+      "cmp_sha": "cceb19405ae626bd73e75b426e63017da79d2540fa4c9eedb1d16499af49eb0a",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -618,7 +735,14 @@
           "text": "Done."
         }
       ],
-      "cmp_sha": "9d5725ccec4ec43d8fd1cedd70b4214a007751e05f03302069f233f256fdf78b"
+      "cmp_sha": "9d5725ccec4ec43d8fd1cedd70b4214a007751e05f03302069f233f256fdf78b",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -655,7 +779,14 @@
           "text": "Second."
         }
       ],
-      "cmp_sha": "2df3ca6bd8cb549a4baced1b60ceb8965399b817c97f02fae4ed63fc19407904"
+      "cmp_sha": "2df3ca6bd8cb549a4baced1b60ceb8965399b817c97f02fae4ed63fc19407904",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -692,7 +823,14 @@
           "text": "Third."
         }
       ],
-      "cmp_sha": "e06c94d9f6817e693e02aa7b013adae6e4a1db613fc9a6d79b078b948503c88e"
+      "cmp_sha": "e06c94d9f6817e693e02aa7b013adae6e4a1db613fc9a6d79b078b948503c88e",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -729,7 +867,14 @@
           "text": "Fourth."
         }
       ],
-      "cmp_sha": "d1561017a6b48b07a28be5d762049f18e49de59f4707abce5b9ecbf745e95e21"
+      "cmp_sha": "d1561017a6b48b07a28be5d762049f18e49de59f4707abce5b9ecbf745e95e21",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -767,7 +912,14 @@
           "native_type": "Hologram"
         }
       ],
-      "cmp_sha": "70303f16aa947801bd14757bc84e7a1d6568c4db4c2f88a5f74d9d6bba0d9e0d"
+      "cmp_sha": "70303f16aa947801bd14757bc84e7a1d6568c4db4c2f88a5f74d9d6bba0d9e0d",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -790,6 +942,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "cceb19405ae626bd73e75b426e63017da79d2540fa4c9eedb1d16499af49eb0a",
@@ -800,7 +959,14 @@
           "70303f16aa947801bd14757bc84e7a1d6568c4db4c2f88a5f74d9d6bba0d9e0d"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "5a1e0000-0000-4000-8000-0000000000c3": [
@@ -819,7 +985,14 @@
       },
       "at": "5a1e0000-0000-4000-8000-0000000000a5+4",
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -836,7 +1009,14 @@
       },
       "at": "5a1e0000-0000-4000-8000-0000000000a6+1",
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -867,7 +1047,14 @@
           "text": "Refactor cart.py."
         }
       ],
-      "cmp_sha": "c1a2844d6abfedc39d3f1c7ef22242cfdaf084383c8757d99929bd69e7f62884"
+      "cmp_sha": "c1a2844d6abfedc39d3f1c7ef22242cfdaf084383c8757d99929bd69e7f62884",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -898,7 +1085,14 @@
           "text": "Step one."
         }
       ],
-      "cmp_sha": "3c70ea5e11312dfce5584f74d16deff017c9540848880d39c19503d458f54196"
+      "cmp_sha": "3c70ea5e11312dfce5584f74d16deff017c9540848880d39c19503d458f54196",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -931,7 +1125,14 @@
           "native_type": "Resume"
         }
       ],
-      "cmp_sha": "1d1d3aaf767eda919a63f693769b8927d357c0e8c684281e301be0d00e3b7c54"
+      "cmp_sha": "1d1d3aaf767eda919a63f693769b8927d357c0e8c684281e301be0d00e3b7c54",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -962,7 +1163,14 @@
           "text": "Step two."
         }
       ],
-      "cmp_sha": "7c889451e15c96451679cc7cd2e3c481154d977c0a1d2a2fdeff7de5d8b2a955"
+      "cmp_sha": "7c889451e15c96451679cc7cd2e3c481154d977c0a1d2a2fdeff7de5d8b2a955",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -996,7 +1204,14 @@
           }
         }
       ],
-      "cmp_sha": "24f0f38864af5d838c2e9fe0143923e1243e850ce45ddfd16ed76935220cc702"
+      "cmp_sha": "24f0f38864af5d838c2e9fe0143923e1243e850ce45ddfd16ed76935220cc702",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1027,7 +1242,14 @@
           "text": "Next?"
         }
       ],
-      "cmp_sha": "d46a6e34ff37fd7519df23db836c579d9dd4acdf133df9077ee87abc398965cd"
+      "cmp_sha": "d46a6e34ff37fd7519df23db836c579d9dd4acdf133df9077ee87abc398965cd",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1061,7 +1283,14 @@
           }
         }
       ],
-      "cmp_sha": "ddac55054210e3b459464a35372f87878bd034d3dc6acf204934128ce625260c"
+      "cmp_sha": "ddac55054210e3b459464a35372f87878bd034d3dc6acf204934128ce625260c",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1094,7 +1323,14 @@
           "native_type": "SomethingNew"
         }
       ],
-      "cmp_sha": "0ef43bf05406672fa9ff027ff73b735131fe28f3923be6b158d3386a8593e8de"
+      "cmp_sha": "0ef43bf05406672fa9ff027ff73b735131fe28f3923be6b158d3386a8593e8de",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1125,7 +1361,14 @@
           "text": "Done."
         }
       ],
-      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1148,6 +1391,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "c1a2844d6abfedc39d3f1c7ef22242cfdaf084383c8757d99929bd69e7f62884",
@@ -1161,7 +1411,14 @@
           "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "5a1e0000-0000-4000-8000-0000000000c4": [
@@ -1183,7 +1440,14 @@
       "at": "toolu_toy_000000000000000006",
       "inherits": null,
       "child_stored": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1214,7 +1478,14 @@
           "text": "Use a sub-agent to list the files."
         }
       ],
-      "cmp_sha": "9c951aa6332ecd6b298a481d01dcbb09852673afa6b29191ab8ac2992f6f0b79"
+      "cmp_sha": "9c951aa6332ecd6b298a481d01dcbb09852673afa6b29191ab8ac2992f6f0b79",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1262,7 +1533,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "676d197d1a39d6511ea5eda4ef800393a18e2ccb5587dc375a26d713335f9520"
+      "cmp_sha": "676d197d1a39d6511ea5eda4ef800393a18e2ccb5587dc375a26d713335f9520",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1293,7 +1571,14 @@
           "text": "Two files."
         }
       ],
-      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1316,6 +1601,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "9c951aa6332ecd6b298a481d01dcbb09852673afa6b29191ab8ac2992f6f0b79",
@@ -1323,7 +1615,14 @@
           "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "5a1e0000-0000-4000-8000-0000000000c5": [
@@ -1345,7 +1644,14 @@
       "at": "",
       "inherits": null,
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1376,7 +1682,14 @@
           "text": "List the files in toyshop/."
         }
       ],
-      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e"
+      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1407,7 +1720,14 @@
           "text": "cart.py, test_cart.py"
         }
       ],
-      "cmp_sha": "cb4af4b447220b62282751e11af8a176ac8e7dd0e91e9b8c49caad1dc5dfafcc"
+      "cmp_sha": "cb4af4b447220b62282751e11af8a176ac8e7dd0e91e9b8c49caad1dc5dfafcc",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1430,13 +1750,27 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e",
           "cb4af4b447220b62282751e11af8a176ac8e7dd0e91e9b8c49caad1dc5dfafcc"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ],
   "5a1e0000-0000-4000-8000-0000000000c6": [
@@ -1469,7 +1803,14 @@
           "text": "Read cart.py."
         }
       ],
-      "cmp_sha": "ab870a1b0420e59e2a4d72e653ab695ba146d2b80424d30723dfaf88dfe38441"
+      "cmp_sha": "ab870a1b0420e59e2a4d72e653ab695ba146d2b80424d30723dfaf88dfe38441",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1510,7 +1851,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "76f58fe492ad0039fc8d51f742c169406f02b2c9eaa08cbb955e9e07b4618f4f"
+      "cmp_sha": "76f58fe492ad0039fc8d51f742c169406f02b2c9eaa08cbb955e9e07b4618f4f",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1541,7 +1889,14 @@
           "text": "Never mind. Now run the tests."
         }
       ],
-      "cmp_sha": "f75434beb6a55024858e3d37f580b29ee8f5fbd66f0ca5634868f5d61bfa8bc7"
+      "cmp_sha": "f75434beb6a55024858e3d37f580b29ee8f5fbd66f0ca5634868f5d61bfa8bc7",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1564,6 +1919,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "ab870a1b0420e59e2a4d72e653ab695ba146d2b80424d30723dfaf88dfe38441",
@@ -1571,7 +1933,14 @@
           "f75434beb6a55024858e3d37f580b29ee8f5fbd66f0ca5634868f5d61bfa8bc7"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1592,7 +1961,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ]
 }

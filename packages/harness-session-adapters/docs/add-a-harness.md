@@ -123,13 +123,19 @@ you commit: the tests then hold the adapter to it.
 ## 6. Tests and the matrix row
 
 Model `test/<harness-id>.test.js` on `test/claude-code.test.js`. It covers the golden, the growth
-check, stable keys, the name lint, the reset control, a resume (`resumeCheck`: the session record's
-`units` follow the fields a later launch moves), `list`, the errors, the explicit facets and
-`is_error`.
-- The growth check holds `units` to the full replay's by default. Pass `units: 'valid'` only when
-  a source can rewrite a stored record without changing the record derived from it (Gemini CLI's
-  `$patch`): that moves the units and not the `content_sha`, so the view keeps the units of its
-  last write (sessions-model §2.7), and each must still name a unit the engine holds.
+check, stable keys, the name lint, the reset control, a resume (`resumeCheck`, or `sqlResumeCheck`
+for a database store: the session record's `units` follow the fields a later launch moves), `list`,
+the errors, the explicit facets and `is_error`.
+- The growth check (and `sqlGrowthCheck`) holds `units` to the full replay's by default: the same
+  source and unit keys, each at the generation the engine holds the source in. A generation is the
+  engine's count of a source's resets, so a snapshot read torn in one pass is numbered apart from a
+  full replay's. Pass `units: 'valid'` only when a source can rewrite a stored record without
+  changing the record derived from it (Gemini CLI's `$patch`): that moves the units and not the
+  `content_sha`, so the view keeps the units of its last write (sessions-model §2.7), and each must
+  still name a unit the engine holds.
+- A snapshot source has one unit, keyed by its `source_key`, and a delta row keeps its key when it
+  changes (sessions §2): their triples name the slot, and a resume moves only what another unit
+  gives (a new row, an archiving sidebar row).
 - The reset control compares records without `units` and checks that every triple names the new
   generation.
 

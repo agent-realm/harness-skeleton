@@ -512,6 +512,26 @@ function switchCompaction() {
   return st;
 }
 
+// A session resumed in a later launch (sessions-model §2.7 units): the second launch adds a turn and
+// switches the agent mode. The session's one source is a snapshot of its rows, so its triple names
+// the same slot in both launches while the mode and the second turn move. The resume test
+// (test/devin.test.js) builds the store with the statements before the mode switch.
+function resumed() {
+  const st = new Store();
+  const t0 = min(0);
+  const s = new Session(st, { id: 'quiet-delta', working_directory: REPO, created_at: sec(t0), title: 'Count the files' });
+  const n0 = s.add(null, systemInfo('qd:si', t0 + 5));
+  const u1 = s.add(n0, prompt('qd:u1', t0 + 1000, 'Count the files.'));
+  const a1 = s.twin(u1, reply('qd:a1', t0 + 3000, 'Two files.', { metrics: [800, 4, 12000] }));
+  s.save(a1, t0 + 3100);
+  // The second launch.
+  st.op('UPDATE sessions SET agent_mode = ? WHERE id = ?', ['ask', 'quiet-delta']);
+  const u2 = s.add(a1, prompt('qd:u2', min(1440), 'And in toyshop?'));
+  const a2 = s.twin(u2, reply('qd:a2', min(1440) + 2000, 'One file.', { metrics: [900, 3, 12000] }));
+  s.save(a2, min(1440) + 2100);
+  return st;
+}
+
 function write(name, store) {
   const dir = path.join(HERE, name, 'store-sql');
   fs.mkdirSync(dir, { recursive: true });
@@ -523,4 +543,5 @@ function write(name, store) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   write('features', features());
   write('switch-compaction', switchCompaction());
+  write('resume', resumed());
 }

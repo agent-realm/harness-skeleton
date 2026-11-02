@@ -1,0 +1,305 @@
+{
+  "quiet-delta": [
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "message_id": "0e95cce6-0e5e-48ff-865c-90767432e4bb",
+      "parent_id": "92f58a88-a03f-4241-8d46-5b70ddd40c5e",
+      "order": "00000003",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-21T10:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in toyshop?"
+        }
+      ],
+      "cmp_sha": "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "message_id": "17a99b21-ee30-4f2d-8cf5-115852405168",
+      "parent_id": "58620e32-ab82-4222-879b-51824acd4f88",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "message_id": "58620e32-ab82-4222-879b-51824acd4f88",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "system",
+      "source": "injected",
+      "to_user": false,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:00.005Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "<system_info>\nThe following information is automatically generated context about your current environment.\nCurrent workspace directories:\n  /home/user/work/toyshop (cwd)\n\nPlatform: linux\nToday's date: Tuesday, 2026-10-20\nYou are running as a coding agent inside Devin Desktop.\n</system_info>"
+        }
+      ],
+      "cmp_sha": "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "message_id": "675c7bd5-c945-4083-8079-08cefaa05a91",
+      "parent_id": "0e95cce6-0e5e-48ff-865c-90767432e4bb",
+      "order": "00000004",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-21T10:00:02.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "01533a34-4cc9-407e-8404-54767c8ba9d4",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "cmp_sha": "e6b7edc4f1bdd8b755e202d5fd18ed72e39ffdf75940ecbe6574432085910509",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "message_id": "92f58a88-a03f-4241-8d46-5b70ddd40c5e",
+      "parent_id": "17a99b21-ee30-4f2d-8cf5-115852405168",
+      "order": "00000002",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": true,
+      "ts": "2026-10-20T10:00:03.000Z",
+      "requested_model": null,
+      "served_model": "swe-1-6-slow",
+      "effort": null,
+      "response_id": "aab103b6-a16a-4a20-87dd-e02061b956dc",
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "reasoning",
+          "text": "Look at the cart first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "1",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "cmp_sha": "73ac72e0b7f0935a658def28dd34696cd3e6acdb6e0f33fb131149bebb640f1a",
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "engine": null,
+      "client": "devin",
+      "harness_version": null,
+      "title": "Count the files",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T10:00:00.000Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "ask",
+      "kind": null,
+      "reuse": "undetectable",
+      "ts_source": "reset_on_save",
+      "aliases": [],
+      "native": {
+        "backend_type": "windsurf",
+        "model": "swe-1-6-slow"
+      },
+      "fingerprint": {
+        "cmp_shas": [
+          "ad481112951a3c86fe30eb7bb6ed64e47802d82730f97c187baf4328d428acad",
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "73ac72e0b7f0935a658def28dd34696cd3e6acdb6e0f33fb131149bebb640f1a",
+          "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+          "e6b7edc4f1bdd8b755e202d5fd18ed72e39ffdf75940ecbe6574432085910509"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "usage_id": "message:675c7bd5-c945-4083-8079-08cefaa05a91#1",
+      "anchor": {
+        "message_id": "675c7bd5-c945-4083-8079-08cefaa05a91"
+      },
+      "input": 900,
+      "output": 3,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "devin",
+      "session_id": "quiet-delta",
+      "incarnation": "",
+      "usage_id": "message:92f58a88-a03f-4241-8d46-5b70ddd40c5e#1",
+      "anchor": {
+        "message_id": "92f58a88-a03f-4241-8d46-5b70ddd40c5e"
+      },
+      "input": 800,
+      "output": 4,
+      "cache_read": 12000,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "swe-1-6-slow",
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions.db#table:message_nodes",
+          1,
+          "sessions.db#table:message_nodes"
+        ]
+      ]
+    }
+  ]
+}

@@ -8,13 +8,13 @@ import { adapterFor, harnessPath } from '../src/index.js';
 import { idTime } from '../src/harnesses/opencode/index.js';
 import { jcs, sha256 } from '../src/jcs.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlFilesOf, buildDb, sqlGrowthCheck } from '../conformance/sql-store.js';
+import { fullReplay, project, tmpStore, copyTree, storeOf, nameLint, staleUnits } from '../conformance/runner.js';
+import { prepareStore, sqlFilesOf, buildDb, sqlGrowthCheck, sqlResumeCheck } from '../conformance/sql-store.js';
 import { SCHEMA, mkId, T0 } from '../fixtures/opencode/generate.js';
 
 const adapter = adapterFor('opencode');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'opencode');
-const CASES = ['basic', 'features', 'edits', 'v2', 'channels', 'sentinel'];
+const CASES = ['basic', 'features', 'edits', 'v2', 'channels', 'sentinel', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const T = (name) => `table:${name}`;
 // Every OpenCode store is bound to its database file (sessions-model §1).
@@ -67,7 +67,10 @@ for (const name of CASES) {
   });
 
   test(`opencode/${name}: every incremental path folds to the full replay; a further read is unchanged`, () => {
-    const r = sqlGrowthCheck(adapter, path.join(FIX, name), { steps: 12 });
+    // A usage record's counts move from the message row to its step-finish rows when they arrive,
+    // and the two agree: a units-only change (sessions-model §2.7), so units are checked for
+    // pointing at held units, not for equality.
+    const r = sqlGrowthCheck(adapter, path.join(FIX, name), { steps: 12, units: 'valid' });
     assert.deepEqual(r.incremental, r.full);
     assert.ok(r.equal, 'the incremental and the full view differ');
     assert.deepEqual(r.notUnchanged, []);
@@ -254,7 +257,10 @@ test('opencode: the event log is a seq stream: a new removal appends, a wiped lo
     e.pass();
     assert.equal(continuity(), 'reset');
     assert.equal(edits(), 1);
-    assert.deepEqual(project(e.views()), project(fullReplay(adapter, storeFile(dir)).views()));
+    // The reset gives the event log a new generation, which a fresh replay numbers 1: units by
+    // source and unit key, each at the generation the engine holds (sessions-model §2.7).
+    assert.deepEqual(project(e.views(), { units: 'keys' }), project(fullReplay(adapter, storeFile(dir)).views(), { units: 'keys' }));
+    assert.deepEqual(staleUnits(e), []);
   });
 });
 
@@ -750,4 +756,29 @@ test('opencode: retraction vs destruction: a pending revert keeps its messages, 
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a session reopened in a later launch.
+// The session row is a snapshot, so its triple names the slot in both launches while the title
+// moves; updated_at moves to the second turn's message row, and the units with it.
+test('opencode: resume: the session record\'s updated_at unit moves to the second launch\'s message row', () => {
+  const [db] = sqlFilesOf(path.join(FIX, 'resume'));
+  const upto = db.ops.findIndex((o) => o.sql.startsWith('UPDATE session SET title'));
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [db.rel]: upto });
+  const [sid] = Object.keys(r.after);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  // The latest message's own row (a reply's units also name its prompt's row, for the requested
+  // model).
+  const lastRow = (rs) => {
+    const m = rs.filter((x) => x.type === 'message').sort((x, y) => (x.ts < y.ts ? -1 : x.ts > y.ts ? 1 : 0)).pop();
+    return [T('message'), 1, `message:${m.message_id}`];
+  };
+  const slot = b.units.find(([sk]) => sk === T('session'));
+  assert.ok(slot, 'the session row');
+  assert.deepEqual([b.title, b.units], ['Count the files', [slot, lastRow(r.first[sid])].sort((x, y) => (x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0))]);
+  assert.equal(a.title, 'Count the files and tests');
+  assert.ok(a.units.some((u) => JSON.stringify(u) === JSON.stringify(slot)), 'the same session slot');
+  assert.ok(a.units.some((u) => JSON.stringify(u) === JSON.stringify(lastRow(r.last[sid]))), 'the second launch\'s latest message row');
+  assert.ok(!a.units.some((u) => JSON.stringify(u) === JSON.stringify(lastRow(r.first[sid]))), 'not the first launch\'s');
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

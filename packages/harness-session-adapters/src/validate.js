@@ -50,8 +50,9 @@ const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
  * The two v1.4 fields (sessions-model §2.7) are checked where they appear: `units` is a sorted list
  * of distinct [source_key, generation, unit_key] triples, and `native` an object of leaf values
  * (string, number, boolean, null), on session and message records and parts only. Given `native` (the adapter's `describe().native`), every key of
- * a `native` must be a path declared for its record type. A record without either is unaffected,
- * so a v1.3 record and a v1.4 one validate alike.
+ * a `native` must be a path declared for its record type, and a record of a type with declared
+ * paths must carry `native` (`{}` when it holds none). Without `native`, a record without either
+ * field is unaffected, so a v1.3 record and a v1.4 one validate alike.
  * @param {{harness?: string, sessionId?: string, native?: {session?: string[], message?: string[], part?: string[]}}} [expect]
  *   the harness and session the records must name, and the adapter's declared native paths
  */
@@ -179,10 +180,13 @@ export function validateSession(records, expect = {}) {
     if ('native' in r) {
       if (!NATIVE_TYPES.includes(r.type)) bad(at, `native on a ${r.type} record (sessions-model §2.7: session, message and part only)`);
       else checkNative(at, r.native, expect.native?.[r.type], 'native' in expect, bad);
-    }
+    } else if (NATIVE_TYPES.includes(r.type)) missingNative(at, expect.native?.[r.type], bad);
     if (r.type === 'message' && Array.isArray(r.parts)) {
       r.parts.forEach((p, i) => {
-        if (p && 'native' in p) checkNative(`${at} part ${p.part_id ?? i}`, p.native, expect.native?.part, 'native' in expect, bad);
+        if (!p || typeof p !== 'object') return;
+        const pat = `${at} part ${p.part_id ?? i}`;
+        if ('native' in p) checkNative(pat, p.native, expect.native?.part, 'native' in expect, bad);
+        else missingNative(pat, expect.native?.part, bad);
       });
     }
   }
@@ -207,6 +211,12 @@ function checkUnits(at, units, bad) {
     }
     prev = t;
   }
+}
+
+// A record or part without `native` where the adapter declares paths for its type: §2.7 gives it
+// `{}` when it holds none of them, never no field.
+function missingNative(at, declared, bad) {
+  if (declared?.length) bad(at, 'native is missing on a record type the adapter declares paths for (sessions-model §2.7: {} when it holds none)');
 }
 
 // `native` (sessions-model §2.7): an object; given the adapter's declared paths for the record type,

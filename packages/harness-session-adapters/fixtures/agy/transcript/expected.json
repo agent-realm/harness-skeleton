@@ -19,7 +19,14 @@
       "evidence": "explicit",
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
-      "incarnation": ""
+      "incarnation": "",
+      "units": [
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -52,7 +59,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "9eb6adc561e8ede1d4f4f9d5de5e32536098fe83c05ccc587f4ea583ca859af0"
+      "cmp_sha": "9eb6adc561e8ede1d4f4f9d5de5e32536098fe83c05ccc587f4ea583ca859af0",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -92,7 +106,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "3db5cb0bd89a2c6b91d310c7e4249c9790c4fd694da07eb142710b398d5d5d29"
+      "cmp_sha": "3db5cb0bd89a2c6b91d310c7e4249c9790c4fd694da07eb142710b398d5d5d29",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1120"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -129,7 +150,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "27946246e46b08d1c1196483ec1987cc7b077e072a93bce623498056f410c383"
+      "cmp_sha": "27946246e46b08d1c1196483ec1987cc7b077e072a93bce623498056f410c383",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1538"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -162,7 +190,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75"
+      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1892"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -200,7 +235,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "04ed9b3d2b59d9015dd6fdb67bbd4bcfa48c24dde994288293abb4ecb0227f69"
+      "cmp_sha": "04ed9b3d2b59d9015dd6fdb67bbd4bcfa48c24dde994288293abb4ecb0227f69",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2062"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -237,7 +279,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "328b6d04288125a125dd398494655f11cac931adb6941305de82fecdd5dfd2b0"
+      "cmp_sha": "328b6d04288125a125dd398494655f11cac931adb6941305de82fecdd5dfd2b0",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2414"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -270,7 +319,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75"
+      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2943"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -309,7 +365,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "3fe83ac5f46574712eda1b368bb58f7d6b8bb191787a757c648f874f3c0bdccd"
+      "cmp_sha": "3fe83ac5f46574712eda1b368bb58f7d6b8bb191787a757c648f874f3c0bdccd",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3113"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -346,7 +409,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "a3c045a81ffb588ce33561b9dbd41fd5b21427d69363e03f65391308f52ddd76"
+      "cmp_sha": "a3c045a81ffb588ce33561b9dbd41fd5b21427d69363e03f65391308f52ddd76",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3552"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -379,7 +449,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75"
+      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3806"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -410,7 +487,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "7f961a6a240400b657627990630c59a72088f62c113a45655dba6310afd4d8bc"
+      "cmp_sha": "7f961a6a240400b657627990630c59a72088f62c113a45655dba6310afd4d8bc",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3977"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -443,7 +527,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75"
+      "cmp_sha": "a488f971797223d891b1e73b2cf7928f1208719940e7247e7331d27276f5ef75",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "415"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -476,7 +567,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "cmp_sha": "9fdaf9652f66bf5bfa230ba03ccc5fb614411c18d9e888b8dfdcec260395db0a"
+      "cmp_sha": "9fdaf9652f66bf5bfa230ba03ccc5fb614411c18d9e888b8dfdcec260395db0a",
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "585"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -516,7 +614,19 @@
           "7f961a6a240400b657627990630c59a72088f62c113a45655dba6310afd4d8bc"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3806"
+        ],
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -537,7 +647,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1120"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -558,7 +675,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2062"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -579,7 +703,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3113"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -600,7 +731,14 @@
       "harness": "agy",
       "session_id": "9df49d75-5429-4f24-aafb-1dd7442838e0",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/9df49d75-5429-4f24-aafb-1dd7442838e0/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3977"
+        ]
+      ]
     }
   ],
   "e96784d2-85ca-49f8-97c0-b271bfad1510": [
@@ -640,7 +778,14 @@
       "harness": "agy",
       "session_id": "e96784d2-85ca-49f8-97c0-b271bfad1510",
       "incarnation": "",
-      "cmp_sha": "c6c32e5f22ab12e89392b6ee43269fb071ee218df1d6cd045c1030686cee6eee"
+      "cmp_sha": "c6c32e5f22ab12e89392b6ee43269fb071ee218df1d6cd045c1030686cee6eee",
+      "units": [
+        [
+          "brain/e96784d2-85ca-49f8-97c0-b271bfad1510/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -677,7 +822,14 @@
       "harness": "agy",
       "session_id": "e96784d2-85ca-49f8-97c0-b271bfad1510",
       "incarnation": "",
-      "cmp_sha": "def7ed5f95340af3dbf33303fde3d0b8934233053c7b07c1849951f3f2ed55f8"
+      "cmp_sha": "def7ed5f95340af3dbf33303fde3d0b8934233053c7b07c1849951f3f2ed55f8",
+      "units": [
+        [
+          "brain/e96784d2-85ca-49f8-97c0-b271bfad1510/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1019"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -722,7 +874,14 @@
       "harness": "agy",
       "session_id": "e96784d2-85ca-49f8-97c0-b271bfad1510",
       "incarnation": "",
-      "cmp_sha": "06c54e7bf0b92e589eadc61038fc74b5c89c0f16e3023cdc2ceea7f6c607164a"
+      "cmp_sha": "06c54e7bf0b92e589eadc61038fc74b5c89c0f16e3023cdc2ceea7f6c607164a",
+      "units": [
+        [
+          "brain/e96784d2-85ca-49f8-97c0-b271bfad1510/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "542"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -752,7 +911,19 @@
           "def7ed5f95340af3dbf33303fde3d0b8934233053c7b07c1849951f3f2ed55f8"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "brain/e96784d2-85ca-49f8-97c0-b271bfad1510/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1019"
+        ],
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -773,7 +944,14 @@
       "harness": "agy",
       "session_id": "e96784d2-85ca-49f8-97c0-b271bfad1510",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/e96784d2-85ca-49f8-97c0-b271bfad1510/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "542"
+        ]
+      ]
     }
   ],
   "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d": [
@@ -792,7 +970,14 @@
       "evidence": "explicit",
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
-      "incarnation": ""
+      "incarnation": "",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1579"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -809,7 +994,14 @@
       "evidence": "explicit",
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
-      "incarnation": ""
+      "incarnation": "",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "529"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -847,7 +1039,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "1cb8643120ce5d50f180ed5af10e8ed2c23b6ea44b7a7fd61dce3d1cc139913f"
+      "cmp_sha": "1cb8643120ce5d50f180ed5af10e8ed2c23b6ea44b7a7fd61dce3d1cc139913f",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -878,7 +1077,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6"
+      "cmp_sha": "ff95a13faf14be9be5baec7055e0b504fc362e319bde44507693bc7fd71f02e6",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1083"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -916,7 +1122,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "fda8e19add8b324ddea940515da2d6545e8a964bda8b03bc682f31fa3ba748d1"
+      "cmp_sha": "fda8e19add8b324ddea940515da2d6545e8a964bda8b03bc682f31fa3ba748d1",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1297"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -948,7 +1161,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "8da800880579943080a7f7c20b37092e3455b7206aa016173d68028a8ec1be5a"
+      "cmp_sha": "8da800880579943080a7f7c20b37092e3455b7206aa016173d68028a8ec1be5a",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1579"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -986,7 +1206,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "3fefa131de63320b3400ed82a042e5f41ba1427f57c9ef1b752b3e610f5d5ad4"
+      "cmp_sha": "3fefa131de63320b3400ed82a042e5f41ba1427f57c9ef1b752b3e610f5d5ad4",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2125"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1019,7 +1246,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "f82126c03382131d95b90769c21ddc07c4b7fbcda12391fc6c32731ef9cd58d8"
+      "cmp_sha": "f82126c03382131d95b90769c21ddc07c4b7fbcda12391fc6c32731ef9cd58d8",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "2453"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1050,7 +1284,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "aecd954471fa2c3cbf2b187a7e4e55b0a868be3c547910f9349f01125362beaf"
+      "cmp_sha": "aecd954471fa2c3cbf2b187a7e4e55b0a868be3c547910f9349f01125362beaf",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3000"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1081,7 +1322,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "319"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1119,7 +1367,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "8841d37992e2a2f5f266b8b80fbbf5792422898b4c53fee9f22f203ebf804dff"
+      "cmp_sha": "8841d37992e2a2f5f266b8b80fbbf5792422898b4c53fee9f22f203ebf804dff",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3247"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1157,7 +1412,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "f68a518b7ff308fe10f06d4b3f2d4cd4fe24f438502dffbee51cfcf84ae78f00"
+      "cmp_sha": "f68a518b7ff308fe10f06d4b3f2d4cd4fe24f438502dffbee51cfcf84ae78f00",
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "529"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1192,7 +1454,19 @@
           "8841d37992e2a2f5f266b8b80fbbf5792422898b4c53fee9f22f203ebf804dff"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3247"
+        ],
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1213,7 +1487,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "1083"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1234,7 +1515,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "3000"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1255,7 +1543,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "brain/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d/.system_generated/logs/transcript_full.jsonl",
+          1,
+          "319"
+        ]
+      ]
     }
   ]
 }

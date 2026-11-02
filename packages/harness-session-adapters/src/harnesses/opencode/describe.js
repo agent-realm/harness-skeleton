@@ -11,10 +11,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/opencode',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'opencode',
-  state_ver: 1,
+  state_ver: 2,
   // The fixtures come from OpenCode 1.19.3 (lab captures, scrubbed, and rows generated in their
   // shape); none is certified until conformance runs against a real OpenCode.
   versions: { certified: [], compatible: [] },
@@ -62,6 +62,16 @@ export const describe = Object.freeze({
       { source: '<db>table:session_message', path: 'data.content[].state.attachments[].url', opened: true },
     ],
     exemptions: [],
+  },
+  // The native fields each message carries (sessions-model §2.7): leaf values of the message's
+  // `data` JSON (its native record) that no other field maps. `providerID`, `mode` and `agent` stay
+  // out: a user can name a provider and an agent.
+  native: {
+    session: [],
+    message: [
+      'finish', // why the model stopped: stop, tool-calls, content-filter, …
+    ],
+    part: [],
   },
   facets: {
     // One entry per `session` row of the store's own database file. A default, a channel and an

@@ -15,7 +15,19 @@
       },
       "at": "msg_15e9c4322001Z7424i9EhM8jRH",
       "ts": "2026-10-21T13:17:41.538Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4322001Z7424i9EhM8jRH"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4322007jq3MvaWta9Dznn"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -38,6 +50,7 @@
       "order": "1|0001792588655538|msg_15e9c2bb2001YVTs3PA64CDtEN",
       "ts": "2026-10-21T13:17:35.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -46,7 +59,19 @@
           "text": "Fix the qty bug."
         }
       ],
-      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1"
+      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2bb2001YVTs3PA64CDtEN"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2bb2002p4N51w9Y9cthT6"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -69,6 +94,9 @@
       "order": "1|0001792588656538|msg_15e9c2f9a001HAfWcqFZUPJg1D",
       "ts": "2026-10-21T13:17:36.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -91,7 +119,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
+      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2bb2001YVTs3PA64CDtEN"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2f9a001HAfWcqFZUPJg1D"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2f9b003gFxjKOiifz8ye1"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2fa5004Tm9iUQfT3vHDdf"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2faf005YOAIJRrYuCIPrB"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -114,6 +169,7 @@
       "order": "1|0001792588659538|msg_15e9c3b520016Vpf2216LPXO1D",
       "ts": "2026-10-21T13:17:39.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -122,7 +178,19 @@
           "text": "Add a coupon code to the cart."
         }
       ],
-      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865"
+      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c3b520016Vpf2216LPXO1D"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c3b52006HE3vt1FT0OJ8wA"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -145,9 +213,22 @@
       "order": "1|0001792588660538|msg_15e9c3f3a001LML1hii2Zn8AlS",
       "ts": "2026-10-21T13:17:40.538Z",
       "role": "assistant",
+      "native": {},
       "source": "model",
       "parts": [],
-      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
+      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c3b520016Vpf2216LPXO1D"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c3f3a001LML1hii2Zn8AlS"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -170,6 +251,7 @@
       "order": "1|0001792588661538|msg_15e9c4322001Z7424i9EhM8jRH",
       "ts": "2026-10-21T13:17:41.538Z",
       "role": "user",
+      "native": {},
       "source": "automated",
       "parts": [
         {
@@ -180,7 +262,19 @@
           "native_type": "compaction"
         }
       ],
-      "cmp_sha": "6d628dcf360155e4c19a7d5ca1dcfe9e2b27fe72244d5ffc738079d1dce32983"
+      "cmp_sha": "6d628dcf360155e4c19a7d5ca1dcfe9e2b27fe72244d5ffc738079d1dce32983",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4322001Z7424i9EhM8jRH"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4322007jq3MvaWta9Dznn"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -203,6 +297,9 @@
       "order": "1|0001792588661638|msg_15e9c4386001R6eu8jsjfKUIpd",
       "ts": "2026-10-21T13:17:41.638Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -228,7 +325,39 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "d6d0c3f1a0ccca9e8198333b9976d1878e5afa5644e4aa76fd52980fc360204d"
+      "cmp_sha": "d6d0c3f1a0ccca9e8198333b9976d1878e5afa5644e4aa76fd52980fc360204d",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4322001Z7424i9EhM8jRH"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4386001R6eu8jsjfKUIpd"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4322007jq3MvaWta9Dznn"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4387008Hz8VB7JhofyrC9"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4391009302f3Jlr1JKN3V"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c439b00ad4ro134EtEbvTi"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -251,6 +380,7 @@
       "order": "1|0001792588662538|msg_15e9c470a0016f56GwPVKJGBrf",
       "ts": "2026-10-21T13:17:42.538Z",
       "role": "user",
+      "native": {},
       "source": "automated",
       "parts": [
         {
@@ -260,7 +390,19 @@
           "source": "injected"
         }
       ],
-      "cmp_sha": "a5ca4b89bd9625f6e5aaa3ae6fe1012ec94b43458fb647204cf0d96d24f10597"
+      "cmp_sha": "a5ca4b89bd9625f6e5aaa3ae6fe1012ec94b43458fb647204cf0d96d24f10597",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c470a0016f56GwPVKJGBrf"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c470a00bg6kCOXu3PJ7wTE"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -283,6 +425,7 @@
       "order": "1|0001792588662638|msg_15e9c476e0012NkaLGd5siefyt",
       "ts": "2026-10-21T13:17:42.638Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -291,7 +434,19 @@
           "text": "Add a coupon code to the cart."
         }
       ],
-      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865"
+      "cmp_sha": "5cebf7a3d89646cba5ad2a3f3bfe818a0df14ed4cf75308897605bcb08da8865",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c476e0012NkaLGd5siefyt"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c476e00c4tD5m9XgGljgFx"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -314,6 +469,9 @@
       "order": "1|0001792588663538|msg_15e9c4af20013lGHDy2RhFdW0i",
       "ts": "2026-10-21T13:17:43.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -336,7 +494,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c476e0012NkaLGd5siefyt"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4af20013lGHDy2RhFdW0i"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4af300dK3L6ZgoyVeetEG"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4afd00ewQczLRIAPzqgUE"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4b0700f4h3cCc4WGXMCo3"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -372,7 +557,19 @@
           "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4af20013lGHDy2RhFdW0i"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -393,7 +590,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c2f9a001HAfWcqFZUPJg1D"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c2faf005YOAIJRrYuCIPrB"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -414,7 +623,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4386001R6eu8jsjfKUIpd"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c439b00ad4ro134EtEbvTi"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -435,7 +656,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c4af20013lGHDy2RhFdW0i"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c4b0700f4h3cCc4WGXMCo3"
+        ]
+      ]
     }
   ],
   "ses_15e9c75ea00112OocjbWwkFUlY": [
@@ -451,7 +684,14 @@
       },
       "at": "msg_15e9c7dba001EIyn7ips17RPRF",
       "ts": "2026-10-21T13:18:04.538Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "table:event",
+          1,
+          "1"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -465,7 +705,14 @@
       },
       "at": "msg_15e9c7dba001EIyn7ips17RPRF",
       "ts": "2026-10-21T13:18:04.538Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "table:event",
+          1,
+          "2"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -488,6 +735,7 @@
       "order": "1|0001792588675538|msg_15e9c79d2001mANQDDNgw0eDFf",
       "ts": "2026-10-21T13:17:55.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -496,7 +744,19 @@
           "text": "Fix the qty bug in cart.py."
         }
       ],
-      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c79d2001mANQDDNgw0eDFf"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c79d20102Eqv9Y3XT2aafB"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -519,6 +779,9 @@
       "order": "1|0001792588676538|msg_15e9c7dba001EIyn7ips17RPRF",
       "ts": "2026-10-21T13:17:56.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -541,7 +804,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "a665283bae9b77f3d19485bab8b57a625b8a093b589a37ed59dc27657dc8c33a"
+      "cmp_sha": "a665283bae9b77f3d19485bab8b57a625b8a093b589a37ed59dc27657dc8c33a",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c79d2001mANQDDNgw0eDFf"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c7dba001EIyn7ips17RPRF"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c7dbb011IvLmEQ5sR7jXLT"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c7dc50124O5qwxKQh2CNWJ"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c7dcf013iEDSd054Tb0wqQ"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -564,6 +854,7 @@
       "order": "1|0001792588684588|msg_15e9c9d2c001jb6O908c92oMoq",
       "ts": "2026-10-21T13:18:04.588Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -572,7 +863,19 @@
           "text": "Instead, add a coupon code."
         }
       ],
-      "cmp_sha": "879d345a8dbce3fd228359ba092ab88577e75714a97761643db9be21fc053c6c"
+      "cmp_sha": "879d345a8dbce3fd228359ba092ab88577e75714a97761643db9be21fc053c6c",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c9d2c001jb6O908c92oMoq"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c9d2c0185NsVMwGDnfFd5J"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -595,6 +898,9 @@
       "order": "1|0001792588685588|msg_15e9ca114001rVfTH2qLWS3Wkl",
       "ts": "2026-10-21T13:18:05.588Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -617,7 +923,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
+      "cmp_sha": "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c9d2c001jb6O908c92oMoq"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ca114001rVfTH2qLWS3Wkl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ca115019fTt8AQ62dsDEcq"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ca11f01amKESouAcP03tg1"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ca12901bBWcvVjr7kbhQ3t"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -648,7 +981,19 @@
           "5dce067f17b6b8c704ccc65c4c0323b1bd6b1effed3b31e6996805863a9c8fe7"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ca114001rVfTH2qLWS3Wkl"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -669,7 +1014,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9c7dba001EIyn7ips17RPRF"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9c7dcf013iEDSd054Tb0wqQ"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -690,7 +1047,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ca114001rVfTH2qLWS3Wkl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ca12901bBWcvVjr7kbhQ3t"
+        ]
+      ]
     }
   ],
   "ses_15e9cc40a001sY10RjvTKMKKsQ": [
@@ -715,6 +1084,7 @@
       "order": "1|0001792588695538|msg_15e9cc7f2001UkSOYGKmOBc0pj",
       "ts": "2026-10-21T13:18:15.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -723,7 +1093,19 @@
           "text": "Fix the qty bug in cart.py, then run the tests."
         }
       ],
-      "cmp_sha": "8c397e127d67af3c1ea36c28145ea5a60da4709a4b0b360e4866d81d4db66013"
+      "cmp_sha": "8c397e127d67af3c1ea36c28145ea5a60da4709a4b0b360e4866d81d4db66013",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cc7f2001UkSOYGKmOBc0pj"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cc7f201c3wjDC8H41tWfkM"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -746,6 +1128,9 @@
       "order": "1|0001792588696538|msg_15e9ccbda001eXdiimEeVcf6X7",
       "ts": "2026-10-21T13:18:16.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -800,7 +1185,49 @@
           "state": "reverted"
         }
       ],
-      "cmp_sha": "2f1dd4e2f6910eaabe249014ec63900a59401cd8b03320d75c6cadb4e0d5c7cf"
+      "cmp_sha": "2f1dd4e2f6910eaabe249014ec63900a59401cd8b03320d75c6cadb4e0d5c7cf",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cc7f2001UkSOYGKmOBc0pj"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ccbda001eXdiimEeVcf6X7"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbdb01dNscaSEGpAF6hzL"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbe501el9822dey0MH6d4"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbef01foPKxr6yRPuyaku"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbf9020QdM8GW8B05mDSH"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccc03021M2RJ2So9lSiMJ1"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -823,6 +1250,7 @@
       "order": "1|0001792588699538|msg_15e9cd79200131yLyr6iJYU7sj",
       "ts": "2026-10-21T13:18:19.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -831,7 +1259,24 @@
           "text": "Also add a discount field."
         }
       ],
-      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe"
+      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cd79200131yLyr6iJYU7sj"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cd792022R4Jp2yYlvUIl4s"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -854,6 +1299,9 @@
       "order": "1|0001792588700538|msg_15e9cdb7a001Okh63SL5ZzC3tK",
       "ts": "2026-10-21T13:18:20.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -876,7 +1324,39 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90"
+      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cd79200131yLyr6iJYU7sj"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cdb7a001Okh63SL5ZzC3tK"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cdb7b0232qEfzodW7T8nR2"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cdb850244fTBJLsR5sA6TW"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cdb8f025csQh1UrGy7SKvd"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -905,7 +1385,19 @@
           "2f1dd4e2f6910eaabe249014ec63900a59401cd8b03320d75c6cadb4e0d5c7cf"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cdb7a001Okh63SL5ZzC3tK"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -926,7 +1418,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ccbda001eXdiimEeVcf6X7"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccc03021M2RJ2So9lSiMJ1"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -947,7 +1451,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cdb7a001Okh63SL5ZzC3tK"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cdb8f025csQh1UrGy7SKvd"
+        ]
+      ]
     }
   ],
   "ses_15e9ceb1a001OWuneH3uegobVX": [
@@ -972,6 +1488,7 @@
       "order": "1|0001792588705538|msg_15e9cef02001hbdw5G5l2GuJgq",
       "ts": "2026-10-21T13:18:25.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -980,7 +1497,19 @@
           "text": "Fix the qty bug."
         }
       ],
-      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1"
+      "cmp_sha": "d25f386cbfef0eaa6bde40723a618fd0a3f847d3567ca3f6287eb89c116c14b1",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cef02001hbdw5G5l2GuJgq"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cef02026jekjLcZ7mQ898K"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1003,6 +1532,9 @@
       "order": "1|0001792588706538|msg_15e9cf2ea00113pGEHcxszFSrl",
       "ts": "2026-10-21T13:18:26.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -1025,7 +1557,34 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
+      "cmp_sha": "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cef02001hbdw5G5l2GuJgq"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cf2ea00113pGEHcxszFSrl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cf2eb027Dv3CIsCkzHA1PA"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cf2f5028mWggqveoOJxy7w"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cf2ff029d2szoZOw7YQZz7"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1048,6 +1607,7 @@
       "order": "1|0001792588707538|msg_15e9cf6d2001qQUt2pOyV6VUxf",
       "ts": "2026-10-21T13:18:27.538Z",
       "role": "user",
+      "native": {},
       "source": "user",
       "parts": [
         {
@@ -1056,7 +1616,24 @@
           "text": "Also add a discount field."
         }
       ],
-      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe"
+      "cmp_sha": "d1239278dce6f5fa363bf70772a3aa26bb7f7995c4b0547ba7ff8a12246450fe",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cf6d2001qQUt2pOyV6VUxf"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cf6d202aVIvdficJOqIlpx"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1079,6 +1656,9 @@
       "order": "1|0001792588708538|msg_15e9cfaba001OIoHTDGMT3bMdG",
       "ts": "2026-10-21T13:18:28.538Z",
       "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
       "source": "model",
       "parts": [
         {
@@ -1101,7 +1681,39 @@
           "native_type": "step-finish"
         }
       ],
-      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90"
+      "cmp_sha": "daa78d054d76c8737f6da118da8b443347f81f7b4c57391730d177513cc11f90",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cf6d2001qQUt2pOyV6VUxf"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cfaba001OIoHTDGMT3bMdG"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cfabb02bLIWChvlN0YoBQR"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cfac502cF6N9WCReDQdt0v"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cfacf02dPEDLZ5zUiHVfar"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1130,7 +1742,19 @@
           "b6abd4296f4c869a671374e423079f7ed7784c4483c29fdc665754abfaddd745"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cfaba001OIoHTDGMT3bMdG"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1151,7 +1775,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cf2ea00113pGEHcxszFSrl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cf2ff029d2szoZOw7YQZz7"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1172,7 +1808,19 @@
       "output_includes_reasoning": false,
       "granularity": "per_message",
       "model": "fake-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cfaba001OIoHTDGMT3bMdG"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cfacf02dPEDLZ5zUiHVfar"
+        ]
+      ]
     }
   ]
 }

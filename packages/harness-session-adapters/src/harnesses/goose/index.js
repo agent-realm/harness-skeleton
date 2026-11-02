@@ -32,7 +32,7 @@ import { sha256, jcs } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'goose';
-const STATE_VER = 1;
+const STATE_VER = 2;
 export const DB_REL = 'sessions/sessions.db';
 // The four sources of a session. The first-ledger source is not this session's rows: it is the
 // store's first `usage_ledger` row (by id), which every session of the store shares.
@@ -367,9 +367,11 @@ function emptyState() {
   return {
     state_ver: STATE_VER,
     session: null, // the sessions unit, {sessions: [row]}
+    session_unit: null, // its units triple
     first: null, // the first-ledger unit, {usage_ledger: [row]} (empty: the store keeps no ledger)
     messages: {}, // unit_key -> row
     ledger: {}, // unit_key -> row
+    gen: {}, // source_key -> generation, for the `units` triples (sessions-model §2.7)
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -389,6 +391,7 @@ export function derive(session, input, state) {
   for (const src of input) {
     const kind = KIND_OF[src.source_key];
     const units = src.units ?? [];
+    if (kind) st.gen[src.source_key] = src.generation;
     if (kind === 'messages' || kind === 'ledger') {
       if (src.complete) st[kind] = {};
       for (const k of src.gone ?? []) delete st[kind][k];
@@ -399,9 +402,14 @@ export function derive(session, input, state) {
       }
     } else if (kind === 'session' || kind === 'first') {
       if (units.length) {
-        const o = jsonOf(units[units.length - 1]);
+        const u = units[units.length - 1];
+        const o = jsonOf(u);
         st[kind] = isObj(o) ? o : null;
-      } else if (src.complete) st[kind] = null;
+        if (kind === 'session') st.session_unit = st.session ? [src.source_key, src.generation, u.unit_key] : null;
+      } else if (src.complete) {
+        st[kind] = null;
+        if (kind === 'session') st.session_unit = null;
+      }
     }
   }
 
@@ -585,15 +593,20 @@ function build(st, key) {
   const rp = isObj(mc) && isObj(mc.request_params) ? mc.request_params : {};
   const effort = rp.thinking_effort == null ? null : str(rp.thinking_effort) || null;
   const self = { harness: HARNESS, session_id: key.session_id, ...(key.incarnation ? { incarnation: key.incarnation } : {}) };
+  // Units (sessions-model §2.7): a message row, a ledger row, the sessions row.
+  const rowUnit = (uk) => [SOURCE.messages, st.gen[SOURCE.messages], uk];
+  const ledgerUnit = (uk) => [SOURCE.ledger, st.gen[SOURCE.ledger], uk];
+  const sessionUnit = [st.session_unit];
 
   // The harness's own load order: ORDER BY created_timestamp, id.
-  const rows = Object.values(st.messages).map(prep).sort((a, b) => (a.cts - b.cts) || (a.rowid - b.rowid));
+  const rows = Object.entries(st.messages).map(([uk, r]) => ({ ...prep(r), uk })).sort((a, b) => (a.cts - b.cts) || (a.rowid - b.rowid));
   const pk = (i, j) => `${i}:${j}`;
 
   // Results and confirmations by call id; each call claims the first unclaimed result after it
   // (else the first unclaimed one at all: same-second rows can sort against causality).
   const responses = new Map();
   const permission = new Map();
+  const permissionRow = new Map(); // call id -> the unit key of the row with its confirmation response
   rows.forEach((r, i) => r.parts.forEach((p, j) => {
     if (!isObj(p)) return;
     if (p.type === 'toolResponse' && p.id != null) {
@@ -602,6 +615,7 @@ function build(st, key) {
       responses.get(id).push({ i, j, part: p });
     } else if (p.type === 'actionRequired' && isObj(p.data) && p.data.actionType === 'toolConfirmationResponse' && p.data.id != null) {
       permission.set(str(p.data.id), str(p.data.permission));
+      permissionRow.set(str(p.data.id), r.uk);
     }
   }));
   const claim = new Map(); // call pk -> {i, j, part}
@@ -634,7 +648,7 @@ function build(st, key) {
 
   // Ledger rows -> the assistant row of the same call: equal input / output / cache-read counts,
   // written at the call's end (within elapsedMs of the row's time, the row being the first token).
-  const ledger = Object.values(st.ledger).map((l) => ({ ...l, lid: Number(l.id) || 0, lts: Number(l.created_timestamp) || 0 }))
+  const ledger = Object.entries(st.ledger).map(([uk, l]) => ({ ...l, uk, lid: Number(l.id) || 0, lts: Number(l.created_timestamp) || 0 }))
     .sort((a, b) => (a.lts - b.lts) || (a.lid - b.lid));
   const used = new Set();
   const linked = new Map();
@@ -679,6 +693,7 @@ function build(st, key) {
   let lastId = null;
   const summaries = []; // [cts, lifecycle_id] of each compaction, in order
   const children = [];
+  const deliveredBy = new Map(); // child session id -> the unit keys of the rows that name it
 
   rows.forEach((r, i) => {
     let id;
@@ -704,6 +719,7 @@ function build(st, key) {
 
     const mainParts = [];
     const toolParts = [];
+    const toolUnits = [rowUnit(r.uk)]; // and the confirmation rows a result's status came from
     let hasError = false;
     r.parts.forEach((p, j) => {
       if (!isObj(p)) return;
@@ -746,6 +762,7 @@ function build(st, key) {
         case 'toolResponse': {
           const res = resultOf(p, pid);
           const status = toolStatus(res, permission.get(str(p.id)));
+          if (permissionRow.has(str(p.id)) && status !== 'completed') toolUnits.push(rowUnit(permissionRow.get(str(p.id))));
           toolParts.push({
             part_id: pid, kind: 'tool_result', call_id: claimedBy.get(pk(i, j)) ?? (p.id != null ? str(p.id) : `@${id}:${j}`),
             // `is_error` is the harness store's own flag, `isError` (sessions-model v1.3, §2.3),
@@ -781,10 +798,10 @@ function build(st, key) {
 
     const inf = isObj(r.meta.inference) ? r.meta.inference : null;
     const l = linked.get(i) || null;
-    const message = (messageId, ord, role, source, status, parts) => ({
+    const message = (messageId, ord, role, source, status, parts, units = [rowUnit(r.uk)]) => ({
       type: 'message', message_id: messageId, parent_id: null, order: ord, agent_id: '', role, source,
       to_user: r.U, to_model: r.A, status, state: 'current', on_active_branch: null, ts: r.ts,
-      requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], parts,
+      requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], parts, units,
     });
     const msgs = [];
     // One speaker per message: goose writes tool results as role-user rows, which are `tool`
@@ -814,22 +831,25 @@ function build(st, key) {
         m.requested_model = str(inf.requestedModel) || null;
         m.served_model = (l && str(l.model)) || str(inf.resolvedModel) || null;
         m.effort = effort;
+        // The ledger row that gave the served model, and the sessions row that gave the effort.
+        if (l && str(l.model)) m.units.push(ledgerUnit(l.uk));
+        if (effort !== null) m.units.push(st.session_unit);
         // goose keeps the provider's completion id as the message id; `msg_` ids are its own.
         m.response_id = r.mid && !/^msg_/.test(r.mid) ? r.mid : null;
       }
       msgs.push(m);
     }
     if (toolParts.length) {
-      msgs.push(message(split ? `${id}:tool` : id, split ? `${order}.1` : order, 'tool', null, 'complete', toolParts));
+      msgs.push(message(split ? `${id}:tool` : id, split ? `${order}.1` : order, 'tool', null, 'complete', toolParts, toolUnits));
     }
 
     // Usage: the linked ledger row (authoritative), else metadata.usage, unless the row is a copy.
     const usage = [];
     if (r.role === 'assistant' && msgs[0].role === 'assistant') {
       if (l) {
-        usage.push({ type: 'usage', usage_id: str(l.id), anchor: { message_id: id }, ...ledgerTokens(l), model: str(l.model) || null });
+        usage.push({ type: 'usage', usage_id: str(l.id), anchor: { message_id: id }, ...ledgerTokens(l), model: str(l.model) || null, units: [ledgerUnit(l.uk)] });
       } else if (isObj(r.meta.usage) && !copied(r, i)) {
-        usage.push({ type: 'usage', usage_id: `message:${id}#1`, anchor: { message_id: id }, ...metaTokens(r.meta.usage), model: inf ? str(inf.resolvedModel) || null : null });
+        usage.push({ type: 'usage', usage_id: `message:${id}#1`, anchor: { message_id: id }, ...metaTokens(r.meta.usage), model: inf ? str(inf.resolvedModel) || null : null, units: [rowUnit(r.uk)] });
       }
     }
 
@@ -837,7 +857,7 @@ function build(st, key) {
       out.push({
         type: 'lifecycle', lifecycle_id: id, op: 'compaction',
         target: firstId && lastId ? { range: { from_id: firstId, through_id: lastId } } : { session: true },
-        at: null, ts: r.ts, evidence: 'explicit',
+        at: null, ts: r.ts, evidence: 'explicit', units: [rowUnit(r.uk)],
       });
       summaries.push([r.cts, id]);
     }
@@ -849,7 +869,11 @@ function build(st, key) {
     }
     if (!firstId) firstId = msgs[0].message_id;
     lastId = msgs[msgs.length - 1].message_id;
-    for (const c of deliveredOf(r.meta)) if (!children.includes(c)) children.push(c);
+    for (const c of deliveredOf(r.meta)) {
+      if (!children.includes(c)) children.push(c);
+      if (!deliveredBy.has(c)) deliveredBy.set(c, []);
+      deliveredBy.get(c).push(rowUnit(r.uk));
+    }
   });
 
   // Ledger rows no message carries: compaction calls, and calls whose messages are gone (/clear and
@@ -862,7 +886,7 @@ function build(st, key) {
       const c = summaries.filter(([cts]) => cts <= l.lts).pop();
       if (c) anchorOf = { compaction: c[1] };
     }
-    out.push({ type: 'usage', usage_id: str(l.id), anchor: anchorOf, ...ledgerTokens(l), model: str(l.model) || null });
+    out.push({ type: 'usage', usage_id: str(l.id), anchor: anchorOf, ...ledgerTokens(l), model: str(l.model) || null, units: [ledgerUnit(l.uk)] });
   }
 
   // Archive: `archived_at` set (RFC 3339 with ns), cleared on unarchive. The record has no native
@@ -871,7 +895,7 @@ function build(st, key) {
   if (archivedRaw !== null) {
     out.push({
       type: 'lifecycle', lifecycle_id: `${SOURCE.session}@${SOURCE.session}#1`, op: 'archive', target: { session: true },
-      at: null, ts: isoOf(utcMs(archivedRaw)), evidence: 'explicit',
+      at: null, ts: isoOf(utcMs(archivedRaw)), evidence: 'explicit', units: sessionUnit,
     });
   }
 
@@ -879,10 +903,10 @@ function build(st, key) {
   // was delivered from (`operations.foreground_subagent.delivered`). Neither names the call.
   const parent = str(srow.parent_session_id);
   if (parent) {
-    out.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: self, origin: { harness: HARNESS, session_id: parent }, at: '', inherits: null, child_stored: true, evidence: 'explicit' });
+    out.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: self, origin: { harness: HARNESS, session_id: parent }, at: '', inherits: null, child_stored: true, evidence: 'explicit', units: sessionUnit });
   }
   for (const c of children) {
-    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: c }, origin: self, at: '', inherits: null, child_stored: null, evidence: 'explicit' });
+    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: c }, origin: self, at: '', inherits: null, child_stored: null, evidence: 'explicit', units: deliveredBy.get(c) });
   }
 
   const name = str(srow.name);
@@ -906,6 +930,8 @@ function build(st, key) {
     reuse: 'undetectable',
     ts_source: 'seconds',
     aliases: [],
+    // Every field comes from the sessions row.
+    units: sessionUnit,
   });
   return { out, held };
 }

@@ -8,10 +8,10 @@ const DB = 'sessions/sessions.db';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/goose',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'goose',
-  state_ver: 1,
+  state_ver: 2,
   // The fixtures come from Goose 1.55.0 (schema 17) captures, scrubbed; none is certified until
   // conformance runs against a real Goose.
   versions: { certified: [], compatible: [] },

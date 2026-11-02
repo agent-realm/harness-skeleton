@@ -37,12 +37,12 @@ import { fileURLToPath } from 'node:url';
 import { SessionsError } from '../../errors.js';
 import { isRealFile, readSnapshot, snapshotUnits, databaseSource, unknownSource, makeUnit, jsonOf } from '../../sources.js';
 import { openReadOnly, withRead, rowJson, textOf, readDelta, readRowsSnapshot } from '../../sqlite.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { jcs, sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'opencode';
-const STATE_VER = 1;
+const STATE_VER = 2;
 const DEFAULT_DB = 'opencode.db';
 const SPILL = /^tool_[0-9A-Za-z]+$/;
 // Ids carry the low 48 bits of ms·4096 + a counter: ms modulo 2^36 (spec §9).
@@ -707,16 +707,23 @@ function v1Part(p, j, ctx) {
 // The revert in force: the session's `revert`, else a v2 revert staged and not yet committed or
 // cleared.
 function liveRevert(revert, events) {
-  if (isObj(revert) && revert.messageID) return revert;
+  return liveRevertOf(revert, events, null).revert;
+}
+
+// The revert in force and the unit it came from: the session row, or the event that staged it.
+function liveRevertOf(revert, events, sessionUnit) {
+  if (isObj(revert) && revert.messageID) return { revert, unit: sessionUnit };
   let staged = null;
+  let unit = null;
   for (const e of events) {
     const t = str(e.type);
     if (/^session\.next\.revert\.staged\./.test(t)) {
       const r = dataOf(e).revert;
       staged = isObj(r) ? r : null;
+      unit = e._u ?? null;
     } else if (/^session\.next\.revert\.(committed|cleared)\./.test(t)) staged = null;
   }
-  return staged && staged.messageID ? staged : null;
+  return staged && staged.messageID ? { revert: staged, unit } : { revert: null, unit: null };
 }
 
 const baseMessage = () => ({
@@ -741,10 +748,10 @@ function v1Records(rows, ctx, emit) {
   for (const p of rows.parts) {
     const mid = String(p.message_id);
     if (!partsOf.has(mid)) partsOf.set(mid, []);
-    partsOf.get(mid).push({ id: String(p.id), d: dataOf(p) });
+    partsOf.get(mid).push({ id: String(p.id), d: dataOf(p), u: p._u });
   }
   for (const l of partsOf.values()) l.sort((a, b) => cmp(a.id, b.id));
-  const msgs = rows.messages.map((m) => ({ id: String(m.id), t: num(m.time_created) ?? 0, d: dataOf(m), parts: partsOf.get(String(m.id)) ?? [] }))
+  const msgs = rows.messages.map((m) => ({ id: String(m.id), t: num(m.time_created) ?? 0, d: dataOf(m), u: m._u, parts: partsOf.get(String(m.id)) ?? [] }))
     .sort((a, b) => a.t - b.t || cmp(a.id, b.id));
   const byId = new Map(msgs.map((m) => [m.id, m]));
   const isShell = (m) => m.d.role === 'assistant' && !m.d.finish && !m.d.error
@@ -776,13 +783,21 @@ function v1Records(rows, ctx, emit) {
       const made = v1Part(p, j, { msgId: m.id, summary, replaces, spills: ctx.spills });
       // A part hidden by a revert at a part: `state: 'reverted'` on the part (sessions-model §2.3).
       for (const x of made.parts) parts.push(hideFrom && p.id >= hideFrom ? { ...x, state: 'reverted' } : x);
-      if (made.child) emit.link(ctx.originLink(made.child.child, made.child.at), isHeld);
+      if (made.child) emit.link({ ...ctx.originLink(made.child.child, made.child.at), units: [p.u] }, isHeld);
     });
     const rec = {
       ...baseMessage(), message_id: m.id, parent_id: str(d.parentID) || null, order: `1|${pad(m.t)}|${m.id}`,
       state: revertAt >= 0 && (i > revertAt || (i === revertAt && !revertPart)) ? 'reverted' : 'current',
       ts: iso(m.t), role,
     };
+    // Units (sessions-model §2.7): the message row and its part rows; the spills its results read;
+    // the revert that set its state or its parts'; the trigger a summary's `replaces` came from.
+    const units = [m.u, ...m.parts.map((p) => p.u), ...m.parts.flatMap((p) => ctx.spillUnitsOf(p.d))];
+    if (ctx.revertUnit && (rec.state === 'reverted' || hideFrom)) units.push(ctx.revertUnit);
+    if (trigger && trigger.d.tail_start_id) units.push(trigger.u);
+    ctx.tsUnit.set(m.id, m.u);
+    // The message's native record is its `data` JSON.
+    rec.native = nativeOf(d, describeData.native.message);
     if (role === 'user') {
       const comp = compactionOf(m);
       const content = m.parts.filter((p) => ['text', 'file', 'subtask'].includes(p.d.type));
@@ -791,6 +806,7 @@ function v1Records(rows, ctx, emit) {
       const automated = (comp && comp.d.auto === true) || (!comp && content.length > 0 && content.every((p) => p.d.synthetic === true) && !shellParents.has(m.id));
       rec.source = automated ? 'automated' : 'user';
       rec.parts = parts;
+      rec.units = units;
       emit.message(rec, isHeld);
       if (comp) {
         // Replaced: everything before tail_start_id; with none, everything before the trigger.
@@ -799,7 +815,7 @@ function v1Records(rows, ctx, emit) {
         emit.lifecycle({
           lifecycle_id: comp.id, op: 'compaction',
           target: through ? { range: { from_id: msgs[0].id, through_id: through } } : { session: true },
-          at: m.id, ts: iso(m.t), evidence: 'explicit',
+          at: m.id, ts: iso(m.t), evidence: 'explicit', units: [m.u, comp.u],
         });
       }
       return;
@@ -821,15 +837,20 @@ function v1Records(rows, ctx, emit) {
       rec.status = 'interrupted'; // overflow: completed with no finish, error or parts (spec §4 #15)
     }
     rec.parts = parts;
+    // The parent's model and variant, where the requested model and the effort came from.
+    if (req && parent.u) units.push(parent.u);
+    rec.units = units;
     emit.message(rec, isHeld);
-    const steps = m.parts.filter((p) => p.d.type === 'step-finish').map((p) => p.d);
+    const stepParts = m.parts.filter((p) => p.d.type === 'step-finish');
+    const steps = stepParts.map((p) => p.d);
     const u = steps.length ? sumUsage(steps) : usageOf(d.tokens, d.cost);
     if (u) {
       // v1 tokens: input = prompt − cache.read, output = completion − reasoning (sessions-model
-      // §2.4).
+      // §2.4). Its units: the message row (the model), and the step-finish rows it sums.
       emit.usage({
         usage_id: `message:${m.id}#1`, anchor: { message_id: m.id }, ...u,
         input_includes_cache: false, output_includes_reasoning: false, granularity: 'per_message', model: rec.served_model,
+        units: [m.u, ...stepParts.map((p) => p.u)],
       }, isHeld);
     }
   });
@@ -844,7 +865,7 @@ function v1Records(rows, ctx, emit) {
     if (!mid) continue;
     const at = idTime(e.id, ctx.created);
     const prev = at === null ? null : written.filter((m) => m.t < at).pop();
-    emit.lifecycle({ lifecycle_id: String(e.id), op: 'edit', target: { message_id: mid }, at: prev ? prev.id : null, ts: iso(at), evidence: 'explicit' });
+    emit.lifecycle({ lifecycle_id: String(e.id), op: 'edit', target: { message_id: mid }, at: prev ? prev.id : null, ts: iso(at), evidence: 'explicit', units: [e._u] });
   }
 }
 
@@ -879,7 +900,7 @@ function v2Content(c, msgId, k, spills) {
 }
 
 function v2Records(rows, ctx, emit) {
-  const msgs = rows.session_messages.map((m) => ({ id: String(m.id), type: str(m.type), seq: num(m.seq) ?? 0, t: num(m.time_created), d: dataOf(m) }))
+  const msgs = rows.session_messages.map((m) => ({ id: String(m.id), type: str(m.type), seq: num(m.seq) ?? 0, t: num(m.time_created), d: dataOf(m), u: m._u }))
     .sort((a, b) => a.seq - b.seq || cmp(a.id, b.id));
   const held = heldIndex(msgs, (m) => m.type === 'assistant');
   // The live revert: v2 hides what follows the staged message (a commit deletes that, keeps it).
@@ -894,6 +915,12 @@ function v2Records(rows, ctx, emit) {
       ...baseMessage(), message_id: m.id, order: `2|${pad(m.seq)}|${m.id}`,
       state: revertAt >= 0 && i > revertAt ? 'reverted' : 'current', ts, role: 'user', source: 'user',
     };
+    // Units (sessions-model §2.7): the row, the spills its results read, the revert that set its
+    // state.
+    rec.units = [m.u, ...(Array.isArray(d.content) ? d.content : []).flatMap((c) => (isObj(c) ? ctx.spillUnitsOf(c) : []))];
+    if (ctx.revertUnit && rec.state === 'reverted') rec.units.push(ctx.revertUnit);
+    ctx.tsUnit.set(m.id, m.u);
+    rec.native = nativeOf(d, describeData.native.message);
     const parts = [];
     if (m.type === 'user') {
       if (d.text != null && d.text !== '') parts.push({ part_id: '0', kind: 'text', text: String(d.text) });
@@ -920,7 +947,7 @@ function v2Records(rows, ctx, emit) {
       emit.lifecycle({
         lifecycle_id: m.id, op: 'compaction',
         target: i > 0 ? { range: { from_id: msgs[0].id, through_id: msgs[i - 1].id } } : { session: true },
-        at: m.id, ts, evidence: 'explicit',
+        at: m.id, ts, evidence: 'explicit', units: [m.u],
       });
     } else if (m.type === 'assistant') {
       rec.role = 'assistant';
@@ -933,7 +960,7 @@ function v2Records(rows, ctx, emit) {
         if (!isObj(c)) return;
         const made = v2Content(c, m.id, k, ctx.spills);
         parts.push(...made.parts);
-        if (made.child) emit.link(ctx.originLink(made.child.child, made.child.at), isHeld);
+        if (made.child) emit.link({ ...ctx.originLink(made.child.child, made.child.at), units: [m.u] }, isHeld);
       });
       if (d.error) {
         rec.status = /abort/i.test(errorText(d.error)) ? 'interrupted' : 'error';
@@ -944,7 +971,7 @@ function v2Records(rows, ctx, emit) {
       // v2 tokens: nothing establishes what input and output count (annex `?`), so both flags are
       // null.
       const u = usageOf(d.tokens, d.cost);
-      if (u) emit.usage({ usage_id: `message:${m.id}#1`, anchor: { message_id: m.id }, ...u, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_message', model: rec.served_model }, isHeld);
+      if (u) emit.usage({ usage_id: `message:${m.id}#1`, anchor: { message_id: m.id }, ...u, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_message', model: rec.served_model, units: [m.u] }, isHeld);
     } else {
       // agent-switched, model-switched and any later type: a notice, never dropped.
       rec.role = 'system';
@@ -959,7 +986,7 @@ function v2Records(rows, ctx, emit) {
   for (const e of ctx.events) {
     if (!/^session\.next\.revert\.committed\./.test(str(e.type))) continue;
     const ed = dataOf(e);
-    emit.lifecycle({ lifecycle_id: String(e.id), op: 'rewind', target: { session: true }, at: str(ed.messageID) || null, ts: iso(ed.timestamp), evidence: 'explicit' });
+    emit.lifecycle({ lifecycle_id: String(e.id), op: 'rewind', target: { session: true }, at: str(ed.messageID) || null, ts: iso(ed.timestamp), evidence: 'explicit', units: [e._u] });
   }
 }
 
@@ -967,18 +994,30 @@ function v2Records(rows, ctx, emit) {
 // fingerprint, plus the keys held as incomplete.
 function build(st, sid) {
   let srow = null;
+  let sessionUnit = null;
   const rows = { messages: [], parts: [], session_messages: [] };
   const events = [];
   const spills = new Map();
+  const spillUnits = new Map(); // spill name -> its units triple
   for (const sk of Object.keys(st.src).sort()) {
     const kind = sourceKind(sk);
     for (const [k, v] of Object.entries(st.src[sk])) {
       if (!v) continue;
-      if (kind === 'session') srow = isObj(v) && Array.isArray(v.session) && isObj(v.session[0]) ? v.session[0] : srow;
-      else if (kind === 'message') (k.startsWith('part:') ? rows.parts : rows.messages).push(v);
-      else if (kind === 'session_message') rows.session_messages.push(v);
-      else if (kind === 'event') events.push(v);
-      else if (kind === 'spill') spills.set(baseName(sk), v);
+      // Each row carries its units triple (sessions-model §2.7) as `_u`, which no fold reads.
+      const tri = [sk, st.gen[sk], k];
+      if (kind === 'session') {
+        const row = isObj(v) && Array.isArray(v.session) && isObj(v.session[0]) ? v.session[0] : null;
+        if (row) {
+          srow = row;
+          sessionUnit = tri;
+        }
+      } else if (kind === 'message') (k.startsWith('part:') ? rows.parts : rows.messages).push({ ...v, _u: tri });
+      else if (kind === 'session_message') rows.session_messages.push({ ...v, _u: tri });
+      else if (kind === 'event') events.push({ ...v, _u: tri });
+      else if (kind === 'spill') {
+        spills.set(baseName(sk), v);
+        spillUnits.set(baseName(sk), tri);
+      }
     }
   }
   events.sort((a, b) => (num(a.seq) ?? 0) - (num(b.seq) ?? 0) || cmp(String(a.id), String(b.id)));
@@ -999,8 +1038,18 @@ function build(st, sid) {
     link: (r, isHeld) => (isHeld ? held.link.push(recordKey({ type: 'link', ...r })) : out.push({ type: 'link', ...r })),
     lifecycle: (r) => out.push({ type: 'lifecycle', ...r }),
   };
+  const live = liveRevertOf(revert, events, sessionUnit);
+  // The spill files a tool part's result names, as a v1 part's metadata or a v2 content's state
+  // holds them, where the store still has them.
+  const spillUnitsOf = (x) => {
+    const st2 = isObj(x.state) ? x.state : {};
+    const meta = isObj(st2.metadata) ? st2.metadata : {};
+    const paths = [...(typeof meta.outputPath === 'string' ? [meta.outputPath] : []), ...(Array.isArray(st2.outputPaths) ? st2.outputPaths : [])];
+    return paths.map((p) => spillUnits.get(baseName(String(p)))).filter(Boolean);
+  };
+  const tsUnit = new Map(); // message_id -> the row its ts came from
   const ctx = {
-    revert: liveRevert(revert, events), events, spills, created: num(s.time_created) ?? 0,
+    revert: live.revert, revertUnit: live.unit, spillUnitsOf, tsUnit, events, spills, created: num(s.time_created) ?? 0,
     // The origin side of a sub-agent link: the `task` part that started it, at its call id.
     originLink: (child, at) => ({
       kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: child }, origin: { harness: HARNESS, session_id: sid },
@@ -1016,12 +1065,19 @@ function build(st, sid) {
   if (str(s.parent_id)) {
     out.push({
       type: 'link', kind: 'subagent', stated_on: 'child', child: { harness: HARNESS, session_id: sid }, origin: { harness: HARNESS, session_id: String(s.parent_id) },
-      at: '', inherits: null, child_stored: true, evidence: 'explicit',
+      at: '', inherits: null, child_stored: true, evidence: 'explicit', units: [sessionUnit],
     });
   }
 
   msgs.sort((a, b) => cmp(a.order, b.order));
-  const updated = msgs.reduce((acc, m) => (m.ts && (acc === null || m.ts > acc) ? m.ts : acc), null);
+  let updatedBy = null;
+  const updated = msgs.reduce((acc, m) => {
+    if (m.ts && (acc === null || m.ts > acc)) {
+      updatedBy = m.message_id;
+      return m.ts;
+    }
+    return acc;
+  }, null);
   // A task part repeated across messages states one link.
   const seen = new Set();
   const rest = out.filter((r) => {
@@ -1051,6 +1107,8 @@ function build(st, sid) {
     reuse: 'impossible',
     ts_source: 'event',
     aliases: [],
+    // The session row gives every field but updated_at, which the latest message's row gives.
+    units: [...(srow ? [sessionUnit] : []), ...(updatedBy !== null && tsUnit.has(updatedBy) ? [tsUnit.get(updatedBy)] : [])],
   };
   return { out: [...msgs, ...rest, session], held };
 }
@@ -1059,6 +1117,7 @@ function emptyState() {
   return {
     state_ver: STATE_VER,
     src: {}, // source_key -> unit_key -> the unit's row (parsed row-json), or a spill's {sha256, bytes}
+    gen: {}, // source_key -> generation, for the `units` triples
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -1075,6 +1134,7 @@ export function derive(session, input, state) {
     const sk = src.source_key;
     const kind = sourceKind(sk);
     if (!kind) continue;
+    st.gen[sk] = src.generation;
     const units = src.units ?? [];
     const value = (u) => (kind === 'spill' ? { sha256: u.sha256, bytes: u.bytes } : jsonOf(u));
     if (kind === 'session' || kind === 'spill') {

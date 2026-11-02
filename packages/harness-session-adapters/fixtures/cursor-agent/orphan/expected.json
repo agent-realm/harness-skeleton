@@ -29,7 +29,19 @@
       "harness": "cursor-agent",
       "session_id": "ac3cf5c2-5a7e-4000-8000-000000000009",
       "incarnation": "",
-      "cmp_sha": "b75c29c1c06172841bdad8044d797184d3c2d5616d9e5a783edd6f9ece5db980"
+      "cmp_sha": "b75c29c1c06172841bdad8044d797184d3c2d5616d9e5a783edd6f9ece5db980",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "4aa275c0a21bbe34bc025461ffc66083133a5500e436a4298ca20dec155cf596"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "b939d40bd0940d0e9a6e10e7689823c389ccbff083ec24fc53485e2a78cfc142"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -60,7 +72,24 @@
       "harness": "cursor-agent",
       "session_id": "ac3cf5c2-5a7e-4000-8000-000000000009",
       "incarnation": "",
-      "cmp_sha": "ca44eb9fe49dfbeeba57af07bb3514f39ba41eaf0e4653843bc22a595589adc8"
+      "cmp_sha": "ca44eb9fe49dfbeeba57af07bb3514f39ba41eaf0e4653843bc22a595589adc8",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "4aa275c0a21bbe34bc025461ffc66083133a5500e436a4298ca20dec155cf596"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "ed458cddc0204c6b9a5c286d2543622aa92a8db60342b59ea21c26fab0acaf88"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:meta"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -89,7 +118,29 @@
           "ca44eb9fe49dfbeeba57af07bb3514f39ba41eaf0e4653843bc22a595589adc8"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/meta.json",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/meta.json"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "5ec15c8463107b63634a510cadc4e933d5b657cacafd8e0ba1be4c30b8dce273"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:blobs",
+          1,
+          "ed458cddc0204c6b9a5c286d2543622aa92a8db60342b59ea21c26fab0acaf88"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/ac3cf5c2-5a7e-4000-8000-000000000009/store.db#table:meta"
+        ]
+      ]
     }
   ]
 }

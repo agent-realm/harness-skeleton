@@ -1,0 +1,351 @@
+{
+  "ses_15e9cc40a001sY10RjvTKMKKsQ": [
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "order": "1|0001792588695538|msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "ts": "2026-10-21T13:18:15.538Z",
+      "role": "user",
+      "native": {},
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_15e9cc7f2002QvrUxSkYZ2APNL",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cc7f2001UkSOYGKmOBc0pj"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9cc7f2002QvrUxSkYZ2APNL"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": "msg_15e9cc7f2001UkSOYGKmOBc0pj",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_15e9ccbda001eXdiimEeVcf6X7",
+      "aliases": [],
+      "message_id": "msg_15e9ccbda001eXdiimEeVcf6X7",
+      "order": "1|0001792588696538|msg_15e9ccbda001eXdiimEeVcf6X7",
+      "ts": "2026-10-21T13:18:16.538Z",
+      "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_15e9ccbdb003jyMb0osODmQYa5",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_15e9ccbe5004R2ykzu3s2XZmYl",
+          "kind": "text",
+          "text": "Two files."
+        },
+        {
+          "part_id": "prt_15e9ccbef0055a1tidNhoBjy0Z",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "4037eb6a74beadf5df73a1ac4871b532135e118b2670a10174b5c160e52175ea",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9cc7f2001UkSOYGKmOBc0pj"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ccbda001eXdiimEeVcf6X7"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbdb003jyMb0osODmQYa5"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbe5004R2ykzu3s2XZmYl"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbef0055a1tidNhoBjy0Z"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": null,
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "message_id": "msg_163c287b2001NYAMNPXW5diLGE",
+      "order": "1|0001792675055538|msg_163c287b2001NYAMNPXW5diLGE",
+      "ts": "2026-10-22T13:17:35.538Z",
+      "role": "user",
+      "native": {},
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "prt_163c287b2006W4ObXB9m0ndCZP",
+          "kind": "text",
+          "text": "And in tests?"
+        }
+      ],
+      "cmp_sha": "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_163c287b2001NYAMNPXW5diLGE"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_163c287b2006W4ObXB9m0ndCZP"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "parent_id": "msg_163c287b2001NYAMNPXW5diLGE",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "requested_model": "fake-1",
+      "served_model": "fake-1",
+      "effort": null,
+      "response_id": "msg_163c28b9a0017xYbIBKYQS1bF6",
+      "aliases": [],
+      "message_id": "msg_163c28b9a0017xYbIBKYQS1bF6",
+      "order": "1|0001792675056538|msg_163c28b9a0017xYbIBKYQS1bF6",
+      "ts": "2026-10-22T13:17:36.538Z",
+      "role": "assistant",
+      "native": {
+        "finish": "stop"
+      },
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "prt_163c28b9b007AOHHunnK1HQFWO",
+          "kind": "notice",
+          "text": "",
+          "level": null,
+          "native_type": "step-start"
+        },
+        {
+          "part_id": "prt_163c28ba5008b4pv7IsTD3NwYb",
+          "kind": "text",
+          "text": "One file."
+        },
+        {
+          "part_id": "prt_163c28baf009zv7jvXeJbOqO44",
+          "kind": "notice",
+          "text": "stop",
+          "level": null,
+          "native_type": "step-finish"
+        }
+      ],
+      "cmp_sha": "d8d56863ff9fbaf5277e216b05fe3f0f2f8c8cff6c35f9f8e2eade7193967abe",
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_163c287b2001NYAMNPXW5diLGE"
+        ],
+        [
+          "table:message",
+          1,
+          "message:msg_163c28b9a0017xYbIBKYQS1bF6"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_163c28b9b007AOHHunnK1HQFWO"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_163c28ba5008b4pv7IsTD3NwYb"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_163c28baf009zv7jvXeJbOqO44"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "engine": "v1",
+      "client": "opencode",
+      "harness_version": "1.19.3",
+      "title": "Count the files and tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T13:18:14.538Z",
+      "updated_at": "2026-10-22T13:17:36.538Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "4037eb6a74beadf5df73a1ac4871b532135e118b2670a10174b5c160e52175ea",
+          "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+          "d8d56863ff9fbaf5277e216b05fe3f0f2f8c8cff6c35f9f8e2eade7193967abe"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_163c28b9a0017xYbIBKYQS1bF6"
+        ],
+        [
+          "table:session",
+          1,
+          "table:session"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "usage_id": "message:msg_15e9ccbda001eXdiimEeVcf6X7#1",
+      "anchor": {
+        "message_id": "msg_15e9ccbda001eXdiimEeVcf6X7"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_15e9ccbda001eXdiimEeVcf6X7"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_15e9ccbef0055a1tidNhoBjy0Z"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "opencode",
+      "session_id": "ses_15e9cc40a001sY10RjvTKMKKsQ",
+      "incarnation": "",
+      "usage_id": "message:msg_163c28b9a0017xYbIBKYQS1bF6#1",
+      "anchor": {
+        "message_id": "msg_163c28b9a0017xYbIBKYQS1bF6"
+      },
+      "input": 900,
+      "output": 23,
+      "cache_read": 300,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": false,
+      "granularity": "per_message",
+      "model": "fake-1",
+      "tool_prompt": null,
+      "units": [
+        [
+          "table:message",
+          1,
+          "message:msg_163c28b9a0017xYbIBKYQS1bF6"
+        ],
+        [
+          "table:message",
+          1,
+          "part:prt_163c28baf009zv7jvXeJbOqO44"
+        ]
+      ]
+    }
+  ]
+}

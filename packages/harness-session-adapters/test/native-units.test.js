@@ -129,6 +129,13 @@ test('native and units: validateSession finds malformed units and undeclared or 
   assert.ok(problems([s, { ...m, native: { gitBranch: 'main', env: {} } }], { native: declared }).some((p) => p.includes('"env"')));
   assert.ok(problems([{ ...s, native: {} }, m], { native: declared }).some((p) => p.includes('declares no paths')));
   assert.ok(problems([s, { ...m, parts: [{ ...m.parts[0], native: { x: 1 } }] }], { native: declared }).some((p) => p.includes('declares no paths')));
+  // A record of a type with declared paths carries `native`, `{}` when it holds none of them; a
+  // reader that does not know the declarations asks nothing of it.
+  assert.ok(problems([s, m], { native: declared }).some((p) => p.startsWith('native is missing')), 'a message without native, where messages declare paths');
+  assert.deepEqual(problems([s, { ...m, native: {} }], { native: declared }), []);
+  const partFindings = validateSession([s, { ...m, native: {} }], { native: { ...declared, part: ['content.type'] } }).filter((f) => !f.warning);
+  assert.deepEqual(partFindings.map((f) => [f.at, f.problem.slice(0, 17)]), [['message m1 part 0', 'native is missing']], 'a part without native, where parts declare paths');
+  assert.deepEqual(problems([s, m]), []);
 });
 
 // The generic checks fail on the break they exist for: a native key the adapter does not declare,
@@ -165,6 +172,9 @@ test('native and units: the generic checks catch an undeclared native path and a
     // Declared, it passes.
     const declares = { ...undeclared, describe: () => ({ ...a.describe(), native: { session: [], message: ['gitBranch'], part: [] } }) };
     assert.equal(genericChecks(declares, store)['M.native-declared'], undefined);
+    // Declared, and left off a message: `{}` is due, never no field.
+    const dropped = withRecords(({ native: _n, ...rec }) => rec);
+    assert.ok(genericChecks(dropped, store)['M.native-declared']?.some((f) => f.includes('native is missing')));
   } finally {
     fs.rmSync(store, { recursive: true, force: true });
   }

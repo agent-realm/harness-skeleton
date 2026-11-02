@@ -46,13 +46,20 @@ export function storeOf(adapter, harnessPath) {
 // `units: false` leaves each record's `units` out; `units: 'keys'` keeps each triple's source_key
 // and unit_key only. A generation is the engine's count of a source's resets, so two engines that
 // read a source through different resets number it differently (staleUnits checks it instead).
+// A source keyed by an absolute path beside a file-bound harness store (OpenCode's spilled
+// `tool-output/`, sessions §1) is written `<harness dir>/…`, as `harness_path` itself is left out:
+// a golden holds no machine's path.
 export function project(views, { units = true } = {}) {
   const out = {};
-  const shape = (u) => (units === 'keys' ? u.map(([sk, , uk]) => [sk, uk]) : u);
   for (const sid of Object.keys(views).sort()) {
     out[sid] = [...views[sid].values()]
       .sort((a, b) => (a.type + '\u0000' + recordKey(a) < b.type + '\u0000' + recordKey(b) ? -1 : 1))
-      .map(({ host: _h, harness_path: _p, content_sha: _c, units: u, ...r }) => (units && u !== undefined ? { ...r, units: shape(u) } : r));
+      .map(({ host: _h, harness_path: hp, content_sha: _c, units: u, ...r }) => {
+        if (!units || u === undefined) return r;
+        const dir = typeof hp === 'string' ? path.dirname(hp) + path.sep : null;
+        const rel = (x) => (dir && x.startsWith(dir) ? `<harness dir>/${x.slice(dir.length).split(path.sep).join('/')}` : x);
+        return { ...r, units: u.map(([sk, g, uk]) => (units === 'keys' ? [rel(sk), rel(uk)] : [rel(sk), g, rel(uk)])) };
+      });
   }
   return out;
 }

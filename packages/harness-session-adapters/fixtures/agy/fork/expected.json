@@ -35,7 +35,14 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7"
+      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:2"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -66,7 +73,14 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760"
+      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:4"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -103,7 +117,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534"
+      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -134,7 +160,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec"
+      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -165,7 +203,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
+      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:2"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:5"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -196,7 +246,14 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7"
+      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7",
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:0"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -229,7 +286,24 @@
           "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:5"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:trajectory_metadata_blob",
+          1,
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:trajectory_metadata_blob"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -250,7 +324,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -271,7 +357,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -292,7 +390,19 @@
       "harness": "agy",
       "session_id": "28d30145-9faf-4ea5-94d7-a38b5cc017fa",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:gen_metadata",
+          1,
+          "gen_metadata:2"
+        ],
+        [
+          "conversations/28d30145-9faf-4ea5-94d7-a38b5cc017fa.db#table:steps",
+          1,
+          "steps:5"
+        ]
+      ]
     }
   ],
   "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d": [
@@ -308,7 +418,14 @@
       "evidence": "explicit",
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
-      "incarnation": ""
+      "incarnation": "",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:parent_references",
+          1,
+          "parent_references:0"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -334,7 +451,14 @@
       "evidence": "explicit",
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
-      "incarnation": ""
+      "incarnation": "",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:parent_references",
+          1,
+          "parent_references:0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -371,7 +495,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7"
+      "cmp_sha": "645f290b9388487e81de1003d9ae16ee248640ca5ee6ad96f8796da519e10cf7",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:2"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -402,7 +533,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760"
+      "cmp_sha": "05656ada0f2459e3615bdd9a4a88adf7cc75e16d88214b0dd80ba7c303b2c760",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:4"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -439,7 +577,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534"
+      "cmp_sha": "68c52c663baba8ac60195b523ea07f1d2f57d49dc40650a101d32e8e595ca534",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -470,7 +620,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec"
+      "cmp_sha": "79ab2172053918591a9d411a384ff5b71e269d8c49091d14c954ea82f1d8f8ec",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -501,7 +663,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
+      "cmp_sha": "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:3"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:7"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -532,7 +706,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "b44882b6a8f8d5e2c74fd1bfd35130bdddbd07b01dfde3ed8d2041620049976c"
+      "cmp_sha": "b44882b6a8f8d5e2c74fd1bfd35130bdddbd07b01dfde3ed8d2041620049976c",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:6"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -563,7 +744,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526"
+      "cmp_sha": "c4cd1f8f2215d6fcef49ba0626c9fa7fc91c715637875d851ef7720059d04526",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:2"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:5"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -594,7 +787,14 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7"
+      "cmp_sha": "431d0a620be970aac58decc055f2b005045c497c0fa9626b23018a1412f4d1c7",
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:0"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -629,7 +829,19 @@
           "be5af3bf5ed300167f99dd4795f5bf91fe96d60a6d5dc651eb1fd71059bba911"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:7"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:trajectory_metadata_blob",
+          1,
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:trajectory_metadata_blob"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -650,7 +862,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:3"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:7"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -671,7 +895,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -692,7 +928,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -713,7 +961,19 @@
       "harness": "agy",
       "session_id": "fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d",
       "incarnation": "",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:gen_metadata",
+          1,
+          "gen_metadata:2"
+        ],
+        [
+          "conversations/fc9eefd9-68ac-4eb7-8acc-d9bcbac38b3d.db#table:steps",
+          1,
+          "steps:5"
+        ]
+      ]
     }
   ]
 }

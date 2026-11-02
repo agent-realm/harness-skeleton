@@ -20,7 +20,7 @@
     fields validate as before.
   - The conformance checklist gains M.native-declared and M.units-input, proved by generic
     checks over every fixture case.
-  - The contract links point at sessions-model v1.4.2.
+  - The contract links point at sessions-model v1.4.3.
 - **claude-code, codex, gemini-cli and copilot-cli emit `units`, and three of them `native`**
   (sessions-model v1.4.2, §2.7). Every record of the four names the lines its own fields were taken
   from; the session record names those behind its title, `cwd`, `last_cwd`, `created_at`,
@@ -50,6 +50,36 @@
     event's winning.
   - Each has a `resume` fixture case: a later launch moves session fields, and the session record's
     units follow them.
+- **goose, opencode, agy and cursor-agent emit `units`, and opencode `native`** (sessions-model
+  v1.4.3, §2.7), completing the twelve adapters. As before: every record names the units its own
+  fields came from, the session record never the fingerprint's. No key changes; `content_sha` moves
+  only where `native` is added.
+  - **goose** `adapter_ver` 0.3.0, `state_ver` 2: a message names its row, plus the ledger row of
+    its served model, the sessions row of its effort, and the confirmation row behind a denied or
+    cancelled result; a usage record its ledger row or its message row; links and the session the
+    sessions row, an origin link the rows that deliver the child. No `native`.
+  - **opencode** `adapter_ver` 0.3.0, `state_ver` 2: a message names its message and part rows,
+    the spill files its results read, the revert that set its state, the parent row whose model and
+    variant it took, and the trigger of a summary's `replaces`; a usage record its row and the
+    step-finish rows it sums; edit and rewind records their events; the session its row and the row
+    of its latest message. `native` on messages, from the message's `data`: `finish`.
+  - **agy** `adapter_ver` 0.3.0, `state_ver` 3: a message names its step row, plus the generation
+    row of its models or usage, the result step that names a call's server and a spilled output; a
+    rewind its transcript line, a fork its parent_references row; the session the trajectory,
+    summaries and annotation rows behind its fields and the step of its latest message. The
+    transcript-only path names lines. No `native`.
+  - **cursor-agent** `adapter_ver` 0.3.0, `state_ver` 2: a record names the blobs it is built from,
+    marked while it is built (turn, step and user-message blobs, the model-context blobs of its calls,
+    results, images and model, the root), plus the meta row and meta.json where a field comes from
+    them. Blobs are content-addressed, so these triples name versions. No `native`.
+  - Each has a `resume` fixture case.
+- **The validator reports a missing `native`** on a record or part whose type the adapter declares
+  paths for (§2.7: `{}` when it holds none), and M.native-declared with it.
+- **Conformance runner, for 2d.** `project()` writes a triple path under a file-bound store's folder
+  (OpenCode's spilled `tool-output/`) as `<harness dir>/…`, so a golden holds no machine's path.
+  opencode's and cursor-agent's growth checks use `units: 'valid'`: a usage record's counts move
+  from the message row to its step-finish rows (opencode), and one model-context message can sit in
+  several blobs (cursor-agent), both without the record changing.
 - **vscode, zed, cursor and devin emit `units`, and three of them `native`** (sessions-model
   v1.4.2, §2.7). As for the first four: every record names the units its own fields came from, the
   session record never the fingerprint's. No key changes; `content_sha` moves only where `native` is

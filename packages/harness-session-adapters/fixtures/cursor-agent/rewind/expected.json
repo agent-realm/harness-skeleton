@@ -29,7 +29,19 @@
       "harness": "cursor-agent",
       "session_id": "3148427e-5a7e-4000-8000-000000000008",
       "incarnation": "",
-      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "26472e1e1fdacde7c1aa67b80e3d294dca0ac5411a74610aa10659874f5907ab"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "48db036bdab38dd292659c21ebee6f52756866bfde5a8d4bc623d76634463258"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -60,7 +72,19 @@
       "harness": "cursor-agent",
       "session_id": "3148427e-5a7e-4000-8000-000000000008",
       "incarnation": "",
-      "cmp_sha": "211ca0899e522c7680a6bd9827df6fb5b91c8a83b904ebf8e47c14c8d93f3ff5"
+      "cmp_sha": "211ca0899e522c7680a6bd9827df6fb5b91c8a83b904ebf8e47c14c8d93f3ff5",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "4db663fd4c711ae8a863c2fca73ce5d6bbebfa15579b9bddb5c09c5bab4ef6b4"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "b8c1bb241abd8066f4b119d58a8b9a99e211b844bf1b563cc14d65440ab81dc9"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -91,7 +115,24 @@
       "harness": "cursor-agent",
       "session_id": "3148427e-5a7e-4000-8000-000000000008",
       "incarnation": "",
-      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95"
+      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "48db036bdab38dd292659c21ebee6f52756866bfde5a8d4bc623d76634463258"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "8fb0a5c984f8506bda0a9b5873f88caf38b0bcc2bd61982b22f732cb4c87aaec"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -122,7 +163,24 @@
       "harness": "cursor-agent",
       "session_id": "3148427e-5a7e-4000-8000-000000000008",
       "incarnation": "",
-      "cmp_sha": "c5256f6d64755e47fd877830e998e4ea6a9b509950a78173ff5bb3f4e6c3ecee"
+      "cmp_sha": "c5256f6d64755e47fd877830e998e4ea6a9b509950a78173ff5bb3f4e6c3ecee",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "9dc6fa3f8f8e47f954b3e6b73e7c27bf7f0a58d1d94c8f3288a45b90311a9095"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "b8c1bb241abd8066f4b119d58a8b9a99e211b844bf1b563cc14d65440ab81dc9"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -153,7 +211,29 @@
           "c5256f6d64755e47fd877830e998e4ea6a9b509950a78173ff5bb3f4e6c3ecee"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/meta.json",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/meta.json"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "64c6709c923ecae741fa36bbb5cf7abc2e1fcd635345c9df6d215265ca6163a7"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:blobs",
+          1,
+          "9dc6fa3f8f8e47f954b3e6b73e7c27bf7f0a58d1d94c8f3288a45b90311a9095"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/3148427e-5a7e-4000-8000-000000000008/store.db#table:meta"
+        ]
+      ]
     }
   ],
   "5d0c1f9e-5a7e-4000-8000-000000000007": [
@@ -186,7 +266,19 @@
       "harness": "cursor-agent",
       "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
       "incarnation": "",
-      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc"
+      "cmp_sha": "8e99d7ea65d0400871583e9c49a0a47a926c50483b95bd8dd5a0cedb7b87b9bc",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "26472e1e1fdacde7c1aa67b80e3d294dca0ac5411a74610aa10659874f5907ab"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "48db036bdab38dd292659c21ebee6f52756866bfde5a8d4bc623d76634463258"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -217,7 +309,19 @@
       "harness": "cursor-agent",
       "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
       "incarnation": "",
-      "cmp_sha": "aa58cf956183feb62816cf32070eb59aaf54ee00bca88a79bbe7ef4251350842"
+      "cmp_sha": "aa58cf956183feb62816cf32070eb59aaf54ee00bca88a79bbe7ef4251350842",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "2f8e96cffef7c4cf9b30114fe6e336d2944930cb65a8bede48b39dd01ec770ed"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "af6aa937b24ba6e98e1808bf64c7de157d5b3fc9f66bb429f0b2db6c98e0ebae"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -248,7 +352,24 @@
       "harness": "cursor-agent",
       "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
       "incarnation": "",
-      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95"
+      "cmp_sha": "8b74b9bd75e717e7e01350d2b80226706c976a152b65dd35249af74895551c95",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "48db036bdab38dd292659c21ebee6f52756866bfde5a8d4bc623d76634463258"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "8fb0a5c984f8506bda0a9b5873f88caf38b0bcc2bd61982b22f732cb4c87aaec"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -279,7 +400,24 @@
       "harness": "cursor-agent",
       "session_id": "5d0c1f9e-5a7e-4000-8000-000000000007",
       "incarnation": "",
-      "cmp_sha": "a085f550f978cbade0713cc72798e183eb267d29c81313f9cf24c978a89dea19"
+      "cmp_sha": "a085f550f978cbade0713cc72798e183eb267d29c81313f9cf24c978a89dea19",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "2f8e96cffef7c4cf9b30114fe6e336d2944930cb65a8bede48b39dd01ec770ed"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "e71c227b116bbb2235737f8353fc81df4c4f637255092159e732106a31b8f5d6"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -310,7 +448,29 @@
           "a085f550f978cbade0713cc72798e183eb267d29c81313f9cf24c978a89dea19"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/meta.json",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/meta.json"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "4531716adc3a7fadf5b7399509b8e772657e67c061fa3b5b965f47688ad91657"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:blobs",
+          1,
+          "e71c227b116bbb2235737f8353fc81df4c4f637255092159e732106a31b8f5d6"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/5d0c1f9e-5a7e-4000-8000-000000000007/store.db#table:meta"
+        ]
+      ]
     }
   ]
 }

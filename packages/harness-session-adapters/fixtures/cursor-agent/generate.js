@@ -430,9 +430,35 @@ function orphan() {
   return { dbs: s.db(), files: { [`${chatDir(L)}/meta.json`]: metaJson(), [`${chatDir(uid('0f0f0f0f', 12))}/meta.json`]: metaJson({ hasConversation: false }) }, keep: [ORPHAN_TRANSCRIPT] };
 }
 
+// ---- resume -------------------------------------------------------------------------------------
+
+// A chat resumed in a later launch (sessions-model §2.7 units): the second launch adds a turn, a new
+// root and a new name. Blobs are content-addressed, so the new root is a new unit: cwd and client
+// move to it, updated_at to the second turn's step, and the session record's units with them; the
+// meta row's triple names its slot in both launches. The resume test (test/cursor-agent.test.js)
+// builds the store with the first launch's `first` statements.
+export const RS = uid('9e5a1c2d', 13);
+function resume() {
+  const s = new Chat(chatDir(RS));
+  const R0 = s.put(pb([[9, `file://${CWD}`], [22, 'cli']]));
+  s.meta(metaOf(RS, R0, { name: 'count-files' }));
+  const um1 = userMsg(s, { text: 'Count the files.', id: uid('8b76b964', 261), snap: R0, t: T0 });
+  const t1 = agentTurn(s, { um: um1, steps: [say(s, 'Two files.', T0 + 1000, false)], rid: uid('c3a28bce', 161), uid: uid('8b76b964', 261) });
+  const R1 = root(s, { turns: [t1] });
+  s.meta(metaOf(RS, R1, { name: 'count-files' }));
+  const first = s.ops.length;
+  // The second launch, a day later.
+  const um2 = userMsg(s, { text: 'And in tests?', id: uid('8b76b964', 262), snap: R1, t: T0 + 86400000 });
+  const t2 = agentTurn(s, { um: um2, steps: [say(s, 'One file.', T0 + 86401000, false)], rid: uid('c3a28bce', 162), uid: uid('8b76b964', 262) });
+  s.meta(metaOf(RS, root(s, { turns: [t1, t2] }), { name: 'count-files-and-tests' }));
+  return { dbs: s.db(), files: { [`${chatDir(RS)}/meta.json`]: metaJson() }, first };
+}
+export const RESUME_FIRST = resume().first;
+export const RESUME_DB = `${chatDir(RS)}/store.db`;
+
 // ---- writing ------------------------------------------------------------------------------------
 
-export const CASES = { features, subagent, rewind, orphan };
+export const CASES = { features, subagent, rewind, orphan, resume };
 
 function writeCase(name, { dbs, files, keep = [] }) {
   const dir = path.join(HERE, name);

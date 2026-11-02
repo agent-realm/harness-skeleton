@@ -9,10 +9,10 @@ const ACP = 'acp-sessions/<id>';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/cursor-agent',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'cursor-agent',
-  state_ver: 1,
+  state_ver: 2,
   // Observed on cursor-agent 2026.10.19 (spec); none is certified until conformance runs against a
   // real cursor-agent.
   versions: { certified: [], compatible: [] },

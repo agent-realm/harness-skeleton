@@ -1,0 +1,239 @@
+{
+  "9e5a1c2d-5a7e-4000-8000-000000000013": [
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000261",
+      "parent_id": null,
+      "order": "000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "9e5a1c2d-5a7e-4000-8000-000000000013",
+      "incarnation": "",
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "7fa06bc11b60f5a4f5e9a113a8d0a8d82b8b2dcdb80b10db8c39dee191561f0f"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "cd532a42d32bea62ce04981d21a851521be32900a63b34ccb0ec5436ed17ab98"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "8b76b964-5a7e-4000-8000-000000000262",
+      "parent_id": null,
+      "order": "000002",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:59:02.390Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in tests?"
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "9e5a1c2d-5a7e-4000-8000-000000000013",
+      "incarnation": "",
+      "cmp_sha": "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "0a5e5f08e42ae1665420a99875f8058f74aea0403c720e0ba4f82b254146b921"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "83a3616c6de97195ad095d5dcc889332c818ce02f83d5906a572fda49e0324ca"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000161:assistant",
+      "parent_id": null,
+      "order": "000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T14:59:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "9e5a1c2d-5a7e-4000-8000-000000000013",
+      "incarnation": "",
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "7fa06bc11b60f5a4f5e9a113a8d0a8d82b8b2dcdb80b10db8c39dee191561f0f"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "9dd0d44982c5b01fe4f6637a734476f2f78492895d96efc6a9dee6dd4de0a4cc"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "c3a28bce-5a7e-4000-8000-000000000162:assistant",
+      "parent_id": null,
+      "order": "000003",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T14:59:03.390Z",
+      "requested_model": "default",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "harness": "cursor-agent",
+      "session_id": "9e5a1c2d-5a7e-4000-8000-000000000013",
+      "incarnation": "",
+      "cmp_sha": "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915",
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "83a3616c6de97195ad095d5dcc889332c818ce02f83d5906a572fda49e0324ca"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "9be28c47a588acec94ec521d74515f5e43e44b834a3e9def72394fbc50de4105"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "cursor-agent",
+      "session_id": "9e5a1c2d-5a7e-4000-8000-000000000013",
+      "incarnation": "",
+      "engine": null,
+      "client": "cli",
+      "harness_version": null,
+      "title": "count-files-and-tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop",
+      "created_at": "2026-10-20T14:58:22.390Z",
+      "updated_at": "2026-10-21T14:59:03.390Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+          "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+          "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/meta.json",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/meta.json"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "5ad11e733659137fc7490b36a4b35acfd47b5dcfe32aad2dff2b63b1124f431e"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:blobs",
+          1,
+          "9be28c47a588acec94ec521d74515f5e43e44b834a3e9def72394fbc50de4105"
+        ],
+        [
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta",
+          1,
+          "chats/fca83931bbc72705a958b0f3662eff69/9e5a1c2d-5a7e-4000-8000-000000000013/store.db#table:meta"
+        ]
+      ]
+    }
+  ]
+}

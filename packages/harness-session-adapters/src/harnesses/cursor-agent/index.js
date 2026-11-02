@@ -46,7 +46,7 @@ import { Msg, Malformed, tryWire, toPbJson, marker, isMarker } from './pb.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'cursor-agent';
-const STATE_VER = 1;
+const STATE_VER = 2;
 export const EMPTY_ROOT = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 const SAFE = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 const noHeld = () => ({ session: [], message: [], usage: [], link: [], lifecycle: [] });
@@ -802,6 +802,8 @@ function imageBytes(img) {
 // archive and every request it holds, and the `<system_reminder>` messages.
 function jsonIndex(lists, json) {
   const ix = { models: new Map(), calls: new Map(), results: new Map(), images: new Map(), lastReq: new Map(), archReqs: new Map(), reminders: new Map() };
+  // The blob each indexed value came from, for the records' `units` (sessions-model §2.7).
+  ix.src = { models: new Map(), calls: new Map(), results: new Map(), images: new Map() };
   let lastSeen = '';
   for (const { key, ids } of lists) {
     let req = '';
@@ -832,13 +834,22 @@ function jsonIndex(lists, json) {
           const bytes = imageBytes(p.image);
           imgs.push({ media_type: str(p.mimeType) ?? str(p.mediaType), inline: bytes ? bytes.toString('base64') : null, bytes_len: bytes ? bytes.length : null });
         }
-        if (imgs.length) ix.images.set(req, imgs);
+        if (imgs.length) {
+          ix.images.set(req, imgs);
+          ix.src.images.set(req, id);
+        }
       } else if (m.role === 'assistant') {
         for (const p of content) {
           if (!isObj(p)) continue;
           const mn = isObj(p.providerOptions) && isObj(p.providerOptions.cursor) ? p.providerOptions.cursor.modelName : null;
-          if (req && str(mn) && !ix.models.has(req)) ix.models.set(req, mn);
-          if (p.type === 'tool-call' && typeof p.toolCallId === 'string') ix.calls.set(p.toolCallId, { name: p.toolName, args: p.args });
+          if (req && str(mn) && !ix.models.has(req)) {
+            ix.models.set(req, mn);
+            ix.src.models.set(req, id);
+          }
+          if (p.type === 'tool-call' && typeof p.toolCallId === 'string') {
+            ix.calls.set(p.toolCallId, { name: p.toolName, args: p.args });
+            ix.src.calls.set(p.toolCallId, id);
+          }
         }
       } else if (m.role === 'tool') {
         const hl = isObj(po.highLevelToolCallResult) ? po.highLevelToolCallResult : null;
@@ -846,6 +857,7 @@ function jsonIndex(lists, json) {
         for (const p of content) {
           if (!p || p.type !== 'tool-result' || typeof p.toolCallId !== 'string') continue;
           ix.results.set(p.toolCallId, { output: jsonResultText(p), is_error: hl && typeof hl.isError === 'boolean' ? hl.isError : null, outcome: out });
+          ix.src.results.set(p.toolCallId, id);
         }
       }
     }
@@ -892,13 +904,33 @@ function fold(st, key) {
   const sid = key.session_id;
   const me = { harness: HARNESS, session_id: sid, incarnation: key.incarnation };
   const meta = st.meta;
+  // Units (sessions-model §2.7): a blob's id is its unit key, and names that version for good. The
+  // blobs a record is built from are marked while it is built (`touch`).
+  let touch = null;
+  const mark = (id) => {
+    if (touch && id) touch.add(id);
+  };
+  const marking = (fn) => {
+    const prev = touch;
+    touch = new Set();
+    try {
+      fn();
+      return [...touch];
+    } finally {
+      touch = prev;
+    }
+  };
+  const blobUnit = (id) => [st.blobs_key, st.gen[st.blobs_key], id];
+  const metaUnit = st.meta_unit ? [st.meta_unit] : [];
   const raw = (id) => {
     const u = st.blobs[id];
     if (!u) throw new MissingBlob(id);
+    mark(id);
     return u;
   };
   const pbCache = new Map();
   const pb = (id) => {
+    raw(id);
     if (!pbCache.has(id)) {
       const u = raw(id);
       let m;
@@ -926,6 +958,7 @@ function fold(st, key) {
   };
   const jsonCache = new Map();
   const json = (id) => {
+    raw(id);
     if (!jsonCache.has(id)) {
       const u = raw(id);
       let v = null;
@@ -942,10 +975,12 @@ function fold(st, key) {
   };
   const blobText = (id) => {
     const u = st.blobs[id];
+    if (u) mark(id);
     return !u || u.enc === 'pb-json' ? '' : bufOf(u).toString('utf8');
   };
   const blobLen = (id) => {
     const u = st.blobs[id];
+    if (u) mark(id);
     return !u || u.enc === 'pb-json' ? null : u.bytes;
   };
 
@@ -975,7 +1010,9 @@ function fold(st, key) {
     }
     if (!agent && !shell) continue;
     const umBlob = agent && agent.has(1) ? agent.ref(1) : '';
-    turns.push({ agent, shell, rid: agent ? agent.str(3) : '', um: umBlob ? tryPb(umBlob) : null });
+    let um = null;
+    const umBlobs = umBlob ? marking(() => { um = tryPb(umBlob); }) : [];
+    turns.push({ agent, shell, rid: agent ? agent.str(3) : '', um, id, umBlobs });
   }
   const rids = new Set(turns.map((t) => t.rid).filter(Boolean));
   const summaries = new Map(); // request id ('' = no anchor) -> [archive id]
@@ -999,10 +1036,12 @@ function fold(st, key) {
   let seq = 0;
   // A message in fold order; a held one takes its place in the order too, so nothing after it
   // moves.
-  const put = (m, isHeld) => {
+  const tsUnit = new Map(); // message_id -> the blob its ts came from
+  const put = (m, isHeld, blobs = [], extra = []) => {
     if (seen.has(m.message_id)) return; // one record per key: the first wins
     seen.add(m.message_id);
     m.order = pad(seq++);
+    m.units = [...[...new Set(blobs)].map(blobUnit), ...extra];
     if (isHeld) held.message.push(m.message_id);
     else recs.push(m);
   };
@@ -1012,14 +1051,15 @@ function fold(st, key) {
     requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], parts: [],
   });
   const byRequest = new Map(); // request id -> {user, last}: the message ids a compaction covers
-  const children = new Map(); // child session id -> {at, held}
-  const addChild = (id, at, isHeld) => {
+  const children = new Map(); // child session id -> {at, held, units}
+  const addChild = (id, at, isHeld, units = []) => {
     if (!id || id === sid) return;
     const c = children.get(id);
-    if (!c) children.set(id, { at: at || '', held: isHeld });
+    if (!c) children.set(id, { at: at || '', held: isHeld, units: [...units] });
     else {
       if (!c.at && at) c.at = at;
       if (!isHeld) c.held = false;
+      c.units.push(...units);
     }
   };
   const pushSummaries = (k) => {
@@ -1027,19 +1067,19 @@ function fold(st, key) {
       put({
         ...base(a, 'system', 'system_notice'), to_user: false, to_model: true,
         parts: [{ part_id: '0', kind: 'summary', text: pb(a).str(2), replaces: { archive_ref: a } }],
-      }, false);
+      }, false, [a]);
       // The turns whose requests the archive holds: nothing is deleted, they stay current.
       const covered = (J.archReqs.get(a) || []).map((r) => byRequest.get(r)).filter(Boolean);
       recs.push({
         type: 'lifecycle', lifecycle_id: a, op: 'compaction',
         target: covered.length ? { range: { from_id: covered[0].user, through_id: covered[covered.length - 1].last } } : { session: true },
-        at: null, ts: null, evidence: 'explicit',
+        at: null, ts: null, evidence: 'explicit', units: [blobUnit(a)],
       });
     }
   };
   const pushReminders = (k) => {
     for (const r of reminders.get(k) || []) {
-      put({ ...base(r.id, 'system', 'injected'), to_user: false, to_model: true, parts: [{ part_id: '0', kind: 'text', text: r.text }] }, false);
+      put({ ...base(r.id, 'system', 'injected'), to_user: false, to_model: true, parts: [{ part_id: '0', kind: 'text', text: r.text }] }, false, [r.id]);
     }
   };
 
@@ -1047,7 +1087,7 @@ function fold(st, key) {
   let anchorN = 0;
   for (let i = 0; i < turns.length; i++) {
     const lastTurn = i === turns.length - 1;
-    const { agent, shell, rid, um } = turns[i];
+    const { agent, shell, rid, um, id: turnBlob, umBlobs } = turns[i];
     if (i === 0) pushReminders('^');
 
     if (shell) {
@@ -1055,8 +1095,12 @@ function fold(st, key) {
       // (sessions-model §1 rule 4), its call on the message (rule 6).
       const mid = `${anchor}+${++anchorN}`;
       const done = shell.has(2);
-      const cmdMsg = shell.has(1) ? tryPb(shell.ref(1)) : null;
-      const outMsg = done ? tryPb(shell.ref(2)) : null;
+      let cmdMsg = null;
+      let outMsg = null;
+      const shellBlobs = marking(() => {
+        cmdMsg = shell.has(1) ? tryPb(shell.ref(1)) : null;
+        outMsg = done ? tryPb(shell.ref(2)) : null;
+      });
       const out = done ? outMsg || new Msg() : null;
       const callId = `@${mid}:0`;
       const parts = [{ part_id: '0:call', kind: 'tool_call', call_id: callId, name: 'Shell', args: { command: cmdMsg ? cmdMsg.str(1) : '' }, server: null }];
@@ -1070,7 +1114,7 @@ function fold(st, key) {
         parts.push({ part_id: '0:result', kind: 'tool_result', call_id: callId, is_error: null, status: 'completed', output, output_len: utf8Len(output), truncated: null, exit_code: exit });
       }
       // Still running while it is the last turn: held; a later turn ends it, interrupted.
-      put({ ...base(mid, 'user', 'user'), status: done ? 'complete' : 'interrupted', parts }, !done && lastTurn);
+      put({ ...base(mid, 'user', 'user'), status: done ? 'complete' : 'interrupted', parts }, !done && lastTurn, [turnBlob, ...shellBlobs]);
       continue;
     }
 
@@ -1081,7 +1125,10 @@ function fold(st, key) {
     if (um && um.str(1)) uparts.push({ part_id: '0', kind: 'text', text: um.str(1) });
     (J.images.get(rid) || []).forEach((im, k) => uparts.push({ part_id: `att:${k}`, kind: 'attachment', media_type: im.media_type, inline: im.inline, ref: null, bytes_len: im.bytes_len }));
     const source = userSource(um, !!(meta.subagentInfo && meta.subagentInfo.parentAgentId), sid);
-    put({ ...base(userId, 'user', source), ts: iso(um && um.num(25)), parts: uparts }, false);
+    // The turn blob (its ids), the user message blob, and the model-context blob of its images.
+    put({ ...base(userId, 'user', source), ts: iso(um && um.num(25)), parts: uparts }, false,
+      [turnBlob, ...umBlobs, ...(J.images.has(rid) ? [J.src.images.get(rid)] : [])]);
+    if (um && um.num(25)) tsUnit.set(userId, blobUnit(umBlobs[0]));
     if (nativeUser || rid) {
       anchor = nativeUser || rid;
       anchorN = 0;
@@ -1094,7 +1141,9 @@ function fold(st, key) {
     let running = false;
     let interrupted = false;
     let ts = null;
-    steps.forEach((id, j) => {
+    let tsBlob = null;
+    const replyBlobs = [turnBlob];
+    steps.forEach((id, j) => replyBlobs.push(...marking(() => {
       const pid = String(j);
       const s = tryPb(id);
       let am = null;
@@ -1121,31 +1170,43 @@ function fold(st, key) {
         const start = am ? m.num(2) : m.num(3);
         const text = m.str(1);
         parts.push(am ? { part_id: pid, kind: 'text', text } : text ? { part_id: pid, kind: 'reasoning', text, signature_len: null } : { part_id: pid, kind: 'reasoning', opaque: true, signature_len: null });
-        if (ts === null && start) ts = start;
+        if (ts === null && start) {
+          ts = start;
+          tsBlob = id;
+        }
         return;
       }
       if (tc) {
         const t = toolParts(tc, j, `@${assistantId}:${j}`, J, blobText, blobLen);
+        // The model-context blobs the call and its result came from.
+        mark(J.calls.has(t.call.call_id) ? J.src.calls.get(t.call.call_id) : null);
+        mark(J.results.has(t.call.call_id) ? J.src.results.get(t.call.call_id) : null);
         if (!t.result) {
           if (lastTurn) running = true;
           else interrupted = true;
         }
-        if (t.child) kids.push([t.child, t.call.call_id]);
+        if (t.child) kids.push([t.child, t.call.call_id, id]);
         parts.push(t.call);
         if (t.result) parts.push(t.result);
-        if (ts === null && t.ts) ts = t.ts;
+        if (ts === null && t.ts) {
+          ts = t.ts;
+          tsBlob = id;
+        }
         return;
       }
       parts.push(notice(pid, `unknown step kind #${s.keys()[0] ?? '?'}`, 'step'));
-    });
+    })));
     // The reply is not finished while its last tool has no result or no step exists yet.
     const hold = lastTurn && (running || !steps.length);
+    // The served model's model-context blob; the meta row gives the requested model.
+    if (J.models.has(rid)) replyBlobs.push(J.src.models.get(rid));
     put({
       ...base(assistantId, 'assistant', 'model'), ts: iso(ts),
       status: interrupted || !steps.length ? 'interrupted' : 'complete',
       requested_model: str(meta.lastUsedModel), served_model: str(J.models.get(rid)) ?? str(agent.str(7)), parts,
-    }, hold);
-    for (const [cid, at] of kids) addChild(cid, at, hold);
+    }, hold, replyBlobs, str(meta.lastUsedModel) !== null ? metaUnit : []);
+    if (tsBlob) tsUnit.set(assistantId, blobUnit(tsBlob));
+    for (const [cid, at, stepBlob] of kids) addChild(cid, at, hold, [blobUnit(stepBlob)]);
     if (rid) {
       byRequest.set(rid, { user: userId, last: hold ? userId : assistantId });
       pushSummaries(rid);
@@ -1165,7 +1226,8 @@ function fold(st, key) {
       return [];
     }
   };
-  for (const e of entries(16)) addChild(e.str(1), '', false);
+  const rootUnit = rootId && rootId !== EMPTY_ROOT ? [blobUnit(rootId)] : [];
+  for (const e of entries(16)) addChild(e.str(1), '', false, rootUnit);
   for (const e of entries(30)) {
     let run = null;
     try {
@@ -1173,12 +1235,12 @@ function fold(st, key) {
     } catch {
       run = null;
     }
-    if (run) addChild(run.str(2), run.str(1) || e.str(1), false);
+    if (run) addChild(run.str(2), run.str(1) || e.str(1), false, rootUnit);
   }
   for (const [cid, c] of children) {
     const link = {
       type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: cid }, origin: me,
-      at: c.at, inherits: null, child_stored: true, evidence: 'explicit',
+      at: c.at, inherits: null, child_stored: true, evidence: 'explicit', units: c.units,
     };
     if (c.held) held.link.push(recordKey(link));
     else recs.push(link);
@@ -1187,7 +1249,7 @@ function fold(st, key) {
   if (si && si.parentAgentId && si.parentAgentId !== sid) {
     recs.push({
       type: 'link', kind: 'subagent', stated_on: 'child', child: me, origin: { harness: HARNESS, session_id: si.parentAgentId },
-      at: si.toolCallId || '', inherits: null, child_stored: true, evidence: 'explicit',
+      at: si.toolCallId || '', inherits: null, child_stored: true, evidence: 'explicit', units: metaUnit,
     });
   }
 
@@ -1197,15 +1259,25 @@ function fold(st, key) {
   const mj = st.meta_json;
   const bucket = /^chats\/([^/]+)\//.exec(st.meta_json_key || '');
   let cwd = str(uriPath(root.strs(9)[0] || ''));
+  const cwdFromRoot = !!cwd;
   if (!cwd && mj && mj.cwd && bucket && md5(mj.cwd) === bucket[1]) cwd = mj.cwd;
+  const mjUnit = st.meta_json_unit ? [st.meta_json_unit] : [];
+  // The session's units: the rows behind its own fields (sessions-model v1.4.1, §2.7).
+  const sessionUnits = [];
+  if (str(meta.name)) sessionUnits.push(...metaUnit);
+  if (cwd) sessionUnits.push(...(cwdFromRoot ? rootUnit : mjUnit));
+  if (mj && str(mj.cwd)) sessionUnits.push(...mjUnit);
+  if (meta.createdAt) sessionUnits.push(...metaUnit);
+  else if (root.num(26)) sessionUnits.push(...rootUnit);
+  if (str(root.str(22))) sessionUnits.push(...rootUnit);
   return {
-    recs, held,
+    recs, held, tsUnit,
     session: {
       title: str(meta.name), cwd, last_cwd: mj ? str(mj.cwd) : null, created_at: iso(meta.createdAt || root.num(26)),
       // `kind` is the native session type, and cursor-agent stores none: a flag or a parent
       // reference is not a kind (sessions-model v1.3, §2.1). A sub-agent is told by its §2.5
       // link from meta.subagentInfo, above.
-      client: str(root.str(22)), kind: null,
+      client: str(root.str(22)), kind: null, units: sessionUnits,
     },
   };
 }
@@ -1219,6 +1291,12 @@ function emptyState() {
     meta: null, // the meta row, reduced (pickMeta)
     meta_json_key: null,
     meta_json: null, // {cwd}
+    // Units (sessions-model §2.7): each source's generation, the blobs source's key, and the meta
+    // row's and meta.json's triples.
+    gen: {},
+    blobs_key: null,
+    meta_unit: null,
+    meta_json_unit: null,
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -1244,7 +1322,10 @@ export function derive(session, input, state) {
   for (const src of input) {
     const units = src.units ?? [];
     const kind = kindOf(src.source_key);
+    if (kind) st.gen[src.source_key] = src.generation;
+    const lastUnit = units.length ? [src.source_key, src.generation, lastOf(units).unit_key] : null;
     if (kind === 'blobs') {
+      st.blobs_key = src.source_key;
       if (src.complete) st.blobs = {};
       for (const u of units) st.blobs[u.unit_key] = { enc: u.enc, body: u.body, bytes: u.bytes };
       for (const k of src.gone ?? []) delete st.blobs[k];
@@ -1252,12 +1333,14 @@ export function derive(session, input, state) {
       if (units.length) {
         const v = ((jsonOf(lastOf(units)) || {}).meta || [])[0]?.value;
         st.meta = pickMeta(typeof v === 'string' ? parseMetaValue(v) : v);
+        st.meta_unit = lastUnit;
       } else if (src.complete) st.meta = null;
     } else if (kind === 'meta_json') {
       st.meta_json_key = src.source_key;
       if (units.length) {
         const o = jsonOf(lastOf(units));
         st.meta_json = { cwd: isObj(o) && typeof o.cwd === 'string' ? o.cwd : null };
+        st.meta_json_unit = lastUnit;
       } else if (src.complete) st.meta_json = null;
     }
   }
@@ -1283,7 +1366,13 @@ export function derive(session, input, state) {
   const sealed = built.recs.map((r) => seal({ ...r, ...key, type: r.type }));
   const msgs = sealed.filter((r) => r.type === 'message').sort(byOrder);
   let updated = null;
-  for (const m of msgs) if (m.ts && (!updated || m.ts > updated)) updated = m.ts;
+  let updatedBy = null;
+  for (const m of msgs) {
+    if (m.ts && (!updated || m.ts > updated)) {
+      updated = m.ts;
+      updatedBy = m.message_id;
+    }
+  }
   const s = built.session;
   const sessionRec = seal({
     type: 'session', ...key, engine: null, client: s.client, harness_version: null,
@@ -1293,6 +1382,7 @@ export function derive(session, input, state) {
     state: 'active', pinned: null, mode: null, kind: s.kind,
     reuse: 'impossible', ts_source: 'event', aliases: [],
     fingerprint: { cmp_shas: msgs.filter((m) => m.state === 'current').map((m) => m.cmp_sha) },
+    units: [...s.units, ...(updatedBy !== null && built.tsUnit.has(updatedBy) ? [built.tsUnit.get(updatedBy)] : [])],
   });
 
   const held = built.held;

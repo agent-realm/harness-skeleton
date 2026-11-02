@@ -7,16 +7,16 @@ import { DatabaseSync } from 'node:sqlite';
 import { adapterFor } from '../src/index.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   CASES as BUILDERS, Chat, SCHEMA, pb, ref, sha, uid, call, userMsg, say, toolStep, shellArgs, shellOk, shellFailure, agentTurn, root, metaOf,
   A, H, E, ACP, P, SUB, R, F, L, ORPHAN, ORPHAN_TRANSCRIPT, TOOL, RID, UID, BUCKET, CWD, T0, MODEL, EMPTY_ROOT,
-  SECRET_META, SECRET_ENC, SECRET_SCOPE, SECRET_ARG, SECRET_OUT, SECRET_PW,
+  SECRET_META, SECRET_ENC, SECRET_SCOPE, SECRET_ARG, SECRET_OUT, SECRET_PW, RS, RESUME_FIRST, RESUME_DB,
 } from '../fixtures/cursor-agent/generate.js';
 
 const adapter = adapterFor('cursor-agent');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'cursor-agent');
-const CASES = ['features', 'subagent', 'rewind', 'orphan'];
+const CASES = ['features', 'subagent', 'rewind', 'orphan', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 // Values redaction replaces, in units and records alike. ShellArgs secret_scope_id names a scope,
 // holds no secret, and stays in the raw step; no record carries it.
@@ -93,7 +93,11 @@ for (const name of CASES) {
   });
 
   test(`cursor-agent/${name}: every incremental path folds to the full replay; a further read is unchanged`, () => {
-    const r = sqlGrowthCheck(adapter, path.join(FIX, name), { steps: 12 });
+    // The model context can carry one message in several blobs (an archive and the root): as the
+    // tree grows, the blob a call, a result or the model is taken from can move while the record
+    // does not, a units-only change (sessions-model §2.7). Units are checked for pointing at held
+    // units, not for equality.
+    const r = sqlGrowthCheck(adapter, path.join(FIX, name), { steps: 12, units: 'valid' });
     assert.deepEqual(r.incremental, r.full);
     assert.ok(r.equal, 'the incremental and the full view differ');
     assert.deepEqual(r.notUnchanged, []);
@@ -904,4 +908,23 @@ test('cursor-agent: a tool_result carries the stored shell exit code (ShellSucce
     const parts = msg(viewOf(fullReplay(adapter, dir), A), `${uid('c3a28bce', 977)}:assistant`).parts;
     assert.deepEqual(parts.filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, p.exit_code]), [[CP, 5], [CC, null]]);
   });
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a chat resumed in a later launch. Blobs
+// are content-addressed, so the second launch's root is a new unit: the fields it gives (cwd, the
+// client) and updated_at move to new blobs, and the session record's units with them. The meta
+// row's triple names its slot in both launches while the title moves.
+test('cursor-agent: resume: the session record\'s units follow the new root and the second turn', () => {
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [RESUME_DB]: RESUME_FIRST });
+  const [b, a] = [r.before[RS], r.after[RS]];
+  assert.deepEqual([b.title, a.title], ['count-files', 'count-files-and-tests']);
+  const metaKey = `${RESUME_DB}#table:meta`;
+  const blobsKey = `${RESUME_DB}#table:blobs`;
+  const meta = (s) => s.units.filter(([sk]) => sk === metaKey);
+  const blobs = (s) => s.units.filter(([sk]) => sk === blobsKey).map(([, , id]) => id);
+  assert.equal(meta(b).length, 1);
+  assert.deepEqual(meta(a), meta(b), 'the meta row\'s slot stays');
+  assert.ok(blobs(a).some((id) => !blobs(b).includes(id)), 'a blob of the second launch joins (the new root, the second turn)');
+  assert.ok(blobs(b).some((id) => !blobs(a).includes(id)), 'the first launch\'s root leaves');
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

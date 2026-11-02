@@ -1,0 +1,9 @@
+{"sessionId":"8091a2b3-c4d5-4e6f-8a7b-9c0d1e2f3a4b","projectHash":"3333333333333333333333333333333333333333333333333333333333333333","startTime":"2026-02-09T09:00:00.000Z","lastUpdated":"2026-02-09T09:00:00.000Z","kind":"main"}
+{"id":"d04923d38bb0f6017037e74183378ef4","timestamp":"2026-02-09T09:00:00.001Z","type":"user","content":[{"text":"<session_context>\nThis is the Gemini CLI. We are setting up the context for our chat.\nToday's date is Tuesday, February 3, 2026 (formatted according to the user's locale).\nMy operating system is: linux\nThe project's temporary directory is: /home/user/.gemini/tmp/toyshop\n- **Workspace Directories:**\n  - /home/user/work/toyshop\n- **Directory Structure:**\n\nShowing up to 200 items (files + folders).\n\n/home/user/work/toyshop/\n├───cart.py\n└───tests/\n</session_context>"}]}
+{"id":"00000000-0000-4000-8000-0000000e0001","timestamp":"2026-02-09T09:00:01.000Z","type":"user","content":[{"text":"Count the files."}]}
+{"$set":{"lastUpdated":"2026-02-09T09:00:01.001Z"}}
+{"id":"00000000-0000-4000-8000-0000000e0002","timestamp":"2026-02-09T09:00:02.000Z","type":"gemini","content":"Two files.","thoughts":[],"tokens":{"input":1234,"output":17,"cached":0,"thoughts":0,"tool":0,"total":1251},"model":"gemini-3.5-flash"}
+{"$set":{"lastUpdated":"2026-02-09T09:00:02.001Z","summary":"Count the files"}}
+{"id":"00000000-0000-4000-8000-0000000e0003","timestamp":"2026-02-10T15:00:00.000Z","type":"user","content":[{"text":"And in tests?"}]}
+{"id":"00000000-0000-4000-8000-0000000e0004","timestamp":"2026-02-10T15:00:01.000Z","type":"gemini","content":"One file.","thoughts":[],"tokens":{"input":1234,"output":17,"cached":0,"thoughts":0,"tool":0,"total":1251},"model":"gemini-3.5-flash"}
+{"$set":{"lastUpdated":"2026-02-10T15:00:01.001Z","summary":"Count the files and tests"}}

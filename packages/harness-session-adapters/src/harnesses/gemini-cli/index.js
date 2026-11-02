@@ -33,7 +33,7 @@ import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'gemini-cli';
-const STATE_VER = 1;
+const STATE_VER = 2;
 // The injected `<session_context>` user message carries this id in every session (spec §3; fixture
 // pass3, from its first user message).
 export const SESSION_CONTEXT_ID = 'd04923d38bb0f6017037e74183378ef4';
@@ -352,10 +352,14 @@ export function unitsFromBytes(sourceKey, bytes, { start = 0 } = {}) {
 // ---- the fold (memhouse's fold, serialisable, applied unit by unit) ---------------------------
 
 // The fold: the header, the session fields the ops set, a timeline of slots, and the current ids in
-// the CLI's own fold order. A message slot is {id, rec, state, order}; an op slot is {op, ids,
-// before, unit}. `at` maps 'm:' + id to the index of that id's current slot.
+// the CLI's own fold order. A message slot is {id, rec, state, order, ou, ru, pu}; an op slot is
+// {op, ids, before, unit}. `at` maps 'm:' + id to the index of that id's current slot.
+// Units (sessions-model §2.7), as byte offsets: a slot's record folds from the line that gave its
+// `order` (`ou`), the line that wrote its current version (`ru`), and every $patch since that
+// changed it (`pu`). `hu`, `tu`, `du` and `cu` are the lines of the header, the title, the
+// directories and the session context.
 function emptyFold() {
-  return { header: null, title: null, dirs: null, context: null, slots: [], cur: [], at: {} };
+  return { header: null, title: null, dirs: null, context: null, slots: [], cur: [], at: {}, hu: null, tu: null, du: null, cu: null };
 }
 
 function reindex(f) {
@@ -376,17 +380,26 @@ const contentKey = (r) => JSON.stringify([partArray(r.content), Array.isArray(r.
 
 // A record id written again replaces the record (last wins) and keeps its first position; a
 // retracted id written again opens a new slot at the end.
-function put(f, r, order) {
-  if (r.id === SESSION_CONTEXT_ID && f.context === null) f.context = textOf(r.content);
+function put(f, r, order, unit) {
+  if (r.id === SESSION_CONTEXT_ID && f.context === null) {
+    f.context = textOf(r.content);
+    f.cu = unit;
+  }
   const i = f.at['m:' + r.id];
   if (i !== undefined) {
-    f.slots[i].rec = r;
+    const s = f.slots[i];
+    s.rec = r;
+    s.ru = unit;
+    s.pu = [];
     return;
   }
   f.at['m:' + r.id] = f.slots.length;
-  f.slots.push({ id: r.id, rec: r, state: 'current', order });
+  f.slots.push({ id: r.id, rec: r, state: 'current', order, ou: unit, ru: unit, pu: [] });
   f.cur.push(r.id);
 }
+
+// The lines a message slot's record folds from.
+const slotUnits = (s) => [...new Set([s.ou, s.ru, ...s.pu])];
 
 function retract(f, id) {
   const i = f.at['m:' + id];
@@ -430,8 +443,11 @@ function applyRecord(f, r, unit) {
         }
       }
       s.rec = rec;
-      // A no-op revision (a string content re-sent as [{text}]) is not an edit.
-      if (contentKey(rec) !== was && !revised.includes(u.id)) revised.push(u.id);
+      // A no-op revision (a string content re-sent as [{text}]) is not an edit, nor a unit of it.
+      if (contentKey(rec) !== was) {
+        if (!revised.includes(u.id)) revised.push(u.id);
+        if (!s.pu.includes(unit)) s.pu.push(unit);
+      }
     }
     for (const id of Array.isArray(p.removeIds) ? p.removeIds : []) {
       if (typeof id === 'string' && retract(f, id)) removed.push(id);
@@ -443,7 +459,10 @@ function applyRecord(f, r, unit) {
         const moved = ids.map((id) => f.slots[f.at['m:' + id]]);
         const set = new Set(moved);
         f.slots = [...f.slots.filter((s) => !set.has(s)), ...moved];
-        moved.forEach((s, k) => { s.order = `${pad(unit)}.${pad(k, 6)}`; });
+        moved.forEach((s, k) => {
+          s.order = `${pad(unit)}.${pad(k, 6)}`;
+          s.ou = unit;
+        });
         f.cur = [...f.cur.filter((id) => !ids.includes(id)), ...ids];
         reindex(f);
       }
@@ -452,7 +471,7 @@ function applyRecord(f, r, unit) {
     return;
   }
   if (typeof r.id === 'string') {
-    put(f, r, pad(unit));
+    put(f, r, pad(unit), unit);
     return;
   }
   if (isObj(r.$set)) {
@@ -466,20 +485,35 @@ function applyRecord(f, r, unit) {
       f.slots = f.slots.filter((x) => !drop.has(x));
       f.cur = f.cur.filter((id) => keep.has(id));
       reindex(f);
-      msgs.forEach((m, k) => put(f, m, `${pad(unit)}.${pad(k, 6)}`));
+      msgs.forEach((m, k) => put(f, m, `${pad(unit)}.${pad(k, 6)}`, unit));
     }
     // `summary` is the title; `lastUpdated` and `memoryScratchpad` are volatile and change no
     // record.
-    if (typeof s.summary === 'string') f.title = s.summary;
-    if (f.dirs === null && Array.isArray(s.directories)) f.dirs = s.directories;
+    if (typeof s.summary === 'string') {
+      f.title = s.summary;
+      f.tu = unit;
+    }
+    if (f.dirs === null && Array.isArray(s.directories)) {
+      f.dirs = s.directories;
+      f.du = unit;
+    }
     return;
   }
   if (isHeader(r)) {
-    if (!f.header) f.header = { sessionId: r.sessionId, startTime: r.startTime ?? null, kind: r.kind ?? null };
-    if (typeof r.summary === 'string' && r.summary) f.title = r.summary;
-    if (f.dirs === null && Array.isArray(r.directories)) f.dirs = r.directories;
+    if (!f.header) {
+      f.header = { sessionId: r.sessionId, startTime: r.startTime ?? null, kind: r.kind ?? null };
+      f.hu = unit;
+    }
+    if (typeof r.summary === 'string' && r.summary) {
+      f.title = r.summary;
+      f.tu = unit;
+    }
+    if (f.dirs === null && Array.isArray(r.directories)) {
+      f.dirs = r.directories;
+      f.du = unit;
+    }
     (Array.isArray(r.messages) ? r.messages : []).filter((m) => isObj(m) && typeof m.id === 'string')
-      .forEach((m, k) => put(f, m, `${pad(unit)}.${pad(k, 6)}`));
+      .forEach((m, k) => put(f, m, `${pad(unit)}.${pad(k, 6)}`, unit));
   }
 }
 
@@ -554,23 +588,27 @@ function toolParts(id, name, args, tc, echo) {
       output, output_len: output === null ? null : utf8Len(output), truncated: null,
     });
   }
-  return { parts, finished, agent: tc && typeof tc.agentId === 'string' && tc.agentId ? tc.agentId : '' };
+  return { parts, finished, agent: tc && typeof tc.agentId === 'string' && tc.agentId ? tc.agentId : '', echoed: !has && !!echo };
 }
 
-// A gemini record's parts, whether a call is still running, and the sub-agents its calls started.
+// A gemini record's parts, whether a call is still running, the sub-agents its calls started, and
+// the user slots whose echoed results it took. `echoes` maps a call id to {part, slot}.
 function geminiParts(r, echoes) {
   const parts = [];
   let pending = false;
   const agents = [];
+  const echoSlots = [];
   const content = partArray(r.content);
   const calls = Array.isArray(r.toolCalls) ? r.toolCalls.filter(isObj) : [];
   const byId = new Map(calls.filter((t) => typeof t.id === 'string').map((t) => [t.id, t]));
   const done = new Set();
   const addTool = (id, name, args, tc) => {
-    const t = toolParts(id, name, args, tc, echoes.get(id));
+    const echo = echoes.get(id);
+    const t = toolParts(id, name, args, tc, echo && echo.part);
     parts.push(...t.parts);
     if (!t.finished) pending = true;
     if (t.agent) agents.push({ agent: t.agent, call_id: id });
+    if (t.echoed) echoSlots.push(echo.slot);
     done.add(id);
   };
   // The thought summaries, then text, then calls. The CLI's replay (convertSessionToClientHistory)
@@ -608,7 +646,7 @@ function geminiParts(r, echoes) {
     const id = typeof tc.id === 'string' && tc.id ? tc.id : `@${r.id}:${content.length + k}`;
     if (!done.has(id)) addTool(id, str(tc.name), tc.args, tc);
   });
-  return { parts, pending, agents };
+  return { parts, pending, agents, echoSlots };
 }
 
 // A stored zero is null: the CLI writes `?? 0` for every token count.
@@ -618,8 +656,9 @@ function num(v) {
 }
 
 // Every record of the session from its fold, the session record last and without its fingerprint,
-// plus the keys held as incomplete. `mainKey` is the main source's key; `root` the `.project_root`.
-function build(f, mainKey, root) {
+// plus the keys held as incomplete. `mainKey` is the main source's key; `root` the `.project_root`
+// and `rootUnit` its units triple; `tri` turns a fold unit into the main source's units triple.
+function build(f, mainKey, root, rootUnit, tri) {
   const out = [];
   const held = noHeld();
   if (!f.header) return { out, held };
@@ -628,7 +667,7 @@ function build(f, mainKey, root) {
   // Calls the gemini records hold (a functionResponse for one of them is an echo), and each gemini
   // record's echoed responses: the user records after it, up to the next gemini record.
   const callIds = new Set();
-  const echoes = new Map(); // slot -> Map(call id -> functionResponse part)
+  const echoes = new Map(); // slot -> Map(call id -> {part: the functionResponse part, slot: its user slot})
   let last = null;
   for (const s of msgSlots) {
     const r = s.rec;
@@ -639,7 +678,7 @@ function build(f, mainKey, root) {
       for (const p of partArray(r.content)) if (isObj(p.functionCall) && typeof p.functionCall.id === 'string') callIds.add(p.functionCall.id);
     } else if (r.type === 'user' && last) {
       for (const p of partArray(r.content)) {
-        if (isObj(p.functionResponse) && typeof p.functionResponse.id === 'string' && !last.has(p.functionResponse.id)) last.set(p.functionResponse.id, p);
+        if (isObj(p.functionResponse) && typeof p.functionResponse.id === 'string' && !last.has(p.functionResponse.id)) last.set(p.functionResponse.id, { part: p, slot: s });
       }
     }
   }
@@ -653,25 +692,32 @@ function build(f, mainKey, root) {
 
   const written = new Set(); // ids that give a message record, held or not
   let updated = null; // the latest `ts` of a written message; a held one counts once it is written
-  const message = (m, isHeld = false) => {
+  let updatedUnit = null; // the line that `ts` came from
+  const message = (m, s, isHeld = false) => {
     if (isHeld) {
       held.message.push(m.message_id);
       return;
     }
     out.push({ type: 'message', ...m });
-    if (m.ts && (updated === null || m.ts > updated)) updated = m.ts;
+    if (m.ts && (updated === null || m.ts > updated)) {
+      updated = m.ts;
+      updatedUnit = s.ru;
+    }
   };
   for (const s of live) {
     const r = s.rec;
     const ts = isoTs(r.timestamp);
+    const units = slotUnits(s).map(tri);
     const base = {
       message_id: s.id, parent_id: null, order: s.order, agent_id: '',
       to_user: null, to_model: null, status: 'complete', state: s.state, on_active_branch: null, ts,
-      requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
+      requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], units,
     };
 
     if (r.type === 'gemini') {
-      const { parts, pending, agents } = geminiParts(r, echoes.get(s) ?? new Map());
+      const { parts, pending, agents, echoSlots } = geminiParts(r, echoes.get(s) ?? new Map());
+      // A result echoed in a later user record is part of this message: that record's lines too.
+      const msgUnits = [...units, ...echoSlots.flatMap((e) => slotUnits(e).map(tri))];
       // The CLI writes a reply when its stream ends and adds its calls when they complete: a tail
       // record with no text and no call yet, or with a call still running, is not complete. Once
       // anything follows, it is written, `interrupted` if a call never finished.
@@ -686,7 +732,7 @@ function build(f, mainKey, root) {
       // packages/core/src/services/chatRecordingService.ts:1099; read 2026-10-27). So it is
       // `requested_model`. The store keeps no served model: `served_model` and usage `model` (the
       // served model, sessions-model §2.4) stay null.
-      message({ ...base, role: 'assistant', source: 'model', status: pending ? 'interrupted' : 'complete', requested_model: str(r.model) || null, parts }, isHeld);
+      message({ ...base, role: 'assistant', source: 'model', status: pending ? 'interrupted' : 'complete', requested_model: str(r.model) || null, parts, units: msgUnits }, s, isHeld);
       const t = isObj(r.tokens) ? r.tokens : null;
       if (t) {
         const u = { input: num(t.input), output: num(t.output), cache_read: num(t.cached), reasoning: num(t.thoughts), tool_prompt: num(t.tool) };
@@ -701,6 +747,8 @@ function build(f, mainKey, root) {
               type: 'usage', usage_id: s.id, anchor: { message_id: s.id },
               input: u.input, output: u.output, cache_read: u.cache_read, cache_write: null, reasoning: u.reasoning, tool_prompt: u.tool_prompt, cost: null,
               input_includes_cache: true, output_includes_reasoning: false, granularity: 'per_response', model: null,
+              // The counts are the current version's: a $patch never writes them.
+              units: [tri(s.ru)],
             });
           }
         }
@@ -713,7 +761,7 @@ function build(f, mainKey, root) {
         const link = {
           type: 'link', kind: 'subagent', stated_on: 'origin',
           child: { harness: HARNESS, session_id: a.agent }, origin: { harness: HARNESS, session_id: f.header.sessionId },
-          at: a.call_id, inherits: null, child_stored: null, evidence: 'explicit',
+          at: a.call_id, inherits: null, child_stored: null, evidence: 'explicit', units: [tri(s.ru)],
         };
         if (isHeld) held.link.push(recordKey(link));
         else out.push(link);
@@ -758,7 +806,7 @@ function build(f, mainKey, root) {
       if (resultParts.length) msgs.push([firstTool, { role: 'tool', source: null, parts: resultParts }]);
       msgs.sort((a, b) => a[0] - b[0]);
       if (msgs.length) written.add(s.id);
-      msgs.forEach(([, m], n) => message({ ...base, ...m, message_id: n === 0 ? s.id : `${s.id}+${n}` }));
+      msgs.forEach(([, m], n) => message({ ...base, ...m, message_id: n === 0 ? s.id : `${s.id}+${n}` }, s));
       continue;
     }
 
@@ -766,11 +814,11 @@ function build(f, mainKey, root) {
     const text = typeof r.content === 'string' ? r.content : (textOf(r.content) || JSON.stringify(r.content ?? null));
     if (r.type === 'error') {
       // The record names no kind of its own (spec §11: only the content text was seen).
-      message({ ...base, role: 'system', source: 'system_notice', status: 'error', parts: [{ part_id: '0', kind: 'error', error_kind: null, message: text, http_status: null }] });
+      message({ ...base, role: 'system', source: 'system_notice', status: 'error', parts: [{ part_id: '0', kind: 'error', error_kind: null, message: text, http_status: null }] }, s);
     } else {
       // info, warning, and any other type: a notice, never dropped.
       const level = r.type === 'info' || r.type === 'warning' ? r.type : null;
-      message({ ...base, role: 'system', source: 'system_notice', parts: [{ part_id: '0', kind: 'notice', text, level, native_type: str(r.type) || null }] });
+      message({ ...base, role: 'system', source: 'system_notice', parts: [{ part_id: '0', kind: 'notice', text, level, native_type: str(r.type) || null }] }, s);
     }
   }
 
@@ -789,10 +837,10 @@ function build(f, mainKey, root) {
       out.push({
         type: 'lifecycle', lifecycle_id: lid(1), op: 'rewind',
         target: { range: { from_id: ids[0], through_id: ids[ids.length - 1] } },
-        at: kept.length ? kept[kept.length - 1] : null, ts: null, evidence: 'explicit',
+        at: kept.length ? kept[kept.length - 1] : null, ts: null, evidence: 'explicit', units: [tri(s.unit)],
       });
     } else {
-      ids.forEach((id, k) => out.push({ type: 'lifecycle', lifecycle_id: lid(k + 1), op: 'edit', target: { message_id: id }, at: null, ts: null, evidence: 'explicit' }));
+      ids.forEach((id, k) => out.push({ type: 'lifecycle', lifecycle_id: lid(k + 1), op: 'edit', target: { message_id: id }, at: null, ts: null, evidence: 'explicit', units: [tri(s.unit)] }));
     }
   }
 
@@ -803,9 +851,21 @@ function build(f, mainKey, root) {
     out.push({
       type: 'link', kind: 'subagent', stated_on: 'child',
       child: { harness: HARNESS, session_id: f.header.sessionId }, origin: { harness: HARNESS, session_id: m[1] },
-      at: '', inherits: null, child_stored: true, evidence: 'explicit',
+      at: '', inherits: null, child_stored: true, evidence: 'explicit', units: [tri(f.hu)],
     });
   }
+
+  // The session record's units: the lines its own fields came from (sessions-model v1.4.1, §2.7).
+  const ctxCwd = contextCwd(f.context);
+  const dirsCwd = Array.isArray(f.dirs) && str(f.dirs[0]);
+  const rootCwd = (root ?? '').trim();
+  const sessionUnits = [];
+  if (isoTs(f.header.startTime) || str(f.header.kind)) sessionUnits.push(tri(f.hu)); // created_at, kind
+  if (f.title) sessionUnits.push(tri(f.tu));
+  if (ctxCwd) sessionUnits.push(tri(f.cu));
+  else if (dirsCwd) sessionUnits.push(tri(f.du));
+  else if (rootCwd && rootUnit) sessionUnits.push(rootUnit);
+  if (updatedUnit !== null) sessionUnits.push(tri(updatedUnit));
 
   out.push({
     type: 'session',
@@ -817,7 +877,7 @@ function build(f, mainKey, root) {
     title_set_by: f.title ? 'auto' : null,
     // The session's own records first (a slug can be reused by another workspace), then the slug's
     // `.project_root`; never `projects.json`.
-    cwd: contextCwd(f.context) || (Array.isArray(f.dirs) && str(f.dirs[0])) || (root ?? '').trim() || null,
+    cwd: ctxCwd || dirsCwd || rootCwd || null,
     last_cwd: null,
     created_at: isoTs(f.header.startTime),
     updated_at: updated,
@@ -828,6 +888,7 @@ function build(f, mainKey, root) {
     reuse: 'impossible',
     ts_source: 'event',
     aliases: [],
+    units: sessionUnits,
   });
   return { out, held };
 }
@@ -844,6 +905,9 @@ function emptyState() {
     state_ver: STATE_VER,
     main: {}, // source_key -> fold
     root: null, // the `.project_root` text, or null
+    root_unit: null, // its units triple
+    gen: {}, // source_key -> generation, for the `units` triples
+    snap: {}, // legacy .json source_key -> the unit key of its one unit
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -862,10 +926,17 @@ export function derive(session, input, state) {
     const sk = src.source_key;
     const units = [...(src.units ?? [])];
     const kind = sourceKind(sk);
+    st.gen[sk] = src.generation;
     if (kind === 'root') {
       // A snapshot: its one unit is the whole file.
-      if (units.length) st.root = units[units.length - 1].enc === 'utf8' ? units[units.length - 1].body : null;
-      else if (src.complete) st.root = null;
+      const u = units[units.length - 1];
+      if (u) {
+        st.root = u.enc === 'utf8' ? u.body : null;
+        st.root_unit = st.root === null ? null : [sk, src.generation, u.unit_key];
+      } else if (src.complete) {
+        st.root = null;
+        st.root_unit = null;
+      }
       continue;
     }
     if (kind === 'json') {
@@ -874,6 +945,7 @@ export function derive(session, input, state) {
       const o = units.length ? jsonOf(units[units.length - 1]) : null;
       if (o) applyRecord(f, o, 0);
       st.main[sk] = f;
+      st.snap[sk] = units.length ? units[units.length - 1].unit_key : null;
       continue;
     }
     if (src.complete || !st.main[sk]) st.main[sk] = emptyFold();
@@ -885,7 +957,10 @@ export function derive(session, input, state) {
   // picks one: a .jsonl before a .json, then the lower source key.
   const rank = (k) => (sourceKind(k) === 'jsonl' ? 0 : 1);
   const mains = Object.keys(st.main).sort((a, b) => rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0));
-  const { out: built, held } = mains.length ? build(st.main[mains[0]], mains[0], st.root) : { out: [], held: noHeld() };
+  // A fold unit is a byte offset in the main source; a legacy .json's one object is its one unit.
+  const main = mains[0];
+  const tri = (n) => [main, st.gen[main], sourceKind(main) === 'json' ? st.snap[main] : String(n)];
+  const { out: built, held } = mains.length ? build(st.main[main], main, st.root, st.root_unit, tri) : { out: [], held: noHeld() };
 
   const changed = [];
   const live = { session: [], message: [], usage: [], link: [], lifecycle: [] };

@@ -5,11 +5,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { adapterFor } from '../src/index.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, growthCheck, rewriteCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { fullReplay, project, growthCheck, rewriteCheck, resumeCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { normaliseUnits } from '../src/records.js';
 
 const adapter = adapterFor('gemini-cli');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'gemini-cli');
-const CASES = ['features', 'legacy', 'pass3', 'rewind'];
+const CASES = ['features', 'legacy', 'pass3', 'rewind', 'resume'];
 const CTX = 'd04923d38bb0f6017037e74183378ef4';
 
 function withCopy(name, fn) {
@@ -60,7 +61,10 @@ for (const name of CASES) {
   });
 
   test(`gemini-cli/${name}: every incremental path folds to the full replay; a further read is unchanged`, () => {
-    const r = growthCheck(adapter, path.join(FIX, name, 'store'), { steps: 31 });
+    // A $patch can change a stored record without changing the message derived from it: its line
+    // joins the message's units, and the content_sha stays (sessions-model §2.7), so units are
+    // checked for pointing at held units, not for equality.
+    const r = growthCheck(adapter, path.join(FIX, name, 'store'), { steps: 31, units: 'valid' });
     assert.deepEqual(r.incremental, r.full);
     assert.ok(r.equal, 'content_sha differs between the incremental and the full view');
     assert.deepEqual(r.notUnchanged, []);
@@ -222,6 +226,25 @@ test('gemini-cli: a rewrite of the chat file (new inode, shorter) is a reset, an
   const r = rewriteCheck(adapter, store, rel, 12);
   assert.equal(r.continuity, 'reset');
   assert.ok(r.equal);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a resumed launch moves the title and
+// updated_at to its own lines, and the session record's units follow them.
+test('gemini-cli: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = '8091a2b3-c4d5-4e6f-8a7b-9c0d1e2f3a4b';
+  const rel = `tmp/toyshop/chats/session-2026-02-09T09-00-${sid.slice(0, 8)}.jsonl`;
+  const lines = fs.readFileSync(path.join(FIX, 'resume', 'store', rel), 'utf8').split('\n');
+  const unit = (n) => [rel, 1, String(Buffer.byteLength(lines.slice(0, n).map((l) => l + '\n').join('')))];
+  const r = resumeCheck(adapter, path.join(FIX, 'resume', 'store'), rel, 6);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  // First launch: the header (created_at, kind), the session context (cwd), the reply (updated_at)
+  // and the summary (title).
+  assert.equal(b.title, 'Count the files');
+  assert.deepEqual(b.units, normaliseUnits([unit(0), unit(1), unit(4), unit(5)]));
+  // Resumed: the second reply and the second summary take their place.
+  assert.deepEqual([a.title, a.cwd], ['Count the files and tests', '/home/user/work/toyshop']);
+  assert.deepEqual(a.units, normaliseUnits([unit(0), unit(1), unit(7), unit(8)]));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });
 
 test('gemini-cli: an append-only retraction ($rewindTo) stays appended: retracted, a lifecycle record, nothing tombstoned', () => {

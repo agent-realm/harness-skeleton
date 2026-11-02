@@ -72,6 +72,17 @@ For an adapter with file sources, also add its expected source kinds to `EXPECT`
     flag or a parent reference is a `subagent` link, not a kind (sessions-model v1.3, §2.1);
   - usage carries only the granularities and anchors the harness declares, and one session's usage
     records never overlap.
+- **`units` and `native`** (sessions-model v1.4.2, §2.7):
+  - every record names, as `units`, the `[source_key, generation, unit_key]` of the lines its own
+    fields were taken from, with `generation` from the derive input. That is a message's own line,
+    plus a line it copies a value from (Codex's turn_context for the model); the token lines a usage
+    record sums; and the lines behind the session's title, `cwd`, `last_cwd`, `created_at`,
+    `updated_at` and `harness_version`. A field computed from other records, such as the
+    fingerprint, names none. Keep each session field's line in `state` beside its value, and bump
+    `state_ver` when you do;
+  - `native` carries only the leaf paths `describe().native` declares, built with `nativeOf`. List
+    each path with why it is safe and unmapped; leave out paths, user content and anything in
+    doubt. Where several lines fold into one record, the later line in `order` wins.
 - **`unitsFromBytes`**, for file sources only, shares `read`'s split through `splitLines` and
   `snapshotUnit`.
 
@@ -103,6 +114,7 @@ node conformance/golden.js claude-code
 ```
 claude-code/basic: 36 records
 claude-code/features: 21 records
+claude-code/resume: 7 records
 ```
 
 It writes each case's `expected.json` from a full replay. Review every record of it by hand before
@@ -111,8 +123,15 @@ you commit: the tests then hold the adapter to it.
 ## 6. Tests and the matrix row
 
 Model `test/<harness-id>.test.js` on `test/claude-code.test.js`. It covers the golden, the growth
-check, stable keys, the name lint, the reset control, `list`, the errors, the explicit facets and
+check, stable keys, the name lint, the reset control, a resume (`resumeCheck`: the session record's
+`units` follow the fields a later launch moves), `list`, the errors, the explicit facets and
 `is_error`.
+- The growth check holds `units` to the full replay's by default. Pass `units: 'valid'` only when
+  a source can rewrite a stored record without changing the record derived from it (Gemini CLI's
+  `$patch`): that moves the units and not the `content_sha`, so the view keeps the units of its
+  last write (sessions-model §2.7), and each must still name a unit the engine holds.
+- The reset control compares records without `units` and checks that every triple names the new
+  generation.
 
 ```sh
 node --test test/claude-code.test.js

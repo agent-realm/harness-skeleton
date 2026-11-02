@@ -18,12 +18,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
 import { isRealFile, readStream, readSnapshot, streamUnits, snapshotUnits, unknownSource, jsonOf } from '../../sources.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'copilot-cli';
-const STATE_VER = 1;
+const STATE_VER = 2;
 const LINE1_MAX = 1024 * 1024;
 const UUID_IN_PARENS = /\(([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\)/gi;
 
@@ -244,15 +244,20 @@ function emptyState() {
     state_ver: STATE_VER,
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
     birth: null, // the session.start event's timestamp: a fork copies earlier events from its origin
-    // Session fields, each kept with the sort key of the event it came from: [key, value].
+    // Session fields, each kept with the sort key of the event it came from and that event's units
+    // triple: [key, value, unit].
     session: { harness_version: null, cwd: null, last_cwd: null, created_at: null, updated_at: null, mode: null },
-    ws: null, // the last workspace.yaml snapshot: { name, user_named, client_name }
+    // The session's declared native fields, path -> [order, value, unit]: the latest event in
+    // `order` that holds the path wins (sessions-model §2.7).
+    native: {},
+    ws: null, // the last workspace.yaml snapshot: { name, user_named, client_name, unit }
+    gen: {}, // source_key -> generation, for the `units` triples
     cmp: {}, // message_id -> [order, cmp_sha], main conversation only
     pending: {}, // message_id -> { rec, open: [call ids] }: an assistant message waiting for its tools
     done: {}, // call id -> true: a completion no waiting message claimed
-    servers: {}, // call id -> MCP server name, from tool.execution_start
-    api: {}, // apiCallId -> { model, effort }, from session.usage_record
-    assets: {}, // assetId -> { mime, len, data }, from session.binary_asset
+    servers: {}, // call id -> [MCP server name, unit], from tool.execution_start
+    api: {}, // apiCallId -> { model, effort, unit }, from session.usage_record
+    assets: {}, // assetId -> { mime, len, data, unit }, from session.binary_asset
     usage_n: 0, // usage records without a native id, anchored to the session
   };
 }
@@ -280,11 +285,12 @@ export function derive(session, input, state) {
 
   for (const src of input) {
     const sk = src.source_key;
+    st.gen[sk] = src.generation;
     const isWorkspace = sk.endsWith('/workspace.yaml');
     for (const u of src.units ?? []) {
       if (isWorkspace) {
         const ws = parseWorkspace(u.enc === 'utf8' ? u.body : '');
-        st.ws = { name: str(ws.name), user_named: str(ws.user_named), client_name: str(ws.client_name) };
+        st.ws = { name: str(ws.name), user_named: str(ws.user_named), client_name: str(ws.client_name), unit: [sk, src.generation, u.unit_key] };
         continue;
       }
       const o = jsonOf(u);
@@ -294,9 +300,13 @@ export function derive(session, input, state) {
     }
   }
 
-  // The session record: always re-sealed, since updated_at and the fingerprint move.
+  // The session record: always re-sealed, since updated_at and the fingerprint move. Its units are
+  // the events its own fields came from, and the workspace.yaml snapshot where it gave the title or
+  // the client (sessions-model v1.4.1, §2.7), never the fingerprint's.
   const v = Object.fromEntries(Object.entries(st.session).map(([k, x]) => [k, x ? x[1] : null]));
   const ws = st.ws ?? {};
+  const sessionUnits = [...Object.values(st.session), ...Object.values(st.native)].filter(Boolean).map((x) => x[2]);
+  if (ws.unit && (ws.name || ws.client_name)) sessionUnits.push(ws.unit);
   const cmpShas = Object.values(st.cmp).sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]);
   put({
     type: 'session',
@@ -319,6 +329,8 @@ export function derive(session, input, state) {
     ts_source: 'event',
     aliases: [],
     fingerprint: { cmp_shas: cmpShas },
+    native: Object.fromEntries(Object.entries(st.native).map(([k, x]) => [k, x[1]])),
+    units: sessionUnits,
   });
 
   const live = {};
@@ -335,11 +347,12 @@ export function derive(session, input, state) {
   };
 }
 
-// Keep the value from the earliest (`first`) or latest event by its sort key.
-function keep(s, field, value, sortKey, first) {
+// Keep the value from the earliest (`first`) or latest event by its sort key, with the event's
+// units triple.
+function keep(s, field, value, sortKey, first, unit) {
   if (value === null || value === undefined || value === '') return;
   const cur = s[field];
-  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value];
+  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value, unit];
 }
 
 function emitMessage(ctx, m) {
@@ -354,13 +367,15 @@ function emitMessage(ctx, m) {
 function release(ctx, id, status) {
   const p = ctx.st.pending[id];
   delete ctx.st.pending[id];
+  const units = [...p.rec.units];
   const parts = p.rec.parts.map((x) => {
     if (x.kind !== 'tool_call') return x;
-    const server = ctx.st.servers[x.call_id] ?? null;
+    const [server, unit] = ctx.st.servers[x.call_id] ?? [null, null];
     delete ctx.st.servers[x.call_id];
+    if (unit) units.push(unit); // the tool.execution_start event that named the server
     return { ...x, server };
   });
-  emitMessage(ctx, { ...p.rec, status, parts });
+  emitMessage(ctx, { ...p.rec, status, parts, units });
 }
 
 // A `session.info` marker a fork copied from its origin keeps the origin's timestamp, which is
@@ -368,6 +383,13 @@ function release(ctx, id, status) {
 // the child's line 1). It is the origin's history, not this session's.
 function copied(st, ts) {
   return st.birth !== null && ts !== null && Date.parse(ts) < Date.parse(st.birth);
+}
+
+// The session's declared native fields an event holds: the later event in `order` wins.
+function noteNative(st, o, order, unit) {
+  for (const [k, x] of Object.entries(nativeOf(o, describeData.native.session))) {
+    if (!st.native[k] || order > st.native[k][0]) st.native[k] = [order, x, unit];
+  }
 }
 
 function foldEvent(ctx, o, sk, unitKey) {
@@ -378,8 +400,9 @@ function foldEvent(ctx, o, sk, unitKey) {
   const id = str(o.id);
   const agent = str(o.agentId) ?? '';
   const s = st.session;
+  const own = [sk, st.gen[sk], unitKey];
 
-  if (ts) keep(s, 'updated_at', ts, ts, false);
+  if (ts) keep(s, 'updated_at', ts, ts, false, own);
 
   // A turn's end releases its agent's waiting messages, as interrupted.
   if (ENDS.has(o.type) || o.type === 'session.shutdown') {
@@ -392,6 +415,7 @@ function foldEvent(ctx, o, sk, unitKey) {
     message_id: id ?? `@${unitKey}`, parent_id: str(o.parentId), order, agent_id: agent,
     to_user: null, to_model: null, status: 'complete', state: 'current', on_active_branch: null, ts,
     requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
+    native: nativeOf(o, describeData.native.message), units: [own],
   };
   const lifecycleId = id ?? `${sk}@${unitKey}#1`;
   const ctxCwd = (c) => (c && typeof c === 'object' ? str(c.cwd) : null);
@@ -399,25 +423,27 @@ function foldEvent(ctx, o, sk, unitKey) {
   switch (o.type) {
     case 'session.start':
       if (st.birth === null) st.birth = ts;
-      keep(s, 'harness_version', str(d.copilotVersion), order, true);
-      keep(s, 'created_at', isoTs(d.startTime) ?? ts, order, true);
-      keep(s, 'cwd', ctxCwd(d.context), order, true);
-      keep(s, 'last_cwd', ctxCwd(d.context), order, false);
+      noteNative(st, o, order, own);
+      keep(s, 'harness_version', str(d.copilotVersion), order, true, own);
+      keep(s, 'created_at', isoTs(d.startTime) ?? ts, order, true, own);
+      keep(s, 'cwd', ctxCwd(d.context), order, true, own);
+      keep(s, 'last_cwd', ctxCwd(d.context), order, false, own);
       return;
     case 'session.resume':
-      keep(s, 'last_cwd', ctxCwd(d.context), order, false);
+      noteNative(st, o, order, own);
+      keep(s, 'last_cwd', ctxCwd(d.context), order, false, own);
       return;
     case 'session.context_changed':
-      keep(s, 'last_cwd', str(d.cwd), order, false);
+      keep(s, 'last_cwd', str(d.cwd), order, false, own);
       return;
     case 'session.mode_changed':
-      keep(s, 'mode', str(d.newMode), order, false);
+      keep(s, 'mode', str(d.newMode), order, false, own);
       return;
     case 'session.binary_asset':
-      if (str(d.assetId)) st.assets[d.assetId] = { mime: str(d.mimeType), len: num(d.byteLength), data: str(d.data) };
+      if (str(d.assetId)) st.assets[d.assetId] = { mime: str(d.mimeType), len: num(d.byteLength), data: str(d.data), unit: own };
       return;
     case 'tool.execution_start':
-      if (str(d.toolCallId) && str(d.mcpServerName)) st.servers[d.toolCallId] = d.mcpServerName;
+      if (str(d.toolCallId) && str(d.mcpServerName)) st.servers[d.toolCallId] = [d.mcpServerName, own];
       return;
 
     case 'session.usage_record': {
@@ -428,7 +454,7 @@ function foldEvent(ctx, o, sk, unitKey) {
       if (!u) return;
       const model = str(u.modelDisplayName) ?? str(u.model);
       const api = str(u.apiCallId);
-      if (api) st.api[api] = { model, effort: str(u.reasoningEffort) };
+      if (api) st.api[api] = { model, effort: str(u.reasoningEffort), unit: own };
       let usageId = api;
       let anchor = { response_id: api };
       if (!api) {
@@ -444,17 +470,20 @@ function foldEvent(ctx, o, sk, unitKey) {
         // Copilot's own credit unit, 0 under BYOK: a stored zero is null (sessions-model §2.4).
         cost: cost !== null && cost > 0 ? cost : null,
         input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_response', model,
+        units: [own],
       });
       return;
     }
 
     case 'user.message': {
       const parts = [];
+      const units = [own];
       if (typeof d.content === 'string' && d.content) parts.push({ kind: 'text', text: d.content });
       for (const a of Array.isArray(d.attachments) ? d.attachments : []) {
         if (!a || typeof a !== 'object') continue;
         // The bytes are in the `session.binary_asset` the attachment names, written just before.
         const asset = str(a.assetId) ? st.assets[a.assetId] ?? null : null;
+        if (asset) units.push(asset.unit);
         const part = { kind: 'attachment', media_type: (asset && asset.mime) ?? str(a.mimeType) };
         if (asset && asset.data) {
           part.inline = asset.data;
@@ -469,7 +498,7 @@ function foldEvent(ctx, o, sk, unitKey) {
       const auto = typeof d.source === 'string' && d.source.startsWith('agent-');
       emitMessage(ctx, {
         ...base, role: 'user', source: auto ? 'automated' : 'user',
-        aliases: str(d.messageId) ? [{ id: d.messageId, kind: 'messageId' }] : [], parts,
+        aliases: str(d.messageId) ? [{ id: d.messageId, kind: 'messageId' }] : [], parts, units,
       });
       return;
     }
@@ -495,6 +524,8 @@ function foldEvent(ctx, o, sk, unitKey) {
         ...base, role: 'assistant', source: 'model',
         requested_model: str(d.model), served_model: served ? served.model : null, effort: served ? served.effort : null,
         response_id: api, aliases: str(d.messageId) ? [{ id: d.messageId, kind: 'messageId' }] : [], parts,
+        // The usage_record that gave the served model and the effort is a unit of the message too.
+        units: served ? [own, served.unit] : [own],
       };
       const open = parts.filter((p) => p.kind === 'tool_call').map((p) => p.call_id).filter((c) => {
         if (!st.done[c]) return true;
@@ -557,7 +588,7 @@ function foldEvent(ctx, o, sk, unitKey) {
         ...base, role: 'system', source: 'automated',
         parts: [{ kind: 'summary', text: d.summaryContent, replaces: removed !== null ? { count: removed } : 'unknown' }],
       });
-      put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit' });
+      put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit', units: [own] });
       // The compaction's own model call has no usage_record: usage anchored to the compaction.
       const t = d.compactionTokensUsed && typeof d.compactionTokensUsed === 'object' ? d.compactionTokensUsed : null;
       if (t && id) {
@@ -569,6 +600,7 @@ function foldEvent(ctx, o, sk, unitKey) {
           cost: cost !== null && cost > 0 ? cost : null,
           input_includes_cache: null, output_includes_reasoning: null, granularity: num(t.requestCount) === 1 ? 'per_response' : 'per_turn',
           model: str(t.modelDisplayName) ?? str(t.model),
+          units: [own],
         });
       }
       return;
@@ -578,7 +610,7 @@ function foldEvent(ctx, o, sk, unitKey) {
       if (copied(st, ts)) return;
       if (d.infoType === 'rewind') {
         // The rewound events are gone from the rewritten file: their keys leave through the reset.
-        put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'rewind', target: { session: true }, at: null, ts, evidence: 'explicit' });
+        put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'rewind', target: { session: true }, at: null, ts, evidence: 'explicit', units: [own] });
         return;
       }
       if (d.infoType !== 'fork') return;
@@ -601,8 +633,9 @@ function foldEvent(ctx, o, sk, unitKey) {
         inherits: { through_message_id: null, ids_preserved: true, marked: false, usage_copied: true },
         child_stored: true,
         evidence: 'explicit',
+        units: [own],
       });
-      put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'fork', target: { session: true }, at: null, ts, evidence: 'explicit' });
+      put({ type: 'lifecycle', lifecycle_id: lifecycleId, op: 'fork', target: { session: true }, at: null, ts, evidence: 'explicit', units: [own] });
       return;
     }
     default:

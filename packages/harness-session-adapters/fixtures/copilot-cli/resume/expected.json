@@ -1,0 +1,315 @@
+{
+  "e5e5e5e5-0000-4000-8000-000000000006": [
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "message_id": "e5000000-0000-4000-8000-000000000002",
+      "parent_id": "e5000000-0000-4000-8000-000000000001",
+      "order": "000000000541",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T16:00:01.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000031",
+          "kind": "messageId"
+        }
+      ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "541"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "message_id": "e5000000-0000-4000-8000-000000000005",
+      "parent_id": "e5000000-0000-4000-8000-000000000004",
+      "order": "000000001760",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T16:00:04.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-rs-1",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000032",
+          "kind": "messageId"
+        }
+      ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "1177"
+        ],
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "1760"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "message_id": "e5000000-0000-4000-8000-000000000009",
+      "parent_id": "e5000000-0000-4000-8000-000000000008",
+      "order": "000000002895",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T16:00:08.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-9000-000000000033",
+          "kind": "messageId"
+        }
+      ],
+      "native": {
+        "data.interactionId": "i-2",
+        "data.turnId": "0"
+      },
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in toyshop?"
+        }
+      ],
+      "cmp_sha": "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "2895"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "message_id": "e5000000-0000-4000-8000-000000000012",
+      "parent_id": "e5000000-0000-4000-8000-000000000011",
+      "order": "000000004112",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T16:00:11.000Z",
+      "requested_model": "gateway/toy-model",
+      "served_model": "gateway/toy-model",
+      "effort": null,
+      "response_id": "api-rs-2",
+      "aliases": [
+        {
+          "id": "00000000-0000-4000-a000-000000000034",
+          "kind": "messageId"
+        }
+      ],
+      "native": {
+        "data.interactionId": "i-2",
+        "data.turnId": "0"
+      },
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "cmp_sha": "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915",
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "3529"
+        ],
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "4112"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "engine": null,
+      "client": "copilot-cli",
+      "harness_version": "1.0.101",
+      "title": "Count the files.",
+      "title_set_by": "auto",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": "/home/user/work/toyshop/toyshop",
+      "created_at": "2026-10-21T16:00:00.000Z",
+      "updated_at": "2026-10-22T16:00:13.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "detected",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+          "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+          "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915"
+        ]
+      },
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model-b"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "2530"
+        ],
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "4686"
+        ],
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/workspace.yaml",
+          1,
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/workspace.yaml"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "usage_id": "api-rs-1",
+      "anchor": {
+        "response_id": "api-rs-1"
+      },
+      "input": 600,
+      "output": 4,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "1177"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "copilot-cli",
+      "session_id": "e5e5e5e5-0000-4000-8000-000000000006",
+      "incarnation": "e5000000-0000-4000-8000-000000000001",
+      "usage_id": "api-rs-2",
+      "anchor": {
+        "response_id": "api-rs-2"
+      },
+      "input": 700,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": 0,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gateway/toy-model",
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/e5e5e5e5-0000-4000-8000-000000000006/events.jsonl",
+          1,
+          "3529"
+        ]
+      ]
+    }
+  ]
+}

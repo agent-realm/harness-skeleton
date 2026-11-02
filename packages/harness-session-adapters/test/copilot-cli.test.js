@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import { adapterFor } from '../src/index.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, growthCheck, rewriteCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { fullReplay, project, growthCheck, rewriteCheck, resumeCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { normaliseUnits } from '../src/records.js';
 
 const adapter = adapterFor('copilot-cli');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'copilot-cli');
-const CASES = ['basic', 'pass2', 'features', 'vscode-host', 'rewind', 'conformance-copilot-reuse'];
+const CASES = ['basic', 'pass2', 'features', 'vscode-host', 'rewind', 'conformance-copilot-reuse', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 
 // The features case's sessions (fixtures/copilot-cli/generate.js).
@@ -232,15 +233,19 @@ test('copilot-cli: a rewind (new inode, shorter file, appended session.info{rewi
     copyTree(path.join(FIX, 'rewind', 'before'), dir);
     const e = new MiniEngine(adapter, storeOf(adapter, dir));
     e.pass();
-    const before = project(e.views())[R];
+    // The reset re-keys the units to the new generation (sessions-model §2.7): records are compared
+    // without them, and every triple must name generation 2.
+    const before = project(e.views(), { units: false })[R];
     const file = path.join(dir, events(R));
     fs.copyFileSync(path.join(FIX, 'rewind', 'store', events(R)), `${file}.rewind`);
     fs.renameSync(`${file}.rewind`, file);
     assert.ok(fs.statSync(file).size < fs.statSync(path.join(FIX, 'rewind', 'before', events(R))).size, 'the rewrite is shorter');
     e.pass();
     assert.equal(e.log.find((l) => l.source_key === events(R)).continuity, 'reset');
-    const after = project(e.views())[R];
-    assert.deepEqual(after, golden('rewind')[R]);
+    const after = project(e.views(), { units: false })[R];
+    assert.deepEqual(after, golden('rewind')[R].map(({ units: _u, ...r }) => r));
+    const triples = project(e.views())[R].flatMap((r) => r.units ?? []);
+    assert.ok(triples.length > 0 && triples.every(([sk, gen]) => sk !== events(R) || gen === 2), 'every triple names the new generation');
     assert.deepEqual(ofType(after, 'lifecycle').map((r) => [r.op, r.evidence]), [['rewind', 'explicit']]);
     // One incarnation: the rewrite keeps line 1.
     assert.equal(adapter.list(storeOf(adapter, dir))[0].incarnation, 'd0000000-0000-4000-8000-000000000001');
@@ -263,6 +268,30 @@ test('copilot-cli: any shorter rewrite of events.jsonl is a reset, and the re-de
   const r = rewriteCheck(adapter, path.join(FIX, 'basic', 'store'), events('8259ca5e-606a-43e3-8753-6d6b97ebb992'), 12);
   assert.equal(r.continuity, 'reset');
   assert.ok(r.equal);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a session.resume moves last_cwd,
+// updated_at and `data.selectedModel` to the second launch's events, and the session record's units
+// follow them. workspace.yaml (the title, the client) is read whole in both passes.
+test('copilot-cli: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = 'e5e5e5e5-0000-4000-8000-000000000006';
+  const rel = events(sid);
+  const lines = fs.readFileSync(path.join(FIX, 'resume', 'store', rel), 'utf8').split('\n');
+  const unit = (n) => [rel, 1, String(Buffer.byteLength(lines.slice(0, n).map((l) => l + '\n').join('')))];
+  const r = resumeCheck(adapter, path.join(FIX, 'resume', 'store'), rel, 7);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  const ofEvents = (units) => units.filter(([sk]) => sk === rel);
+  const ws = a.units.filter(([sk]) => sk.endsWith('/workspace.yaml'));
+  assert.equal(ws.length, 1, 'the title comes from workspace.yaml');
+  // First launch: session.start (created_at, cwd, last_cwd, harness_version, native) and the
+  // shutdown (updated_at).
+  assert.deepEqual([b.last_cwd, b.native['data.selectedModel']], ['/home/user/work/toyshop', 'gateway/toy-model']);
+  assert.deepEqual(ofEvents(b.units), normaliseUnits([unit(0), unit(6)]));
+  // Resumed: session.resume (last_cwd, selectedModel) and the second shutdown take their place.
+  assert.deepEqual([a.cwd, a.last_cwd, a.native], ['/home/user/work/toyshop', '/home/user/work/toyshop/toyshop', { 'data.producer': 'copilot-agent', 'data.selectedModel': 'gateway/toy-model-b' }]);
+  assert.deepEqual(ofEvents(a.units), normaliseUnits([unit(0), unit(7), unit(13)]));
+  assert.deepEqual(a.units, normaliseUnits([...ofEvents(a.units), ...ws]));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });
 
 test('copilot-cli: forks: the origin states each child, the child states its origin, a copied marker states nothing', () => {

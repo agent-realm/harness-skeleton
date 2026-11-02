@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": "2026-10-21T15:00:21.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "3232"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -39,6 +46,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -48,7 +59,14 @@
           "text": "What is in toyshop/cart.py?"
         }
       ],
-      "cmp_sha": "04f1c3cfec8406ba5e9de77dc3cc0f611f2834c75772f0c8a87be81dbe11a1bc"
+      "cmp_sha": "04f1c3cfec8406ba5e9de77dc3cc0f611f2834c75772f0c8a87be81dbe11a1bc",
+      "units": [
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "541"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -75,6 +93,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -84,7 +106,19 @@
           "text": "A Cart class."
         }
       ],
-      "cmp_sha": "2320a4011de2fac197846e95810ea62ae95720848346878be6344042ae49399f"
+      "cmp_sha": "2320a4011de2fac197846e95810ea62ae95720848346878be6344042ae49399f",
+      "units": [
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "1199"
+        ],
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "1783"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -113,7 +147,33 @@
           "2320a4011de2fac197846e95810ea62ae95720848346878be6344042ae49399f"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "2913"
+        ],
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "3232"
+        ],
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/workspace.yaml",
+          1,
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/workspace.yaml"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -134,7 +194,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/d0d0d0d0-0000-4000-8000-000000000005/events.jsonl",
+          1,
+          "1199"
+        ]
+      ]
     }
   ]
 }

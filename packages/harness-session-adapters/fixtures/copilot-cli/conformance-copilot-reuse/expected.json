@@ -25,6 +25,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -34,7 +38,14 @@
           "text": "Reply with exactly: second life"
         }
       ],
-      "cmp_sha": "71c94842ddd8860105fe44dd80f45c2fa95bfdec410d46192b73f216a812046e"
+      "cmp_sha": "71c94842ddd8860105fe44dd80f45c2fa95bfdec410d46192b73f216a812046e",
+      "units": [
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "551"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -61,6 +72,10 @@
           "kind": "messageId"
         }
       ],
+      "native": {
+        "data.interactionId": "i-1",
+        "data.turnId": "0"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -70,7 +85,19 @@
           "text": "second life"
         }
       ],
-      "cmp_sha": "0efa0309f53bcae25523adf175d89046f38bda1d62cb710d341bf6324b2e7823"
+      "cmp_sha": "0efa0309f53bcae25523adf175d89046f38bda1d62cb710d341bf6324b2e7823",
+      "units": [
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "1217"
+        ],
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "1802"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -99,7 +126,23 @@
           "0efa0309f53bcae25523adf175d89046f38bda1d62cb710d341bf6324b2e7823"
         ]
       },
-      "setup": null
+      "native": {
+        "data.producer": "copilot-agent",
+        "data.selectedModel": "gateway/toy-model-b"
+      },
+      "setup": null,
+      "units": [
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "2380"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -120,7 +163,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "session-state/ffe00cf7-7ac7-475d-afc2-ff0b68b29fa9/events.jsonl",
+          1,
+          "1217"
+        ]
+      ]
     }
   ]
 }

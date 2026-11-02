@@ -29,7 +29,19 @@
           "text": "Synthetic reply ee0580. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the "
         }
       ],
-      "cmp_sha": "ad12a61fb006f99af155000a6d2baf01def800783d377af699d749fada56ccfb"
+      "cmp_sha": "ad12a61fb006f99af155000a6d2baf01def800783d377af699d749fada56ccfb",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:3"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:1"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -76,7 +88,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "e36c4f94eaeb31ca0833aa063f914c596887ad12239dc9f5907031dbf39fcb39"
+      "cmp_sha": "e36c4f94eaeb31ca0833aa063f914c596887ad12239dc9f5907031dbf39fcb39",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:6"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:2"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -119,7 +143,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "53e03e8c03ca462acb5bf27be3ddc2ddeefe00a07a455386757ee567d2f0b13c"
+      "cmp_sha": "53e03e8c03ca462acb5bf27be3ddc2ddeefe00a07a455386757ee567d2f0b13c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:8"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:3"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -165,7 +201,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "ce8d62e39adb97d69fd90edc451df94f2c19d389442bb7ecf8c2452377897483"
+      "cmp_sha": "ce8d62e39adb97d69fd90edc451df94f2c19d389442bb7ecf8c2452377897483",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:10"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:4"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -196,7 +244,19 @@
           "text": "Synthetic reply 90abc7. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic r"
         }
       ],
-      "cmp_sha": "40447a83ab93c9fa3cd32cc23f1131d3501c03ad6368be24b52498688649acf3"
+      "cmp_sha": "40447a83ab93c9fa3cd32cc23f1131d3501c03ad6368be24b52498688649acf3",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:12"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:5"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -244,7 +304,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "4e191bd4e729463ed2f56dd65406f97953fa95d41fc08479533b51381af222f8"
+      "cmp_sha": "4e191bd4e729463ed2f56dd65406f97953fa95d41fc08479533b51381af222f8",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:7"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -275,7 +342,14 @@
           "text": "<turn-context>\n<current-time>2026-10-19 22:16:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "ebf135cb21a3d0a9cb80e4b27485aa6e43a8a97bbf2e00634be4e30a8d739704"
+      "cmp_sha": "ebf135cb21a3d0a9cb80e4b27485aa6e43a8a97bbf2e00634be4e30a8d739704",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:14"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -306,7 +380,14 @@
           "text": "<turn-context>\n<current-time>2026-10-19 22:15:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "c369dd5d27638290bb650f56a824992b146adca83ac8b97c9fd6ba1324ca6666"
+      "cmp_sha": "c369dd5d27638290bb650f56a824992b146adca83ac8b97c9fd6ba1324ca6666",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:5"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -343,7 +424,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7b90a3001c7676568b2cab9a042efe00ef03b79fa7ae48d8f2c6c6833925d6bb"
+      "cmp_sha": "7b90a3001c7676568b2cab9a042efe00ef03b79fa7ae48d8f2c6c6833925d6bb",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:9"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -374,7 +462,14 @@
           "text": "What does this CLI do? One sentence, no tools."
         }
       ],
-      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801"
+      "cmp_sha": "35f816d4d181fed14a625b7b539b2c1e6be649a599aaa0f1bdc7e09018b8f801",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:1"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -405,7 +500,14 @@
           "text": "<turn-context>\n<current-time>2026-10-19 22:13:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "c43755e409e603a4e7c557963c5841dec85721375acca2ed9b5e6aba09dfa54c"
+      "cmp_sha": "c43755e409e603a4e7c557963c5841dec85721375acca2ed9b5e6aba09dfa54c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:2"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -436,7 +538,14 @@
           "text": "Delegate to a subagent (use your subagent/dynamic task tool if you have one): have it read package.json and report the bin name. Then tell me what it said."
         }
       ],
-      "cmp_sha": "0896f77cf1585f2135ef0e03132318449fe910ee11ba9dacfbf09e4120f3f4d5"
+      "cmp_sha": "0896f77cf1585f2135ef0e03132318449fe910ee11ba9dacfbf09e4120f3f4d5",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:13"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -467,7 +576,14 @@
           "text": "Add a \"list\" command to src/cli.js that prints every sku and its stock, then run: node src/cli.js list  and then run: node src/cli.js missing-cmd --strict && false"
         }
       ],
-      "cmp_sha": "fdc8c412d665ea448d288ab19eb2392ca250ec7412327a71043289a5ee455a50"
+      "cmp_sha": "fdc8c412d665ea448d288ab19eb2392ca250ec7412327a71043289a5ee455a50",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:4"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -515,7 +631,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "2e2a5766614cc7caf143def5464ff2227f826637123fdd82d85508853a8fec07"
+      "cmp_sha": "2e2a5766614cc7caf143def5464ff2227f826637123fdd82d85508853a8fec07",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:11"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -556,7 +679,14 @@
           "ebf135cb21a3d0a9cb80e4b27485aa6e43a8a97bbf2e00634be4e30a8d739704"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -577,7 +707,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:1"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -598,7 +735,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:10"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -619,7 +763,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:11"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -640,7 +791,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:12"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -661,7 +819,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:2"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -682,7 +847,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:3"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -703,7 +875,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:4"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -724,7 +903,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:5"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -745,7 +931,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:6"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -766,7 +959,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:9"
+        ]
+      ]
     }
   ],
   "20261019_2": [
@@ -789,7 +989,14 @@
       "at": "",
       "inherits": null,
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -825,7 +1032,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "c15c829e7cfc33de7ff5aeddb7bdae312f44259f0f1d5a8fc567f1d267ba2e7a"
+      "cmp_sha": "c15c829e7cfc33de7ff5aeddb7bdae312f44259f0f1d5a8fc567f1d267ba2e7a",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:19"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:7"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -861,7 +1080,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "6190118b23750ee76b185379cca6868b59d80116f509339603f9504e0a782a12"
+      "cmp_sha": "6190118b23750ee76b185379cca6868b59d80116f509339603f9504e0a782a12",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:21"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:8"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -892,7 +1123,14 @@
           "text": "<turn-context>\n<current-time>2026-10-19 22:16:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "ebf135cb21a3d0a9cb80e4b27485aa6e43a8a97bbf2e00634be4e30a8d739704"
+      "cmp_sha": "ebf135cb21a3d0a9cb80e4b27485aa6e43a8a97bbf2e00634be4e30a8d739704",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:18"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -923,7 +1161,14 @@
           "text": "Subagent ID: 20261019_2\n\nRead the file /home/user/work/inventory-cli/package.json and report back the \"bin\" name (the command name defined in the bin field). Just report the bin name and nothing else."
         }
       ],
-      "cmp_sha": "fb858869c9f017cc997519b64a73665b25b81353d73a5eaed3bb222572522618"
+      "cmp_sha": "fb858869c9f017cc997519b64a73665b25b81353d73a5eaed3bb222572522618",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:16"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -954,7 +1199,14 @@
           "text": "Synthetic reply d3d8c"
         }
       ],
-      "cmp_sha": "5873b63d8f86c97af2f0c2e95ddd2fd3437e8f86b6d07737f26d2224608869e0"
+      "cmp_sha": "5873b63d8f86c97af2f0c2e95ddd2fd3437e8f86b6d07737f26d2224608869e0",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:23"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -991,7 +1243,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "c24c9d57c5942481eb52befb8becbc470ae27016d371ef027286f201c2b6fa39"
+      "cmp_sha": "c24c9d57c5942481eb52befb8becbc470ae27016d371ef027286f201c2b6fa39",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:20"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1028,7 +1287,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732"
+      "cmp_sha": "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:22"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1062,7 +1328,14 @@
           "5873b63d8f86c97af2f0c2e95ddd2fd3437e8f86b6d07737f26d2224608869e0"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1083,7 +1356,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:7"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1104,7 +1384,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:8"
+        ]
+      ]
     }
   ]
 }

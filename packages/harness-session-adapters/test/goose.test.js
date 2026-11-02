@@ -7,12 +7,12 @@ import { DatabaseSync } from 'node:sqlite';
 import { adapterFor } from '../src/index.js';
 import { SOURCE, DB_REL } from '../src/harnesses/goose/index.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck } from '../conformance/sql-store.js';
+import { fullReplay, project, tmpStore, storeOf, nameLint, staleUnits } from '../conformance/runner.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck, sqlFilesOf } from '../conformance/sql-store.js';
 
 const adapter = adapterFor('goose');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'goose');
-const CASES = ['lab', 'features', 'conformance-goose-sentinel'];
+const CASES = ['lab', 'features', 'conformance-goose-sentinel', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 // The features case's sessions (fixtures/goose/generate.js).
 const P = '20261020_5';
@@ -530,13 +530,17 @@ test('goose: a truncate deletes rows: delta with gone, the vanished keys go; the
 test('goose: --edit re-mints rowids: the same keys and records; an id reused after a delete is a new incarnation', () => {
   withStore('features', (dir) => {
     const store = storeOf(adapter, dir);
-    const before = project(fullReplay(adapter, dir).views());
+    const before = project(fullReplay(adapter, dir).views(), { units: false });
     const w = writer(dir);
     w.exec(`CREATE TEMP TABLE keep AS SELECT * FROM messages WHERE session_id = '${S2}';
       DELETE FROM messages WHERE session_id = '${S2}';
       INSERT INTO messages (message_id, session_id, role, content_json, created_timestamp, timestamp, tokens, metadata_json)
         SELECT message_id, session_id, role, content_json, created_timestamp, timestamp, tokens, metadata_json FROM keep ORDER BY id;`);
-    assert.deepEqual(project(fullReplay(adapter, dir).views())[S2], before[S2], 'keys are message_id, never messages.id');
+    // The re-minted rows are new units, so the records' units name them (sessions-model §2.7: a
+    // re-keying moves the units, not the records).
+    const after = fullReplay(adapter, dir);
+    assert.deepEqual(project(after.views(), { units: false })[S2], before[S2], 'keys are message_id, never messages.id');
+    assert.deepEqual(staleUnits(after), []);
     // Delete 20261021_2 and create it again (the max N is reused): a new incarnation.
     const old = adapter.list(store).find((s) => s.session_id === S2);
     w.exec(`DELETE FROM messages WHERE session_id = '${S2}'; DELETE FROM usage_ledger WHERE session_id = '${S2}'; DELETE FROM sessions WHERE id = '${S2}';`);
@@ -882,4 +886,23 @@ test('goose: speaker split: a row holding a tool result and text gives its messa
   assert.deepEqual([user.role, user.source, user.parts.map((p) => [p.kind, p.text])], ['user', 'user', [['text', 'Now the linter.']]]);
   assert.deepEqual([tool.role, tool.parts.map((p) => [p.kind, p.call_id, p.output])], ['tool', [['tool_result', 'call_0', '3 passed']]]);
   assert.ok(user.order < tool.order);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a session resumed in a later launch.
+// The sessions row is a snapshot, so its triple names the slot in both launches while the mode
+// moves; the second turn's reply names its own row and the ledger row of its served model.
+test('goose: resume: the second launch\'s records name their own rows; the session keeps its snapshot slot', () => {
+  const sid = '20261023_1';
+  const [db] = sqlFilesOf(path.join(FIX, 'resume'));
+  const upto = db.ops.findIndex((o) => o.sql.startsWith('UPDATE sessions SET goose_mode'));
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [db.rel]: upto });
+  const [b, a] = [r.before[sid], r.after[sid]];
+  const slot = [SOURCE.session, 1, SOURCE.session];
+  assert.deepEqual([b.mode, b.units], ['auto', [slot]]);
+  assert.deepEqual([a.mode, a.units], ['chat', [slot]]);
+  const reply = r.last[sid].find((m) => m.type === 'message' && m.message_id === 'chatcmpl-FixtureResume0002');
+  // Its row and its ledger row (the served model); this sessions row keeps no model_config_json, so
+  // gives no effort.
+  assert.deepEqual(reply.units.map(([sk]) => sk).sort(), [SOURCE.ledger, SOURCE.messages].sort());
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

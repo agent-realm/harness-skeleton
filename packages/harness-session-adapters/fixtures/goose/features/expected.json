@@ -35,7 +35,19 @@
           "text": "node src/cli.js list, then git status --short."
         }
       ],
-      "cmp_sha": "b860e7839aca2e88b6336eca6472818ecd36867ba8fa15902d9a3cfe1a4da0cd"
+      "cmp_sha": "b860e7839aca2e88b6336eca6472818ecd36867ba8fa15902d9a3cfe1a4da0cd",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:176"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:35"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -66,7 +78,14 @@
           "text": "<shell_history>\nnode src/cli.js list\ngit status --short\n</shell_history>\n\nWhich two shell commands did I just run? One line."
         }
       ],
-      "cmp_sha": "2836999b13e845c8d6116515e2d39854a1242316b99d77b0d047123c81ed85eb"
+      "cmp_sha": "2836999b13e845c8d6116515e2d39854a1242316b99d77b0d047123c81ed85eb",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:174"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -97,7 +116,14 @@
           "text": "<turn-context>\n<current-time>2026-10-20 09:36:00 +00:00</current-time>\n<working-directory>/home/user/work/inventory-cli</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "d903c19e161475d9ef999dabe95aee81c1a1d722af059cdfc3cdc5f2b1ca8198"
+      "cmp_sha": "d903c19e161475d9ef999dabe95aee81c1a1d722af059cdfc3cdc5f2b1ca8198",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:175"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -127,7 +153,14 @@
           "b860e7839aca2e88b6336eca6472818ecd36867ba8fa15902d9a3cfe1a4da0cd"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -148,7 +181,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "toy/toy-model-c",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:35"
+        ]
+      ]
     }
   ],
   "20261020_5": [
@@ -171,7 +211,14 @@
       "at": "",
       "inherits": null,
       "child_stored": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:107"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -208,7 +255,19 @@
           "server": "summon"
         }
       ],
-      "cmp_sha": "146e2723211179cf9df6a4e23a156b673346f5b0d1ecab0b45f0f2f794ba44ad"
+      "cmp_sha": "146e2723211179cf9df6a4e23a156b673346f5b0d1ecab0b45f0f2f794ba44ad",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:102"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:12"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -239,7 +298,19 @@
           "text": "4 tests."
         }
       ],
-      "cmp_sha": "c27ac537263d2722a82e14f8b0fa971a8bd85f08d5a5b0d31ba3f976a3d5cedd"
+      "cmp_sha": "c27ac537263d2722a82e14f8b0fa971a8bd85f08d5a5b0d31ba3f976a3d5cedd",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:108"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:13"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -270,7 +341,14 @@
           "text": "Subagent 20261020_6 completed: {\"summary\":\"4\"}"
         }
       ],
-      "cmp_sha": "d4f9883ae0576e44e5ce98459726dffcfccc5da5a121764f497bb0f472dfd411"
+      "cmp_sha": "d4f9883ae0576e44e5ce98459726dffcfccc5da5a121764f497bb0f472dfd411",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:107"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -307,7 +385,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7f2a0f4422d6d811c5230298e4789ab86618574bd21068a55b9c2a9975324665"
+      "cmp_sha": "7f2a0f4422d6d811c5230298e4789ab86618574bd21068a55b9c2a9975324665",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:106"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -338,7 +423,14 @@
           "text": "Use the count_tests sub-recipe."
         }
       ],
-      "cmp_sha": "ebe7e40cc3cf3afd31bf8bc9c4e07a5357f5aaf5884a96440fdf58b629fe0450"
+      "cmp_sha": "ebe7e40cc3cf3afd31bf8bc9c4e07a5357f5aaf5884a96440fdf58b629fe0450",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:101"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -370,7 +462,14 @@
           "c27ac537263d2722a82e14f8b0fa971a8bd85f08d5a5b0d31ba3f976a3d5cedd"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -391,7 +490,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "toy/toy-model-c",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:12"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -412,7 +518,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "toy/toy-model-c",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:13"
+        ]
+      ]
     }
   ],
   "20261020_6": [
@@ -435,7 +548,14 @@
       "at": "",
       "inherits": null,
       "child_stored": true,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -471,7 +591,19 @@
           "server": null
         }
       ],
-      "cmp_sha": "502424e512de0078aeede8eacd3a186511dc61d6354a24d8267b39944f67b307"
+      "cmp_sha": "502424e512de0078aeede8eacd3a186511dc61d6354a24d8267b39944f67b307",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:104"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:11"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -502,7 +634,14 @@
           "text": "Subagent ID: 20261020_6\n\nCount test functions in tests/"
         }
       ],
-      "cmp_sha": "fe20d8893cf2171604bc950c62ea9e7b44d33cd725a723414d6e1980694f0a51"
+      "cmp_sha": "fe20d8893cf2171604bc950c62ea9e7b44d33cd725a723414d6e1980694f0a51",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:103"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -539,7 +678,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732"
+      "cmp_sha": "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:105"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -569,7 +715,14 @@
           "964b4dfa18ef9cfd23947854bb579b2132581385ccf72a43fdfce0c626e53732"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -590,7 +743,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "toy/toy-model-c",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:11"
+        ]
+      ]
     }
   ],
   "20261021_1": [
@@ -609,7 +769,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:02:05.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:126"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -651,7 +818,24 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5"
+      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:111"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:14"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -682,7 +866,24 @@
           "text": "test_total_uses_qty fails: the total ignores qty."
         }
       ],
-      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561"
+      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:115"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:15"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -736,7 +937,24 @@
           "server": "python3"
         }
       ],
-      "cmp_sha": "29bbf345e9a08ca0e933a89f380ad87837dcf465fd6e98f96e11424b2130d0b7"
+      "cmp_sha": "29bbf345e9a08ca0e933a89f380ad87837dcf465fd6e98f96e11424b2130d0b7",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:118"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:16"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -767,7 +985,24 @@
           "text": "TRAIN-42: 17 units; the scanner is offline."
         }
       ],
-      "cmp_sha": "f1f8a696ae9178446c309d52a83271d4964549f9e45b95364edd68300630b65c"
+      "cmp_sha": "f1f8a696ae9178446c309d52a83271d4964549f9e45b95364edd68300630b65c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:120"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:17"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -798,7 +1033,24 @@
           "text": "The label is on the toy CDN."
         }
       ],
-      "cmp_sha": "889e4fe56d079bbd92b5607e9ad950df60db14b8856363f3efa6e281093c73c4"
+      "cmp_sha": "889e4fe56d079bbd92b5607e9ad950df60db14b8856363f3efa6e281093c73c4",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:124"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:19"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -829,7 +1081,24 @@
           "text": "You are welcome."
         }
       ],
-      "cmp_sha": "3c12e53e7c6defa5a681be94bc32f2e43cc9b99d6ef76ebfc39ee27ef117e68f"
+      "cmp_sha": "3c12e53e7c6defa5a681be94bc32f2e43cc9b99d6ef76ebfc39ee27ef117e68f",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:131"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:21"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -865,7 +1134,24 @@
           "server": "python3"
         }
       ],
-      "cmp_sha": "602940e94bd6cdd65f4a7ef27223a97ab46238a427da208071efabb1269252f0"
+      "cmp_sha": "602940e94bd6cdd65f4a7ef27223a97ab46238a427da208071efabb1269252f0",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:122"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:18"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -901,7 +1187,14 @@
           }
         }
       ],
-      "cmp_sha": "201f1f1fb81e28d29c5dd3db23b8e3085354175f39b7004f5ccb6fd8e445f206"
+      "cmp_sha": "201f1f1fb81e28d29c5dd3db23b8e3085354175f39b7004f5ccb6fd8e445f206",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:126"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -932,7 +1225,14 @@
           "text": "/compact"
         }
       ],
-      "cmp_sha": "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d"
+      "cmp_sha": "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:125"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -963,7 +1263,14 @@
           "text": "Compaction complete"
         }
       ],
-      "cmp_sha": "59910d49a3ed8b4b5254343c2996e9b5570e6dcd83ab40ad89c8f956d1462942"
+      "cmp_sha": "59910d49a3ed8b4b5254343c2996e9b5570e6dcd83ab40ad89c8f956d1462942",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:128"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -994,7 +1301,14 @@
           "text": "Your context was compacted at the user's request. The previous message contains a summary of the conversation so far."
         }
       ],
-      "cmp_sha": "3b9007de54380ad2f39052aab32e7496a845cdf411724e80ae24a05048dd8092"
+      "cmp_sha": "3b9007de54380ad2f39052aab32e7496a845cdf411724e80ae24a05048dd8092",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:127"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1027,7 +1341,14 @@
           "native_type": "elicitation"
         }
       ],
-      "cmp_sha": "736c188e129a55628cc8ad3aae309e8ce4a391d4e60f78e5c6dd3d37c87260af"
+      "cmp_sha": "736c188e129a55628cc8ad3aae309e8ce4a391d4e60f78e5c6dd3d37c87260af",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:113"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1060,7 +1381,14 @@
           "native_type": "elicitationResponse"
         }
       ],
-      "cmp_sha": "a904f63fc88dd7763dd39b5f112deb3051fae54cce6cbf8eff0334a09db26f64"
+      "cmp_sha": "a904f63fc88dd7763dd39b5f112deb3051fae54cce6cbf8eff0334a09db26f64",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:112"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1097,7 +1425,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf"
+      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:114"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1163,7 +1498,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "9bd727806fa6f56a23aa58ee66c129a477944ec83d093176875191ce2e388019"
+      "cmp_sha": "9bd727806fa6f56a23aa58ee66c129a477944ec83d093176875191ce2e388019",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:119"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1207,7 +1549,14 @@
           "bytes_len": 21
         }
       ],
-      "cmp_sha": "99e2465a174a26ad2b3a14e9dc783c2e5987cbf0675939d467d54b9b131ac42e"
+      "cmp_sha": "99e2465a174a26ad2b3a14e9dc783c2e5987cbf0675939d467d54b9b131ac42e",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:123"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1238,7 +1587,14 @@
           "text": "<turn-context>\n<current-time>2026-10-21 13:00:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84"
+      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:110"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1269,7 +1625,14 @@
           "text": "<turn-context>\n<current-time>2026-10-21 13:01:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "ac369ea235349dd59d0cbfecda6c3a56456fae37f2c28baadf3cbf524575734c"
+      "cmp_sha": "ac369ea235349dd59d0cbfecda6c3a56456fae37f2c28baadf3cbf524575734c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:117"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1300,7 +1663,14 @@
           "text": "<turn-context>\n<current-time>2026-10-21 13:03:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "cb864d9b8dd5f30679beb7c5ece5a0ff72a207658a816cff0c6672368fdd0d2b"
+      "cmp_sha": "cb864d9b8dd5f30679beb7c5ece5a0ff72a207658a816cff0c6672368fdd0d2b",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:130"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1331,7 +1701,14 @@
           "text": "Run the cart tests and tell me what fails."
         }
       ],
-      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392"
+      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:109"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1362,7 +1739,14 @@
           "text": "Check stock for TRAIN-42 with the toy tools."
         }
       ],
-      "cmp_sha": "8eb4b8ae4ea3d250bf73f926f3a2003fa76fee9e04b3fb0a65614939c44ca513"
+      "cmp_sha": "8eb4b8ae4ea3d250bf73f926f3a2003fa76fee9e04b3fb0a65614939c44ca513",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:116"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1393,7 +1777,14 @@
           "text": "Fetch the label from the toy CDN."
         }
       ],
-      "cmp_sha": "b7d80a91a418ea9b23fc460dc5abb449ba4a9f76b351a50c578f1e614f6bbf0c"
+      "cmp_sha": "b7d80a91a418ea9b23fc460dc5abb449ba4a9f76b351a50c578f1e614f6bbf0c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:121"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1424,7 +1815,14 @@
           "text": "Thanks."
         }
       ],
-      "cmp_sha": "1d0217d38bf8a476a449c7a90e211705080d5a3cb2e2c8e666bcecdb0707e770"
+      "cmp_sha": "1d0217d38bf8a476a449c7a90e211705080d5a3cb2e2c8e666bcecdb0707e770",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:129"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1474,7 +1872,14 @@
           "3c12e53e7c6defa5a681be94bc32f2e43cc9b99d6ef76ebfc39ee27ef117e68f"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1495,7 +1900,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:14"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1516,7 +1928,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:15"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1537,7 +1956,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:16"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1558,7 +1984,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:17"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1579,7 +2012,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:18"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1600,7 +2040,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:19"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1621,7 +2068,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:20"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1642,7 +2096,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:21"
+        ]
+      ]
     }
   ],
   "20261021_2": [
@@ -1680,7 +2141,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c"
+      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:133"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:22"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1711,7 +2184,19 @@
           "text": "Not deleted."
         }
       ],
-      "cmp_sha": "e93912daef7bcec9a65b50260282ed1969d083bc384f3ad9b2e793586b7ea594"
+      "cmp_sha": "e93912daef7bcec9a65b50260282ed1969d083bc384f3ad9b2e793586b7ea594",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:137"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:23"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1748,7 +2233,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "be38bd6bf6fb43477d7a74b0f02e45b4aabbeba323ed34d3b55ac28a6fcb5fe4"
+      "cmp_sha": "be38bd6bf6fb43477d7a74b0f02e45b4aabbeba323ed34d3b55ac28a6fcb5fe4",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:139"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:24"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1784,7 +2281,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c"
+      "cmp_sha": "03b520b8fd51a43ac35c70c7b3dd636d1bfdf2df811a3d139820b8162c773a1c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:142"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:25"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1809,7 +2318,19 @@
       "response_id": "chatcmpl-otl",
       "aliases": [],
       "parts": [],
-      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
+      "cmp_sha": "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:149"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:26"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1840,7 +2361,14 @@
           "text": "Once upon a time, on the top shelf"
         }
       ],
-      "cmp_sha": "9aa4c112740bf2dc23c56aa9b78d464c8e1a59186ffa9ec14cfc971120851841"
+      "cmp_sha": "9aa4c112740bf2dc23c56aa9b78d464c8e1a59186ffa9ec14cfc971120851841",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:147"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1873,7 +2401,14 @@
           "native_type": "toolConfirmationResponse"
         }
       ],
-      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8"
+      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:135"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1906,7 +2441,14 @@
           "native_type": "toolConfirmationResponse"
         }
       ],
-      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8"
+      "cmp_sha": "3424309ad8629d0b531854686c993879e1c2757c0db4d45bdbe751d805222ed8",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:143"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1939,7 +2481,14 @@
           "native_type": "toolConfirmation"
         }
       ],
-      "cmp_sha": "48c87abeb1cbefefd76e1232e2004fac85ecf3a472f13f052e1543361739c52b"
+      "cmp_sha": "48c87abeb1cbefefd76e1232e2004fac85ecf3a472f13f052e1543361739c52b",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:134"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1972,7 +2521,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "4a1f869bc5d931e36d83a2d0f724b1f0ed04dd70bb89049d1fbd43f399afeb47"
+      "cmp_sha": "4a1f869bc5d931e36d83a2d0f724b1f0ed04dd70bb89049d1fbd43f399afeb47",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:145"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2003,7 +2559,14 @@
           "text": "Delete README.md."
         }
       ],
-      "cmp_sha": "bad8917a455152ccfdbff3756bb7b6a325e2e2b761ca0c24f66ac10569772d06"
+      "cmp_sha": "bad8917a455152ccfdbff3756bb7b6a325e2e2b761ca0c24f66ac10569772d06",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:132"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2034,7 +2597,14 @@
           "text": "Run exactly this shell command: sleep 90; echo late"
         }
       ],
-      "cmp_sha": "f6ee94c857d0e5007cc4032d7160a117f51addcc5b714bcf309443bcc83e0325"
+      "cmp_sha": "f6ee94c857d0e5007cc4032d7160a117f51addcc5b714bcf309443bcc83e0325",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:138"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2065,7 +2635,14 @@
           "text": "Delete it again."
         }
       ],
-      "cmp_sha": "2012d5087648916d7bc5d668048a38bf9a7889eeb2a1279d9b58821ac315b26d"
+      "cmp_sha": "2012d5087648916d7bc5d668048a38bf9a7889eeb2a1279d9b58821ac315b26d",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:141"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2096,7 +2673,14 @@
           "text": "Write a long story about a wooden train."
         }
       ],
-      "cmp_sha": "f6334f8f5dd3c78af9e9619424b71d6944e1a5e50fa9a00c4dcf78674bbf90e8"
+      "cmp_sha": "f6334f8f5dd3c78af9e9619424b71d6944e1a5e50fa9a00c4dcf78674bbf90e8",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:146"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2127,7 +2711,14 @@
           "text": "One word."
         }
       ],
-      "cmp_sha": "d473750696b7144bfa8f662820b4bbbdc17f986fa48ddd435de4a64a400abc56"
+      "cmp_sha": "d473750696b7144bfa8f662820b4bbbdc17f986fa48ddd435de4a64a400abc56",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:148"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2164,7 +2755,19 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "ac91462d8d5a9d5711eb9fc8f07a191d141ffadcf2220d542a3c09827866782d"
+      "cmp_sha": "ac91462d8d5a9d5711eb9fc8f07a191d141ffadcf2220d542a3c09827866782d",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:143"
+        ],
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:144"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2201,7 +2804,19 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "4c3ab533de9928c551c2d2359d99de50e77130dedb2244dd19f6c23eba4d0434"
+      "cmp_sha": "4c3ab533de9928c551c2d2359d99de50e77130dedb2244dd19f6c23eba4d0434",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:135"
+        ],
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:136"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2238,7 +2853,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559"
+      "cmp_sha": "9c3b3eacfcac8b0e3f6f5000eff53c14f4afd68e818dcfae4a37b815d7b5b559",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:140"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2283,7 +2905,14 @@
           "822aab69cd0fb2aaf8e31a0ca847b86cdba637df0e11e9a5465ea44f6ca3f615"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2304,7 +2933,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:22"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2325,7 +2961,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:23"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2346,7 +2989,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:24"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2367,7 +3017,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:25"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2388,7 +3045,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:26"
+        ]
+      ]
     }
   ],
   "20261021_3": [
@@ -2404,7 +3068,14 @@
       },
       "at": null,
       "ts": "2026-10-21T13:42:16.664Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2435,7 +3106,24 @@
           "text": "Done."
         }
       ],
-      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:151"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:27"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2466,7 +3154,24 @@
           "text": "397 is prime. STEERED"
         }
       ],
-      "cmp_sha": "44625a427fb7a0bc3ed0f80577473ec8e36310ad2fca708c6e601c1f5827abce"
+      "cmp_sha": "44625a427fb7a0bc3ed0f80577473ec8e36310ad2fca708c6e601c1f5827abce",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:155"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:28"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2497,7 +3202,14 @@
           "text": "Back again after the archive."
         }
       ],
-      "cmp_sha": "2ccd88127d39433d6659bf8625de0ca271764419c7eeb3c41ec7b5d14a29ce72"
+      "cmp_sha": "2ccd88127d39433d6659bf8625de0ca271764419c7eeb3c41ec7b5d14a29ce72",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:156"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2528,7 +3240,14 @@
           "text": "Start working toward this goal now:\n\n**Goal:** README.md mentions the word toyshop"
         }
       ],
-      "cmp_sha": "a47b8da5f7f1121a932c53648b48dedaa1169aca92949a83e2231fe269ef95d7"
+      "cmp_sha": "a47b8da5f7f1121a932c53648b48dedaa1169aca92949a83e2231fe269ef95d7",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:150"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2559,7 +3278,14 @@
           "text": "Before finishing, check whether the following goal has been fully met:\n\n**Goal:** README.md mentions the word toyshop\n\nIf not, continue working toward it."
         }
       ],
-      "cmp_sha": "1e5baeab58cddc65f05157552c81863ef26b086b27a3fca5ea23cbad97187a1c"
+      "cmp_sha": "1e5baeab58cddc65f05157552c81863ef26b086b27a3fca5ea23cbad97187a1c",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:152"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2590,7 +3316,14 @@
           "text": "And is 397 prime? One line."
         }
       ],
-      "cmp_sha": "d0a928d702ebb2f4c5a9abf6cfead09e0dadd22333614635b3027a62dac868c1"
+      "cmp_sha": "d0a928d702ebb2f4c5a9abf6cfead09e0dadd22333614635b3027a62dac868c1",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:154"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2621,7 +3354,14 @@
           "text": "Also add the word STEERED at the end of your reply."
         }
       ],
-      "cmp_sha": "76b6d37bfdd06c8e1bae66a5f3f7a07eaec88b3347e2fcc81c9fa0c16548c045"
+      "cmp_sha": "76b6d37bfdd06c8e1bae66a5f3f7a07eaec88b3347e2fcc81c9fa0c16548c045",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:153"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2655,7 +3395,14 @@
           "2ccd88127d39433d6659bf8625de0ca271764419c7eeb3c41ec7b5d14a29ce72"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2676,7 +3423,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:27"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2697,7 +3451,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:28"
+        ]
+      ]
     }
   ],
   "20261021_4": [
@@ -2730,7 +3491,19 @@
           "text": "TRAIN-42, DUCK-07."
         }
       ],
-      "cmp_sha": "0fb38d4eadd28231d58ca54732d25a1ce4ddd72270cd091f4f7a6e562f943273"
+      "cmp_sha": "0fb38d4eadd28231d58ca54732d25a1ce4ddd72270cd091f4f7a6e562f943273",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:165"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:30"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2761,7 +3534,14 @@
           "text": "List the toy SKUs."
         }
       ],
-      "cmp_sha": "432eafb00b4a93cdc51ffa1d670c63629f7e4799cdf7525381ad2e124c47a40e"
+      "cmp_sha": "432eafb00b4a93cdc51ffa1d670c63629f7e4799cdf7525381ad2e124c47a40e",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:164"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2792,7 +3572,14 @@
           "text": "Instead, show the stock of DUCK-07."
         }
       ],
-      "cmp_sha": "fff2d25e39f80ae04c0262dd90b811bc8a8f1d7ac7b7d982721f9e5a4079105a"
+      "cmp_sha": "fff2d25e39f80ae04c0262dd90b811bc8a8f1d7ac7b7d982721f9e5a4079105a",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:170"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2822,7 +3609,14 @@
           "fff2d25e39f80ae04c0262dd90b811bc8a8f1d7ac7b7d982721f9e5a4079105a"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2843,7 +3637,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:30"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2864,7 +3665,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:31"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2885,7 +3693,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:32"
+        ]
+      ]
     }
   ],
   "20261021_5": [
@@ -2918,7 +3733,19 @@
           "text": "ok"
         }
       ],
-      "cmp_sha": "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
+      "cmp_sha": "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:173"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:34"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -2949,7 +3776,14 @@
           "text": "Reply with exactly: ok"
         }
       ],
-      "cmp_sha": "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89"
+      "cmp_sha": "72502b1067a81191b72ba976a84f5272cae889d62475b8f66e0acd1f4f2a1a89",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:172"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -2978,7 +3812,14 @@
           "8b520d618343a1e234ebb317a63ea7ead21a759b7913ccbf142345af0da6c434"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -2999,7 +3840,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:34"
+        ]
+      ]
     }
   ],
   "20261021_6": [
@@ -3032,7 +3880,19 @@
           "text": "The label reads SKU-0042."
         }
       ],
-      "cmp_sha": "de7a240f9d7ce5e6c559a915486afe752a2391f681fd8c6bf44c9aa74a35d80a"
+      "cmp_sha": "de7a240f9d7ce5e6c559a915486afe752a2391f681fd8c6bf44c9aa74a35d80a",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:178"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:36"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3070,7 +3930,14 @@
           "bytes_len": 21
         }
       ],
-      "cmp_sha": "851485561d42ef628399cca9fcfe0424a3cfa4cca50b8fa2f99254e5ef969f48"
+      "cmp_sha": "851485561d42ef628399cca9fcfe0424a3cfa4cca50b8fa2f99254e5ef969f48",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:177"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -3099,7 +3966,14 @@
           "de7a240f9d7ce5e6c559a915486afe752a2391f681fd8c6bf44c9aa74a35d80a"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -3120,7 +3994,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:36"
+        ]
+      ]
     }
   ],
   "20261021_8": [
@@ -3164,7 +4045,19 @@
           "server": "developer"
         }
       ],
-      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5"
+      "cmp_sha": "02b1f8abbe618e5eaa1cd13860960bae3d9f216fbb91e4e97913b459e75defa5",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:159"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3195,7 +4088,19 @@
           "text": "test_total_uses_qty fails: the total ignores qty."
         }
       ],
-      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561"
+      "cmp_sha": "2fc04b31a9ca5bb0ca6852729eed302d09b8d3ba99940d0d4c7bf8b2aed38561",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:161"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3226,7 +4131,24 @@
           "text": "Added test_coupon."
         }
       ],
-      "cmp_sha": "40d7fe62e32b133bd3a9f054699bde321e6369752bf995e0ef5da03ac49b83cf"
+      "cmp_sha": "40d7fe62e32b133bd3a9f054699bde321e6369752bf995e0ef5da03ac49b83cf",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:163"
+        ],
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ],
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:29"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3257,7 +4179,14 @@
           "text": "Now add a coupon test."
         }
       ],
-      "cmp_sha": "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a"
+      "cmp_sha": "fa1644e2ca2a0c3bdb4fe05e82f811851628fed06587634b9e11d9895c1b693a",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:162"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3294,7 +4223,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf"
+      "cmp_sha": "8da4f45cf262d94e1a7ce6a7bc21a998d580bea0082c2e84078da8095da1e6cf",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:160"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3325,7 +4261,14 @@
           "text": "<turn-context>\n<current-time>2026-10-21 13:00:00 +00:00</current-time>\n<working-directory>/home/user/work/toyshop</working-directory>\n</turn-context>"
         }
       ],
-      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84"
+      "cmp_sha": "42298fe5f7f30bc969c95753adb98f6227991825f5a86cd07b5ee94bb38abf84",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:158"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -3356,7 +4299,14 @@
           "text": "Run the cart tests and tell me what fails."
         }
       ],
-      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392"
+      "cmp_sha": "4c5a9e6c75597b67860b511d4d575aabb38482065b5ac95b9c796c9205e28392",
+      "units": [
+        [
+          "sessions/sessions.db#table:messages",
+          1,
+          "messages:157"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -3390,7 +4340,14 @@
           "40d7fe62e32b133bd3a9f054699bde321e6369752bf995e0ef5da03ac49b83cf"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:sessions",
+          1,
+          "sessions/sessions.db#table:sessions"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -3411,7 +4368,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_response",
       "model": "gateway/toy-model",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/sessions.db#table:usage_ledger",
+          1,
+          "usage_ledger:29"
+        ]
+      ]
     }
   ]
 }

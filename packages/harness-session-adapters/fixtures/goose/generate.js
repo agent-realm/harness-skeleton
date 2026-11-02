@@ -487,6 +487,26 @@ function sentinel() {
   write('conformance-goose-sentinel', s);
 }
 
+// A session resumed in a later launch (sessions-model §2.7 units): the second launch switches the
+// mode and adds a turn. The sessions row is a snapshot, so its triple names the slot in both
+// launches while the mode moves; the second turn's records name their own message and ledger rows.
+// The resume test (test/goose.test.js) builds the store with the statements before the mode switch.
+function resume() {
+  const sid = '20261023_1';
+  const s = new Store({ rid: 700, lid: 300 });
+  s.session({ id: sid, name: 'Count the files', user_set_name: 0, session_type: 'user', working_dir: '/home/user/work/toyshop', created_at: '2026-10-23 09:00:00', goose_mode: 'auto' });
+  s.message(sid, 1792746000, 'msg_resume_u1', 'user', [text('Count the files.')]);
+  s.message(sid, 1792746003, 'chatcmpl-FixtureResume0001', 'assistant', [text('Two files.')], { ...inference('gateway/toy-model-a'), usage: usage(900, 4, 0, 2000) });
+  s.ledger(sid, 1792746003, SERVED, 900, 4, 0);
+  // The second launch, a day later.
+  s.op('UPDATE sessions SET goose_mode = ? WHERE id = ?', ['chat', sid]);
+  s.message(sid, 1792832400, 'msg_resume_u2', 'user', [text('And in toyshop?')]);
+  s.message(sid, 1792832402, 'chatcmpl-FixtureResume0002', 'assistant', [text('One file.')], { ...inference('gateway/toy-model-a'), usage: usage(950, 3, 0, 1500) });
+  s.ledger(sid, 1792832402, SERVED, 950, 3, 0);
+  write('resume', s);
+}
+
 lab();
 features();
 sentinel();
+resume();

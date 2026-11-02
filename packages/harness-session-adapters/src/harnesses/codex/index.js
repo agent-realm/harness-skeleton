@@ -13,12 +13,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
 import { readStream, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'codex';
-const STATE_VER = 2;
+const STATE_VER = 3;
 const ROLLOUT_ID = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.jsonl$/i;
 const ROOTS = ['sessions', 'archived_sessions'];
 const ARCHIVED = 'archived_sessions/';
@@ -326,33 +326,46 @@ function emptyState() {
     usage_by: {},
     cmp: {}, // message_id -> [source index, padded unit key, cmp_sha]
     // Session fields, each kept with the sort key of the record it came from, so the result does
-    // not depend on the order sources are folded in: [ts|order, value].
+    // not depend on the order sources are folded in: [ts|order, value, units triple].
     session: { client: null, harness_version: null, cwd: null, last_cwd: null, created_at: null, updated_at: null },
+    // The session's declared native fields, path -> [order, value, units triple]: the latest line in
+    // `order` that holds the path wins (sessions-model §2.7).
+    native: {},
   };
 }
 
-function newSource(sk) {
+// `g` is the rollout's generation, for its `units` triples. `turnUnit`, `model_u` and `effort_u` are
+// the unit keys of the lines the open turn's id, the model and the effort came from.
+function newSource(sk, g) {
   return {
     sk,
+    g,
     base: path.posix.basename(sk),
     first_ts: null,
-    u: { open: false, fresh: false, active: false, turnId: null, done: false },
+    u: { open: false, fresh: false, active: false, turnId: null, done: false, turnUnit: null },
     model: null,
+    model_u: null,
     effort: null,
+    effort_u: null,
     prev: null, // the last running total seen (memhouse `a.prev`)
     turn: null,
   };
 }
 
+// `id_u`, `tok_u` and `model_u`: the unit keys of the lines the turn's id, its summed token counts
+// and its model came from, the units of its usage record.
 function newTurn() {
   return {
     id: null,
+    id_u: null,
     first_msg: null,
     first_asst: null,
     tok: { input: 0, cached: 0, output: 0, reasoning: 0 },
+    tok_u: [],
     has: { input: false, cached: false, output: false, reasoning: false },
     nonzero: false,
     model: null,
+    model_u: null,
     usage_id: null,
   };
 }
@@ -384,7 +397,7 @@ export function derive(session, input, state) {
   for (const src of input) {
     const sk = src.source_key;
     if (!st.src[sk]) {
-      st.src[sk] = { ...newSource(sk), i: st.srcs.length };
+      st.src[sk] = { ...newSource(sk, src.generation), i: st.srcs.length };
       st.srcs.push(sk);
     }
     const s = st.src[sk];
@@ -396,8 +409,10 @@ export function derive(session, input, state) {
     }
   }
 
-  // The session record: always re-sealed, since updated_at and the fingerprint move.
+  // The session record: always re-sealed, since updated_at and the fingerprint move. Its units are
+  // the lines its own fields came from (sessions-model v1.4.1, §2.7), never the fingerprint's.
   const v = Object.fromEntries(Object.entries(st.session).map(([k, x]) => [k, x ? x[1] : null]));
+  const kept = [...Object.values(st.session), ...Object.values(st.native)].filter(Boolean);
   const cmpShas = Object.values(st.cmp).map(([i, uk, sha]) => [orderOf(st, [i, uk]), sha])
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]);
   const keys = Object.keys(st.src);
@@ -421,6 +436,8 @@ export function derive(session, input, state) {
     ts_source: 'event',
     aliases: [],
     fingerprint: { cmp_shas: cmpShas },
+    native: Object.fromEntries(Object.entries(st.native).map(([k, x]) => [k, x[1]])),
+    units: kept.map((x) => x[2]),
   });
 
   const live = {};
@@ -439,11 +456,15 @@ export function derive(session, input, state) {
   };
 }
 
-// Keep the value from the earliest (`first`) or latest record by (ts, order).
-function keep(s, field, value, sortKey, first) {
+// Keep the value from the earliest (`first`) or latest record by (ts, order), with the units
+// triple of the line it came from.
+function keep(s, field, value, sortKey, first, unit) {
   const cur = s[field];
-  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value];
+  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value, unit];
 }
+
+// A rollout line's units triple.
+const unitOf = (s, unitKey) => [s.sk, s.g, unitKey];
 
 // ---- usage: one record per turn ---------------------------------------------------------------
 
@@ -482,7 +503,8 @@ function settleUsage(ctx, id) {
     ctx.unput('usage', id);
     return;
   }
-  const [a, input, output, cacheRead, reasoning, model] = c[ks[0]];
+  const [a, input, output, cacheRead, reasoning, model, keys] = c[ks[0]];
+  const s = st.src[st.srcs[ks[0]]];
   ctx.put({
     type: 'usage',
     usage_id: id,
@@ -498,6 +520,7 @@ function settleUsage(ctx, id) {
     input_includes_cache: true, output_includes_reasoning: true,
     granularity: 'per_turn',
     model,
+    units: keys.map((k) => unitOf(s, k)),
   });
 }
 
@@ -513,6 +536,11 @@ function refreshUsage(ctx) {
   t.usage_id = next ? next.id : null;
   if (!next) return;
   if (!st.usage_by[next.id]) st.usage_by[next.id] = {};
+  // Its units: the token_count lines it sums, the model's line, and the turn id's line when the turn
+  // id is the anchor. A first message as the anchor is a record of its own, with its own units.
+  const keys = [...t.tok_u];
+  if (t.model !== null && t.model_u !== null) keys.push(t.model_u);
+  if (t.id && t.id_u !== null) keys.push(t.id_u);
   st.usage_by[next.id][s.i] = [
     Object.values(next.anchor)[0],
     t.has.input ? t.tok.input : null,
@@ -520,13 +548,14 @@ function refreshUsage(ctx) {
     t.has.cached ? t.tok.cached : null,
     t.has.reasoning ? t.tok.reasoning : null,
     t.model,
+    keys,
   ];
   settleUsage(ctx, next.id);
 }
 
 // Σ over the turn of each token_count's last_token_usage, else of its running total minus the
 // previous one; a running total seen again adds nothing (as memhouse's v3 reader counts it).
-function tokens(ctx, p) {
+function tokens(ctx, p, unitKey) {
   const { s } = ctx;
   const info = p.info;
   if (!info || typeof info !== 'object') return;
@@ -544,8 +573,10 @@ function tokens(ctx, p) {
     t.tok[k] += delta[k];
     if (delta.has[k]) t.has[k] = true;
   }
+  t.tok_u.push(unitKey);
   t.nonzero = true;
   t.model = s.model;
+  t.model_u = s.model_u;
   refreshUsage(ctx);
 }
 
@@ -568,9 +599,9 @@ function emitMessage(ctx, m) {
   return true;
 }
 
-function noteSession(st, field, value, ts, order, first) {
+function noteSession(st, field, value, ts, order, first, unit) {
   if (value === null || value === undefined || value === '') return;
-  keep(st.session, field, value, `${ts ?? ''}|${order}`, first);
+  keep(st.session, field, value, `${ts ?? ''}|${order}`, first, unit);
 }
 
 function foldRecord(ctx, o, unitKey) {
@@ -578,49 +609,71 @@ function foldRecord(ctx, o, unitKey) {
   const order = `${s.first_ts}|${s.base}|${unitKey.padStart(12, '0')}`;
   const ts = isoTs(o.timestamp);
   const p = o.payload && typeof o.payload === 'object' ? o.payload : {};
+  const own = unitOf(s, unitKey);
 
   // The turn this record belongs to: a pure function of the rollout's records so far.
   const started = unitStart(o, s.u);
   if (started) s.turn = newTurn();
   track(o, s.u);
+  // The line that gave the open turn its id (track resets the id when a turn starts).
+  if (started) s.u.turnUnit = null;
+  if (s.u.turnId && s.u.turnUnit === null) s.u.turnUnit = unitKey;
   if (s.turn && s.turn.id !== s.u.turnId) {
     s.turn.id = s.u.turnId;
+    s.turn.id_u = s.u.turnId ? s.u.turnUnit : null;
     refreshUsage(ctx);
   }
 
   if (ts) {
-    keep(st.session, 'created_at', ts, ts, true);
-    keep(st.session, 'updated_at', ts, ts, false);
+    keep(st.session, 'created_at', ts, ts, true, own);
+    keep(st.session, 'updated_at', ts, ts, false, own);
   }
 
+  if (o.type === 'session_meta' || o.type === 'turn_context') {
+    for (const [k, x] of Object.entries(nativeOf(o, describeData.native.session))) {
+      if (!st.native[k] || order > st.native[k][0]) st.native[k] = [order, x, own];
+    }
+  }
   if (o.type === 'session_meta') {
-    noteSession(st, 'client', str(p.originator), ts, order, false);
-    noteSession(st, 'harness_version', str(p.cli_version), ts, order, false);
-    noteSession(st, 'cwd', str(p.cwd), ts, order, true);
-    noteSession(st, 'last_cwd', str(p.cwd), ts, order, false);
+    noteSession(st, 'client', str(p.originator), ts, order, false, own);
+    noteSession(st, 'harness_version', str(p.cli_version), ts, order, false, own);
+    noteSession(st, 'cwd', str(p.cwd), ts, order, true, own);
+    noteSession(st, 'last_cwd', str(p.cwd), ts, order, false, own);
     return;
   }
   if (o.type === 'turn_context') {
-    noteSession(st, 'cwd', str(p.cwd), ts, order, true);
-    noteSession(st, 'last_cwd', str(p.cwd), ts, order, false);
-    if (str(p.model)) s.model = p.model;
+    noteSession(st, 'cwd', str(p.cwd), ts, order, true, own);
+    noteSession(st, 'last_cwd', str(p.cwd), ts, order, false, own);
+    if (str(p.model)) {
+      s.model = p.model;
+      s.model_u = unitKey;
+    }
     const effort = typeof p.effort === 'string' ? p.effort : typeof p.reasoning_effort === 'string' ? p.reasoning_effort : null;
-    if (effort !== null) s.effort = effort || null;
+    if (effort !== null) {
+      s.effort = effort || null;
+      s.effort_u = s.effort ? unitKey : null;
+    }
     return;
   }
   if (o.type === 'event_msg') {
     // task_started is a turn marker (above); token_count is the turn's usage. Every other event,
     // including the user_message / agent_message duplicates and turn_aborted, makes no record.
-    if (p.type === 'token_count') tokens(ctx, p);
+    if (p.type === 'token_count') tokens(ctx, p, unitKey);
     return;
   }
 
   const base = {
     parent_id: null, order, agent_id: '',
     to_user: null, to_model: null, status: 'complete', state: 'current', on_active_branch: null, ts,
-    requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
+    requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], units: [own],
   };
-  const asst = { role: 'assistant', source: 'model', served_model: s.model, effort: s.effort, response_id: s.u.turnId };
+  // An assistant item takes the model and the effort from the last turn_context, and the response
+  // id from the line that gave the turn its id: their lines are units of the message too.
+  const asstUnits = [own];
+  if (s.model !== null && s.model_u !== null) asstUnits.push(unitOf(s, s.model_u));
+  if (s.effort !== null && s.effort_u !== null) asstUnits.push(unitOf(s, s.effort_u));
+  if (s.u.turnId && s.u.turnUnit !== null) asstUnits.push(unitOf(s, s.u.turnUnit));
+  const asst = { role: 'assistant', source: 'model', served_model: s.model, effort: s.effort, response_id: s.u.turnId, units: asstUnits };
   const injected = { source: 'injected', to_user: false, to_model: true };
 
   // A compaction: the summary as a system message, and the lifecycle record that names it.
@@ -628,7 +681,7 @@ function foldRecord(ctx, o, unitKey) {
     const mid = `${s.base}@${unitKey}`;
     const text = typeof p.message === 'string' ? p.message : '';
     if (emitMessage(ctx, { ...base, message_id: mid, role: 'system', source: 'automated', parts: [{ part_id: '0', kind: 'summary', text, replaces: 'unknown' }] })) {
-      ctx.put({ type: 'lifecycle', lifecycle_id: mid, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit' });
+      ctx.put({ type: 'lifecycle', lifecycle_id: mid, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit', units: [own] });
     }
     return;
   }

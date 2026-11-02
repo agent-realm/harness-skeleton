@@ -38,7 +38,24 @@
           "server": null
         }
       ],
-      "cmp_sha": "2dc474de94f5c5d9e5eec407fe808a674852e8d666c6f8c53c4be8b38d3fc206"
+      "cmp_sha": "2dc474de94f5c5d9e5eec407fe808a674852e8d666c6f8c53c4be8b38d3fc206",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "3864"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4385"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4882"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -78,7 +95,24 @@
           "server": null
         }
       ],
-      "cmp_sha": "283443651c583ed496399a9357634c169aec81fe0ea9bb9f3b05c2ed46fb644f"
+      "cmp_sha": "283443651c583ed496399a9357634c169aec81fe0ea9bb9f3b05c2ed46fb644f",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "1537"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "482"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "974"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -118,7 +152,24 @@
           "server": null
         }
       ],
-      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1"
+      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12234"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12756"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "13316"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -149,7 +200,24 @@
           "text": "bravo çalışma delta çalışma kappa 漢字 über kappa x cursor buffer"
         }
       ],
-      "cmp_sha": "3f723e87c90c812cf238cb974bd7d4efbd192ccd7a2c9282644506aee8d318e3"
+      "cmp_sha": "3f723e87c90c812cf238cb974bd7d4efbd192ccd7a2c9282644506aee8d318e3",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "3864"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4385"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "6273"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -180,7 +248,14 @@
           "text": "cursor 漢字 gamma sigma 🚀 vector bravo turn 3"
         }
       ],
-      "cmp_sha": "c41c92b40cac284448a72b59e29dcd195026cfaed11c6b6e601f9deeb464f9a7"
+      "cmp_sha": "c41c92b40cac284448a72b59e29dcd195026cfaed11c6b6e601f9deeb464f9a7",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8672"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -211,7 +286,14 @@
           "text": "🙂 ğüşıöç archive x buffer anchor anchor turn 1"
         }
       ],
-      "cmp_sha": "c5612bcadc53a7bd0109aabc90fe9b71350d5c527ae4f6de7ed90bae76aab5a9"
+      "cmp_sha": "c5612bcadc53a7bd0109aabc90fe9b71350d5c527ae4f6de7ed90bae76aab5a9",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4007"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -242,7 +324,24 @@
           "text": "über ğüşıöç über naïve cursor 漢字 kappa kappa delta çalışma alpha"
         }
       ],
-      "cmp_sha": "3f54adfeb24625aa49a80d103207010a5facd05a565fe1dabb99041013617c90"
+      "cmp_sha": "3f54adfeb24625aa49a80d103207010a5facd05a565fe1dabb99041013617c90",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "2923"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "482"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "974"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -273,7 +372,24 @@
           "text": "buffer cursor sigma gamma テスト kappa anchor bravo replay ğüşıöç über"
         }
       ],
-      "cmp_sha": "322fb1150f77d7ce7fe9678f85bad8bc4b414d9567e90c309b8bbc8f1827100d"
+      "cmp_sha": "322fb1150f77d7ce7fe9678f85bad8bc4b414d9567e90c309b8bbc8f1827100d",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "11292"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8529"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9045"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -304,7 +420,14 @@
           "text": "テスト delta gamma alpha ğüşıöç x naïve turn 4"
         }
       ],
-      "cmp_sha": "7c6eb3eb62c08dc8623dc740f87c6aeced6378fa45a62282f61ba0b5c5fbf2c5"
+      "cmp_sha": "7c6eb3eb62c08dc8623dc740f87c6aeced6378fa45a62282f61ba0b5c5fbf2c5",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12377"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -341,7 +464,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "722e69ac85ac3fb2471382afa269a67f14a65cb3c0b4e441dc27754faa49c4a7"
+      "cmp_sha": "722e69ac85ac3fb2471382afa269a67f14a65cb3c0b4e441dc27754faa49c4a7",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "10150"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -378,7 +508,14 @@
           "exit_code": 0
         }
       ],
-      "cmp_sha": "7fb2fa0b29bb0e66a18ea2b19630b05e487adfcf2f1054f8882b6c3f07e1e32d"
+      "cmp_sha": "7fb2fa0b29bb0e66a18ea2b19630b05e487adfcf2f1054f8882b6c3f07e1e32d",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "13562"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -409,7 +546,14 @@
           "text": "steer 🙂 anchor çalışma"
         }
       ],
-      "cmp_sha": "7f8348e979dae50e99e1f8c87ea8cb6ed34cb371149981dbbfecf913bbe32353"
+      "cmp_sha": "7f8348e979dae50e99e1f8c87ea8cb6ed34cb371149981dbbfecf913bbe32353",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "14715"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -447,7 +591,24 @@
           "signature_len": 5
         }
       ],
-      "cmp_sha": "fc3149bb31c611e8314e36402bd33402ac21a3e201d333ff7b0b33d360c7bea1"
+      "cmp_sha": "fc3149bb31c611e8314e36402bd33402ac21a3e201d333ff7b0b33d360c7bea1",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12234"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "14894"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "15046"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -478,7 +639,24 @@
           "text": "archive gamma alpha vector delta ğüşıöç 漢字 ğüşıöç bravo çalışma bravo"
         }
       ],
-      "cmp_sha": "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498"
+      "cmp_sha": "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12234"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "14894"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "15631"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -515,7 +693,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "b8dac0aa63e03cd2774b59a9d8539111e3abddb98af2a3a37a28abc490da2d35"
+      "cmp_sha": "b8dac0aa63e03cd2774b59a9d8539111e3abddb98af2a3a37a28abc490da2d35",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "1784"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -546,7 +731,14 @@
           "text": "<environment_context>\n  <cwd>/work/proj-beta</cwd>\n</environment_context>"
         }
       ],
-      "cmp_sha": "e3b20d52fa34c903cb25ed3358ddebe6aebd58934f4d9e73e4cb1f3512e41514"
+      "cmp_sha": "e3b20d52fa34c903cb25ed3358ddebe6aebd58934f4d9e73e4cb1f3512e41514",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "256"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -583,7 +775,14 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "888ef3a4bd6ecd1d4d9794e33186f7580e6d120c5334ea3bed8a26844c2fc4dc"
+      "cmp_sha": "888ef3a4bd6ecd1d4d9794e33186f7580e6d120c5334ea3bed8a26844c2fc4dc",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "5130"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -614,7 +813,14 @@
           "text": "vector gamma über buffer anchor ğüşıöç テスト turn 0"
         }
       ],
-      "cmp_sha": "456eed9f69e5321055e8584c998379a1cb8e795234f63ef42ea825e3dd4b4eb3"
+      "cmp_sha": "456eed9f69e5321055e8584c998379a1cb8e795234f63ef42ea825e3dd4b4eb3",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "625"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -645,7 +851,14 @@
           "text": "🙂 gamma 🚀 cursor anchor buffer buffer turn 2"
         }
       ],
-      "cmp_sha": "0d91a5673a909ae81344d93c8d22a16bae784e805f0def5d5f4f666fc7be355d"
+      "cmp_sha": "0d91a5673a909ae81344d93c8d22a16bae784e805f0def5d5f4f666fc7be355d",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "7352"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -685,7 +898,24 @@
           "server": null
         }
       ],
-      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1"
+      "cmp_sha": "84825549da28d752de1e1f85a5a9c987bcd066927b5bf7764c9606ffcc7caeb1",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8529"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9045"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9939"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -717,7 +947,24 @@
           "signature_len": 5
         }
       ],
-      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe"
+      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8529"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9045"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9768"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -755,7 +1002,24 @@
           "signature_len": 5
         }
       ],
-      "cmp_sha": "98a445b0e77dccaa4e24180c68f6a0b9a60b2e2eebd68a5672f2d95346ffec89"
+      "cmp_sha": "98a445b0e77dccaa4e24180c68f6a0b9a60b2e2eebd68a5672f2d95346ffec89",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "1296"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "482"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "974"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -787,7 +1051,24 @@
           "signature_len": 5
         }
       ],
-      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe"
+      "cmp_sha": "40398cd6e2d63364db461927e126859b8b1bd49c17b63ad84958be1ba94da6fe",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "3864"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4385"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4711"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -825,7 +1106,24 @@
           "signature_len": 5
         }
       ],
-      "cmp_sha": "0a050cea5184c8f5bd06527140fb6d2b88ed90b9dc75d765d8da1e4eea531a3c"
+      "cmp_sha": "0a050cea5184c8f5bd06527140fb6d2b88ed90b9dc75d765d8da1e4eea531a3c",
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12234"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12756"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "13078"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -876,7 +1174,32 @@
           "c4c566d3e9f17676502ba14b29057f0a4f063653893569de64f0e67a6d341498"
         ]
       },
-      "setup": null
+      "native": {
+        "payload.approval_policy": "on-request"
+      },
+      "setup": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12756"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "14894"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "16404"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -897,7 +1220,29 @@
       "output_includes_reasoning": true,
       "granularity": "per_turn",
       "model": "gpt-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "2117"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "3196"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "482"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "974"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -918,7 +1263,29 @@
       "output_includes_reasoning": true,
       "granularity": "per_turn",
       "model": "gpt-5-codex",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "3864"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "4385"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "5463"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "6540"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -939,7 +1306,24 @@
       "output_includes_reasoning": true,
       "granularity": "per_turn",
       "model": "gpt-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "7209"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "7689"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8011"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -960,7 +1344,34 @@
       "output_includes_reasoning": true,
       "granularity": "per_turn",
       "model": "gpt-5-codex",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "10482"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "11565"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "8529"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9045"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "9371"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -981,7 +1392,34 @@
       "output_includes_reasoning": true,
       "granularity": "per_turn",
       "model": "gpt-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "12234"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "13903"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "14894"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "15233"
+        ],
+        [
+          "sessions/2026/01/03/rollout-2026-01-03T14-00-00-8899d818-977d-46aa-a224-6692996dcc59.jsonl",
+          1,
+          "15876"
+        ]
+      ]
     }
   ]
 }

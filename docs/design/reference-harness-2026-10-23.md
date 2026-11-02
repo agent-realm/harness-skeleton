@@ -76,7 +76,7 @@ check proves it.
 | compaction: a `summary` part with `replaces`, replaced messages still current, a usage record anchored to `compaction` | `/compact`, or the threshold | Compaction is not deletion |
 | retraction and destruction | `/rewind` retracts (append-only). `/rewind --destructive` starts a new store generation, so the adapter sees a `reset` | Retraction vs destruction, the rewrite reset |
 | incarnation (`reuse`) | `/delete-session` and a later session under the same id: the writer mints a new `incarnation` at create, so `reuse: detected` | Incarnation |
-| delete | a deleted session leaves `list`, and the consumer tombstones it, which is no lifecycle record. The `explicit` facet comes from `/delete <message>`: a destructive rewrite with its `delete` record (M §2.6, shape b) | the facet-fixture check, Retraction vs destruction |
+| delete | a deleted session leaves `list`, and the consumer writes removed versions of its records, which is no lifecycle record. The `explicit` facet comes from `/delete <message>`: a destructive rewrite with its `delete` record (M §2.6, shape b) | the facet-fixture check, Retraction vs destruction |
 | held records | the streaming writer mode: a `status: streaming` message, then its final revision (§3.1) | Held back, Held |
 | a link stated on both sides | a scenario option states the link on the origin too (§3.1) | the consumer's merge (M §2.5) |
 | redaction (M §4) | a tool whose schema marks a field secret (`x-secret`): the writer redacts it, and a test-only option keeps a sentinel on that declared path instead (§3.1) | Redaction |
@@ -135,10 +135,10 @@ harness never builds a record by hand.
   a zero-padded counter.
 - **Generations:** a destructive operation writes the session's new state to a new file and
   renames it into place. That is a new inode, so the adapter's stream reader sees a `reset`
-  (S §2), and the consumer tombstones the keys that vanished. Two operations use it, both behind
+  (S §2), and the consumer writes removed versions of the keys that vanished. Two operations use it, both behind
   flags and off by default: `/rewind --destructive`, and `/delete <message>`, a message-level
   delete with its `delete` lifecycle record (M §2.6, shape b). This is the one place a file is
-  rewritten, and it exists to exercise reset and tombstones on purpose.
+  rewritten, and it exists to exercise reset and removed versions on purpose.
 - **The incarnation:** the writer mints a random `incarnation` at `create`, and it is the birth
   marker under `reuse: detected` (M §1, rule 2). A deleted session and a new one under the same id
   therefore differ. The adapter reads it from the first line, in `list` and in `derive`. A line
@@ -511,7 +511,7 @@ contract PR.
    the package before its release, so no extra memhouse reader is written, and R9 depends on
    that switch, not on the release.
 8. **Destructive rewind:** kept, behind a flag, off by default, as the one way to exercise reset
-   and tombstones on purpose. The message-level delete reuses its generation mechanism. Answered
+   and removed versions on purpose. The message-level delete reuses its generation mechanism. Answered
    2026-10-23.
 
 ## 12. Out of scope

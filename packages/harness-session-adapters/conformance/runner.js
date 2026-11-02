@@ -90,8 +90,10 @@ export function fullReplay(adapter, harnessPath) {
 // replay (sessions-model §3: every incremental path folds to the same state), a further pass must
 // read `unchanged` everywhere, and no partial line may ever be returned.
 // `units: 'exact'` holds `units` to the full replay's too: the same source and unit keys, and each
-// triple at the generation the engine holds the source in (its resets may differ from a full
-// replay's). `units: 'valid'` is for an adapter whose units can move while a record's content does
+// triple at the generation the engine holds the source in. The generation is checked against the
+// engine, never against the full replay: it counts the engine's resets of the source, and a fresh
+// replay cannot know how many resets a torn read caused in the growing engine (a snapshot read torn
+// in 30 passes is at generation 31 there, at 1 in the replay). `units: 'valid'` is for an adapter whose units can move while a record's content does
 // not (sessions-model §2.7: a units-only change is not a revision, so the view keeps the triples of
 // the record's last write): the records are compared without them, and every triple must still
 // name a unit the engine holds.

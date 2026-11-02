@@ -74,7 +74,8 @@ export function prepareStore(caseDir, dst) {
 // statements, in `steps` passes, and the final incremental view must equal a full replay; a
 // further pass must read `unchanged` everywhere. Plain files under `store/` are copied whole first.
 // `units` is growthCheck's (conformance/runner.js): 'exact' compares each triple's source and unit
-// keys and checks its generation against the engine's; 'valid' compares records without them.
+// keys and checks its generation against the engine's own reset count, which a fresh replay cannot
+// know; 'valid' compares records without them.
 export function sqlGrowthCheck(adapter, caseDir, { steps = 12, units = 'exact' } = {}) {
   const dir = tmpStore();
   try {

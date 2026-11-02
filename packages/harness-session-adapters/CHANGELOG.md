@@ -9,7 +9,9 @@
 - **sessions-model v1.4 and sessions v1.4: `native` and `units`, the infrastructure** (§2.7). No
   adapter emits either field yet, so no record changes and no `adapter_ver` moves.
   - `seal()` keeps `units` out of `content_sha`, sorts the triples, drops a repeated one, and
-    throws on a malformed one.
+    throws on a malformed one. The strings sort in Unicode code-point order, the byte order of
+    their UTF-8 (sessions-model v1.4.2), not by UTF-16 code units; `validateSession` checks the
+    same order.
   - `nativeOf(nativeRecord, paths)` builds a `native` object from declared paths, leaf values
     only: an object or a list at a declared path is dropped.
   - `validateSession` accepts both fields and checks their shape, a `native` value that is not a
@@ -18,7 +20,7 @@
     fields validate as before.
   - The conformance checklist gains M.native-declared and M.units-input, proved by generic
     checks over every fixture case.
-  - The contract links point at sessions-model v1.4.0.
+  - The contract links point at sessions-model v1.4.2.
 
 ## 1.0.1 (2026-10-29)
 

@@ -39,9 +39,30 @@ export function contentSha(r) {
   return jcsSha(rest);
 }
 
+// Two strings in Unicode code-point order, the byte order of their UTF-8 (sessions-model v1.4.2,
+// §2.7), where `<` compares UTF-16 code units. The orders differ only when a code unit in
+// U+E000–U+FFFF meets a surrogate, which stands for a code point above U+FFFF: shifting the two
+// ranges past each other first makes the code-unit comparison a code-point one.
+const codePointUnit = (u) => (u >= 0xe000 ? u - 0x800 : u >= 0xd800 ? u + 0x2000 : u);
+export function compareCodePoints(a, b) {
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    const x = a.charCodeAt(i);
+    const y = b.charCodeAt(i);
+    if (x !== y) return codePointUnit(x) - codePointUnit(y);
+  }
+  return a.length - b.length;
+}
+
+// Two units triples in the order of sessions-model §2.7: source_key, then generation as a number,
+// then unit_key, the strings in code-point order.
+export function compareUnits(a, b) {
+  return compareCodePoints(a[0], b[0]) || a[1] - b[1] || compareCodePoints(a[2], b[2]);
+}
+
 // A record's `units` (sessions-model §2.7): [source_key, generation, unit_key] triples, sorted by
-// source_key, then generation, then unit_key, with no triple twice. An adapter hands them in any
-// order; seal() puts them in this one. A malformed triple is an adapter bug, and fails loudly.
+// compareUnits, with no triple twice. An adapter hands them in any order; seal() puts them in this
+// one. A malformed triple is an adapter bug, and fails loudly.
 export function normaliseUnits(units) {
   if (!Array.isArray(units)) throw new TypeError(`units must be a list, not ${JSON.stringify(units)}`);
   const seen = new Set();
@@ -56,8 +77,7 @@ export function normaliseUnits(units) {
     seen.add(k);
     out.push(triple);
   }
-  const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
-  return out.sort((a, b) => cmp(a[0], b[0]) || a[1] - b[1] || cmp(a[2], b[2]));
+  return out.sort(compareUnits);
 }
 
 // The declared native fields of a native record (sessions-model §2.7): for each declared dotted

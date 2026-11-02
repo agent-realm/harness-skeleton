@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ADAPTERS } from '../src/index.js';
-import { seal, nativeOf, normaliseUnits } from '../src/records.js';
+import { seal, nativeOf, normaliseUnits, compareCodePoints } from '../src/records.js';
 import { validateSession } from '../src/validate.js';
 import { genericChecks } from '../conformance/generic.js';
 import { tmpStore, copyTree } from '../conformance/runner.js';
@@ -49,6 +49,31 @@ test('native and units: seal keeps units out of content_sha, sorted with no trip
   const [, withNative] = session({ message: { native: { gitBranch: 'main' } } });
   assert.notEqual(withNative.content_sha, plain.content_sha);
   assert.equal(withNative.cmp_sha, plain.cmp_sha);
+});
+
+// sessions-model v1.4.2: the strings of a triple sort in code-point order, the byte order of their
+// UTF-8, where `<` compares UTF-16 code units. U+FF61 is below U+1F600 as a code point, and above
+// its lead surrogate U+D83D as a code unit.
+test('native and units: units strings sort in code-point order, as their UTF-8 bytes do', () => {
+  const bmp = 'chats/\uff61.jsonl';
+  const astral = 'chats/\u{1f600}.jsonl';
+  assert.ok(astral < bmp, 'the pair sorts the other way by UTF-16 code units');
+  assert.deepEqual(normaliseUnits([[astral, 1, '0'], [bmp, 1, '0']]), [[bmp, 1, '0'], [astral, 1, '0']]);
+  assert.deepEqual(normaliseUnits([['s', 1, '\u{1f600}'], ['s', 1, '\uff61']]), [['s', 1, '\uff61'], ['s', 1, '\u{1f600}']]);
+  // generation compares as a number: 10 after 9.
+  assert.deepEqual(normaliseUnits([['s', 10, '0'], ['s', 9, '0']]), [['s', 9, '0'], ['s', 10, '0']]);
+  const sign = (n) => Math.sign(n);
+  const words = ['', 'a', 'ab', 'z', '\u00e9', '\u07ff', '\u0800', '\ud7ff', '\ue000', '\uff61', '\uffff', '\u{10000}', '\u{1f600}', '\u{10ffff}', 'a\u{1f600}', 'a\uffff'];
+  for (const a of words) {
+    for (const b of words) {
+      assert.equal(sign(compareCodePoints(a, b)), sign(Buffer.compare(Buffer.from(a, 'utf8'), Buffer.from(b, 'utf8'))), `${JSON.stringify(a)} vs ${JSON.stringify(b)}`);
+    }
+  }
+  // The validator holds a record to the same order.
+  const [s, m] = session();
+  const problems = (units) => validateSession([s, { ...m, units }]).filter((f) => !f.warning).map((f) => f.problem);
+  assert.deepEqual(problems([[bmp, 1, '0'], [astral, 1, '0']]), []);
+  assert.ok(problems([[astral, 1, '0'], [bmp, 1, '0']]).some((p) => p.startsWith('units is not sorted')));
 });
 
 test('native and units: nativeOf carries the declared paths a record holds, and nothing else', () => {

@@ -8,6 +8,8 @@
 // (`harness`, `ts_source`; `enc` and `position_kind` are unit and source fields, not checked here),
 // so a value this validator does not know is a warning, never a refusal.
 
+import { compareUnits } from './records.js';
+
 const ENUMS = {
   role: ['user', 'assistant', 'system', 'tool'],
   source: ['user', 'model', 'injected', 'hook', 'system_notice', 'steering', 'automated'],
@@ -189,7 +191,8 @@ export function validateSession(records, expect = {}) {
   return out;
 }
 
-// `units` (sessions-model §2.7): distinct [source_key, generation, unit_key] triples, sorted.
+// `units` (sessions-model §2.7): distinct [source_key, generation, unit_key] triples, sorted with
+// the strings in code-point order (v1.4.2).
 function checkUnits(at, units, bad) {
   if (!Array.isArray(units)) return bad(at, `units ${JSON.stringify(units)} is not a list`);
   let prev = null;
@@ -198,7 +201,7 @@ function checkUnits(at, units, bad) {
       return bad(at, `units holds ${JSON.stringify(t)}, not a [source_key, generation, unit_key] triple`);
     }
     if (prev) {
-      const c = prev[0] < t[0] ? -1 : prev[0] > t[0] ? 1 : prev[1] - t[1] || (prev[2] < t[2] ? -1 : prev[2] > t[2] ? 1 : 0);
+      const c = compareUnits(prev, t);
       if (c === 0) return bad(at, `units repeats ${JSON.stringify(t)}`);
       if (c > 0) return bad(at, `units is not sorted at ${JSON.stringify(t)}`);
     }

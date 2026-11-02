@@ -164,7 +164,10 @@ sessions-model §2 lists each record's fields. Where it leaves a JSON shape open
     boolean or null): an object or a list at a declared path is dropped, so no subtree rides along
     on an allowlisted path. Declare each leaf you carry.
   - `units` are `[source_key, generation, unit_key]` triples. `seal()` sorts them, drops a repeated
-    triple, keeps them out of `content_sha`, and throws on a malformed one.
+    triple, keeps them out of `content_sha`, and throws on a malformed one. The strings sort in
+    Unicode code-point order, the byte order of their UTF-8, as SQL stores compare them
+    (sessions-model v1.4.2); `generation` sorts as a number. `compareUnits` in `src/records.js` is
+    that order, and the validator holds records to it.
   - `validateSession(records, {native})` holds `native` keys to the declared paths. Without
     `native` it checks only the shape of both fields, so records without them validate as before.
 - **`describe().redaction.paths`:** `[{source, path, opened}]`.

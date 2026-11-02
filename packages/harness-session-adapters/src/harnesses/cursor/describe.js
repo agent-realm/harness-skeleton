@@ -8,10 +8,10 @@ const DB = 'User/globalStorage/state.vscdb';
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/cursor',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'cursor',
-  state_ver: 1,
+  state_ver: 2,
   // The lab fixture comes from Cursor IDE 3.25.9 rows (scrubbed, ids re-minted); none is certified
   // until conformance runs against a real Cursor.
   versions: { certified: [], compatible: [] },

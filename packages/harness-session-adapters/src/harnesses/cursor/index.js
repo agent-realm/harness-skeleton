@@ -36,7 +36,7 @@ import { sha256, jcs } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'cursor';
-const STATE_VER = 1;
+const STATE_VER = 2;
 export const DB_REL = 'User/globalStorage/state.vscdb';
 // The source keys of one chat.
 export const HEADERS = `${DB_REL}#table:composerHeaders`;
@@ -270,6 +270,11 @@ function emptyState() {
     header: null, // the header row, `value` parsed; null when none
     data: null, // the composerData value, parsed; null when none
     bubbles: {}, // KV key -> the bubble value, parsed
+    // Units (sessions-model §2.7): the header's and the composerData's triples, and each source's
+    // generation (a bubble's unit key is its KV key).
+    header_unit: null,
+    data_unit: null,
+    gen: {},
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -296,6 +301,7 @@ export function derive(session, input, state) {
   for (const src of input) {
     const kind = kindOf(src.source_key, cid);
     const units = src.units ?? [];
+    if (kind) st.gen[src.source_key] = src.generation;
     if (kind === 'bubbles') {
       if (src.complete) st.bubbles = {};
       for (const k of src.gone ?? []) delete st.bubbles[k];
@@ -307,10 +313,17 @@ export function derive(session, input, state) {
       }
     } else if (kind === 'header' || kind === 'data') {
       if (!units.length && !src.complete) continue;
-      const row = snapshotRow(units[units.length - 1]);
+      const u = units[units.length - 1];
+      const row = snapshotRow(u);
       const value = row ? parseJson(row.value) : null;
-      if (kind === 'header') st.header = row ? { ...row, value: isObj(value) ? value : {} } : null;
-      else st.data = isObj(value) ? value : null;
+      const unit = row ? [src.source_key, src.generation, u.unit_key] : null;
+      if (kind === 'header') {
+        st.header = row ? { ...row, value: isObj(value) ? value : {} } : null;
+        st.header_unit = unit;
+      } else {
+        st.data = isObj(value) ? value : null;
+        st.data_unit = st.data ? unit : null;
+      }
     }
   }
 
@@ -529,6 +542,12 @@ function build(st, key) {
   const prefix = `bubbleId:${cid}:`;
   const inline = new Map((Array.isArray(c.conversation) ? c.conversation : []).filter((b) => isObj(b) && b.bubbleId).map((b) => [String(b.bubbleId), b]));
   const bubble = (bid) => st.bubbles[prefix + bid] ?? inline.get(bid) ?? null;
+  // Units (sessions-model §2.7): a bubble's own row, or the composerData that holds it inline. The
+  // composerData also gives every message its order (the header list) and the default model.
+  const bsk = bubblesSource(cid);
+  const dataUnit = st.data_unit ? [st.data_unit] : [];
+  const headerUnit = st.header_unit ? [st.header_unit] : [];
+  const bubbleUnit = (bid) => (st.bubbles[prefix + bid] ? [[bsk, st.gen[bsk], prefix + bid]] : inline.has(bid) ? dataUnit : []);
 
   // Turns: a top-level bubble with the children that follow it in the header list. A bubble the
   // list does not name is not part of the chat (a leftover of an edit, a write ahead of the list).
@@ -571,7 +590,7 @@ function build(st, key) {
     to_user: null, to_model: null, status, state: 'current', on_active_branch: null, ts,
     requested_model: null, served_model: null, effort: null, response_id: null, aliases: [], parts, ...extra,
   });
-  const usageRec = (mid, u, model) => ({ type: 'usage', usage_id: `message:${mid}#1`, anchor: { message_id: mid }, ...u, granularity: 'per_message', model: model || null });
+  const usageRec = (mid, u, model, units) => ({ type: 'usage', usage_id: `message:${mid}#1`, anchor: { message_id: mid }, ...u, granularity: 'per_message', model: model || null, units });
   const hold = (mid) => {
     held.message.push(mid);
     held.usage.push(`message:${mid}#1`);
@@ -590,16 +609,17 @@ function build(st, key) {
       const streaming = isLast && (c.status === 'generating' || generating.has(t.id));
       if ((running && !ended) || streaming) return hold(t.id);
       const model = str(ub.modelId || ub.model || model0);
+      const units = [...bubbleUnit(t.id), ...dataUnit];
       out.push(message(t.id, t.idx, 'assistant', 'model', running ? 'interrupted' : 'complete', isoOf(ms(ub.createdAt)), parts,
-        { served_model: model || null, effort: effortOf(c.modelConfig, model) }));
+        { served_model: model || null, effort: effortOf(c.modelConfig, model), units }));
       const u = usageOf([ub], null);
-      if (u) out.push(usageRec(t.id, u, model));
+      if (u) out.push(usageRec(t.id, u, model, units));
       return undefined;
     }
 
     if (t.hdr) {
       if (!ub) held.message.push(t.id); // listed, not stored yet
-      else out.push(message(t.id, t.idx, 'user', 'user', 'complete', isoOf(ms(ub.createdAt) ?? ms(t.hdr.startedAtMs) ?? ms(ub.startedAtMs)), userParts(ub)));
+      else out.push(message(t.id, t.idx, 'user', 'user', 'complete', isoOf(ms(ub.createdAt) ?? ms(t.hdr.startedAtMs) ?? ms(ub.startedAtMs)), userParts(ub), { units: [...bubbleUnit(t.id), ...dataUnit] }));
     }
     if (!t.children.length) return undefined;
 
@@ -623,12 +643,19 @@ function build(st, key) {
     if (childBubbles.some((b) => !b) || streaming || (running && isLast)) return hold(mid);
     if (!parts.length) return undefined;
     const last = parts[parts.length - 1];
-    const model = str((ub && isObj(ub.modelInfo) && ub.modelInfo.modelName) || model0);
+    const fromUser = !!(ub && isObj(ub.modelInfo) && ub.modelInfo.modelName);
+    const model = str((fromUser && ub.modelInfo.modelName) || model0);
+    // The reply's bubbles, the composerData (order, effort, the default model), and the user bubble
+    // when its model is the reply's.
+    const children = t.children.flatMap((ch) => bubbleUnit(ch.bid));
+    const modelUnit = fromUser ? bubbleUnit(t.id) : [];
     out.push(message(mid, t.children[0].idx, 'assistant', 'model',
       running ? 'interrupted' : last.kind === 'tool_result' && last.status === 'cancelled' ? 'cancelled' : 'complete',
-      isoOf(first), parts, { parent_id: t.hdr ? t.id : null, served_model: model || null, effort: effortOf(c.modelConfig, model) }));
+      isoOf(first), parts, { parent_id: t.hdr ? t.id : null, served_model: model || null, effort: effortOf(c.modelConfig, model), units: [...children, ...dataUnit, ...modelUnit] }));
     const u = usageOf(childBubbles, ub);
-    if (u) out.push(usageRec(mid, u, model));
+    // The counts are the reply's bubbles', else the user bubble's (usageOf).
+    const counted = usageOf(childBubbles, null) ? children : bubbleUnit(t.id);
+    if (u) out.push(usageRec(mid, u, model, [...counted, ...(fromUser ? modelUnit : dataUnit)]));
     return undefined;
   });
 
@@ -636,7 +663,7 @@ function build(st, key) {
   // on the header unit; clearing the flag drops it (unarchive is implicit).
   const archived = (hrow && Number(hrow.isArchived) === 1) || hv.isArchived === true;
   if (archived) {
-    out.push({ type: 'lifecycle', lifecycle_id: `${HEADERS}@${HEADERS}#1`, op: 'archive', target: { session: true }, at: null, ts: null, evidence: 'explicit' });
+    out.push({ type: 'lifecycle', lifecycle_id: `${HEADERS}@${HEADERS}#1`, op: 'archive', target: { session: true }, at: null, ts: null, evidence: 'explicit', units: headerUnit });
   }
 
   // Sub-agents: the chat names the composers it started (origin side). No call is named, and a
@@ -647,11 +674,20 @@ function build(st, key) {
     if (id && !children.includes(id)) children.push(id);
   }
   for (const ch of children) {
-    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: ch }, origin: self, at: '', inherits: null, child_stored: null, evidence: 'explicit' });
+    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: ch }, origin: self, at: '', inherits: null, child_stored: null, evidence: 'explicit', units: dataUnit });
   }
 
   const title = str(c.name ?? hv.name);
   const created = (hrow ? ms(hrow.createdAt) : null) ?? ms(c.createdAt) ?? ms(hv.createdAt);
+  // The session's units: the row each of its fields came from.
+  const sessionUnits = [];
+  if (title) sessionUnits.push(...(c.name != null ? dataUnit : headerUnit));
+  if (created != null) sessionUnits.push(...((hrow && ms(hrow.createdAt) != null) || ms(c.createdAt) == null ? headerUnit : dataUnit));
+  if (wsPath(hv.workspaceIdentifier)) sessionUnits.push(...headerUnit);
+  else if (wsPath(c.workspaceIdentifier)) sessionUnits.push(...dataUnit);
+  if (archived) sessionUnits.push(...headerUnit);
+  if (str(c.unifiedMode)) sessionUnits.push(...dataUnit);
+  else if (str(hv.unifiedMode)) sessionUnits.push(...headerUnit);
   out.push({
     type: 'session',
     engine: null,
@@ -674,6 +710,7 @@ function build(st, key) {
     reuse: 'impossible',
     ts_source: 'event',
     aliases: [],
+    units: sessionUnits,
   });
   return { out, held };
 }

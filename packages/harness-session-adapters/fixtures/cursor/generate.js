@@ -354,5 +354,26 @@ function features() {
   write('features', s);
 }
 
+// ---- resume -----------------------------------------------------------------------------------
+
+// A chat reopened in a later launch (sessions-model §2.7 units): the second launch writes the
+// second turn's bubbles and rewrites composerData with both turns in ask mode. The header and
+// composerData are snapshots, so their triples name their slots in both launches while the mode
+// moves; the second turn's messages name its new bubble rows. The resume test (test/cursor.test.js)
+// builds the store with the first launch's statements: the header, composerData and six bubbles.
+function resume() {
+  const s = new Store();
+  const cid = CID(9);
+  const { t1 } = turns(T0 + 2000000);
+  const t = T0 + 2000000 + 86400000;
+  const t2 = [userBubble(U(2), t, 'And in toyshop?'), say(U(2), 0, t + 2000, 'One file.', { turnDurationMs: 2000 })];
+  chat(s, cid, t1, { at: T0 + 2000000 - 1600 });
+  // The second launch.
+  for (const b of t2) s.kv(`bubbleId:${cid}:${b.bubbleId}`, b, { blob: true });
+  s.kv(`composerData:${cid}`, composerData(cid, [...t1, ...t2], { createdAt: T0 + 2000000 - 1600, unifiedMode: 'ask' }));
+  write('resume', s);
+}
+
 lab();
 features();
+resume();

@@ -29,7 +29,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -98,7 +110,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -129,7 +178,19 @@
           "text": "Run the tests."
         }
       ],
-      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -196,7 +257,39 @@
           "text": "pytest is not installed."
         }
       ],
-      "cmp_sha": "219a6f927ed185d7074a75835a6de43a7ffffc4f72779068a1cc26f33d8d17dd"
+      "cmp_sha": "219a6f927ed185d7074a75835a6de43a7ffffc4f72779068a1cc26f33d8d17dd",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b002-0000-4000-8000-000000000002/t:call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -227,7 +320,19 @@
           "text": "Run: for i in $(seq 1 90); do echo tick $i; sleep 1; done"
         }
       ],
-      "cmp_sha": "b8bf0bce3d718a99d1dadebe675b91b1e42604ffc7e482170aff6caf2eefdfcb"
+      "cmp_sha": "b8bf0bce3d718a99d1dadebe675b91b1e42604ffc7e482170aff6caf2eefdfcb",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b003-0000-4000-8000-000000000003"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -288,7 +393,34 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "a78d10548a752cf6c81fb4f547d552aa7ce8403aaa6931f7546ba35d63ee733d"
+      "cmp_sha": "a78d10548a752cf6c81fb4f547d552aa7ce8403aaa6931f7546ba35d63ee733d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b003-0000-4000-8000-000000000003"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b003-0000-4000-8000-000000000003/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b003-0000-4000-8000-000000000003/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a001-0000-4000-8000-000000000001:",
+          1,
+          "bubbleId:c0c0a001-0000-4000-8000-000000000001:b0b0b003-0000-4000-8000-000000000003/t:call-ca11ca03-0000-4000-8000-000000000003-13\nfc_fc0fc003-0000-4000-8000-000000000003_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -321,7 +453,19 @@
           "a78d10548a752cf6c81fb4f547d552aa7ce8403aaa6931f7546ba35d63ee733d"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a001-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a002-0000-4000-8000-000000000002": [
@@ -354,7 +498,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -423,7 +579,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -454,7 +647,19 @@
           "text": "Run the tests with unittest instead."
         }
       ],
-      "cmp_sha": "490798a60434112667ac4836db889633f5854d8e78ed6c0ebe5d2306e48049a5"
+      "cmp_sha": "490798a60434112667ac4836db889633f5854d8e78ed6c0ebe5d2306e48049a5",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -491,7 +696,29 @@
           "text": "Ran unittest: 3 tests OK."
         }
       ],
-      "cmp_sha": "8efe8aebd0edf8638065df187a2155f149236cc666a625965c5d3ddb77bf952e"
+      "cmp_sha": "8efe8aebd0edf8638065df187a2155f149236cc666a625965c5d3ddb77bf952e",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:b0b0b002-0000-4000-8000-000000000002/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a002-0000-4000-8000-000000000002:",
+          1,
+          "bubbleId:c0c0a002-0000-4000-8000-000000000002:b0b0b002-0000-4000-8000-000000000002/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -522,7 +749,19 @@
           "8efe8aebd0edf8638065df187a2155f149236cc666a625965c5d3ddb77bf952e"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a003-0000-4000-8000-000000000003": [
@@ -538,7 +777,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -569,7 +815,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -638,7 +896,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a003-0000-4000-8000-000000000003:",
+          1,
+          "bubbleId:c0c0a003-0000-4000-8000-000000000003:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -667,7 +962,19 @@
           "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a003-0000-4000-8000-000000000003"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a004-0000-4000-8000-000000000004": [
@@ -689,7 +996,14 @@
       "at": "",
       "inherits": null,
       "child_stored": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004"
+        ]
+      ]
     },
     {
       "type": "link",
@@ -709,7 +1023,14 @@
       "at": "",
       "inherits": null,
       "child_stored": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -740,7 +1061,19 @@
           "text": "Explore toyshop/ with a sub-agent."
         }
       ],
-      "cmp_sha": "115944935b642ead014ce932ad61b72439377d9e9ada4a1a576bec176c013fdf"
+      "cmp_sha": "115944935b642ead014ce932ad61b72439377d9e9ada4a1a576bec176c013fdf",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a004-0000-4000-8000-000000000004:",
+          1,
+          "bubbleId:c0c0a004-0000-4000-8000-000000000004:b0b0b041-0000-4000-8000-000000000041"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -771,7 +1104,24 @@
           "text": "The explorer found cart.py and tests/."
         }
       ],
-      "cmp_sha": "abcd723a6c743c19921c1cf6b86ec528a36eaaa3d0e0ccc1249646966ff0980e"
+      "cmp_sha": "abcd723a6c743c19921c1cf6b86ec528a36eaaa3d0e0ccc1249646966ff0980e",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a004-0000-4000-8000-000000000004:",
+          1,
+          "bubbleId:c0c0a004-0000-4000-8000-000000000004:b0b0b041-0000-4000-8000-000000000041"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a004-0000-4000-8000-000000000004:",
+          1,
+          "bubbleId:c0c0a004-0000-4000-8000-000000000004:b0b0b041-0000-4000-8000-000000000041/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -800,7 +1150,19 @@
           "abcd723a6c743c19921c1cf6b86ec528a36eaaa3d0e0ccc1249646966ff0980e"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a004-0000-4000-8000-000000000004"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a005-0000-4000-8000-000000000005": [
@@ -833,7 +1195,19 @@
           "text": "List the files in toyshop/."
         }
       ],
-      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e"
+      "cmp_sha": "81ff633db094fdeaaa8b14c6c7558710962d158b606cf97f3d9ffa91f981be9e",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a005-0000-4000-8000-000000000005:",
+          1,
+          "bubbleId:c0c0a005-0000-4000-8000-000000000005:b0b0b051-0000-4000-8000-000000000051"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -864,7 +1238,24 @@
           "text": "cart.py, __init__.py"
         }
       ],
-      "cmp_sha": "b1833d66e8a69def48458ac1495d00f78411160faeb12b9c0abecd15b6d509de"
+      "cmp_sha": "b1833d66e8a69def48458ac1495d00f78411160faeb12b9c0abecd15b6d509de",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a005-0000-4000-8000-000000000005:",
+          1,
+          "bubbleId:c0c0a005-0000-4000-8000-000000000005:b0b0b051-0000-4000-8000-000000000051"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a005-0000-4000-8000-000000000005:",
+          1,
+          "bubbleId:c0c0a005-0000-4000-8000-000000000005:b0b0b051-0000-4000-8000-000000000051/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -893,7 +1284,19 @@
           "b1833d66e8a69def48458ac1495d00f78411160faeb12b9c0abecd15b6d509de"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a005-0000-4000-8000-000000000005"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a006-0000-4000-8000-000000000006": [
@@ -932,7 +1335,14 @@
           "text": "Fixed qty."
         }
       ],
-      "cmp_sha": "b54e8a4e3e62309e8ac63364be046387304efd0fd5f9eb076e7121ccbfd235bc"
+      "cmp_sha": "b54e8a4e3e62309e8ac63364be046387304efd0fd5f9eb076e7121ccbfd235bc",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -963,7 +1373,14 @@
           "text": "Fix qty."
         }
       ],
-      "cmp_sha": "4094cea400377b9cb4f29fd7b8e2f3ff75e300a57ac8e6ca6343284c72e0352d"
+      "cmp_sha": "4094cea400377b9cb4f29fd7b8e2f3ff75e300a57ac8e6ca6343284c72e0352d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -992,7 +1409,19 @@
           "b54e8a4e3e62309e8ac63364be046387304efd0fd5f9eb076e7121ccbfd235bc"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1013,7 +1442,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_message",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a006-0000-4000-8000-000000000006"
+        ]
+      ]
     }
   ],
   "c0c0a007-0000-4000-8000-000000000007": [
@@ -1054,7 +1490,19 @@
           "bytes_len": null
         }
       ],
-      "cmp_sha": "d1a1e17be193f61b7f219a55022d1a2da2700ebbf8d83b8eced98e98f0aaac87"
+      "cmp_sha": "d1a1e17be193f61b7f219a55022d1a2da2700ebbf8d83b8eced98e98f0aaac87",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1112,7 +1560,34 @@
           "text": "A price label reading 2.50."
         }
       ],
-      "cmp_sha": "9d9ceb673cdd9b9c24e7c0e6c6e094f81dfe3dbcb44b49b58e18b25082b38910"
+      "cmp_sha": "9d9ceb673cdd9b9c24e7c0e6c6e094f81dfe3dbcb44b49b58e18b25082b38910",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/s:2"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/t:call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1143,7 +1618,19 @@
           "text": "And the price?"
         }
       ],
-      "cmp_sha": "b0bfeecc25099214656f50762911ba6646f8a71661790975ca49c449ed893b47"
+      "cmp_sha": "b0bfeecc25099214656f50762911ba6646f8a71661790975ca49c449ed893b47",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b072-0000-4000-8000-000000000072"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1174,7 +1661,24 @@
           "text": "2.50."
         }
       ],
-      "cmp_sha": "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5"
+      "cmp_sha": "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b072-0000-4000-8000-000000000072"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b072-0000-4000-8000-000000000072/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1205,7 +1709,19 @@
           "8cb041ed328a4cac81ab582bc78a664b98431b66af43a0c56fe3fe123c705bf5"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a007-0000-4000-8000-000000000007"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1226,7 +1742,29 @@
       "output_includes_reasoning": null,
       "granularity": "per_message",
       "model": "grok-4.6",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/s:2"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a007-0000-4000-8000-000000000007:",
+          1,
+          "bubbleId:c0c0a007-0000-4000-8000-000000000007:b0b0b071-0000-4000-8000-000000000071/t:call-ca11ca07-0000-4000-8000-000000000007-0\nfc_fc0fc007-0000-4000-8000-000000000007_0"
+        ]
+      ]
     }
   ],
   "c0c0a008-0000-4000-8000-000000000008": [
@@ -1259,7 +1797,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1328,7 +1878,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1359,7 +1946,19 @@
           "text": "Run the tests."
         }
       ],
-      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a008-0000-4000-8000-000000000008:",
+          1,
+          "bubbleId:c0c0a008-0000-4000-8000-000000000008:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1389,7 +1988,19 @@
           "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a008-0000-4000-8000-000000000008"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a009-0000-4000-8000-000000000009": [
@@ -1422,7 +2033,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1491,7 +2114,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1522,7 +2182,19 @@
           "text": "Run the tests."
         }
       ],
-      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1552,7 +2224,19 @@
           "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a010-0000-4000-8000-000000000010": [
@@ -1585,7 +2269,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1654,7 +2350,44 @@
           "text": "total_cents sums price * qty over the items."
         }
       ],
-      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d"
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1685,7 +2418,19 @@
           "text": "Run the tests."
         }
       ],
-      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12"
+      "cmp_sha": "d0423600edd5209d737e5c22eea6b3b1ca8930a72a310f559be6ba685b92eb12",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1732,7 +2477,34 @@
           "server": null
         }
       ],
-      "cmp_sha": "a3428ecab2fe4dc4741290e719b3f0ccb8b13932b52dbd69340ace14e23824d4"
+      "cmp_sha": "a3428ecab2fe4dc4741290e719b3f0ccb8b13932b52dbd69340ace14e23824d4",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b002-0000-4000-8000-000000000002/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b002-0000-4000-8000-000000000002/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b002-0000-4000-8000-000000000002/t:call-ca11ca02-0000-4000-8000-000000000002-1\nfc_fc0fc002-0000-4000-8000-000000000002_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1763,7 +2535,19 @@
           "text": "Never mind."
         }
       ],
-      "cmp_sha": "03dcffbb5d20a6ee465760d19344e67747122de63041dedb1442284f908cd860"
+      "cmp_sha": "03dcffbb5d20a6ee465760d19344e67747122de63041dedb1442284f908cd860",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a010-0000-4000-8000-000000000010:",
+          1,
+          "bubbleId:c0c0a010-0000-4000-8000-000000000010:b0b0b003-0000-4000-8000-000000000003"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1795,7 +2579,19 @@
           "03dcffbb5d20a6ee465760d19344e67747122de63041dedb1442284f908cd860"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a010-0000-4000-8000-000000000010"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a011-0000-4000-8000-000000000011": [
@@ -1823,7 +2619,14 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "c0c0a012-0000-4000-8000-000000000012": [
@@ -1856,7 +2659,19 @@
           "text": "What does total_cents do in cart.py?"
         }
       ],
-      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a012-0000-4000-8000-000000000012:",
+          1,
+          "bubbleId:c0c0a012-0000-4000-8000-000000000012:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a012-0000-4000-8000-000000000012",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a012-0000-4000-8000-000000000012"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1884,7 +2699,19 @@
           "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a012-0000-4000-8000-000000000012",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a012-0000-4000-8000-000000000012"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ]
 }

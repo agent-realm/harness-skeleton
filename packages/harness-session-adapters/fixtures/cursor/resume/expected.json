@@ -1,0 +1,287 @@
+{
+  "c0c0a009-0000-4000-8000-000000000009": [
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T13:06:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "What does total_cents do in cart.py?"
+        }
+      ],
+      "cmp_sha": "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "1508332b-0000-4000-8000-000000000001:assistant",
+      "parent_id": "1508332b-0000-4000-8000-000000000001",
+      "order": "00000001",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-20T13:06:16.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "reasoning",
+          "text": "Read cart.py first.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:1",
+          "kind": "text",
+          "text": "Reading cart.py."
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:call",
+          "kind": "tool_call",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "name": "read_file_v2",
+          "args": {
+            "path": "/home/user/work/toyshop/toyshop/cart.py"
+          },
+          "server": null
+        },
+        {
+          "part_id": "t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0:result",
+          "kind": "tool_result",
+          "call_id": "call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0",
+          "is_error": false,
+          "status": "completed",
+          "output": "{\"totalLinesInFile\":8}",
+          "output_len": 22,
+          "truncated": null,
+          "exit_code": null
+        },
+        {
+          "part_id": "s:3",
+          "kind": "reasoning",
+          "text": "It sums price times qty.",
+          "signature_len": null
+        },
+        {
+          "part_id": "s:4",
+          "kind": "text",
+          "text": "total_cents sums price * qty over the items."
+        }
+      ],
+      "cmp_sha": "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:3"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/s:4"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:1508332b-0000-4000-8000-000000000001/t:call-fc053ac5-0000-4000-8000-000000000001-0\nfc_fc0fc001-0000-4000-8000-000000000001_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002",
+      "parent_id": null,
+      "order": "00000006",
+      "agent_id": "",
+      "role": "user",
+      "source": "user",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:06:14.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in toyshop?"
+        }
+      ],
+      "cmp_sha": "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "message_id": "b0b0b002-0000-4000-8000-000000000002:assistant",
+      "parent_id": "b0b0b002-0000-4000-8000-000000000002",
+      "order": "00000007",
+      "agent_id": "",
+      "role": "assistant",
+      "source": "model",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-21T13:06:16.000Z",
+      "requested_model": null,
+      "served_model": "grok-4.6",
+      "effort": "medium",
+      "response_id": null,
+      "aliases": [],
+      "parts": [
+        {
+          "part_id": "s:0",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "cmp_sha": "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:b0b0b002-0000-4000-8000-000000000002"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:c0c0a009-0000-4000-8000-000000000009:",
+          1,
+          "bubbleId:c0c0a009-0000-4000-8000-000000000009:b0b0b002-0000-4000-8000-000000000002/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "cursor",
+      "session_id": "c0c0a009-0000-4000-8000-000000000009",
+      "incarnation": "",
+      "engine": null,
+      "client": "cursor",
+      "harness_version": null,
+      "title": "Toy cart qty fix",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-20T13:06:12.400Z",
+      "updated_at": null,
+      "state": "active",
+      "pinned": null,
+      "mode": "ask",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "0de1f3efb0ace7b5a5c30f66306a6b1c05df0aec24bc906dd6ea6056358ee816",
+          "2f8beb00ec2f7e593806d2fdfe82500c187d325cd1d9f054cb87bf88b7675a5d",
+          "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+          "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:c0c0a009-0000-4000-8000-000000000009"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
+    }
+  ]
+}

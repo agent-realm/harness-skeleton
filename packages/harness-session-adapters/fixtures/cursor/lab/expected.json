@@ -24,7 +24,14 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "5a5a0007-0007-4000-8000-000000000007": [
@@ -52,7 +59,14 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "5a5a0009-0009-4000-8000-000000000009": [
@@ -198,7 +212,34 @@
           "exit_code": 1
         }
       ],
-      "cmp_sha": "b8131fac0d2c0c362a76c383e3e181a3ed4771b8788def96a55e8ebc0d170652"
+      "cmp_sha": "b8131fac0d2c0c362a76c383e3e181a3ed4771b8788def96a55e8ebc0d170652",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0012-0012-4000-8000-000000000012/t:call-5a5a0015-0015-4000-8000-000000000015-4\nfc_5a5a0016-0016-4000-8000-000000000016_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0012-0012-4000-8000-000000000012/t:call-5a5a0015-0015-4000-8000-000000000015-5\nfc_5a5a0016-0016-4000-8000-000000000016_1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0012-0012-4000-8000-000000000012/t:call-5a5a0017-0017-4000-8000-000000000017-6\nfc_5a5a0018-0018-4000-8000-000000000018_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0012-0012-4000-8000-000000000012/t:call-5a5a0019-0019-4000-8000-000000000019-9\nfc_5a5a001a-001a-4000-8000-00000000001a_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -229,7 +270,19 @@
           "text": "Run this exact command in the terminal and wait for it: for i in $(seq 1 90); do echo tick $i; sleep 1; done"
         }
       ],
-      "cmp_sha": "b55e435e245af87f7f969cc156b5ba75268f695d8e2ed114651bcab50c060f97"
+      "cmp_sha": "b55e435e245af87f7f969cc156b5ba75268f695d8e2ed114651bcab50c060f97",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0029-0029-4000-8000-000000000029"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -333,7 +386,34 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "3aab9a524dfa35eeb06a76eecd2f4cf6cf842122e9390b48c7eb2030d1d05b1e"
+      "cmp_sha": "3aab9a524dfa35eeb06a76eecd2f4cf6cf842122e9390b48c7eb2030d1d05b1e",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0029-0029-4000-8000-000000000029"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0029-0029-4000-8000-000000000029/s:0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0029-0029-4000-8000-000000000029/s:1"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:bubbleId:5a5a0009-0009-4000-8000-000000000009:",
+          1,
+          "bubbleId:5a5a0009-0009-4000-8000-000000000009:5a5a0029-0029-4000-8000-000000000029/t:call-5a5a002d-002d-4000-8000-00000000002d-13\nfc_5a5a002e-002e-4000-8000-00000000002e_0"
+        ],
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -363,7 +443,19 @@
           "3aab9a524dfa35eeb06a76eecd2f4cf6cf842122e9390b48c7eb2030d1d05b1e"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a0009-0009-4000-8000-000000000009"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "5a5a000b-000b-4000-8000-00000000000b": [
@@ -391,7 +483,14 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "5a5a000e-000e-4000-8000-00000000000e": [
@@ -419,7 +518,19 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a000e-000e-4000-8000-00000000000e",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:5a5a000e-000e-4000-8000-00000000000e"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "empty-state-draft": [
@@ -435,7 +546,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -461,7 +579,14 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ],
   "f01e1200-000d-4000-8000-00000000000d": [
@@ -477,7 +602,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -503,7 +635,19 @@
       "fingerprint": {
         "cmp_shas": []
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/state.vscdb#kv:composerData:f01e1200-000d-4000-8000-00000000000d",
+          1,
+          "User/globalStorage/state.vscdb#kv:composerData:f01e1200-000d-4000-8000-00000000000d"
+        ],
+        [
+          "User/globalStorage/state.vscdb#table:composerHeaders",
+          1,
+          "User/globalStorage/state.vscdb#table:composerHeaders"
+        ]
+      ]
     }
   ]
 }

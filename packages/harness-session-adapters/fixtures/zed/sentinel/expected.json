@@ -29,7 +29,14 @@
           "text": "Remember this value for later: sentinel-0a1b2c3d4e5f-not-a-secret"
         }
       ],
-      "cmp_sha": "14ff92a50a7d8c5ac389d26900044a55e327f6d8c56e9035b7a234296df1c147"
+      "cmp_sha": "14ff92a50a7d8c5ac389d26900044a55e327f6d8c56e9035b7a234296df1c147",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -60,7 +67,14 @@
           "text": "Noted."
         }
       ],
-      "cmp_sha": "f289401392d06f79cb26e7dad0c45abde6a6530a73ab0946b9b336f7ba1707f2"
+      "cmp_sha": "f289401392d06f79cb26e7dad0c45abde6a6530a73ab0946b9b336f7ba1707f2",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -83,13 +97,27 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "14ff92a50a7d8c5ac389d26900044a55e327f6d8c56e9035b7a234296df1c147",
           "f289401392d06f79cb26e7dad0c45abde6a6530a73ab0946b9b336f7ba1707f2"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ]
 }

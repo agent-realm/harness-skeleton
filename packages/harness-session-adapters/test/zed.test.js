@@ -10,7 +10,7 @@ import { MAIN, THREADS_REL, sidebarKey, sidebarRel } from '../src/harnesses/zed/
 import { sha256 } from '../src/jcs.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   CASES as GENERATED, LAB, T, U, C, R, S, SENTINEL,
   heldThread, cartThread, childThread, thread, user, agent, use, res, restoreLabCapture, restoreThread,
@@ -18,7 +18,7 @@ import {
 
 const adapter = adapterFor('zed');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'zed');
-const CASES = ['lab', 'features', 'restore', 'restore-lab', 'sentinel'];
+const CASES = ['lab', 'features', 'restore', 'restore-lab', 'sentinel', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const STABLE = sidebarKey('0-stable');
 const PREVIEW = sidebarKey('0-preview');
@@ -888,4 +888,23 @@ test('zed fixtures: the decoded blobs leak nothing a real machine would, and car
     }
   }
   assert.deepEqual(bad, []);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a thread reopened in a later launch.
+// The thread row is a snapshot, so its triple names the slot in both launches while the fields it
+// gives move (mode, the second turn). The archive comes from the sidebar row, which joins the
+// session's units with the `state` it gives.
+test('zed: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = '5a1e0000-0000-4000-8000-0000000000e1';
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [THREADS_REL]: 1, [sidebarRel('0-stable')]: 0 });
+  const [b, a] = [r.before[sid], r.after[sid]];
+  const thread = [MAIN, 1, MAIN];
+  assert.deepEqual([b.mode, b.state, b.units], ['write', 'active', [thread]]);
+  const side = sidebarKey('0-stable');
+  assert.deepEqual([a.mode, a.state, a.units], ['ask', 'archived', [[side, 1, side], thread]]);
+  // The second turn's messages name the thread row too.
+  const later = r.last[sid].filter((m) => m.type === 'message' && m.message_id.startsWith('5a1e0000-0000-4000-8000-0000000000e3'));
+  assert.equal(later.length, 2);
+  for (const m of later) assert.deepEqual(m.units, [thread]);
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

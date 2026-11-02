@@ -1,0 +1,227 @@
+{
+  "5a1e0000-0000-4000-8000-0000000000e1": [
+    {
+      "type": "lifecycle",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "lifecycle_id": "db/0-stable/db.sqlite#table:sidebar_threads@db/0-stable/db.sqlite#table:sidebar_threads#1",
+      "op": "archive",
+      "target": {
+        "session": true
+      },
+      "at": null,
+      "ts": null,
+      "evidence": "explicit",
+      "units": [
+        [
+          "db/0-stable/db.sqlite#table:sidebar_threads",
+          1,
+          "db/0-stable/db.sqlite#table:sidebar_threads"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e2",
+      "parent_id": null,
+      "order": "00000000",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e2+1",
+      "parent_id": null,
+      "order": "00000001",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e3",
+      "parent_id": null,
+      "order": "00000002",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in toyshop?"
+        }
+      ],
+      "cmp_sha": "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "message_id": "5a1e0000-0000-4000-8000-0000000000e3+1",
+      "parent_id": null,
+      "order": "00000003",
+      "agent_id": "",
+      "to_user": true,
+      "to_model": true,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": null,
+      "requested_model": "gateway/toy-model-a",
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "cmp_sha": "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "zed",
+      "session_id": "5a1e0000-0000-4000-8000-0000000000e1",
+      "incarnation": "",
+      "engine": null,
+      "client": "zed",
+      "harness_version": null,
+      "title": "Count the files",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-21T09:00:00.123Z",
+      "updated_at": null,
+      "state": "archived",
+      "pinned": null,
+      "mode": "ask",
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "none",
+      "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
+      "fingerprint": {
+        "cmp_shas": [
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+          "fe7aec9e9a68fb97ad3af714c60a1029dd2b0de0bd0a89b181f35e7f25d57474",
+          "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "db/0-stable/db.sqlite#table:sidebar_threads",
+          1,
+          "db/0-stable/db.sqlite#table:sidebar_threads"
+        ],
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
+    }
+  ]
+}

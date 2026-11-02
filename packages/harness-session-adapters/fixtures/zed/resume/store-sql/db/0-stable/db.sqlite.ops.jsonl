@@ -1,0 +1,1 @@
+{"sql":"INSERT INTO sidebar_threads (thread_id, session_id, agent_id, title, updated_at, created_at, folder_paths, folder_paths_order, archived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)","params":[{"$b64":"Wh4AAAAAQACAAAAAAAAAAQ=="},"5a1e0000-0000-4000-8000-0000000000e1",null,"Count the files","2026-10-21T09:40:00Z","2026-10-21T09:00:00Z","/home/user/work/toyshop","0",1]}

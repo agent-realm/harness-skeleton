@@ -29,7 +29,14 @@
           "text": "Add a test instead: create test_cart.py with a unittest for cart_total. Do not run anything."
         }
       ],
-      "cmp_sha": "8456145692a5ec159472a1b6e071a2d5e1d62590321f5e53fda4dc005f56ff65"
+      "cmp_sha": "8456145692a5ec159472a1b6e071a2d5e1d62590321f5e53fda4dc005f56ff65",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -102,7 +109,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "7378a534eb21a1f16f46cdd333f1120b9d098d0d6a72c73e6179095026331b95"
+      "cmp_sha": "7378a534eb21a1f16f46cdd333f1120b9d098d0d6a72c73e6179095026331b95",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -155,7 +169,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "666f7d45a40b5c6798402d0aded78df1fbab46784efb2a9aebc296dbe1adf4df"
+      "cmp_sha": "666f7d45a40b5c6798402d0aded78df1fbab46784efb2a9aebc296dbe1adf4df",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -186,7 +207,14 @@
           "text": "Synthetic reply de9fcc. synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthetic reply text for the toy shop fixture synthet"
         }
       ],
-      "cmp_sha": "36fa2e78fb6c37f8240879f73c1f37ddd51b2053bf32f6670560411d26c8ff74"
+      "cmp_sha": "36fa2e78fb6c37f8240879f73c1f37ddd51b2053bf32f6670560411d26c8ff74",
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -209,6 +237,13 @@
       "reuse": "impossible",
       "ts_source": "none",
       "aliases": [],
+      "native": {
+        "data.version": "0.3.0",
+        "data.thinking_enabled": false,
+        "data.sandbox_grants.allow_fs_write_all": false,
+        "data.sandbox_grants.network_any_host": false,
+        "data.sandbox_grants.unsandboxed": false
+      },
       "fingerprint": {
         "cmp_shas": [
           "8456145692a5ec159472a1b6e071a2d5e1d62590321f5e53fda4dc005f56ff65",
@@ -217,7 +252,14 @@
           "36fa2e78fb6c37f8240879f73c1f37ddd51b2053bf32f6670560411d26c8ff74"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -238,7 +280,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_session",
       "model": null,
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "threads/threads.db#table:threads",
+          1,
+          "threads/threads.db#table:threads"
+        ]
+      ]
     }
   ]
 }

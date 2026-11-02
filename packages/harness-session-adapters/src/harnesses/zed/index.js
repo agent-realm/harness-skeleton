@@ -31,12 +31,12 @@ import zlib from 'node:zlib';
 import { SessionsError } from '../../errors.js';
 import { isRealFile, makeUnit, jsonOf } from '../../sources.js';
 import { openReadOnly, withRead, hasTable, readRowsSnapshot, textOf } from '../../sqlite.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256, jcs } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'zed';
-const STATE_VER = 1;
+const STATE_VER = 2;
 export const THREADS_REL = 'threads/threads.db';
 export const MAIN = `${THREADS_REL}#table:threads`;
 export const sidebarRel = (channel) => `db/${channel}/db.sqlite`;
@@ -291,7 +291,9 @@ function emptyState() {
   return {
     state_ver: STATE_VER,
     thread: null, // the threads unit: the row, `data` decoded
+    thread_unit: null, // its units triple
     sidebar: {}, // source_key -> {sidebar_threads: [rows]}
+    sidebar_units: {}, // source_key -> its units triple
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -314,10 +316,19 @@ export function derive(session, input, state) {
       value = isObj(o) ? o : null;
     } else if (src.complete) value = null;
     else continue;
+    const unit = value ? [src.source_key, src.generation, units[units.length - 1].unit_key] : null;
     if (sidebar) {
-      if (value) st.sidebar[src.source_key] = value;
-      else delete st.sidebar[src.source_key];
-    } else st.thread = value;
+      if (value) {
+        st.sidebar[src.source_key] = value;
+        st.sidebar_units[src.source_key] = unit;
+      } else {
+        delete st.sidebar[src.source_key];
+        delete st.sidebar_units[src.source_key];
+      }
+    } else {
+      st.thread = value;
+      st.thread_unit = unit;
+    }
   }
 
   const { out, held } = build(st, key);
@@ -553,12 +564,14 @@ function firstFolder(row, thread) {
 // ---- the fold: records --------------------------------------------------------------------------
 
 // Every record of the thread, and the keys held as incomplete. Messages in array order; the
-// session record last.
+// session record last. Each record comes from the thread row's one unit (sessions-model §2.7), but
+// an archive record, which comes from its sidebar row.
 function build(st, key) {
   const out = [];
   const held = noHeld();
   const row = st.thread;
   if (!isObj(row)) return { out, held };
+  const units = [st.thread_unit];
   const t = isObj(row.data) ? row.data : { messages: [] };
   const msgs = Array.isArray(t.messages) ? t.messages : [];
   const sid = key.session_id;
@@ -575,7 +588,7 @@ function build(st, key) {
   const message = (id, i, fields) => ({
     type: 'message', message_id: id, parent_id: null, order: pad(i), agent_id: '', to_user: true, to_model: true,
     status: 'complete', state: 'current', on_active_branch: null, ts: null, requested_model: null, served_model: null,
-    effort: null, response_id: null, aliases: [], ...fields,
+    effort: null, response_id: null, aliases: [], units, ...fields,
   });
 
   let anchor = sid; // before any User message, the thread id anchors (memhouse)
@@ -627,7 +640,7 @@ function build(st, key) {
       lifecycle = {
         type: 'lifecycle', lifecycle_id: `${MAIN}@${MAIN}#${++lc}`, op: 'compaction',
         target: firstId && prevId ? { range: { from_id: firstId, through_id: prevId } } : { session: true },
-        at: id, ts: null, evidence: 'explicit',
+        at: id, ts: null, evidence: 'explicit', units,
       };
     } else {
       // A message kind this adapter does not know: kept, as a notice, and counted.
@@ -657,35 +670,36 @@ function build(st, key) {
   // emitted, anchored to that id: it is spend, and its key stays across the restore (tested on a
   // synthetic save; restore-lab's restore cleared every entry).
   const total = usageFields(t.cumulative_token_usage);
-  if (total) out.push({ type: 'usage', usage_id: 'session#1', anchor: { session: true }, ...total, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_session', model: null });
+  if (total) out.push({ type: 'usage', usage_id: 'session#1', anchor: { session: true }, ...total, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_session', model: null, units });
   else if (isObj(t.request_token_usage)) {
     for (const uid of Object.keys(t.request_token_usage).sort(cmpStr)) {
       const turn = usageFields(t.request_token_usage[uid]);
       if (!uid || !turn) continue;
       const usageId = `message:${uid}#1`;
       if (holding && uid === heldTurn) held.usage.push(usageId);
-      else out.push({ type: 'usage', usage_id: usageId, anchor: { message_id: uid }, ...turn, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: null });
+      else out.push({ type: 'usage', usage_id: usageId, anchor: { message_id: uid }, ...turn, input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: null, units });
     }
   }
 
   // Archive: a flag in each channel's sidebar, no time. One record per channel unit that says so.
-  let archived = false;
+  const archivedBy = [];
   for (const sk of Object.keys(st.sidebar).sort(cmpStr)) {
     const rows = Array.isArray(st.sidebar[sk].sidebar_threads) ? st.sidebar[sk].sidebar_threads : [];
     if (!rows.some((r) => isObj(r) && Number(r.archived) === 1)) continue;
-    archived = true;
-    out.push({ type: 'lifecycle', lifecycle_id: `${sk}@${sk}#1`, op: 'archive', target: { session: true }, at: null, ts: null, evidence: 'explicit' });
+    archivedBy.push(st.sidebar_units[sk]);
+    out.push({ type: 'lifecycle', lifecycle_id: `${sk}@${sk}#1`, op: 'archive', target: { session: true }, at: null, ts: null, evidence: 'explicit', units: [st.sidebar_units[sk]] });
   }
+  const archived = archivedBy.length > 0;
 
   // Sub-agents: the child states its parent (subagent_context, else the row's parent_id); the
   // parent states each child a spawn_agent result names, at that call.
   const sub = isObj(t.subagent_context) ? t.subagent_context : null;
   const origin = (sub && sub.parent_thread_id ? String(sub.parent_thread_id) : '') || str(row.parent_id) || '';
   if (origin && origin !== sid) {
-    out.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: self, origin: { harness: HARNESS, session_id: origin }, at: '', inherits: null, child_stored: true, evidence: 'explicit' });
+    out.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: self, origin: { harness: HARNESS, session_id: origin }, at: '', inherits: null, child_stored: true, evidence: 'explicit', units });
   }
   for (const [child, callId] of spawned) {
-    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: child }, origin: self, at: callId, inherits: null, child_stored: null, evidence: 'explicit' });
+    out.push({ type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: child }, origin: self, at: callId, inherits: null, child_stored: null, evidence: 'explicit', units });
   }
 
   const title = str(row.summary) || (typeof t.title === 'string' && t.title ? t.title : null);
@@ -712,6 +726,9 @@ function build(st, key) {
     reuse: 'impossible',
     ts_source: 'none',
     aliases: [],
+    native: nativeOf(row, describeData.native.session),
+    // The row gives every field but `state`, which an archiving sidebar row gives.
+    units: [...units, ...archivedBy],
   });
   return { out, held };
 }

@@ -813,10 +813,30 @@ function restoreLab() {
   return { [THREADS_REL]: db, [sidebarRel('0-stable')]: side };
 }
 
+// A thread reopened in a later launch (sessions-model §2.7 units): the second launch rewrites the
+// thread row with a second turn under another profile, and archives the thread in a channel's
+// sidebar. Both sources are snapshots, so the thread row's triple names its slot in both launches;
+// the session's `state` comes from the sidebar row, which joins its units. The resume test
+// (test/zed.test.js) builds the threads database with its first statement and the sidebar with none.
+export const RS = { ID: id('e1'), U1: id('e2'), U2: id('e3') };
+export function resumeThread(turns) {
+  const first = [user(RS.U1, 'Count the files.'), agent([say('Two files.')])];
+  const second = [user(RS.U2, 'And in toyshop?'), agent([say('One file.')])];
+  return thread('Count the files', turns === 1 ? first : [...first, ...second], turns === 1 ? {} : { profile: 'ask' });
+}
+function resume() {
+  const db = new Db(THREADS_SCHEMA);
+  putThread(db, row(RS.ID, 'Count the files'), resumeThread(1));
+  db.op(UPDATE_DATA, [zstdBlob(resumeThread(2)), '2026-10-22T15:00:00.000000000+00:00', RS.ID]);
+  const side = new Db(SIDEBAR_SCHEMA);
+  putSidebar(side, 1, RS.ID, 'Count the files', 1);
+  return { [THREADS_REL]: db, [sidebarRel('0-stable')]: side };
+}
+
 // ---- writing
 // --------------------------------------------------------------------------------------
 
-export const CASES = { lab, features, restore, 'restore-lab': restoreLab, sentinel };
+export const CASES = { lab, features, restore, 'restore-lab': restoreLab, sentinel, resume };
 
 function writeCase(name, dbs) {
   const dir = path.join(HERE, name);

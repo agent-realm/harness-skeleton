@@ -4,11 +4,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { adapterFor } from '../src/index.js';
-import { fullReplay, project, growthCheck, rewriteCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { fullReplay, project, growthCheck, rewriteCheck, resumeCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { normaliseUnits } from '../src/records.js';
 
 const adapter = adapterFor('claude-code');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'claude-code');
-const CASES = ['basic', 'features'];
+const CASES = ['basic', 'features', 'resume'];
 
 function withCopy(name, fn) {
   const dir = tmpStore();
@@ -64,6 +65,25 @@ test('claude-code: a rewrite of the transcript (new inode, shorter) is a reset, 
   assert.ok(r.equal);
 });
 
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a resumed launch moves last_cwd,
+// harness_version and updated_at to its own lines, and the session record's units follow them.
+test('claude-code: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = '5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f';
+  const rel = `projects/-work-toy-repo/${sid}.jsonl`;
+  const unit = (offset) => [rel, 1, String(offset)];
+  const lines = fs.readFileSync(path.join(FIX, 'resume', 'store', rel), 'utf8').split('\n');
+  const at = (n) => Buffer.byteLength(lines.slice(0, n).map((l) => l + '\n').join(''));
+  const r = resumeCheck(adapter, path.join(FIX, 'resume', 'store'), rel, 2);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  // First launch: line 0 holds created_at and cwd, line 1 the latest of everything else.
+  assert.deepEqual([b.cwd, b.last_cwd, b.harness_version], ['/work/toy-repo', '/work/toy-repo', '2.1.9']);
+  assert.deepEqual(b.units, normaliseUnits([unit(0), unit(at(1))]));
+  // Resumed: last_cwd, harness_version and updated_at come from the second launch's last line.
+  assert.deepEqual([a.cwd, a.last_cwd, a.harness_version], ['/work/toy-repo', '/work/toy-repo/src', '2.1.10']);
+  assert.deepEqual(a.units, normaliseUnits([unit(0), unit(at(3))]));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
+});
+
 test('claude-code: speaker split: a user record holding tool results and text gives a tool message and a <uuid>+1 user message', () => {
   withCopy('features', (dir) => {
     // features: user record …0005 holds two tool_result blocks, then the user's text.
@@ -105,7 +125,8 @@ test('claude-code: is_error copies the tool_result block\'s flag; a block withou
   };
   const resultsOf = (dir) => Object.fromEntries(Object.values(project(fullReplay(adapter, dir).views())).flat().filter((r) => r.type === 'message')
     .flatMap((m) => m.parts).filter((p) => p.kind === 'tool_result').map((p) => [p.call_id, [p.status, p.is_error]]));
-  for (const name of CASES) {
+  // The cases with tool results (`resume` has none).
+  for (const name of ['basic', 'features']) {
     withCopy(name, (dir) => {
       const want = stored(dir);
       assert.ok(Object.values(want).some(([, f]) => f === true) && Object.values(want).some(([, f]) => f === false), `${name}: both flags stored`);

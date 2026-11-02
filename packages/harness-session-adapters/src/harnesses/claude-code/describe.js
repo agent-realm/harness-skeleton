@@ -3,10 +3,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/claude-code',
-  adapter_ver: '0.2.1',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'claude-code',
-  state_ver: 2,
+  state_ver: 3,
   // No harness version is certified until conformance runs against a real Claude Code.
   versions: { certified: [], compatible: [] },
   sources: [
@@ -20,6 +20,20 @@ export const describe = Object.freeze({
     // sessions-model §4.1 declares no Claude Code path.
     paths: [],
     exemptions: [],
+  },
+  // The native fields each message carries (sessions-model §2.7): leaf values of the line the
+  // message comes from that no other field maps. Each is a fixed value set or an id, never user
+  // content or a path; `gitBranch` and `cwd` stay out.
+  native: {
+    session: [],
+    message: [
+      'userType', // who wrote the line: `external`
+      'requestId', // the API request id, beside `message.id` (response_id)
+      'message.stop_reason', // why the response ended: end_turn, tool_use, max_tokens
+      'compactMetadata.trigger', // what started a compaction: manual or auto
+      'compactMetadata.preTokens', // the context size a compaction started from
+    ],
+    part: [],
   },
   facets: {
     list: 'exact',

@@ -12,7 +12,14 @@
       },
       "at": null,
       "ts": "2026-01-02T09:01:01.211Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "12140"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -34,6 +41,11 @@
       "effort": null,
       "response_id": "msg_b2af2f26165a4881acd4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_0",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -43,7 +55,14 @@
           "text": "sigma x x 🙂 alpha gamma alpha x vector über"
         }
       ],
-      "cmp_sha": "e8dabe48586a12165afc0273968c5e3c0417930ac6d14c41ce1f48c0c44a1c74"
+      "cmp_sha": "e8dabe48586a12165afc0273968c5e3c0417930ac6d14c41ce1f48c0c44a1c74",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "1051"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -65,6 +84,11 @@
       "effort": null,
       "response_id": "msg_fdd763eb03da4c0aa903",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_1",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -75,7 +99,14 @@
           "signature_len": 12
         }
       ],
-      "cmp_sha": "d69266f58ca6edae609d4fbbf4a28de831f74715f4f196601cfd1b0022d15ba3"
+      "cmp_sha": "d69266f58ca6edae609d4fbbf4a28de831f74715f4f196601cfd1b0022d15ba3",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "5196"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -97,6 +128,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -106,7 +140,14 @@
           "text": "çalışma buffer sigma über 🙂 buffer über 🙂 round 1"
         }
       ],
-      "cmp_sha": "1ec8fbcb2c0dec0d32dc8a7c8dd7910ca3c5d6d1951dedff1ce7ccf6f2ea15c2"
+      "cmp_sha": "1ec8fbcb2c0dec0d32dc8a7c8dd7910ca3c5d6d1951dedff1ce7ccf6f2ea15c2",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "4789"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -128,6 +169,10 @@
       "effort": null,
       "response_id": "msg_f6986619a80541afae7c",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "end_turn"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -137,7 +182,14 @@
           "text": "replay archive buffer naïve naïve x bravo x vector"
         }
       ],
-      "cmp_sha": "58b12bb8938747af9fa22cf92af7b0518f9a2d25921214b2ecbceacc843e5f14"
+      "cmp_sha": "58b12bb8938747af9fa22cf92af7b0518f9a2d25921214b2ecbceacc843e5f14",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "4162"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -159,6 +211,11 @@
       "effort": null,
       "response_id": "msg_b2af2f26165a4881acd4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_0",
+        "message.stop_reason": "tool_use"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -173,7 +230,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "1e727ee62b71aa367d13a8b97067d6199927fdb45dc8b231fe56c4646494260e"
+      "cmp_sha": "1e727ee62b71aa367d13a8b97067d6199927fdb45dc8b231fe56c4646494260e",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "2395"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -195,6 +259,11 @@
       "effort": null,
       "response_id": "msg_b2af2f26165a4881acd4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_0",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -205,7 +274,14 @@
           "signature_len": 12
         }
       ],
-      "cmp_sha": "0626c5d8ea597d8829e01de2a0933342364b392f9493af90e96650d729cef530"
+      "cmp_sha": "0626c5d8ea597d8829e01de2a0933342364b392f9493af90e96650d729cef530",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "366"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -227,6 +303,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -242,7 +321,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "d4308697b50d979e31df1cca2498864db63103ba09836e0670716240ec33d71e"
+      "cmp_sha": "d4308697b50d979e31df1cca2498864db63103ba09836e0670716240ec33d71e",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "7348"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -264,6 +350,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "system",
       "source": "system_notice",
       "parts": [
@@ -275,7 +364,14 @@
           "native_type": "compact_boundary"
         }
       ],
-      "cmp_sha": "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607"
+      "cmp_sha": "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "12140"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -297,6 +393,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -306,7 +405,14 @@
           "text": "naïve sigma naïve anchor 🙂 sigma sigma buffer round 2"
         }
       ],
-      "cmp_sha": "7830fd13daf9ec2275274ad5761f311980dcdcd87fcab3567d814d854025ece1"
+      "cmp_sha": "7830fd13daf9ec2275274ad5761f311980dcdcd87fcab3567d814d854025ece1",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "8512"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -328,6 +434,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -343,7 +452,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "b20eaa2dc5212ea173c40205446f64893842dcf950193f422ff36107e4667777"
+      "cmp_sha": "b20eaa2dc5212ea173c40205446f64893842dcf950193f422ff36107e4667777",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "10969"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -365,6 +481,10 @@
       "effort": null,
       "response_id": "msg_e592e71f8bad4d99afe4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "end_turn"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -374,7 +494,14 @@
           "text": "anchor delta sigma delta über 漢字 archive gamma 🚀"
         }
       ],
-      "cmp_sha": "d6cd9e2df22918728343603dada2f4e3e04198bc760dae13f7519a23c24692e3"
+      "cmp_sha": "d6cd9e2df22918728343603dada2f4e3e04198bc760dae13f7519a23c24692e3",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "11507"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -396,6 +523,11 @@
       "effort": null,
       "response_id": "msg_baa0ed3932514294a6ae",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_2",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -406,7 +538,14 @@
           "signature_len": 12
         }
       ],
-      "cmp_sha": "9173f84b24d72f931c59eafc3b953edb3323e4d0a0f288a5ae7cc616d4bf267e"
+      "cmp_sha": "9173f84b24d72f931c59eafc3b953edb3323e4d0a0f288a5ae7cc616d4bf267e",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "8917"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -428,6 +567,7 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {},
       "role": "user",
       "source": "user",
       "parts": [
@@ -437,7 +577,14 @@
           "text": "sub task: delta archive 🚀 🙂 çalışma テスト"
         }
       ],
-      "cmp_sha": "4f0aa07570d3ba8d6baf4a88dea77d562d0c051d3b5c2e5e7f84aea1b61d374c"
+      "cmp_sha": "4f0aa07570d3ba8d6baf4a88dea77d562d0c051d3b5c2e5e7f84aea1b61d374c",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -459,6 +606,7 @@
       "effort": null,
       "response_id": "msg_ae9536b95b064105adfb",
       "aliases": [],
+      "native": {},
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -468,7 +616,14 @@
           "text": "archive gamma über sigma kappa replay cursor"
         }
       ],
-      "cmp_sha": "13cb8a47d2960a3f44d349d6328798a7e0b34e6ae05185e82df3a704634af5f0"
+      "cmp_sha": "13cb8a47d2960a3f44d349d6328798a7e0b34e6ae05185e82df3a704634af5f0",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "935"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -490,6 +645,11 @@
       "effort": null,
       "response_id": "msg_fdd763eb03da4c0aa903",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_1",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -499,7 +659,14 @@
           "text": "naïve 🙂 vector cursor x 🙂 delta 漢字 bravo anchor"
         }
       ],
-      "cmp_sha": "b791d915977370032a57893406c913181ed88902ab8ae689a6abf1094f5e9918"
+      "cmp_sha": "b791d915977370032a57893406c913181ed88902ab8ae689a6abf1094f5e9918",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "5890"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -521,6 +688,7 @@
       "effort": null,
       "response_id": "msg_c0037ba1bbea4a83a9bf",
       "aliases": [],
+      "native": {},
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -530,7 +698,14 @@
           "text": "gamma replay bravo anchor 🙂 über naïve"
         }
       ],
-      "cmp_sha": "27dc6385d625f860573457f40c06b1e30fa3f55e1712287eb8f381934ff9ba80"
+      "cmp_sha": "27dc6385d625f860573457f40c06b1e30fa3f55e1712287eb8f381934ff9ba80",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "355"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -552,6 +727,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -567,7 +745,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "5a7e75ce45848290040857d7cea8ad8ce5f528ce2148adb83ba3f04a33ab2c15"
+      "cmp_sha": "5a7e75ce45848290040857d7cea8ad8ce5f528ce2148adb83ba3f04a33ab2c15",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "3630"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -589,6 +774,11 @@
       "effort": null,
       "response_id": "msg_b2af2f26165a4881acd4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_0",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -603,7 +793,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "9b34c90673da81275bbc1016391c6e224d9cb600da77a6b06a30d6753fee47c2"
+      "cmp_sha": "9b34c90673da81275bbc1016391c6e224d9cb600da77a6b06a30d6753fee47c2",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "1705"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -625,6 +822,11 @@
       "effort": null,
       "response_id": "msg_baa0ed3932514294a6ae",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_2",
+        "message.stop_reason": null
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -634,7 +836,14 @@
           "text": "bravo gamma 🙂 🙂 漢字 çalışma x alpha über alpha"
         }
       ],
-      "cmp_sha": "9167788465c09ea527f4809fb5404b19244678b5fe3d1016a7a995b7aa27c506"
+      "cmp_sha": "9167788465c09ea527f4809fb5404b19244678b5fe3d1016a7a995b7aa27c506",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "9602"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -656,6 +865,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "tool",
       "source": null,
       "parts": [
@@ -671,7 +883,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "51f83138220521bfef4d06ebe2d92d67c04edd659a00eed6e14b78c8959879b3"
+      "cmp_sha": "51f83138220521bfef4d06ebe2d92d67c04edd659a00eed6e14b78c8959879b3",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "3096"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -693,6 +912,9 @@
       "effort": null,
       "response_id": null,
       "aliases": [],
+      "native": {
+        "userType": "external"
+      },
       "role": "user",
       "source": "user",
       "parts": [
@@ -702,7 +924,14 @@
           "text": "🚀 delta alpha 🙂 vector 🙂 replay 🚀 round 0"
         }
       ],
-      "cmp_sha": "a97df1c76d615125b6941a40e544c3a4f0550d56b423b8a495d8eda842d2a15a"
+      "cmp_sha": "a97df1c76d615125b6941a40e544c3a4f0550d56b423b8a495d8eda842d2a15a",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -724,6 +953,10 @@
       "effort": null,
       "response_id": "msg_191a4055bc8b4f4fa6a4",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "message.stop_reason": "end_turn"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -733,7 +966,14 @@
           "text": "vector vector delta buffer テスト çalışma kappa çalışma ğüşıöç"
         }
       ],
-      "cmp_sha": "903504d13cefb22a6b68ac408e0b7ce4cd410b8e89987e6dcfee62a5b1ba6d97"
+      "cmp_sha": "903504d13cefb22a6b68ac408e0b7ce4cd410b8e89987e6dcfee62a5b1ba6d97",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "7860"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -755,6 +995,11 @@
       "effort": null,
       "response_id": "msg_fdd763eb03da4c0aa903",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_1",
+        "message.stop_reason": "tool_use"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -771,7 +1016,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "7cbeea75b59a7df5f972a3e98dbe0c44307bf98cdef5f2b243ef2e8bb5fbed7b"
+      "cmp_sha": "7cbeea75b59a7df5f972a3e98dbe0c44307bf98cdef5f2b243ef2e8bb5fbed7b",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "6555"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -793,6 +1045,11 @@
       "effort": null,
       "response_id": "msg_baa0ed3932514294a6ae",
       "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_2",
+        "message.stop_reason": "tool_use"
+      },
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -807,7 +1064,14 @@
           "server": null
         }
       ],
-      "cmp_sha": "093da2c644c7d81ad884715bfcec2984824a1a6339777647486c2825b84a5bfd"
+      "cmp_sha": "093da2c644c7d81ad884715bfcec2984824a1a6339777647486c2825b84a5bfd",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "10270"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -829,6 +1093,7 @@
       "effort": null,
       "response_id": "msg_38259c00b13f40a6abd7",
       "aliases": [],
+      "native": {},
       "role": "assistant",
       "source": "model",
       "parts": [
@@ -838,7 +1103,14 @@
           "text": "kappa kappa 漢字 replay alpha cursor x"
         }
       ],
-      "cmp_sha": "ffd3d25d8c3c875dc489a41db9e65edee23e4362c04a0e08ff47168671e2bceb"
+      "cmp_sha": "ffd3d25d8c3c875dc489a41db9e65edee23e4362c04a0e08ff47168671e2bceb",
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "1517"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -886,7 +1158,24 @@
           "92f0a15e77c69aefadbe99a241267e0ffa99419e4d901adf78a54ba181862607"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "12140"
+        ],
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "12529"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -907,7 +1196,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "7860"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -928,7 +1224,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-haiku-4-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "1517"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -949,7 +1252,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-haiku-4-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "935"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -970,7 +1280,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "2395"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -991,7 +1308,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-sonnet-4-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "10270"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1012,7 +1336,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-haiku-4-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8/subagents/agent-a8f55846977144902.jsonl",
+          1,
+          "355"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1033,7 +1364,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-sonnet-4-5",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "11507"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1054,7 +1392,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "4162"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1075,7 +1420,14 @@
       "output_includes_reasoning": true,
       "granularity": "per_response",
       "model": "claude-opus-4-1",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-proj-alpha/a08ff49b-6f77-4263-a271-6c43069c43a8.jsonl",
+          1,
+          "6555"
+        ]
+      ]
     }
   ]
 }

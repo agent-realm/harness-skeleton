@@ -1,0 +1,271 @@
+{
+  "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f": [
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-0000000e0001",
+      "parent_id": null,
+      "order": "2026-01-06T09:00:00.000Z|projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl|000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-06T09:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "native": {
+        "userType": "external"
+      },
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "count the files"
+        }
+      ],
+      "cmp_sha": "d30a92f029f9e88b646be6290c3fbe93e1a6711a53a987fa20e582dfa662c36a",
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "0"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-0000000e0002",
+      "parent_id": "00000000-0000-4000-a000-0000000e0001",
+      "order": "2026-01-06T09:00:00.000Z|projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl|000000000307",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-06T09:00:03.000Z",
+      "requested_model": null,
+      "served_model": "claude-opus-4-1",
+      "effort": null,
+      "response_id": "msg_resume_1",
+      "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_resume_1",
+        "message.stop_reason": "end_turn"
+      },
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "two files"
+        }
+      ],
+      "cmp_sha": "4447274002925c93e759c63a76385c2cac127452c3922685f1b3f680abf873bb",
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "307"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-0000000e0003",
+      "parent_id": "00000000-0000-4000-a000-0000000e0002",
+      "order": "2026-01-06T09:00:00.000Z|projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl|000000000880",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-07T14:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "native": {
+        "userType": "external"
+      },
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "and in src?"
+        }
+      ],
+      "cmp_sha": "d350822a9f2869634bcb9c2085b8709fdccbcadc9f348eb4fcf849dc65dc83eb",
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "880"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "message_id": "00000000-0000-4000-a000-0000000e0004",
+      "parent_id": "00000000-0000-4000-a000-0000000e0003",
+      "order": "2026-01-06T09:00:00.000Z|projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl|000000001222",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-01-07T14:00:02.000Z",
+      "requested_model": null,
+      "served_model": "claude-opus-4-1",
+      "effort": null,
+      "response_id": "msg_resume_2",
+      "aliases": [],
+      "native": {
+        "userType": "external",
+        "requestId": "req_resume_2",
+        "message.stop_reason": "end_turn"
+      },
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "one file"
+        }
+      ],
+      "cmp_sha": "6c50a2da4676afbe0585c19555949c7c12c53bd218f10cbc1d3aebf12f515f4f",
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "1222"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "engine": null,
+      "client": "claude-code",
+      "harness_version": "2.1.10",
+      "title": null,
+      "title_set_by": null,
+      "cwd": "/work/toy-repo",
+      "last_cwd": "/work/toy-repo/src",
+      "created_at": "2026-01-06T09:00:00.000Z",
+      "updated_at": "2026-01-07T14:00:02.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "d30a92f029f9e88b646be6290c3fbe93e1a6711a53a987fa20e582dfa662c36a",
+          "4447274002925c93e759c63a76385c2cac127452c3922685f1b3f680abf873bb",
+          "d350822a9f2869634bcb9c2085b8709fdccbcadc9f348eb4fcf849dc65dc83eb",
+          "6c50a2da4676afbe0585c19555949c7c12c53bd218f10cbc1d3aebf12f515f4f"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "1222"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "usage_id": "response:msg_resume_1#1",
+      "anchor": {
+        "response_id": "msg_resume_1"
+      },
+      "input": 8,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": true,
+      "granularity": "per_response",
+      "model": "claude-opus-4-1",
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "307"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "harness": "claude-code",
+      "session_id": "5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+      "incarnation": "",
+      "usage_id": "response:msg_resume_2#1",
+      "anchor": {
+        "response_id": "msg_resume_2"
+      },
+      "input": 12,
+      "output": 3,
+      "cache_read": 0,
+      "cache_write": 0,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": false,
+      "output_includes_reasoning": true,
+      "granularity": "per_response",
+      "model": "claude-opus-4-1",
+      "tool_prompt": null,
+      "units": [
+        [
+          "projects/-work-toy-repo/5e5e5e5e-1a2b-4c3d-8e4f-5a6b7c8d9e0f.jsonl",
+          1,
+          "1222"
+        ]
+      ]
+    }
+  ]
+}

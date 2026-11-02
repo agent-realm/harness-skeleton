@@ -9,10 +9,10 @@ import { SOURCE, DB_REL } from '../src/harnesses/devin/index.js';
 import { uuid, callId } from '../fixtures/devin/generate.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'devin');
-const CASES = ['features', 'switch-compaction'];
+const CASES = ['features', 'switch-compaction', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const ID = (name) => uuid(name);
 
@@ -851,4 +851,22 @@ test('devin: a tool_result carries the tool node\'s chisel/terminal_output exit 
     assert.equal(result('amber-harbor', 'ah:r2').exit_code, null, 'a read result keeps no exit code');
     assert.equal(result('amber-harbor', 'ah:x3').exit_code, null, 'a rejected command never ran');
   });
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a session resumed in a later launch.
+// Its one source is a snapshot of its rows, so every record names the same slot in both launches
+// while the mode and the second turn move.
+test('devin: resume: every record names the session\'s one snapshot slot in both launches', () => {
+  const sid = 'quiet-delta';
+  const [db] = sqlFilesOf(path.join(FIX, 'resume'));
+  const upto = db.ops.findIndex((o) => o.sql.startsWith('UPDATE sessions SET agent_mode'));
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [db.rel]: upto });
+  const [b, a] = [r.before[sid], r.after[sid]];
+  const slot = [SOURCE, 1, SOURCE];
+  assert.deepEqual([b.mode, b.units], ['smart', [slot]]);
+  assert.deepEqual([a.mode, a.units], ['ask', [slot]]);
+  const messages = r.last[sid].filter((m) => m.type === 'message');
+  assert.ok(messages.length > r.first[sid].filter((m) => m.type === 'message').length, 'the second launch adds messages');
+  for (const m of messages) assert.deepEqual(m.units, [slot]);
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

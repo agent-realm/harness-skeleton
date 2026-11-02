@@ -40,7 +40,9 @@ import { decode, safeDecode, project, S, GEN_KEEP, T, ST, OPEN, REF_FORK, SRC, m
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'agy';
-const STATE_VER = 2; // 2: a spilled output's state keeps its unit's sha256 beside its length
+// 2: a spilled output's state keeps its unit's sha256 beside its length. 3: the state keeps each
+// source's generation and the unit keys of its snapshots, for the records' `units`.
+const STATE_VER = 3;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SUMMARIES = 'conversation_summaries.db';
 export const SUMMARY_KEY = `${SUMMARIES}#table:conversation_summaries`;
@@ -469,9 +471,13 @@ const doneStatus = (s) => (s.status === ST.ERROR ? 'error' : s.status === ST.CAN
 
 // Every record of a session with a DB, and the keys held as incomplete.
 function fromDb(st, sid, me) {
-  const steps = Object.values(st.steps).map(stepOf).sort((a, b) => a.idx - b.idx);
+  const steps = Object.entries(st.steps).map(([uk, row]) => ({ ...stepOf(row), uk })).sort((a, b) => a.idx - b.idx);
   const recs = [];
   const held = noHeld();
+  // Units (sessions-model §2.7): a step row, a gen_metadata row, a parent_references row, the
+  // trajectory and summaries rows, a spilled output, a transcript line.
+  const unitOf = (table, uk) => [tableKey(sid, table), st.gen[tableKey(sid, table)], uk];
+  const stepUnit = (s) => unitOf('steps', s.uk);
 
   // Ids: the content id; an anchored id for a step without one, assigned over every step so a held
   // step never shifts it (sessions-model §1 rule 4).
@@ -508,7 +514,7 @@ function fromDb(st, sid, me) {
   }
   const turnEnded = (i) => laterOther[i] || (execOf(steps[i]) !== '' && ended.has(execOf(steps[i])));
 
-  const gens = new Map(Object.values(st.gen_metadata).map((r) => [Number(r.idx), safeDecode(r.data, S.GenMeta)]));
+  const gens = new Map(Object.entries(st.gen_metadata).map(([uk, r]) => [Number(r.idx), { ...safeDecode(r.data, S.GenMeta), uk }]));
   // The generation that produced this step, when its step_indices say so.
   const genFor = (s) => {
     const info = infoOf(s);
@@ -544,6 +550,7 @@ function fromDb(st, sid, me) {
   }
 
   const written = new Set(); // steps whose message is written (not held)
+  const tsUnit = new Map(); // message_id -> the step its ts came from
   const seenIds = new Set();
   const seenUsage = new Set();
   const linkKeys = new Set();
@@ -571,6 +578,7 @@ function fromDb(st, sid, me) {
     let msg;
     let usage = null;
     const lifecycles = [];
+    const units = [stepUnit(s)];
 
     if (s.type === T.PLANNER_RESPONSE) {
       const pr = s.st.planner_response || {};
@@ -594,7 +602,9 @@ function fromDb(st, sid, me) {
         const g = c.id ? res.get(c.id) : null;
         if (!g) missing = true;
         const r = ((g && g.st.generic) || {}).result || {};
-        parts.push({ kind: 'tool_call', call_id: c.id || `@${id}:${k}`, name: c.name || 'unknown', args: argsOf(c.arguments_json), server: g ? serverOf(r) : null });
+        const server = g ? serverOf(r) : null;
+        if (server !== null) units.push(stepUnit(g)); // the result step that names the call's server
+        parts.push({ kind: 'tool_call', call_id: c.id || `@${id}:${k}`, name: c.name || 'unknown', args: argsOf(c.arguments_json), server });
       });
       const err = errorText(s.st.error);
       if (err) parts.push({ kind: 'error', error_kind: null, message: err, http_status: null });
@@ -607,6 +617,10 @@ function fromDb(st, sid, me) {
       const served = str(cm.response_model) ?? modelName((own || {}).model || s.meta.generator_model || cm.model);
       const u = own || (fromGen ? cm.usage : null);
       usage = usageRecord(u, own ? s.meta.model_cost : cm.model_cost, served, id);
+      // The generation row, where the served model, the requested model or the usage came from.
+      const genUnit = g ? [unitOf('gen_metadata', g.uk)] : [];
+      if (g) units.push(...genUnit);
+      if (usage) usage.units = [...(own ? [stepUnit(s)] : genUnit), ...(str(cm.response_model) !== null ? genUnit : [stepUnit(s)])];
       msg = {
         ...base, role: 'assistant', source: 'model',
         status: open || (s.status === ST.DONE && missing) ? 'interrupted' : doneStatus(s),
@@ -655,6 +669,7 @@ function fromDb(st, sid, me) {
         if (spill && spill.bytes > utf8Len(output)) {
           part.output_ref = { ref: rel, sha256: spill.sha256, bytes: spill.bytes };
           part.truncated = true;
+          units.push([rel, st.gen[rel], spill.uk]);
         }
       }
       const hidden = !!(r.step_render_info && r.step_render_info.hidden);
@@ -668,7 +683,7 @@ function fromDb(st, sid, me) {
         if (!c.conversation_id || c.conversation_id === sid) continue;
         putLink({
           type: 'link', kind: 'subagent', stated_on: 'origin', child: { harness: HARNESS, session_id: c.conversation_id }, origin: me,
-          at: callId, inherits: null, child_stored: true, evidence: 'explicit',
+          at: callId, inherits: null, child_stored: true, evidence: 'explicit', units: [stepUnit(s)],
         }, hold);
       }
     } else {
@@ -712,6 +727,8 @@ function fromDb(st, sid, me) {
         const served = str(cm.response_model) ?? modelName((u || {}).model || s.meta.generator_model || cm.model);
         const end = cp.included_step_index_end ?? null;
         usage = usageRecord(u, s.meta.model_cost || cm.model_cost, served, id);
+        if (g) units.push(unitOf('gen_metadata', g.uk));
+        if (usage) usage.units = [...units];
         msg = {
           ...base, role: 'system', source: 'system_notice', status,
           requested_model: requestedOf(s, cm), served_model: served, response_id: usage ? str(u.response_id) : null,
@@ -724,7 +741,7 @@ function fromDb(st, sid, me) {
         lifecycles.push({
           type: 'lifecycle', lifecycle_id: id, op: 'compaction',
           target: covered.length ? { range: { from_id: covered[0], through_id: covered[covered.length - 1] } } : { session: true },
-          at: null, ts: base.ts, evidence: 'explicit',
+          at: null, ts: base.ts, evidence: 'explicit', units: [stepUnit(s)],
         });
       } else {
         msg = { ...base, role: 'system', source: 'system_notice', status, parts: [{ kind: 'notice', text: `[agy step type ${s.type}]`, level: null, native_type: String(s.type) }] };
@@ -732,6 +749,9 @@ function fromDb(st, sid, me) {
     }
 
     msg.parts = msg.parts.map((p, n) => ({ part_id: String(n), ...p }));
+    msg.units = units;
+    tsUnit.set(id, stepUnit(s));
+    if (usage && !usage.units) usage.units = [stepUnit(s)];
     if (usage && seenUsage.has(usage.usage_id)) usage = null;
     if (usage) seenUsage.add(usage.usage_id);
     if (hold) {
@@ -757,6 +777,7 @@ function fromDb(st, sid, me) {
       recs.push({
         type: 'lifecycle', lifecycle_id: `${st.transcript_key}@${lines[r.at].off}#1`, op: 'rewind',
         target: { session: true }, at: keptStep && written.has(keptStep) ? ids.get(keptStep) : null, ts: null, evidence: 'explicit',
+        units: [[st.transcript_key, st.gen[st.transcript_key], lines[r.at].off]],
       });
     }
   }
@@ -776,9 +797,9 @@ function fromDb(st, sid, me) {
         through_message_id: copied.length ? ids.get(copied[copied.length - 1]) : null,
         ids_preserved: true, marked: copied.length > 0, usage_copied: copied.some((s) => !!s.meta.model_usage),
       },
-      child_stored: true, evidence: 'explicit',
+      child_stored: true, evidence: 'explicit', units: [unitOf('parent_references', uk)],
     }, false);
-    recs.push({ type: 'lifecycle', lifecycle_id: `${refsKey}@${uk}#1`, op: 'fork', target: { session: true }, at: at || null, ts: null, evidence: 'explicit' });
+    recs.push({ type: 'lifecycle', lifecycle_id: `${refsKey}@${uk}#1`, op: 'fork', target: { session: true }, at: at || null, ts: null, evidence: 'explicit', units: [unitOf('parent_references', uk)] });
   }
   const traj = st.traj ? safeDecode(st.traj.data, S.TrajMeta) : {};
   const sum = st.summary || {};
@@ -786,22 +807,32 @@ function fromDb(st, sid, me) {
   if (parent && parent !== sid) {
     // at: the parent's invoke_subagent call, which the prompt the child received carries.
     let at = '';
+    let atStep = null;
     for (const s of steps) {
       if (s.type !== T.SYSTEM_MESSAGE) continue;
       const tool = ((((s.st.system_message || {}).agent_message || {}).source_metadata) || {}).tool;
       if (!tool || tool.conversation_id !== parent || !tool.tool_call || !tool.tool_call.id) continue;
       if (tool.tool_call.name === 'invoke_subagent') {
         at = tool.tool_call.id;
+        atStep = s;
         break;
       }
-      if (!at) at = tool.tool_call.id;
+      if (!at) {
+        at = tool.tool_call.id;
+        atStep = s;
+      }
     }
-    putLink({ type: 'link', kind: 'subagent', stated_on: 'child', child: me, origin: { harness: HARNESS, session_id: parent }, at, inherits: null, child_stored: true, evidence: 'explicit' }, false);
+    // The parent comes from the trajectory row, else the summaries row; `at` from the prompt's step.
+    const parentUnits = [...(traj.parent_conversation_id ? [st.traj_unit] : [st.summary_unit]), ...(atStep ? [stepUnit(atStep)] : [])];
+    putLink({ type: 'link', kind: 'subagent', stated_on: 'child', child: me, origin: { harness: HARNESS, session_id: parent }, at, inherits: null, child_stored: true, evidence: 'explicit', units: parentUnits }, false);
   }
 
   const ws = (traj.workspaces || [])[0] || {};
-  const cwd = uriPath(ws.workspace_folder_absolute_uri || (traj.workspace_uris || [])[0] || firstJson(sum.workspace_uris)) || null;
-  return { recs, held, session: { cwd, created_at: iso(traj.created_at) } };
+  const trajCwd = ws.workspace_folder_absolute_uri || (traj.workspace_uris || [])[0];
+  const cwd = uriPath(trajCwd || firstJson(sum.workspace_uris)) || null;
+  const created = iso(traj.created_at);
+  const units = [...(cwd ? [trajCwd ? st.traj_unit : st.summary_unit] : []), ...(created ? [st.traj_unit] : [])];
+  return { recs, held, session: { cwd, created_at: created, units }, tsUnit };
 }
 
 // ---- derive: the transcript alone (no DB) -------------------------------------------------------
@@ -820,6 +851,8 @@ function fromTranscript(st, sid, me) {
   const lineStatus = (s) => (s === 'ERROR' ? 'error' : s === 'CANCELED' ? 'cancelled' : s === 'INTERRUPTED' ? 'interrupted' : 'complete');
   const recs = [];
   const held = noHeld();
+  const tsUnit = new Map(); // message_id -> the line its ts came from
+  const lineUnit = (k) => [sk, st.gen[sk], L[k].off]; // a line's units triple (sessions-model §2.7)
   const callOf = new Map(); // GENERIC line -> its planner's call id, by position
   const media = (x) => (Array.isArray(x.media) ? x.media : []).map((m) => ({ kind: 'attachment', media_type: (m && m.mime_type) || null, ref: fileRef(m && m.uri), bytes_len: null }));
 
@@ -829,7 +862,7 @@ function fromTranscript(st, sid, me) {
       recs.push({
         type: 'lifecycle', lifecycle_id: `${sk}@${L[i].off}#1`, op: 'rewind',
         target: { range: { from_id: idOf(rw.retracted[0]), through_id: idOf(rw.retracted[rw.retracted.length - 1]) } },
-        at: rw.through >= 0 ? idOf(rw.through) : null, ts: null, evidence: 'explicit',
+        at: rw.through >= 0 ? idOf(rw.through) : null, ts: null, evidence: 'explicit', units: [lineUnit(i)],
       });
     }
     const { o } = L[i];
@@ -838,7 +871,9 @@ function fromTranscript(st, sid, me) {
       type: 'message', message_id: id, parent_id: null, order: pad(L[i].off), agent_id: '',
       to_user: null, to_model: null, status: lineStatus(o.status), state: L[i].retracted ? 'retracted' : 'current',
       on_active_branch: null, ts: isoOf(o.created_at), requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
+      units: [lineUnit(i)],
     };
+    tsUnit.set(id, lineUnit(i));
     let msg;
     let usage = null;
     let hold = false;
@@ -878,6 +913,7 @@ function fromTranscript(st, sid, me) {
       });
       if (o.error) parts.push({ kind: 'error', error_kind: null, message: String(o.error), http_status: null });
       usage = usageRecord({ input_tokens: o.input_tokens, output_tokens: o.output_tokens, cache_read_tokens: o.cache_read_tokens }, null, null, id);
+      if (usage) usage.units = [lineUnit(i)];
       msg = { ...base, role: 'assistant', source: 'model', status: base.status === 'complete' && missing ? 'interrupted' : base.status, parts };
     } else if (o.type === 'GENERIC') {
       // A RUNNING line is written once and never updated (spec §2): held while it is the tail.
@@ -911,7 +947,7 @@ function fromTranscript(st, sid, me) {
       recs.push({
         type: 'lifecycle', lifecycle_id: `${sk}@${L[i].off}#1`, op: 'compaction',
         target: before.length ? { range: { from_id: before[0].message_id, through_id: before[before.length - 1].message_id } } : { session: true },
-        at: null, ts: base.ts, evidence: 'explicit',
+        at: null, ts: base.ts, evidence: 'explicit', units: [lineUnit(i)],
       });
     } else {
       const source = o.type === 'EPHEMERAL_MESSAGE' ? 'injected' : o.type === 'SYSTEM_MESSAGE' ? systemSource('', senderOf(o.content)) : 'system_notice';
@@ -929,9 +965,10 @@ function fromTranscript(st, sid, me) {
   }
   const sum = st.summary || {};
   if (sum.parent_conversation_id && sum.parent_conversation_id !== sid) {
-    recs.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: me, origin: { harness: HARNESS, session_id: sum.parent_conversation_id }, at: '', inherits: null, child_stored: true, evidence: 'explicit' });
+    recs.push({ type: 'link', kind: 'subagent', stated_on: 'child', child: me, origin: { harness: HARNESS, session_id: sum.parent_conversation_id }, at: '', inherits: null, child_stored: true, evidence: 'explicit', units: [st.summary_unit] });
   }
-  return { recs, held, session: { cwd: uriPath(firstJson(sum.workspace_uris)) || null, created_at: null } };
+  const cwd = uriPath(firstJson(sum.workspace_uris)) || null;
+  return { recs, held, session: { cwd, created_at: null, units: cwd ? [st.summary_unit] : [] }, tsUnit };
 }
 
 // ---- derive -----------------------------------------------------------------------------------
@@ -949,7 +986,12 @@ function emptyState() {
     annotation: null, // the .pbtxt text
     transcript_key: null,
     transcript: {}, // byte offset -> the parsed line (null when it does not parse)
-    outputs: {}, // spilled output source_key -> {sha256, bytes} of its unit
+    outputs: {}, // spilled output source_key -> {sha256, bytes, uk} of its unit
+    // Units (sessions-model §2.7): each source's generation, and the snapshots' units triples.
+    gen: {},
+    traj_unit: null,
+    summary_unit: null,
+    annotation_unit: null,
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -979,6 +1021,8 @@ export function derive(session, input, state) {
     const sk = src.source_key;
     const units = src.units ?? [];
     const kind = kindOf(sk);
+    if (kind) st.gen[sk] = src.generation;
+    const lastUnit = units.length ? [sk, src.generation, last(units).unit_key] : null;
     if (DELTA_TABLES.includes(kind)) {
       st.db = true;
       if (src.complete) st[kind] = {};
@@ -993,16 +1037,21 @@ export function derive(session, input, state) {
       if (units.length) {
         const rows = (jsonOf(last(units)) || {}).trajectory_metadata_blob || [];
         st.traj = rows.find((r) => r && r.id === 'main') ?? rows[0] ?? null;
+        st.traj_unit = lastUnit;
       } else if (src.complete) st.traj = null;
     } else if (kind === 'summary') {
-      if (units.length) st.summary = ((jsonOf(last(units)) || {}).conversation_summaries || [])[0] ?? null;
-      else if (src.complete) st.summary = null;
+      if (units.length) {
+        st.summary = ((jsonOf(last(units)) || {}).conversation_summaries || [])[0] ?? null;
+        st.summary_unit = lastUnit;
+      } else if (src.complete) st.summary = null;
     } else if (kind === 'annotation') {
-      if (units.length) st.annotation = last(units).enc === 'utf8' ? last(units).body : null;
-      else if (src.complete) st.annotation = null;
+      if (units.length) {
+        st.annotation = last(units).enc === 'utf8' ? last(units).body : null;
+        st.annotation_unit = lastUnit;
+      } else if (src.complete) st.annotation = null;
     } else if (kind === 'output') {
       // Its length decides whether a step's text was cut; its sha256 and length go in output_ref.
-      if (units.length) st.outputs[sk] = { sha256: last(units).sha256, bytes: last(units).bytes };
+      if (units.length) st.outputs[sk] = { sha256: last(units).sha256, bytes: last(units).bytes, uk: last(units).unit_key };
       else if (src.complete) delete st.outputs[sk];
     } else if (kind === 'transcript') {
       st.transcript_key = sk;
@@ -1015,17 +1064,28 @@ export function derive(session, input, state) {
   const me = { harness: HARNESS, session_id: sid, incarnation: key.incarnation };
   const built = st.db ? fromDb(st, sid, me)
     : st.transcript_key ? fromTranscript(st, sid, me)
-      : { recs: [], held: noHeld(), session: { cwd: null, created_at: null } };
+      : { recs: [], held: noHeld(), session: { cwd: null, created_at: null, units: [] }, tsUnit: new Map() };
 
   // The records, sealed. The session record's fingerprint and updated_at come from the written
   // messages on the current line, in order.
   const sealed = built.recs.map((r) => seal({ ...r, ...key, type: r.type }));
   const msgs = sealed.filter((r) => r.type === 'message').sort(byOrder);
   let updated = null;
-  for (const m of msgs) if (m.ts && (!updated || m.ts > updated)) updated = m.ts;
+  let updatedBy = null;
+  for (const m of msgs) {
+    if (m.ts && (!updated || m.ts > updated)) {
+      updated = m.ts;
+      updatedBy = m.message_id;
+    }
+  }
   const ann = parseAnnotation(st.annotation);
   const sum = st.summary || {};
   const title = str(sum.title) ?? str(ann.title);
+  // The session's units: the rows behind its own fields (sessions-model v1.4.1, §2.7).
+  const sessionUnits = [...built.session.units];
+  if (title) sessionUnits.push(str(sum.title) !== null ? st.summary_unit : st.annotation_unit);
+  if ((ann.archived || ann.pinned) && st.annotation_unit) sessionUnits.push(st.annotation_unit);
+  if (updatedBy !== null && built.tsUnit.has(updatedBy)) sessionUnits.push(built.tsUnit.get(updatedBy));
   const sessionRec = seal({
     type: 'session', ...key, engine: null, client: 'agy', harness_version: null,
     // The summaries title is generated, and a rename rewrites the annotation (spec §2, §6); which
@@ -1035,6 +1095,7 @@ export function derive(session, input, state) {
     state: ann.archived ? 'archived' : 'active', pinned: ann.pinned ? true : null, mode: null, kind: null,
     reuse: 'impossible', ts_source: 'event', aliases: [],
     fingerprint: { cmp_shas: msgs.filter((m) => m.state === 'current').map((m) => m.cmp_sha) },
+    units: sessionUnits.filter(Boolean),
   });
 
   const held = built.held;

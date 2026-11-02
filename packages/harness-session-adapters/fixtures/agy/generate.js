@@ -589,6 +589,34 @@ function transcriptCancel() {
   };
 }
 
+// A conversation resumed in a later launch (sessions-model §2.7 units): the second launch adds a
+// turn and agy retitles it. The trajectory and summaries rows are snapshots, so their triples name
+// their slots in both launches while the title moves; updated_at moves to the second turn's step
+// row, and the session record's units with it. The resume test (test/agy.test.js) builds the
+// conversation DB with the first turn's statements and the summaries DB with its insert.
+export const RS = '7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c';
+export const RESUME_FIRST = 6;
+function resume() {
+  const t = (s) => Date.UTC(2026, 9, 22, 9, 0, 0) + Math.round(s * 1000);
+  const c = conversation(RS);
+  const o = convOps(c);
+  o.traj(trajBlob(t(-3), { root_conversation_id: RS }));
+  o.insert(c.user(0, { t: t(0), exec: E(60), id: ID('SU1') }, 'Count the files.'));
+  o.insert(c.planner(1, { t: t(3), exec: E(60), id: ID('SP1'), gen: 0, usage: usage(5000, 4, 'resp-rs-01') }, { text: 'Two files.' }));
+  o.gen(genRow(0, 1, E(60), usage(5000, 4, 'resp-rs-01')));
+  o.exec(execRow(0, E(60), 1));
+  // The second launch, a day later.
+  o.insert(c.user(2, { t: t(86400), exec: E(61), id: ID('SU2') }, 'And in tests?'));
+  o.insert(c.planner(3, { t: t(86402), exec: E(61), id: ID('SP2'), gen: 1, usage: usage(5200, 3, 'resp-rs-03') }, { text: 'One file.' }));
+  o.gen(genRow(1, 3, E(61), usage(5200, 3, 'resp-rs-03')));
+  o.exec(execRow(1, E(61), 3));
+  const sums = [
+    summaryInsert(RS, { title: 'Count the files', preview: 'Count the files.', steps: 2 }),
+    { sql: 'UPDATE conversation_summaries SET title = ? WHERE conversation_id = ?', params: ['Count the files and tests', RS] },
+  ];
+  return { dbs: { [`conversations/${RS}.db`]: [CONV_DDL, o.ops], 'conversation_summaries.db': [SUMMARIES_DDL, sums] }, files: {} };
+}
+
 function writeCase(name, { dbs, files }) {
   const dir = path.join(HERE, name);
   fs.rmSync(path.join(dir, 'store-sql'), { recursive: true, force: true });
@@ -613,5 +641,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   writeCase('rewind', rewind());
   writeCase('transcript', transcript());
   writeCase('transcript-cancel', transcriptCancel());
+  writeCase('resume', resume());
   console.log('agy fixtures written');
 }

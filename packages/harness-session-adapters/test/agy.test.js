@@ -8,17 +8,17 @@ import { adapterFor } from '../src/index.js';
 import { rowJson } from '../src/sqlite.js';
 import { MiniEngine } from '../conformance/engine.js';
 import { fullReplay, project, tmpStore, storeOf, nameLint, filesOf } from '../conformance/runner.js';
-import { prepareStore, sqlGrowthCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
+import { prepareStore, sqlGrowthCheck, sqlResumeCheck, sqlFilesOf, buildDb } from '../conformance/sql-store.js';
 import {
   A, H, O, F, P, C, R, HUB, X, ID, SIG, FULL_FIND, T0, E, STATUS, SOURCE, TYPE,
-  conversation, call, usage, genRow, execRow, enc, anyOf,
+  conversation, call, usage, genRow, execRow, enc, anyOf, RS, RESUME_FIRST,
 } from '../fixtures/agy/generate.js';
 import { S, ST, decode } from '../src/harnesses/agy/pb.js';
 import { sha256 } from '../src/jcs.js';
 
 const adapter = adapterFor('agy');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'agy');
-const CASES = ['features', 'fork', 'subagent', 'rewind', 'transcript', 'transcript-cancel'];
+const CASES = ['features', 'fork', 'subagent', 'rewind', 'transcript', 'transcript-cancel', 'resume'];
 const EXEMPT = adapter.describe().redaction.exemptions;
 const J = 'e96784d2-85ca-49f8-97c0-b271bfad1510';
 const HP = '/home/user/.gemini/antigravity-cli';
@@ -842,4 +842,24 @@ test('agy: the fixtures\' protobuf blobs, decoded, leak nothing a real machine w
   const first = d.ops.find((o) => o.sql.startsWith('INSERT INTO steps'));
   const step = decode(Buffer.from(first.params[7].$b64, 'base64'), S.Step);
   assert.deepEqual([step.type, step.metadata.model_api_content_id, step.metadata.source, step.user_input.user_response], [TYPE.USER_INPUT, ID('U1'), SOURCE.USER_EXPLICIT, 'Fix the qty bug in cart.py, then run the tests.']);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a conversation resumed in a later
+// launch. The trajectory and summaries rows are snapshots, so their triples name their slots in both
+// launches while the title moves; updated_at moves to the second turn's step row, and the units
+// with it.
+test('agy: resume: the session record\'s updated_at unit moves to the second launch\'s step row', () => {
+  const conv = `conversations/${RS}.db`;
+  const r = sqlResumeCheck(adapter, path.join(FIX, 'resume'), { [conv]: RESUME_FIRST, 'conversation_summaries.db': 1 });
+  const [b, a] = [r.before[RS], r.after[RS]];
+  const steps = `${conv}#table:steps`;
+  // The latest message's own step row.
+  const latestStep = (rs) => rs.filter((x) => x.type === 'message').sort((x, y) => (x.ts < y.ts ? -1 : x.ts > y.ts ? 1 : 0)).pop().units.find(([sk]) => sk === steps);
+  const slots = (s) => s.units.filter(([sk]) => sk !== steps);
+  assert.deepEqual([b.title, a.title], ['Count the files', 'Count the files and tests']);
+  assert.deepEqual(slots(a), slots(b), 'the trajectory and summaries slots stay');
+  assert.ok(b.units.some((u) => JSON.stringify(u) === JSON.stringify(latestStep(r.first[RS]))));
+  assert.ok(a.units.some((u) => JSON.stringify(u) === JSON.stringify(latestStep(r.last[RS]))), 'the second launch\'s latest step row');
+  assert.ok(!a.units.some((u) => JSON.stringify(u) === JSON.stringify(latestStep(r.first[RS]))));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });

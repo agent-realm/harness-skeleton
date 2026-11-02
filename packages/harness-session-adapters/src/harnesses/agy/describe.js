@@ -5,10 +5,10 @@
 
 export const describe = Object.freeze({
   adapter: '@agent-realm/harness-session-adapters/agy',
-  adapter_ver: '0.2.2',
+  adapter_ver: '0.3.0',
   model_version: 'sessions-model/1',
   harness: 'agy',
-  state_ver: 2,
+  state_ver: 3,
   // Observed on 1.4.3 and 1.4.4 (spec §1); none is certified until conformance runs against a real
   // agy.
   versions: { certified: [], compatible: [] },

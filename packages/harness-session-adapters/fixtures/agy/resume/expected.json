@@ -1,0 +1,280 @@
+{
+  "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c": [
+    {
+      "type": "message",
+      "message_id": "775ce9d97764feb6c874ec4e7b20cd70",
+      "parent_id": null,
+      "order": "000000000000",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Count the files."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "cmp_sha": "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:0"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "c7ae2402adae054bfa790541a6757b8b",
+      "parent_id": null,
+      "order": "000000000001",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-22T09:00:03.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-rs-01",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "Two files."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "cmp_sha": "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "d07640f3f8e048142d654090fffeff89",
+      "parent_id": null,
+      "order": "000000000002",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-23T09:00:00.000Z",
+      "requested_model": null,
+      "served_model": null,
+      "effort": null,
+      "response_id": null,
+      "aliases": [],
+      "role": "user",
+      "source": "user",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "And in tests?"
+        }
+      ],
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "cmp_sha": "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:2"
+        ]
+      ]
+    },
+    {
+      "type": "message",
+      "message_id": "e9eee470526aff61c234f7dbd238cacc",
+      "parent_id": null,
+      "order": "000000000003",
+      "agent_id": "",
+      "to_user": null,
+      "to_model": null,
+      "status": "complete",
+      "state": "current",
+      "on_active_branch": null,
+      "ts": "2026-10-23T09:00:02.000Z",
+      "requested_model": "MODEL_PLACEHOLDER_M417",
+      "served_model": "gemini-4-argon",
+      "effort": null,
+      "response_id": "resp-rs-03",
+      "aliases": [],
+      "role": "assistant",
+      "source": "model",
+      "parts": [
+        {
+          "part_id": "0",
+          "kind": "text",
+          "text": "One file."
+        }
+      ],
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "cmp_sha": "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915",
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
+    },
+    {
+      "type": "session",
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "engine": null,
+      "client": "agy",
+      "harness_version": null,
+      "title": "Count the files and tests",
+      "title_set_by": "unknown",
+      "cwd": "/home/user/work/ag3/toyshop",
+      "last_cwd": null,
+      "created_at": "2026-10-22T08:59:57.000Z",
+      "updated_at": "2026-10-23T09:00:02.000Z",
+      "state": "active",
+      "pinned": null,
+      "mode": null,
+      "kind": null,
+      "reuse": "impossible",
+      "ts_source": "event",
+      "aliases": [],
+      "fingerprint": {
+        "cmp_shas": [
+          "f5e7fd03145af4ca22a87b0a06af448ae294b5e7a2629c00f67de6849447834b",
+          "df576a223c595375b28bf80666e19fe2f9f7f1db7aac33a37b550b3706cb782b",
+          "1d9be9efed42db3d157853f6be125aecca1808b18875d58e24ab2877f746e537",
+          "2f7a883deadd7fb8ffce4191e9653fe5cb554eadea8428741d5d7521bdef7915"
+        ]
+      },
+      "setup": null,
+      "units": [
+        [
+          "conversation_summaries.db#table:conversation_summaries",
+          1,
+          "conversation_summaries.db#table:conversation_summaries"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:3"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:trajectory_metadata_blob",
+          1,
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:trajectory_metadata_blob"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-rs-01",
+      "anchor": {
+        "response_id": "resp-rs-01"
+      },
+      "input": 5000,
+      "output": 4,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:gen_metadata",
+          1,
+          "gen_metadata:0"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:1"
+        ]
+      ]
+    },
+    {
+      "type": "usage",
+      "usage_id": "resp-rs-03",
+      "anchor": {
+        "response_id": "resp-rs-03"
+      },
+      "input": 5200,
+      "output": 3,
+      "cache_read": null,
+      "cache_write": null,
+      "reasoning": null,
+      "cost": null,
+      "input_includes_cache": null,
+      "output_includes_reasoning": null,
+      "granularity": "per_response",
+      "model": "gemini-4-argon",
+      "harness": "agy",
+      "session_id": "7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c",
+      "incarnation": "",
+      "tool_prompt": null,
+      "units": [
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:gen_metadata",
+          1,
+          "gen_metadata:1"
+        ],
+        [
+          "conversations/7e5a1c2d-3b4e-4f5a-8b6c-7d8e9f0a1b2c.db#table:steps",
+          1,
+          "steps:3"
+        ]
+      ]
+    }
+  ]
+}

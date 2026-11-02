@@ -43,14 +43,16 @@ export function storeOf(adapter, harnessPath) {
 
 // The records of every session, sorted by type and key, without the fields that depend on where
 // the fixture was copied: `host`, `harness_path`, and `content_sha` (which hashes both).
-// `units: false` leaves each record's `units` out, for views whose sources sit at different
-// generations.
+// `units: false` leaves each record's `units` out; `units: 'keys'` keeps each triple's source_key
+// and unit_key only. A generation is the engine's count of a source's resets, so two engines that
+// read a source through different resets number it differently (staleUnits checks it instead).
 export function project(views, { units = true } = {}) {
   const out = {};
+  const shape = (u) => (units === 'keys' ? u.map(([sk, , uk]) => [sk, uk]) : u);
   for (const sid of Object.keys(views).sort()) {
     out[sid] = [...views[sid].values()]
       .sort((a, b) => (a.type + '\u0000' + recordKey(a) < b.type + '\u0000' + recordKey(b) ? -1 : 1))
-      .map(({ host: _h, harness_path: _p, content_sha: _c, units: u, ...r }) => (units && u !== undefined ? { ...r, units: u } : r));
+      .map(({ host: _h, harness_path: _p, content_sha: _c, units: u, ...r }) => (units && u !== undefined ? { ...r, units: shape(u) } : r));
   }
   return out;
 }
@@ -63,7 +65,7 @@ function compareViews(a, b, opts) {
 
 // The units triples of an engine's views that name no unit its sources hold now, in the generation
 // they are at: after a reset, every record must name the new generation.
-function staleUnits(e) {
+export function staleUnits(e) {
   const out = [];
   for (const [id, held] of e.sessions) {
     for (const r of held.view.values()) {
@@ -87,10 +89,12 @@ export function fullReplay(adapter, harnessPath) {
 // fraction of its length, so cuts land inside lines too. The final view must equal the full
 // replay (sessions-model §3: every incremental path folds to the same state), a further pass must
 // read `unchanged` everywhere, and no partial line may ever be returned.
-// `units: 'exact'` holds `units` to the full replay's too. `units: 'valid'` is for an adapter whose
-// units can move while a record's content does not (sessions-model §2.7: a units-only change is
-// not a revision, so the view keeps the triples of the record's last write): the records are
-// compared without them, and every triple must still name a unit the engine holds.
+// `units: 'exact'` holds `units` to the full replay's too: the same source and unit keys, and each
+// triple at the generation the engine holds the source in (its resets may differ from a full
+// replay's). `units: 'valid'` is for an adapter whose units can move while a record's content does
+// not (sessions-model §2.7: a units-only change is not a revision, so the view keeps the triples of
+// the record's last write): the records are compared without them, and every triple must still
+// name a unit the engine holds.
 export function growthCheck(adapter, fixtureStore, { steps = 24, units = 'exact' } = {}) {
   const dir = tmpStore();
   try {
@@ -105,7 +109,7 @@ export function growthCheck(adapter, fixtureStore, { steps = 24, units = 'exact'
       e.pass();
     }
     const whole = fullReplay(adapter, dir);
-    const opts = { units: units === 'exact' };
+    const opts = { units: units === 'exact' ? 'keys' : false };
     const stale = staleUnits(e);
     const equal = compareViews(e.views(), whole.views(), opts) && !stale.length;
     e.pass();

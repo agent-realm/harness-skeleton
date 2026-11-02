@@ -21,6 +21,40 @@
   - The conformance checklist gains M.native-declared and M.units-input, proved by generic
     checks over every fixture case.
   - The contract links point at sessions-model v1.4.2.
+- **claude-code, codex, gemini-cli and copilot-cli emit `units`, and three of them `native`**
+  (sessions-model v1.4.2, §2.7). Every record of the four names the lines its own fields were taken
+  from; the session record names those behind its title, `cwd`, `last_cwd`, `created_at`,
+  `updated_at`, `harness_version` (and the client, mode, kind or native fields it has), never the
+  fingerprint's messages. No key changes, so no migration note; `content_sha` moves only where
+  `native` is added.
+  - **claude-code** `adapter_ver` 0.3.0, `state_ver` 3: each session field keeps its line's
+    position, and the last compact boundary its line, for a summary's `through_id`. A message
+    names its line, plus the boundary for a compaction summary; a usage record names the line whose
+    report won. `native` on messages: `userType`, `requestId`, `message.stop_reason`,
+    `compactMetadata.trigger`, `compactMetadata.preTokens`.
+  - **codex** `adapter_ver` 0.3.0, `state_ver` 3: each rollout keeps the lines of the open turn's
+    id, the model and the effort, and each turn the token_count lines it sums. An assistant item
+    names its line, the turn_context it took the model and effort from, and the line of its turn
+    id; a usage record names the token_count lines it sums, the model's line and the turn id's.
+    `native` on the session: `payload.approval_policy`, `payload.sandbox_policy.type`, the latest
+    line's winning.
+  - **gemini-cli** `adapter_ver` 0.3.0, `state_ver` 2: each slot of the fold keeps the line that
+    gave its order, the line of its current version and the $patch lines since that changed it; a
+    message names them, and the user record whose echoed result it took. A usage record and an
+    origin link name the current version's line. No `native`.
+  - **copilot-cli** `adapter_ver` 0.3.0, `state_ver` 2: a message names its event, plus the
+    usage_record that gave its served model and effort, the tool.execution_start that named an MCP
+    server, and the binary_asset an attachment came from. The session names the workspace.yaml
+    snapshot when it gave the title or the client. `native` on messages: `data.interactionId`,
+    `data.turnId`, `data.trigger`; on the session: `data.producer`, `data.selectedModel`, the later
+    event's winning.
+  - Each has a `resume` fixture case: a later launch moves session fields, and the session record's
+    units follow them.
+- **Conformance runner: `units` beside the record comparisons.** `project(views, {units: false})`
+  leaves them out. The reset control compares records without them and requires every triple to
+  name the new generation. `growthCheck`'s `units: 'valid'` is for a source that can rewrite a
+  stored record without changing the derived one (Gemini CLI); the default holds units to the full
+  replay. `resumeCheck` grows one source in a second pass and returns the session records of both.
 
 ## 1.0.1 (2026-10-29)
 

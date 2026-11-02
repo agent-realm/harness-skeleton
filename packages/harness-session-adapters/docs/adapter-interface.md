@@ -9,7 +9,7 @@ adapter with file sources a sixth, `unitsFromBytes`. The shapes are the JSON for
 | Name | Shape |
 |---|---|
 | `HARNESS` | the harness id, as in sessions-model §1 rule 3 |
-| `describe()` | `{adapter, adapter_ver, model_version, harness, state_ver, versions, sources, store_shape, ts_source, redaction, facets}`. `store_shape` (sessions §2) says what `harness_path` names: `{kind: 'folder'}`, or `{kind: 'file', default, names}` for a harness whose every harness store is a database file (OpenCode). It is never named `store`, which is `{host, harness, harness_path}` |
+| `describe()` | `{adapter, adapter_ver, model_version, harness, state_ver, versions, sources, store_shape, ts_source, redaction, facets}`, and `native` where the adapter declares native paths (sessions v1.4). `store_shape` (sessions §2) says what `harness_path` names: `{kind: 'folder'}`, or `{kind: 'file', default, names}` for a harness whose every harness store is a database file (OpenCode). It is never named `store`, which is `{host, harness, harness_path}` |
 | `list(store)` | `[{session_id, incarnation, updated_hint, live, sources: [{source_key, role, mode, position_kind}]}]`, sorted by `session_id` |
 | `read(store, session, source_key, from, known)` | `{continuity, units, gone, position, held_back}` |
 | `derive(session, input, state)` | `{changed, live, held, state, checkpoint, adapter_ver, model_version, state_ver}` |
@@ -113,6 +113,8 @@ units or state acts on each:
   saved state and refolds every unit with `complete: true`. A `derive` handed a state of another
   `state_ver` ignores it and starts from empty. Given only the new units, it would then lose the
   earlier ones, so the refold is the consumer's job.
+- **A `native` list** (sessions v1.4) is part of the records: widening or narrowing one is an
+  `adapter_ver` bump.
 - **A key change** (a record's key, sessions-model §1 rule 8) carries a migration note in
   [`CHANGELOG.md`](../CHANGELOG.md), naming the harness, the `adapter_ver` and how old keys map
   to new ones.
@@ -135,6 +137,8 @@ units or state acts on each:
 - **`changed`:** every record whose `content_sha` moved since the state's last derive, sealed by
   `seal()`. The fields are `type`, the session key, the record's own key fields, `content_sha`,
   and `cmp_sha` on messages.
+  - A change in `units` alone does not move `content_sha` (sessions-model v1.4, §2.7), so it does
+    not put a record in `changed`.
 - **`live`:** `{session, message, usage, link, lifecycle}`, each the complete sorted list of live
   keys. The session record's key is `''`.
 - **`held`:** the same shape. Keys withheld as incomplete, which a consumer neither writes nor
@@ -152,6 +156,17 @@ sessions-model §2 lists each record's fields. Where it leaves a JSON shape open
   - The key (`live.link`) is the JCS of `[kind, the other side's reference, at]`.
 - **Lifecycle** (sessions-model §2.6): `target` is `{message_id}`, `{range: {from_id, through_id}}`
   or `{session: true}`. A retraction's last kept message goes in `at`.
+- **`native` and `units`** (sessions-model v1.4, §2.7):
+  - `describe().native` is `{session: [...], message: [...], part: [...]}`, the dotted native paths
+    an adapter carries per record type. Left out, it declares none, and no record carries `native`.
+  - `nativeOf(nativeRecord, paths)` (in `src/records.js`) builds the object: each declared path the
+    native record holds, keyed by the path, and nothing else. A value is a leaf (string, number,
+    boolean or null): an object or a list at a declared path is dropped, so no subtree rides along
+    on an allowlisted path. Declare each leaf you carry.
+  - `units` are `[source_key, generation, unit_key]` triples. `seal()` sorts them, drops a repeated
+    triple, keeps them out of `content_sha`, and throws on a malformed one.
+  - `validateSession(records, {native})` holds `native` keys to the declared paths. Without
+    `native` it checks only the shape of both fields, so records without them validate as before.
 - **`describe().redaction.paths`:** `[{source, path, opened}]`.
   - `source` is a `source_key` pattern.
   - `path` is a field path in that source's units.
@@ -204,6 +219,7 @@ The reference consumer, `conformance/engine.js`, keeps no retry budget: it lets 
 
 Every field this package emits is in sessions-model v1 and sessions v1, including `setup` on the
 session record (§2.1), `tool_prompt` on usage (§2.4) and the qualifier of a positional id where a
-session has several main sources (§1 rule 10, the Codex rollout file name). A field this package
+session has several main sources (§1 rule 10, the Codex rollout file name), and, from v1.4, `native`
+and `units` (§2.7). A field this package
 emits ahead of the contract is listed in this section until the contract takes it. There is none
 today.

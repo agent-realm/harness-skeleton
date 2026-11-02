@@ -27,6 +27,8 @@ export const ITEMS = [
   { id: 'M.redaction', of: 'sessions-model', title: 'Redaction: declared paths redacted in units and records; free text stays; the name lint is clean' },
   { id: 'M.usage', of: 'sessions-model', title: 'Usage: flags, granularity and anchor as declared; a stored zero for unknown is null; no overlap' },
   { id: 'M.setup', of: 'sessions-model', title: 'Setup: null unless the harness store records it; hashes and names only' },
+  { id: 'M.native-declared', of: 'sessions-model', title: 'Native is declared (v1.4): native holds only the paths the adapter declares for the record type; none where it declares none' },
+  { id: 'M.units-input', of: 'sessions-model', title: 'Units name the input (v1.4): every units triple names a unit of the derive input; sorted, unique; outside content_sha' },
   // sessions, Conformance, adapter side
   { id: 'S.describe', of: 'sessions', title: 'describe states every facet; each explicit claim is backed by a fixture' },
   { id: 'S.positive', of: 'sessions', title: 'Positive control: an appended turn reads as appended (stream) or keeps every earlier key (snapshot, delta)' },

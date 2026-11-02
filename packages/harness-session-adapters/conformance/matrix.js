@@ -235,6 +235,8 @@ export const MATRIX = {
     devin: [LINT('devin')],
   },
   'M.setup': all([G]),
+  'M.native-declared': all([G]),
+  'M.units-input': all([G]),
   'M.usage': {
     'claude-code': [G],
     codex: [G],

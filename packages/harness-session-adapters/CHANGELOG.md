@@ -4,6 +4,22 @@
 (sessions-model §1 rule 8): the harness, the `adapter_ver` and how old keys map to new ones. See
 [Versions](docs/adapter-interface.md#versions) for what each version bump asks of a consumer.
 
+## Unreleased
+
+- **sessions-model v1.4 and sessions v1.4: `native` and `units`, the infrastructure** (§2.7). No
+  adapter emits either field yet, so no record changes and no `adapter_ver` moves.
+  - `seal()` keeps `units` out of `content_sha`, sorts the triples, drops a repeated one, and
+    throws on a malformed one.
+  - `nativeOf(nativeRecord, paths)` builds a `native` object from declared paths, leaf values
+    only: an object or a list at a declared path is dropped.
+  - `validateSession` accepts both fields and checks their shape, a `native` value that is not a
+    leaf included. Given `native` (an adapter's
+    `describe().native`), it holds `native` keys to the declared paths. Records without the
+    fields validate as before.
+  - The conformance checklist gains M.native-declared and M.units-input, proved by generic
+    checks over every fixture case.
+  - The contract links point at sessions-model v1.4.0.
+
 ## 1.0.1 (2026-10-29)
 
 - **zed and agy: `read` answers `source_unknown` for a side source that holds no row of the

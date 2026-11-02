@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 import { adapterFor } from '../src/index.js';
 import { jcs } from '../src/jcs.js';
 import { MiniEngine } from '../conformance/engine.js';
-import { fullReplay, project, growthCheck, rewriteCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { fullReplay, project, growthCheck, rewriteCheck, resumeCheck, tmpStore, copyTree, storeOf, nameLint } from '../conformance/runner.js';
+import { normaliseUnits } from '../src/records.js';
 
 const adapter = adapterFor('vscode');
 const FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'vscode');
-const CASES = ['lab', 'features'];
+const CASES = ['lab', 'features', 'resume'];
 const SID_A = '0a0a0a0a-0000-4000-8000-00000000000a';
 
 function withCopy(name, fn) {
@@ -66,6 +67,29 @@ test('vscode: a rewrite of the change log (new inode, shorter) is a reset, and v
   const r = rewriteCheck(adapter, path.join(FIX, 'features', 'store'), rel, 5);
   assert.equal(r.continuity, 'reset');
   assert.ok(r.equal);
+});
+
+// sessions-model §2.7 units, a record's own fields (v1.4.1): a chat reopened in a later launch
+// moves updated_at, harness_version and mode to the new request, and the title to the rename; the
+// session record's units follow them.
+test('vscode: resume: the session record\'s units follow the fields that moved to the second launch', () => {
+  const sid = '0f0f0f0f-0000-4000-8000-00000000000f';
+  const dir = path.join(FIX, 'resume', 'store');
+  const rel = fs.readdirSync(path.join(dir, 'User/workspaceStorage'), { recursive: true }).map((f) => `User/workspaceStorage/${f}`).find((f) => f.endsWith(`${sid}.jsonl`));
+  const ws = rel.replace(/chatSessions\/.*$/, 'workspace.json');
+  const lines = fs.readFileSync(path.join(dir, rel), 'utf8').split('\n');
+  const unit = (n) => [rel, 1, String(Buffer.byteLength(lines.slice(0, n).map((l) => l + '\n').join('')))];
+  const r = resumeCheck(adapter, dir, rel, 2);
+  const [b, a] = [r.before[sid], r.after[sid]];
+  const wsUnit = a.units.find(([sk]) => sk === ws);
+  assert.ok(wsUnit, 'cwd comes from workspace.json');
+  // First launch: the kind 0 (created_at) and the first request (updated_at, harness_version, mode).
+  assert.deepEqual([b.harness_version, b.mode, b.title], ['0.70.0', 'agent', null]);
+  assert.deepEqual(b.units, normaliseUnits([unit(0), unit(1), wsUnit]));
+  // Resumed: the second request and the rename take their place.
+  assert.deepEqual([a.harness_version, a.mode, a.title], ['0.71.0', 'ask', 'Count the files']);
+  assert.deepEqual(a.units, normaliseUnits([unit(0), unit(2), unit(3), wsUnit]));
+  assert.ok(r.equal, 'the resumed view equals a full replay');
 });
 
 test('vscode: a kind 2 with i arrives appended; the cut requests stay, retracted, with a rewind record; nothing is tombstoned', () => {
@@ -454,7 +478,8 @@ test('vscode: describe states every facet, and each explicit claim has a fixture
     assert.ok(['explicit', 'inferable', 'none'].includes(d.facets.linkage[k]), k);
   }
   const explicit = Object.entries(d.facets.lifecycle).filter(([, v]) => v === 'explicit').map(([k]) => k);
-  for (const name of CASES) {
+  // The behaviour cases (`resume` covers units only).
+  for (const name of ['lab', 'features']) {
     const ops = new Set(Object.values(golden(name)).flat().filter((r) => r.type === 'lifecycle').map((r) => r.op));
     for (const op of explicit) if (name === 'features' || op !== 'compaction') assert.ok(ops.has(op), `${name}: explicit ${op} has no fixture record`);
   }

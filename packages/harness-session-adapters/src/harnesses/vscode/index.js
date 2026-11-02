@@ -25,13 +25,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
 import { readStream, readSnapshot, streamUnits, snapshotUnits, unknownSource, plainRel, jsonOf, isRealFile } from '../../sources.js';
-import { seal, recordKey } from '../../records.js';
+import { seal, recordKey, nativeOf } from '../../records.js';
 import { jcs, sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
 
 export const HARNESS = 'vscode';
 const ENGINE = 'local';
-const STATE_VER = 1;
+const STATE_VER = 2;
 const WS = 'User/workspaceStorage';
 const EMPTY_WINDOW = 'User/globalStorage/emptyWindowChatSessions';
 const CHAT_FILE = /^(.+)\.(jsonl|json)$/;
@@ -353,26 +353,31 @@ function applyPath(doc, o) {
 // of `doc.requests[i]`; `timeline` lists every request in the order it entered (`{seq}`) and every
 // truncating splice (`{cut, at, through, unit}`); `retired` holds the cut requests by seq;
 // `renames` the unit keys of `customTitle` ops. A `kind 0` resets all of it.
+// Units (sessions-model §2.7): `su[seq]` is `{e, k}`, the ops that wrote the request whole (`e`)
+// and, per key of the request, the ops at a path inside it (`k`); `ku` the last op that wrote each
+// top-level key of `doc`.
 function newLog() {
-  return { kind: 'log', doc: null, seqs: [], next: 0, timeline: [], retired: {}, renames: [] };
+  return { kind: 'log', doc: null, seqs: [], next: 0, timeline: [], retired: {}, renames: [], su: {}, ku: {} };
 }
 
-function enter(L) {
+function enter(L, unitKey) {
   const s = L.next++;
   L.timeline.push({ seq: s });
+  L.su[s] = { e: [unitKey], k: {} };
   return s;
 }
 
 function dropSeqs(L, gone) {
   if (gone.size) L.timeline = L.timeline.filter((e) => e.cut || !gone.has(e.seq));
+  for (const s of gone) delete L.su[s];
 }
 
 // After an op that may have grown or shrunk `requests` by path: new slots enter the timeline, and
 // vanished ones leave it.
-function resync(L) {
+function resync(L, unitKey) {
   const a = reqsOf(L.doc);
   const n = a ? a.length : 0;
-  if (n > L.seqs.length) while (L.seqs.length < n) L.seqs.push(enter(L));
+  if (n > L.seqs.length) while (L.seqs.length < n) L.seqs.push(enter(L, unitKey));
   else if (n < L.seqs.length) dropSeqs(L, new Set(L.seqs.splice(n)));
 }
 
@@ -389,7 +394,10 @@ function spliceRequests(L, o, unitKey) {
     for (let j = o.i; j < a.length; j++) {
       const id = reqId(a[j]);
       const m = id ? added.findIndex((x, n) => !inherited.has(n) && reqId(x) === id) : -1;
-      if (m >= 0) inherited.set(m, L.seqs[j]);
+      if (m >= 0) {
+        inherited.set(m, L.seqs[j]);
+        L.su[L.seqs[j]] = { e: [unitKey], k: {} }; // re-written whole by this splice
+      }
       else {
         cut.push(L.seqs[j]);
         L.retired[L.seqs[j]] = a[j];
@@ -404,13 +412,13 @@ function spliceRequests(L, o, unitKey) {
   }
   added.forEach((x, n) => {
     a.push(x);
-    L.seqs.push(inherited.has(n) ? inherited.get(n) : enter(L));
+    L.seqs.push(inherited.has(n) ? inherited.get(n) : enter(L, unitKey));
   });
 }
 
 // `kind 1` or `kind 3` at ['requests'] (never observed): the array replaced whole. A request whose
 // id is still there keeps its place; what left vanishes; what is new is appended.
-function replaceRequests(L, o) {
+function replaceRequests(L, o, unitKey) {
   const before = reqsOf(L.doc) ?? [];
   const pool = new Map();
   before.forEach((r, j) => {
@@ -426,9 +434,10 @@ function replaceRequests(L, o) {
       const s = pool.get(id);
       pool.delete(id);
       old.delete(s);
+      L.su[s] = { e: [unitKey], k: {} };
       return s;
     }
-    return enter(L);
+    return enter(L, unitKey);
   });
   dropSeqs(L, old);
 }
@@ -441,7 +450,9 @@ function foldOp(L, o, unitKey) {
     L.timeline = [];
     L.retired = {};
     L.renames = [];
-    L.seqs = (reqsOf(L.doc) ?? []).map(() => enter(L));
+    L.su = {};
+    L.ku = Object.fromEntries(Object.keys(L.doc ?? {}).map((k) => [k, unitKey]));
+    L.seqs = (reqsOf(L.doc) ?? []).map(() => enter(L, unitKey));
     return;
   }
   if (!isObj(L.doc) || ![1, 2, 3].includes(o.kind) || !validPath(o.k)) return;
@@ -449,7 +460,7 @@ function foldOp(L, o, unitKey) {
   if (p[0] === 'requests') {
     if (p.length === 1) {
       if (o.kind === 2) spliceRequests(L, o, unitKey);
-      else replaceRequests(L, o);
+      else replaceRequests(L, o, unitKey);
       return;
     }
     if (p.length === 2 && o.kind === 3 && Number.isInteger(p[1])) {
@@ -462,12 +473,30 @@ function foldOp(L, o, unitKey) {
       return;
     }
     // A set inside a request, or of a whole request by index: it keeps its place.
+    const had = L.seqs.length;
     applyPath(L.doc, o);
-    resync(L);
+    resync(L, unitKey);
+    const seq = Number.isInteger(p[1]) ? L.seqs[p[1]] : undefined;
+    if (seq !== undefined && p[1] < had) {
+      const u = L.su[seq];
+      if (p.length === 2) L.su[seq] = { e: [unitKey], k: {} };
+      else if (!(u.k[p[2]] ??= []).includes(unitKey)) u.k[p[2]].push(unitKey);
+    }
     return;
   }
   applyPath(L.doc, o);
+  L.ku[p[0]] = unitKey;
   if (o.kind === 1 && p.length === 1 && p[0] === 'customTitle' && typeof o.v === 'string') L.renames.push(unitKey);
+}
+
+// A request's fields as the user message and as the reply read them (sessions-model §2.7: a
+// record's own fields). The reply reads every key but the prompt's own.
+const USER_KEYS = ['requestId', 'message', 'variableData', 'timestamp', 'hiddenFromTranscript'];
+const PROMPT_ONLY = new Set(['message', 'variableData']);
+function requestUnits(su, part) {
+  if (!su) return [];
+  const keys = part === 'user' ? USER_KEYS : part === 'reply' ? Object.keys(su.k).filter((k) => !PROMPT_ONLY.has(k)) : [part];
+  return [...su.e, ...keys.flatMap((k) => su.k[k] ?? [])];
 }
 
 // ---- records ----------------------------------------------------------------------------------
@@ -736,8 +765,8 @@ function userParts(r) {
 
 // One request's records: the user message, then (once it has ended) the reply, its sub-agents'
 // messages, its usage and its compaction record. While the reply is being written, its keys are
-// held.
-function requestRecords(r, { isLast, retracted, pos }) {
+// held. `units` are the triples of the ops behind the prompt's fields and the reply's.
+function requestRecords(r, { isLast, retracted, pos, units }) {
   const uid = String(r.requestId);
   const state = retracted ? 'retracted' : 'current';
   const hidden = r.hiddenFromTranscript === true;
@@ -746,11 +775,13 @@ function requestRecords(r, { isLast, retracted, pos }) {
     agent_id: '', to_user: null, to_model: null, state, on_active_branch: null,
     requested_model: null, served_model: null, effort: null, response_id: null, aliases: [],
   };
+  // The declared native fields are the reply's (agent, credits, timings): the prompt and a
+  // sub-agent's messages hold none of them.
   const messages = [{
     ...base, message_id: uid, parent_id: null, order: ord(0), role: 'user',
     // hiddenFromTranscript: sent to the model, not shown; what sent it is not recorded.
     source: hidden ? null : 'user', ...(hidden ? { to_user: false, to_model: true } : {}),
-    status: 'complete', ts: isoMs(r.timestamp), parts: userParts(r),
+    status: 'complete', ts: isoMs(r.timestamp), parts: userParts(r), native: {}, units: units.user,
   }];
   const respId = r.responseId ? String(r.responseId) : null;
   const aid = respId ?? `${uid}:response`;
@@ -772,9 +803,9 @@ function requestRecords(r, { isLast, retracted, pos }) {
   const ts = isoMs(r.responseTimestamp) ?? isoMs(r.timestamp);
   const asst = {
     ...base, ...(hidden ? { to_user: false } : {}), role: 'assistant', source: 'model', status, ts,
-    requested_model: str(r.modelId) || null, served_model: served, response_id: respId,
+    requested_model: str(r.modelId) || null, served_model: served, response_id: respId, native: {}, units: units.reply,
   };
-  messages.push({ ...asst, message_id: aid, parent_id: uid, order: ord(1), parts: main });
+  messages.push({ ...asst, message_id: aid, parent_id: uid, order: ord(1), parts: main, native: nativeOf(r, describeData.native.message) });
   // A sub-agent's calls carry subAgentInvocationId: its own speaker, anchored on the reply's id.
   subs.forEach((parts, n) => messages.push({ ...asst, message_id: `${aid}+${n + 1}`, parent_id: aid, agent_id: subOrder[n], order: ord(n + 2), parts }));
 
@@ -786,18 +817,25 @@ function requestRecords(r, { isLast, retracted, pos }) {
     type: 'usage', usage_id: usageId, anchor: respId ? { response_id: respId } : { message_id: aid },
     input, output, cache_read: null, cache_write: null, reasoning: null, cost: null,
     input_includes_cache: null, output_includes_reasoning: null, granularity: 'per_turn', model: served,
+    units: units.reply,
   } : null;
   // `/compact`: a request whose metadata holds the summary; the earlier turns stay (fixture
   // captures).
-  const lifecycle = summary ? [{ type: 'lifecycle', lifecycle_id: aid, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit' }] : [];
+  const lifecycle = summary ? [{ type: 'lifecycle', lifecycle_id: aid, op: 'compaction', target: { session: true }, at: null, ts, evidence: 'explicit', units: units.reply }] : [];
   return { messages, usage, lifecycle, held: null };
 }
 
-// The folded view of the main source derive reads.
-function viewOf(sk, s) {
-  if (s.kind === 'log') return { sk, doc: s.doc, seqs: s.seqs, timeline: s.timeline, retired: s.retired, renames: s.renames };
+// The folded view of the main source derive reads. `tri` turns a unit key into its units triple;
+// a legacy snapshot's every field comes from its one unit.
+function viewOf(sk, s, gen) {
+  const tri = (uk) => [sk, gen, uk];
+  if (s.kind === 'log') return { sk, doc: s.doc, seqs: s.seqs, timeline: s.timeline, retired: s.retired, renames: s.renames, su: s.su, ku: s.ku, tri };
   const reqs = reqsOf(s.doc) ?? [];
-  return { sk, doc: s.doc, seqs: reqs.map((_, i) => i), timeline: reqs.map((_, i) => ({ seq: i })), retired: {}, renames: [] };
+  const whole = { e: [s.unit], k: {} };
+  return {
+    sk, doc: s.doc, seqs: reqs.map((_, i) => i), timeline: reqs.map((_, i) => ({ seq: i })), retired: {}, renames: [],
+    su: Object.fromEntries(reqs.map((_, i) => [i, whole])), ku: Object.fromEntries(Object.keys(s.doc ?? {}).map((k) => [k, s.unit])), tri,
+  };
 }
 
 function lastActivity(doc) {
@@ -808,18 +846,20 @@ function lastActivity(doc) {
 
 // Of several main sources for one id, the change log wins over a legacy snapshot, then the one
 // with the latest activity, then the lowest source_key.
-function pickMain(src) {
+function pickMain(src, gen) {
   const c = Object.entries(src).filter(([, s]) => (s.kind === 'log' || s.kind === 'snap') && isObj(s.doc));
   c.sort(([ka, a], [kb, b]) => (a.kind === b.kind ? 0 : a.kind === 'log' ? -1 : 1)
     || lastActivity(b.doc) - lastActivity(a.doc) || (ka < kb ? -1 : ka > kb ? 1 : 0));
-  return c.length ? viewOf(c[0][0], c[0][1]) : null;
+  return c.length ? viewOf(c[0][0], c[0][1], gen[c[0][0]]) : null;
 }
 
 // Every record of the session from the folded view, and the keys held while a reply is written.
 function recordsOf(view) {
   const recs = [];
   const held = { session: [], message: [], usage: [], link: [], lifecycle: [] };
-  if (!view) return { recs, held, versions: [], modes: [] };
+  const tsUnits = new Map(); // message_id -> the triples behind its `ts`, for the session's updated_at
+  if (!view) return { recs, held, versions: [], modes: [], tsUnits };
+  const unitsOf = (seq, part) => requestUnits(view.su[seq], part).map(view.tri);
   const reqs = reqsOf(view.doc) ?? [];
   const index = new Map(view.seqs.map((s, i) => [s, i]));
   const lastSeq = view.seqs[view.seqs.length - 1];
@@ -834,8 +874,8 @@ function recordsOf(view) {
   const idsOf = new Map(); // seq -> the message ids written for it
   const seen = new Set();
   const usageSeen = new Set();
-  const versions = []; // [order, extensionVersion] of current requests
-  const modes = []; // [order, modeInfo.kind] of current requests
+  const versions = []; // [order, extensionVersion, units] of current requests
+  const modes = []; // [order, modeInfo.kind, units] of current requests
   let pos = 0;
   for (const e of view.timeline) {
     if (e.cut) {
@@ -846,7 +886,7 @@ function recordsOf(view) {
       recs.push({
         type: 'lifecycle', lifecycle_id: `${view.sk}@${e.unit}#1`, op: 'rewind',
         target: { range: { from_id: ids[0], through_id: ids[ids.length - 1] } },
-        at: kept && kept.length ? kept[kept.length - 1] : null, ts: isoMs(e.at), evidence: 'explicit',
+        at: kept && kept.length ? kept[kept.length - 1] : null, ts: isoMs(e.at), evidence: 'explicit', units: [view.tri(e.unit)],
       });
       continue;
     }
@@ -858,8 +898,12 @@ function recordsOf(view) {
     // Keys stay unique: a retracted copy never shadows a current message with the same id.
     if (seen.has(id) || (retracted && currentIds.has(id))) continue;
     seen.add(id);
-    const out = requestRecords(r, { isLast: live && e.seq === lastSeq, retracted, pos: pos++ });
+    const units = { user: unitsOf(e.seq, 'user'), reply: unitsOf(e.seq, 'reply') };
+    const out = requestRecords(r, { isLast: live && e.seq === lastSeq, retracted, pos: pos++, units });
     idsOf.set(e.seq, out.messages.map((m) => m.message_id));
+    // A prompt's ts is its `timestamp`; a reply's its `responseTimestamp`, else the `timestamp`.
+    const at = (k) => unitsOf(e.seq, k);
+    out.messages.forEach((m, n) => tsUnits.set(m.message_id, n === 0 || r.responseTimestamp == null ? at('timestamp') : at('responseTimestamp')));
     for (const m of out.messages) recs.push({ type: 'message', ...m });
     if (out.usage && !usageSeen.has(out.usage.usage_id)) {
       usageSeen.add(out.usage.usage_id);
@@ -868,22 +912,23 @@ function recordsOf(view) {
     recs.push(...out.lifecycle);
     if (out.held) for (const [t, ks] of Object.entries(out.held)) held[t].push(...ks);
     if (live) {
-      const at = out.messages[0].order;
-      if (isObj(r.agent) && str(r.agent.extensionVersion)) versions.push([at, r.agent.extensionVersion]);
-      if (isObj(r.modeInfo) && str(r.modeInfo.kind)) modes.push([at, r.modeInfo.kind]);
+      const order = out.messages[0].order;
+      if (isObj(r.agent) && str(r.agent.extensionVersion)) versions.push([order, r.agent.extensionVersion, unitsOf(e.seq, 'agent')]);
+      if (isObj(r.modeInfo) && str(r.modeInfo.kind)) modes.push([order, r.modeInfo.kind, unitsOf(e.seq, 'modeInfo')]);
     }
   }
   // A `customTitle` op: a rename the store records (the title itself is the fold's last value).
   for (const u of view.renames) {
-    recs.push({ type: 'lifecycle', lifecycle_id: `${view.sk}@${u}#1`, op: 'rename', target: { session: true }, at: null, ts: null, evidence: 'explicit' });
+    recs.push({ type: 'lifecycle', lifecycle_id: `${view.sk}@${u}#1`, op: 'rename', target: { session: true }, at: null, ts: null, evidence: 'explicit', units: [view.tri(u)] });
   }
-  return { recs, held, versions, modes };
+  return { recs, held, versions, modes, tsUnits };
 }
 
-// Keep the value from the earliest (`first`) or latest record by its sort key.
-function keep(s, field, value, sortKey, first) {
+// Keep the value from the earliest (`first`) or latest record by its sort key, with the units
+// triples behind it.
+function keep(s, field, value, sortKey, first, units) {
   const cur = s[field];
-  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value];
+  if (!cur || (first ? sortKey < cur[0] : sortKey > cur[0])) s[field] = [sortKey, value, units];
 }
 
 function clientOf(harnessPath) {
@@ -901,9 +946,10 @@ function sourceKind(sk) {
 function emptyState() {
   return {
     state_ver: STATE_VER,
-    // source_key -> the fold of a change log (`log`), a legacy snapshot (`snap`) or a
-    // workspace.json (`ws`)
+    // source_key -> the fold of a change log (`log`), a legacy snapshot (`snap`, with its one unit
+    // key) or a workspace.json (`ws`, with its one unit key)
     src: {},
+    gen: {}, // source_key -> generation, for the `units` triples
     emitted: { session: {}, message: {}, usage: {}, link: {}, lifecycle: {} }, // key -> content_sha
   };
 }
@@ -921,32 +967,43 @@ export function derive(session, input, state) {
     const sk = src.source_key;
     const kind = sourceKind(sk);
     if (!kind) continue;
-    if (src.complete || !st.src[sk] || st.src[sk].kind !== kind) st.src[sk] = kind === 'log' ? newLog() : kind === 'snap' ? { kind, doc: null } : { kind, cwd: null };
+    st.gen[sk] = src.generation;
+    if (src.complete || !st.src[sk] || st.src[sk].kind !== kind) st.src[sk] = kind === 'log' ? newLog() : kind === 'snap' ? { kind, doc: null, unit: null } : { kind, cwd: null, unit: null };
     const s = st.src[sk];
     const units = kind === 'log' ? [...(src.units ?? [])].sort((a, b) => Number(a.unit_key) - Number(b.unit_key)) : (src.units ?? []);
     for (const u of units) {
       const o = jsonOf(u);
       if (kind === 'log') foldOp(s, o, u.unit_key);
-      else if (kind === 'snap') s.doc = isObj(o) ? o : null; // a snapshot unit is the whole document
-      else s.cwd = folderOf(o);
+      else if (kind === 'snap') {
+        s.doc = isObj(o) ? o : null; // a snapshot unit is the whole document
+        s.unit = u.unit_key;
+      } else {
+        s.cwd = folderOf(o);
+        s.unit = u.unit_key;
+      }
     }
   }
 
-  const view = pickMain(st.src);
-  const { recs, held, versions, modes } = recordsOf(view);
+  const view = pickMain(st.src, st.gen);
+  const { recs, held, versions, modes, tsUnits } = recordsOf(view);
   const sealed = recs.map((r) => seal({ type: r.type, ...key, ...r }));
 
-  // The session record.
+  // The session record. Its units are those behind its own fields (sessions-model v1.4.1, §2.7).
   const doc = view ? view.doc : null;
   const f = {};
-  for (const m of sealed) if (m.type === 'message' && m.ts) keep(f, 'updated_at', m.ts, m.ts, false);
-  for (const [at, v] of versions) keep(f, 'harness_version', v, at, false);
-  for (const [at, v] of modes) keep(f, 'mode', v, at, false);
+  for (const m of sealed) if (m.type === 'message' && m.ts) keep(f, 'updated_at', m.ts, m.ts, false, tsUnits.get(m.message_id) ?? []);
+  for (const [at, v, u] of versions) keep(f, 'harness_version', v, at, false, u);
+  for (const [at, v, u] of modes) keep(f, 'mode', v, at, false, u);
   const createdAt = doc ? isoMs(doc.creationDate) : null;
-  if (createdAt) keep(f, 'updated_at', createdAt, createdAt, false);
+  const createdUnits = createdAt && view.ku.creationDate !== undefined ? [view.tri(view.ku.creationDate)] : [];
+  if (createdAt) keep(f, 'updated_at', createdAt, createdAt, false, createdUnits);
   const ws = view ? WS_CHAT.exec(view.sk) : null;
-  const side = ws ? st.src[`${WS}/${ws[1]}/workspace.json`] : null;
+  const wsKey = ws ? `${WS}/${ws[1]}/workspace.json` : null;
+  const side = ws ? st.src[wsKey] : null;
   const title = doc && str(doc.customTitle) ? doc.customTitle : null;
+  const sessionUnits = [...createdUnits, ...['updated_at', 'harness_version', 'mode'].flatMap((k) => (f[k] ? f[k][2] : []))];
+  if (title && view.ku.customTitle !== undefined) sessionUnits.push(view.tri(view.ku.customTitle));
+  if (side && side.cwd && side.unit !== null) sessionUnits.push([wsKey, st.gen[wsKey], side.unit]);
   const current = sealed.filter((m) => m.type === 'message' && m.state === 'current').sort((a, b) => (a.order < b.order ? -1 : a.order > b.order ? 1 : 0));
   sealed.push(seal({
     type: 'session',
@@ -972,6 +1029,7 @@ export function derive(session, input, state) {
     ts_source: 'event',
     aliases: [],
     fingerprint: { cmp_shas: current.map((m) => m.cmp_sha) },
+    units: sessionUnits,
   }));
 
   // Emit what moved; forget what is gone (the consumer tombstones it); keep what is held.

@@ -320,5 +320,34 @@ function lab(scrub) {
   ]);
 }
 
+// ---- resume -----------------------------------------------------------------------------------
+
+// A chat reopened in a later launch: the change log grows by a request answered by a newer Copilot
+// Chat in ask mode, and a rename. The session record's updated_at, harness_version and mode move to
+// the second launch's request, its title to the rename, and its units with them; created_at stays
+// on the kind 0, cwd on workspace.json. The resume test (test/vscode.test.js) cuts the log after
+// its first two lines.
+function resume() {
+  const ws = wsId(CWD_URI);
+  const SID_R = '0f0f0f0f-0000-4000-8000-00000000000f';
+  const TR = Date.UTC(2026, 0, 8, 9, 0, 0);
+  const TR2 = Date.UTC(2026, 0, 9, 15, 0, 0);
+  const later = {
+    agent: { extensionId: { value: 'GitHub.copilot-chat', _lower: 'github.copilot-chat' }, extensionVersion: '0.71.0', id: 'github.copilot.editsAgent', name: 'agent' },
+    modeInfo: { kind: 'ask', isBuiltin: true, telemetryModeId: 'ask', telemetryModeName: 'ask', permissionLevel: 'default' },
+  };
+  writeCase('resume', [
+    [`${WS}/${ws}/workspace.json`, JSON.stringify({ folder: CWD_URI }) + '\n'],
+    [`${WS}/${ws}/chatSessions/${SID_R}.jsonl`, lines([
+      snapshot(SID_R, [], { creationDate: TR }),
+      splice(['requests'], [answer(TR + 1000, 'Count the files.', 'Two files.')]),
+      // The second launch.
+      splice(['requests'], [answer(TR2, 'And in src?', 'One file.', 'gpt-6-luna', { extra: later })]),
+      set(['customTitle'], 'Count the files'),
+    ])],
+  ]);
+}
+
 features();
+resume();
 if (process.argv[2]) lab(process.argv[2]);

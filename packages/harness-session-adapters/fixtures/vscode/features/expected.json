@@ -15,7 +15,14 @@
       },
       "at": "response_00000000-0000-4000-8000-000000000036",
       "ts": "2026-01-06T10:01:30.000Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "21837"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -29,7 +36,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "25317"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -43,7 +57,14 @@
       },
       "at": null,
       "ts": null,
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "973"
+        ]
+      ]
     },
     {
       "type": "lifecycle",
@@ -57,7 +78,14 @@
       },
       "at": null,
       "ts": "2026-01-06T10:00:50.001Z",
-      "evidence": "explicit"
+      "evidence": "explicit",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "16427"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -88,7 +116,15 @@
           "text": "Fix the qty bug in cart.py, then run python3 -m pytest -q."
         }
       ],
-      "cmp_sha": "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d"
+      "native": {},
+      "cmp_sha": "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "1023"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -119,7 +155,15 @@
           "text": "Explain the fix in one sentence."
         }
       ],
-      "cmp_sha": "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab"
+      "native": {},
+      "cmp_sha": "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "7777"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -150,7 +194,15 @@
           "text": "Use a sub-agent to list the test files."
         }
       ],
-      "cmp_sha": "3075092bacb1360b0f44fbe9c1bbf6496df890244be384df30f4475d8aa1abfb"
+      "native": {},
+      "cmp_sha": "3075092bacb1360b0f44fbe9c1bbf6496df890244be384df30f4475d8aa1abfb",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9910"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -195,7 +247,15 @@
           "bytes_len": null
         }
       ],
-      "cmp_sha": "c02f0ff144044f097cf5721ad5f4e2b4c1b32eeb90def81195b36409b4e4eca9"
+      "native": {},
+      "cmp_sha": "c02f0ff144044f097cf5721ad5f4e2b4c1b32eeb90def81195b36409b4e4eca9",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "12725"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -216,6 +276,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:30.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "request_00000000-0000-4000-8000-000000000019:response",
       "parent_id": "request_00000000-0000-4000-8000-000000000019",
       "order": "00000003:0001",
@@ -226,7 +292,14 @@
           "text": "A cart page, and the cart module."
         }
       ],
-      "cmp_sha": "1b8eecde5abc6e9114c26081a2908a5e9f9edc57e4dc0dcd05d79b531bfa1e06"
+      "cmp_sha": "1b8eecde5abc6e9114c26081a2908a5e9f9edc57e4dc0dcd05d79b531bfa1e06",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "12725"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -257,7 +330,15 @@
           "text": "Internal follow-up."
         }
       ],
-      "cmp_sha": "bbf890c55541d1b1280116c2158b5bee041068e4a789758f8572d806d827b4d7"
+      "native": {},
+      "cmp_sha": "bbf890c55541d1b1280116c2158b5bee041068e4a789758f8572d806d827b4d7",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "14834"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -288,7 +369,15 @@
           "text": "/compact"
         }
       ],
-      "cmp_sha": "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d"
+      "native": {},
+      "cmp_sha": "80a7627bec2656a3e1c8c4609c2db8a67b9203e815e4ee409d454f7c93dfda8d",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "16427"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -319,7 +408,15 @@
           "text": "Add a discount field."
         }
       ],
-      "cmp_sha": "4014b40579faa7737eac63b79a6c4808e0faa72f937aacfb6c66785bd4e8e753"
+      "native": {},
+      "cmp_sha": "4014b40579faa7737eac63b79a6c4808e0faa72f937aacfb6c66785bd4e8e753",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "18146"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -350,7 +447,15 @@
           "text": "And the coupon code?"
         }
       ],
-      "cmp_sha": "548afb5e65bdeeaf8cb664b98bed3f9c5e54ece8bca147ebff6f099f8b480ce5"
+      "native": {},
+      "cmp_sha": "548afb5e65bdeeaf8cb664b98bed3f9c5e54ece8bca147ebff6f099f8b480ce5",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "19246"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -381,7 +486,15 @@
           "text": "Now add a discount field."
         }
       ],
-      "cmp_sha": "4a860dbbef2627b1ab4d29453cf3d7a7c6dd352e4af169f49940479e95d3dde3"
+      "native": {},
+      "cmp_sha": "4a860dbbef2627b1ab4d29453cf3d7a7c6dd352e4af169f49940479e95d3dde3",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "20195"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -412,7 +525,15 @@
           "text": "Now add a percentage discount field."
         }
       ],
-      "cmp_sha": "f6fd752d6810d069c27f305a3236c938cf4645dc9727cf55733a2166ab91cca0"
+      "native": {},
+      "cmp_sha": "f6fd752d6810d069c27f305a3236c938cf4645dc9727cf55733a2166ab91cca0",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "23529"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -443,7 +564,15 @@
           "text": "Delete the tests directory."
         }
       ],
-      "cmp_sha": "e8197b429a80615ef58797550152bc1f8c84cee2d5dc85b47151788b9bdbfcf8"
+      "native": {},
+      "cmp_sha": "e8197b429a80615ef58797550152bc1f8c84cee2d5dc85b47151788b9bdbfcf8",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "25421"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -474,7 +603,15 @@
           "text": "Summarise the session."
         }
       ],
-      "cmp_sha": "23f4b7345ea3e3eeca08c7e3c33b9717b96533edd647ad7489cf111782a7186d"
+      "native": {},
+      "cmp_sha": "23f4b7345ea3e3eeca08c7e3c33b9717b96533edd647ad7489cf111782a7186d",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "26855"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -495,6 +632,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:01.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000005",
       "parent_id": "request_00000000-0000-4000-8000-000000000004",
       "order": "00000000:0001",
@@ -621,7 +764,19 @@
           "text": "Fixed: the total multiplies by qty."
         }
       ],
-      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c"
+      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "1023"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9867"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -642,6 +797,11 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:09.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000010",
       "parent_id": "request_00000000-0000-4000-8000-000000000009",
       "order": "00000001:0001",
@@ -652,7 +812,39 @@
           "text": "The total now multiplies price by qty."
         }
       ],
-      "cmp_sha": "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48"
+      "cmp_sha": "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "7777"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "8770"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "8992"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9566"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9622"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9677"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -673,6 +865,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:20.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000015",
       "parent_id": "request_00000000-0000-4000-8000-000000000014",
       "order": "00000002:0001",
@@ -709,7 +907,14 @@
           "text": "There are two test files."
         }
       ],
-      "cmp_sha": "7710e7443c38b188847521c386855fd3d5a2001ce69d0fc6f82526b870d44c5d"
+      "cmp_sha": "7710e7443c38b188847521c386855fd3d5a2001ce69d0fc6f82526b870d44c5d",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9910"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -730,6 +935,7 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:20.001Z",
+      "native": {},
       "message_id": "response_00000000-0000-4000-8000-000000000015+1",
       "parent_id": "response_00000000-0000-4000-8000-000000000015",
       "order": "00000002:0002",
@@ -773,7 +979,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "48356ed619b6b828717e500c7a91c2d6d2e715fad60139e0f2ce12d673d27555"
+      "cmp_sha": "48356ed619b6b828717e500c7a91c2d6d2e715fad60139e0f2ce12d673d27555",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9910"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -794,6 +1007,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:40.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000024",
       "parent_id": "request_00000000-0000-4000-8000-000000000023",
       "order": "00000004:0001",
@@ -804,7 +1023,14 @@
           "text": "Done."
         }
       ],
-      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7"
+      "cmp_sha": "a93c1759524997da46ff41db3eef4b15b7f8a51653f6d8abc6aa815f298be0f7",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "14834"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -825,6 +1051,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:50.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000029",
       "parent_id": "request_00000000-0000-4000-8000-000000000028",
       "order": "00000005:0001",
@@ -841,7 +1073,14 @@
           "replaces": "unknown"
         }
       ],
-      "cmp_sha": "27eb979fa72d3508afbb067a18d1bff8c56ac28c41882a1f9d0804b6a3bc740c"
+      "cmp_sha": "27eb979fa72d3508afbb067a18d1bff8c56ac28c41882a1f9d0804b6a3bc740c",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "16427"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -862,6 +1101,9 @@
       "source": "model",
       "status": "error",
       "ts": "2026-01-06T10:01:00.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent"
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000034",
       "parent_id": "request_00000000-0000-4000-8000-000000000033",
       "order": "00000006:0001",
@@ -879,7 +1121,14 @@
           "http_status": null
         }
       ],
-      "cmp_sha": "b7fe5b61dc700101a67aba3e0df9fcdee16bb977bb9ad80841917672110c1c43"
+      "cmp_sha": "b7fe5b61dc700101a67aba3e0df9fcdee16bb977bb9ad80841917672110c1c43",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "18146"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -900,6 +1149,9 @@
       "source": "model",
       "status": "interrupted",
       "ts": "2026-01-06T10:01:10.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent"
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000036",
       "parent_id": "request_00000000-0000-4000-8000-000000000035",
       "order": "00000007:0001",
@@ -910,7 +1162,14 @@
           "text": "Looking at the"
         }
       ],
-      "cmp_sha": "685de9ff180584f11d02e50cfc66855ec2481b945917d918e3523afbc7bb4d93"
+      "cmp_sha": "685de9ff180584f11d02e50cfc66855ec2481b945917d918e3523afbc7bb4d93",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "19246"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -931,6 +1190,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:01:20.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000038",
       "parent_id": "request_00000000-0000-4000-8000-000000000037",
       "order": "00000008:0001",
@@ -941,7 +1206,14 @@
           "text": "Added a discount field."
         }
       ],
-      "cmp_sha": "294f6a6af99f1caf99caa09a43eb265b6761073026a3d04b8ae7bbab9315732e"
+      "cmp_sha": "294f6a6af99f1caf99caa09a43eb265b6761073026a3d04b8ae7bbab9315732e",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "20195"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -962,6 +1234,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:01:30.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000043",
       "parent_id": "request_00000000-0000-4000-8000-000000000042",
       "order": "00000009:0001",
@@ -972,7 +1250,14 @@
           "text": "Added a percentage discount field."
         }
       ],
-      "cmp_sha": "504e3a2be71de025d55b8858424e247ee2baaa55716ae32f8e340180ac58534f"
+      "cmp_sha": "504e3a2be71de025d55b8858424e247ee2baaa55716ae32f8e340180ac58534f",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "23529"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -993,6 +1278,9 @@
       "source": "model",
       "status": "cancelled",
       "ts": "2026-01-06T10:01:40.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent"
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000048",
       "parent_id": "request_00000000-0000-4000-8000-000000000047",
       "order": "00000010:0001",
@@ -1024,7 +1312,14 @@
           "exit_code": null
         }
       ],
-      "cmp_sha": "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262"
+      "cmp_sha": "95e2c2b37b44075d842e582b653a56a707edaf691b499fdf6d6bd91fa1fdc262",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "25421"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1073,7 +1368,29 @@
           "23f4b7345ea3e3eeca08c7e3c33b9717b96533edd647ad7489cf111782a7186d"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "25317"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "26855"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json",
+          1,
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1094,7 +1411,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "12725"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1115,7 +1439,19 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "1023"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9867"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1136,7 +1472,39 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "7777"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "8770"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "8992"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9566"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9622"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9677"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1157,7 +1525,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "9910"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1178,7 +1553,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "14834"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1199,7 +1581,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "16427"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1220,7 +1609,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "20195"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1241,7 +1637,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0a0a0a0a-0000-4000-8000-00000000000a.jsonl",
+          1,
+          "23529"
+        ]
+      ]
     }
   ],
   "0b0b0b0b-0000-4000-8000-00000000000b": [
@@ -1274,7 +1677,15 @@
           "text": "Hello from an empty window."
         }
       ],
-      "cmp_sha": "8cb8bee3976da4a53782397a5b0226656983055eadb448738b354cc7829fe132"
+      "native": {},
+      "cmp_sha": "8cb8bee3976da4a53782397a5b0226656983055eadb448738b354cc7829fe132",
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json",
+          1,
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1295,6 +1706,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:03:20.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000052",
       "parent_id": "request_00000000-0000-4000-8000-000000000051",
       "order": "00000000:0001",
@@ -1305,7 +1722,14 @@
           "text": "Hello."
         }
       ],
-      "cmp_sha": "6bb02b66a60959eccc72814c1684fcd3b5dd0a83c6075e7cae0a429708e15a00"
+      "cmp_sha": "6bb02b66a60959eccc72814c1684fcd3b5dd0a83c6075e7cae0a429708e15a00",
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json",
+          1,
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1334,7 +1758,14 @@
           "6bb02b66a60959eccc72814c1684fcd3b5dd0a83c6075e7cae0a429708e15a00"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json",
+          1,
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1355,7 +1786,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json",
+          1,
+          "User/globalStorage/emptyWindowChatSessions/0b0b0b0b-0000-4000-8000-00000000000b.json"
+        ]
+      ]
     }
   ],
   "0c0c0c0c-0000-4000-8000-00000000000c": [
@@ -1388,7 +1826,15 @@
           "text": "A question in the change log."
         }
       ],
-      "cmp_sha": "61f40f0b20d2afd6e163e5daf4366e0c2416ceb1fb434a1b5e5c7cdc6109efe6"
+      "native": {},
+      "cmp_sha": "61f40f0b20d2afd6e163e5daf4366e0c2416ceb1fb434a1b5e5c7cdc6109efe6",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1419,7 +1865,15 @@
           "text": "A second question."
         }
       ],
-      "cmp_sha": "aa58f540b90e1636a3c66e5d827c35ec988a060b7695fbf7c3ecd72b797dfc04"
+      "native": {},
+      "cmp_sha": "aa58f540b90e1636a3c66e5d827c35ec988a060b7695fbf7c3ecd72b797dfc04",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "2240"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1440,6 +1894,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:05:10.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000062",
       "parent_id": "request_00000000-0000-4000-8000-000000000061",
       "order": "00000000:0001",
@@ -1450,7 +1910,14 @@
           "text": "An answer in the change log."
         }
       ],
-      "cmp_sha": "3e2af217ab0c518e6368c4980ec447b59111ebf9f15b97d2272fcdfcc42389bb"
+      "cmp_sha": "3e2af217ab0c518e6368c4980ec447b59111ebf9f15b97d2272fcdfcc42389bb",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1471,6 +1938,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:05:20.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000067",
       "parent_id": "request_00000000-0000-4000-8000-000000000066",
       "order": "00000001:0001",
@@ -1481,7 +1954,14 @@
           "text": "A second answer."
         }
       ],
-      "cmp_sha": "a62d731cb331cd09c71ee60550b6628c0ebf7e49d7bb86c879e45e0c1b5e90fe"
+      "cmp_sha": "a62d731cb331cd09c71ee60550b6628c0ebf7e49d7bb86c879e45e0c1b5e90fe",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "2240"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1512,7 +1992,24 @@
           "a62d731cb331cd09c71ee60550b6628c0ebf7e49d7bb86c879e45e0c1b5e90fe"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "2240"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json",
+          1,
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1533,7 +2030,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1554,7 +2058,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0c0c0c0c-0000-4000-8000-00000000000c.jsonl",
+          1,
+          "2240"
+        ]
+      ]
     }
   ],
   "0d0d0d0d-0000-4000-8000-00000000000d": [
@@ -1587,7 +2098,15 @@
           "text": "Fix the qty bug in cart.py, then run python3 -m pytest -q."
         }
       ],
-      "cmp_sha": "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d"
+      "native": {},
+      "cmp_sha": "2bb54529762d8f1ecbfa4634aed04bb15a21b83673cac7b74e6d8ba7470c860d",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1608,6 +2127,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:01.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "00000000-0000-4000-8000-000000000080",
       "parent_id": "00000000-0000-4000-8000-000000000079",
       "order": "00000000:0001",
@@ -1734,7 +2259,14 @@
           "text": "Fixed: the total multiplies by qty."
         }
       ],
-      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c"
+      "cmp_sha": "e42611dd754a97c05cf6dc543e01fa2c2359d5acb407eb0b635fa9720f44b01c",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1765,7 +2297,15 @@
           "text": "Explain the fix in one sentence."
         }
       ],
-      "cmp_sha": "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab"
+      "native": {},
+      "cmp_sha": "ed2f2b9cef63a9481345ce1babc12ccaa9678dfad4a18f2aa0e1bcff137d6aab",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1786,6 +2326,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:00:09.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "00000000-0000-4000-8000-000000000087",
       "parent_id": "00000000-0000-4000-8000-000000000086",
       "order": "00000001:0001",
@@ -1796,7 +2342,14 @@
           "text": "The total now multiplies price by qty."
         }
       ],
-      "cmp_sha": "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48"
+      "cmp_sha": "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48",
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1827,7 +2380,19 @@
           "fce8c3186167e62cc80aa2e94a43abb2bbbd6392022cd6ebaedbec0a7a017d48"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ],
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json",
+          1,
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/workspace.json"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1848,7 +2413,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "mai-code-1.1-flash",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1869,7 +2441,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/workspaceStorage/a67b79ac0fbe7992cc39a223c881b861/chatSessions/0d0d0d0d-0000-4000-8000-00000000000d.jsonl",
+          1,
+          "0"
+        ]
+      ]
     }
   ],
   "0e0e0e0e-0000-4000-8000-00000000000e": [
@@ -1902,7 +2481,15 @@
           "text": "After the reload."
         }
       ],
-      "cmp_sha": "219c4354b3d2f68934259a300781515ea2b389e040687f0597542ee48fe9a617"
+      "native": {},
+      "cmp_sha": "219c4354b3d2f68934259a300781515ea2b389e040687f0597542ee48fe9a617",
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0e0e0e0e-0000-4000-8000-00000000000e.jsonl",
+          1,
+          "3788"
+        ]
+      ]
     },
     {
       "type": "message",
@@ -1923,6 +2510,12 @@
       "source": "model",
       "status": "complete",
       "ts": "2026-01-06T10:07:00.001Z",
+      "native": {
+        "agent.id": "github.copilot.editsAgent",
+        "copilotCredits": 0.6,
+        "result.timings.firstProgress": 900,
+        "result.timings.totalElapsed": 4000
+      },
       "message_id": "response_00000000-0000-4000-8000-000000000099",
       "parent_id": "request_00000000-0000-4000-8000-000000000098",
       "order": "00000000:0001",
@@ -1933,7 +2526,14 @@
           "text": "Reloaded."
         }
       ],
-      "cmp_sha": "582c750636ae076ed2a3c77f1e4dead28e938cb9a4952bc761e3b44dd37888e3"
+      "cmp_sha": "582c750636ae076ed2a3c77f1e4dead28e938cb9a4952bc761e3b44dd37888e3",
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0e0e0e0e-0000-4000-8000-00000000000e.jsonl",
+          1,
+          "3788"
+        ]
+      ]
     },
     {
       "type": "session",
@@ -1962,7 +2562,14 @@
           "582c750636ae076ed2a3c77f1e4dead28e938cb9a4952bc761e3b44dd37888e3"
         ]
       },
-      "setup": null
+      "setup": null,
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0e0e0e0e-0000-4000-8000-00000000000e.jsonl",
+          1,
+          "3788"
+        ]
+      ]
     },
     {
       "type": "usage",
@@ -1983,7 +2590,14 @@
       "output_includes_reasoning": null,
       "granularity": "per_turn",
       "model": "gpt-6-luna",
-      "tool_prompt": null
+      "tool_prompt": null,
+      "units": [
+        [
+          "User/globalStorage/emptyWindowChatSessions/0e0e0e0e-0000-4000-8000-00000000000e.jsonl",
+          1,
+          "3788"
+        ]
+      ]
     }
   ]
 }

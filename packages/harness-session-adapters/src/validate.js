@@ -36,13 +36,22 @@ const ISO = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?Z$/;
 const SHA = /^[0-9a-f]{64}$/;
 const TIME_LIKE = /\d{4}-\d\d-\d\d[T ]\d\d:\d\d/;
 const KEY = (v) => typeof v === 'string' && v.length > 0;
+// The record types that may carry `native` (sessions-model §2.7, v1.4); a part may too.
+const NATIVE_TYPES = ['session', 'message'];
+const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
 /**
  * Check one session's records. Returns findings, each `{at, problem}`. A finding with `warning:
  * true` names a registry value this version does not know, and does not make the records invalid:
  * they are valid when every finding is a warning.
  * @param {object[]} records every record of one session (as derive's view holds them)
- * @param {{harness?: string, sessionId?: string}} [expect] the harness and session the records must name
+ * The two v1.4 fields (sessions-model §2.7) are checked where they appear: `units` is a sorted list
+ * of distinct [source_key, generation, unit_key] triples, and `native` an object, on session and
+ * message records and parts only. Given `native` (the adapter's `describe().native`), every key of
+ * a `native` must be a path declared for its record type. A record without either is unaffected,
+ * so a v1.3 record and a v1.4 one validate alike.
+ * @param {{harness?: string, sessionId?: string, native?: {session?: string[], message?: string[], part?: string[]}}} [expect]
+ *   the harness and session the records must name, and the adapter's declared native paths
  */
 export function validateSession(records, expect = {}) {
   const out = [];
@@ -161,7 +170,48 @@ export function validateSession(records, expect = {}) {
       isoOrNull(at, 'ts', r.ts);
     }
   }
+  for (const r of records) {
+    if (!RECORD_TYPES.includes(r.type)) continue;
+    const at = `${r.type} ${r.message_id ?? r.usage_id ?? r.lifecycle_id ?? r.kind ?? ''}`.trim();
+    if ('units' in r) checkUnits(at, r.units, bad);
+    if ('native' in r) {
+      if (!NATIVE_TYPES.includes(r.type)) bad(at, `native on a ${r.type} record (sessions-model §2.7: session, message and part only)`);
+      else checkNative(at, r.native, expect.native?.[r.type], 'native' in expect, bad);
+    }
+    if (r.type === 'message' && Array.isArray(r.parts)) {
+      r.parts.forEach((p, i) => {
+        if (p && 'native' in p) checkNative(`${at} part ${p.part_id ?? i}`, p.native, expect.native?.part, 'native' in expect, bad);
+      });
+    }
+  }
   if (sessions !== 1) bad('session', `${sessions} session records, not 1`);
   for (const sha of fingerprint ?? []) if (!shas.has(sha)) bad('session', `fingerprint names ${sha.slice(0, 12)}, which no message has`);
   return out;
+}
+
+// `units` (sessions-model §2.7): distinct [source_key, generation, unit_key] triples, sorted.
+function checkUnits(at, units, bad) {
+  if (!Array.isArray(units)) return bad(at, `units ${JSON.stringify(units)} is not a list`);
+  let prev = null;
+  for (const t of units) {
+    if (!Array.isArray(t) || t.length !== 3 || !KEY(t[0]) || !Number.isInteger(t[1]) || t[1] < 0 || !KEY(t[2])) {
+      return bad(at, `units holds ${JSON.stringify(t)}, not a [source_key, generation, unit_key] triple`);
+    }
+    if (prev) {
+      const c = prev[0] < t[0] ? -1 : prev[0] > t[0] ? 1 : prev[1] - t[1] || (prev[2] < t[2] ? -1 : prev[2] > t[2] ? 1 : 0);
+      if (c === 0) return bad(at, `units repeats ${JSON.stringify(t)}`);
+      if (c > 0) return bad(at, `units is not sorted at ${JSON.stringify(t)}`);
+    }
+    prev = t;
+  }
+}
+
+// `native` (sessions-model §2.7): an object; given the adapter's declared paths for the record type,
+// keyed by those paths only. An adapter that declares none carries no `native`.
+function checkNative(at, native, declared, known, bad) {
+  if (!isObject(native)) return bad(at, `native ${JSON.stringify(native)} is not an object`);
+  if (!known) return;
+  if (!declared?.length) return bad(at, 'native on a record type the adapter declares no paths for');
+  const allowed = new Set(declared);
+  for (const k of Object.keys(native)) if (!allowed.has(k)) bad(at, `native holds ${JSON.stringify(k)}, a path the adapter does not declare`);
 }

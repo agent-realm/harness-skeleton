@@ -422,6 +422,44 @@ From sessions-model.
 | zed | generic |
 | devin | generic |
 
+## M.native-declared: Native is declared (v1.4): native holds only the paths the adapter declares for the record type; none where it declares none
+
+From sessions-model.
+
+| Harness | Proved by |
+|---|---|
+| claude-code | generic |
+| codex | generic |
+| copilot-cli | generic |
+| gemini-cli | generic |
+| vscode | generic |
+| goose | generic |
+| opencode | generic |
+| agy | generic |
+| cursor | generic |
+| cursor-agent | generic |
+| zed | generic |
+| devin | generic |
+
+## M.units-input: Units name the input (v1.4): every units triple names a unit of the derive input; sorted, unique; outside content_sha
+
+From sessions-model.
+
+| Harness | Proved by |
+|---|---|
+| claude-code | generic |
+| codex | generic |
+| copilot-cli | generic |
+| gemini-cli | generic |
+| vscode | generic |
+| goose | generic |
+| opencode | generic |
+| agy | generic |
+| cursor | generic |
+| cursor-agent | generic |
+| zed | generic |
+| devin | generic |
+
 ## S.describe: describe states every facet; each explicit claim is backed by a fixture
 
 From sessions.

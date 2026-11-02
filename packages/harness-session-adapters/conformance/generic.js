@@ -78,6 +78,7 @@ const OTHER_HOST = 'ffffffffffffffffffffffffffffffff';
 const COUNTERS = ['input', 'output', 'cache_read', 'cache_write', 'reasoning', 'tool_prompt', 'cost'];
 
 const recordsOf = (view) => [...view.values()];
+const recordKeyOf = (r) => r.message_id ?? r.usage_id ?? r.lifecycle_id ?? r.kind ?? '';
 
 export function genericChecks(adapter, harnessPath) {
   const h = adapter.HARNESS;
@@ -90,8 +91,28 @@ export function genericChecks(adapter, harnessPath) {
   // The record shape (sessions-model §2), behind every item that reads records. A registry warning
   // counts here too: a consumer accepts an unknown value, but this package emits only values the
   // contract has registered.
+  // M.native-declared and M.units-input (v1.4) take the findings about those two fields: `native`
+  // keyed by the paths describe() declares for the record type, `units` sorted distinct triples.
+  const declared = adapter.describe().native ?? {};
   for (const [sid, view] of Object.entries(views)) {
-    for (const f of validateSession(recordsOf(view), { harness: h, sessionId: sid })) add('shape', `${sid}: ${f.at}: ${f.problem}`);
+    for (const f of validateSession(recordsOf(view), { harness: h, sessionId: sid, native: declared })) {
+      const item = /^native\b/.test(f.problem) ? 'M.native-declared' : /^units\b/.test(f.problem) ? 'M.units-input' : 'shape';
+      add(item, `${sid}: ${f.at}: ${f.problem}`);
+    }
+  }
+
+  // M.units-input: every triple names a unit the replay's derive input held, in the generation the
+  // engine gave that source.
+  for (const [id, held] of e.sessions) {
+    const sid = id.split('\u0000')[0];
+    for (const r of held.view.values()) {
+      for (const [sk, gen, uk] of r.units ?? []) {
+        const cur = held.sources.get(sk);
+        if (!cur || cur.generation !== gen || !cur.units.has(uk)) {
+          add('M.units-input', `${sid}: ${r.type} ${recordKeyOf(r)}: [${sk}, ${gen}, ${uk}] names no unit of the input`);
+        }
+      }
+    }
   }
 
   // M.keys-stable: a second fresh replay, as after a lost state, gives identical records.

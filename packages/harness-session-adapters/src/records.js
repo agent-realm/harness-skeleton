@@ -32,10 +32,48 @@ export function recordKey(r) {
   }
 }
 
-// sha256 of the record's JCS form without the two hashes (sessions-model §2).
+// sha256 of the record's JCS form without the two hashes and `units` (sessions-model §2, v1.4:
+// `units` is outside it, so a stream reset that re-keys the units revises no record).
 export function contentSha(r) {
-  const { content_sha: _c, cmp_sha: _m, ...rest } = r;
+  const { content_sha: _c, cmp_sha: _m, units: _u, ...rest } = r;
   return jcsSha(rest);
+}
+
+// A record's `units` (sessions-model §2.7): [source_key, generation, unit_key] triples, sorted by
+// source_key, then generation, then unit_key, with no triple twice. An adapter hands them in any
+// order; seal() puts them in this one. A malformed triple is an adapter bug, and fails loudly.
+export function normaliseUnits(units) {
+  if (!Array.isArray(units)) throw new TypeError(`units must be a list, not ${JSON.stringify(units)}`);
+  const seen = new Set();
+  const out = [];
+  for (const t of units) {
+    const ok = Array.isArray(t) && t.length === 3 && typeof t[0] === 'string' && t[0] !== ''
+      && Number.isInteger(t[1]) && t[1] >= 0 && typeof t[2] === 'string' && t[2] !== '';
+    if (!ok) throw new TypeError(`a units triple must be [source_key, generation, unit_key], not ${JSON.stringify(t)}`);
+    const triple = [t[0], t[1], t[2]];
+    const k = JSON.stringify(triple);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(triple);
+  }
+  const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  return out.sort((a, b) => cmp(a[0], b[0]) || a[1] - b[1] || cmp(a[2], b[2]));
+}
+
+// The declared native fields of a native record (sessions-model §2.7): for each declared dotted
+// path that the record holds, its value, keyed by the path; nothing else. `{}` when it holds none.
+// A path walks objects only, as the redaction paths do (§4).
+export function nativeOf(record, paths) {
+  const out = {};
+  for (const path of paths ?? []) {
+    let v = record;
+    for (const seg of path.split('.')) {
+      if (v === null || typeof v !== 'object' || Array.isArray(v) || !Object.hasOwn(v, seg)) { v = undefined; break; }
+      v = v[seg];
+    }
+    if (v !== undefined) out[path] = v;
+  }
+  return out;
 }
 
 // The semantic comparison hash of a message (sessions-model §2): role and parts only, without
@@ -81,6 +119,7 @@ export function seal(r) {
   // (sessions-model §2.1, §2.4).
   if (out.type === 'session' && !('setup' in out)) out.setup = null;
   if (out.type === 'usage' && !('tool_prompt' in out)) out.tool_prompt = null;
+  if ('units' in out) out.units = normaliseUnits(out.units);
   if (out.type === 'message') out.cmp_sha = cmpSha(out);
   out.content_sha = contentSha(out);
   return out;

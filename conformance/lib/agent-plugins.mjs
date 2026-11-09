@@ -11,6 +11,7 @@ export const SCHEMA = (v, kind) => `https://agent-plugins.org/schemas/${v}/${kin
 // The literal-text control (design note v0.2 §10): text the format never expands, in a stdio
 // server's env and in a remote server's header, with the variable it names set in the harness's
 // environment to OTHER_VALUE. A listener with LITERAL_MARKERS shows which form reached it.
+export const INERT_COMMAND = 'hs-bench-cmd';
 export const OTHER = 'HS_BENCH_OTHER';
 export const OTHER_VALUE = 'hs-bench-other-set-9f4c';
 export const LITERAL_MARKERS = ['${HS_BENCH_OTHER}', OTHER_VALUE];
@@ -76,11 +77,14 @@ process.stdin.on('data', (d) => {
 //                        args ["${PLUGIN_ROOT}/server.mjs"],
 //                        env { HS_PROBE_OUT, HS_DATA_DIR = "${PLUGIN_DATA}" }, plus `env` given;
 //                        plus any `servers` given (a remote one, say)
+//   commands/, hooks/    (with `inert`) a command whose description carries `inert.command`, and a
+//                        SessionStart hook that creates `inert.hookProbe`. The format discovers
+//                        neither [AP §6.1, §7], so a client must leave both alone
 // plugin.json carries every metadata field of the format (§5.4), so a translation shows it keeps them.
 // Two packages built with the same arguments and different `version`s differ only in the two
 // `$schema` values.
 //   server.mjs
-export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeOut, env = {}, servers = {} }) {
+export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeOut, env = {}, servers = {}, inert = null }) {
   fs.mkdirSync(path.join(dir, 'skills', 'notes'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'plugin.json'), JSON.stringify({ $schema: SCHEMA(version, 'plugin'), name, version: '1.0.0', description: 'A tier 1 bench package.', author: { name: 'bench', url: 'https://example.com' }, homepage: 'https://example.com/plugin', repository: 'https://example.com/plugin.git', license: 'Apache-2.0', keywords: ['bench'] }, null, 2) + '\n');
   fs.writeFileSync(path.join(dir, 'skills', 'notes', 'SKILL.md'), `---\nname: notes\ndescription: Take bench notes. ${marks.skill}\n---\nWrite the notes.\n`);
@@ -93,6 +97,12 @@ export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeO
     mcpServers: { probe: { type: 'stdio', command: './bin/hs-probe', args: ['${PLUGIN_ROOT}/server.mjs'], env: { HS_PROBE_OUT: probeOut, HS_DATA_DIR: '${PLUGIN_DATA}', ...env } }, ...servers },
   }, null, 2) + '\n');
   fs.writeFileSync(path.join(dir, 'server.mjs'), serverSource(tool, marks.tool));
+  if (inert) {
+    fs.mkdirSync(path.join(dir, 'commands'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'commands', `${INERT_COMMAND}.md`), `---\ndescription: A bench command. ${inert.command}\n---\nRun the bench command.\n`);
+    fs.mkdirSync(path.join(dir, 'hooks'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'hooks', 'hooks.json'), JSON.stringify({ hooks: { SessionStart: [{ hooks: [{ type: 'command', command: `touch '${inert.hookProbe}'` }] }] } }, null, 2) + '\n');
+  }
   fs.mkdirSync(path.join(dir, 'bin'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'bin', 'hs-probe'), `#!/bin/sh\nexec '${process.execPath}' "$@"\n`, { mode: 0o755 });
   return dir;

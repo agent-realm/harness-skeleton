@@ -1,11 +1,11 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Claude Code, as published and translated to the .claude-plugin layout (design note v0.2 §5.7, §10)",
-  "at": "2026-11-09T20:34:06.757Z",
+  "at": "2026-11-09T20:43:51.478Z",
   "evidence": {
-    "harness": "2.1.307 (Claude Code)",
+    "harness": "2.1.321 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "b2509030ff6cd2795c49a7872d03eba44c38338b"
+    "hs_commit": "77e8b3d804f0969b96fc437c125fb8273ea65801"
   },
   "runs": {
     "control": {
@@ -13,7 +13,7 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [],
       "bench_tools": [],
       "remote": []
@@ -23,10 +23,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
-        "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a"
+        "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
       "remote": []
@@ -36,10 +35,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
-        "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a"
+        "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
       "remote": []
@@ -49,10 +47,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
-        "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a"
+        "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
       "remote": []
@@ -62,10 +59,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
         "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a",
         "hs-tier1-ap-tool-2b7f"
       ],
       "bench_tools": [
@@ -78,10 +74,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
         "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a",
         "hs-tier1-ap-tool-2b7f"
       ],
       "bench_tools": [
@@ -94,10 +89,9 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
         "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a",
         "hs-tier1-ap-tool-2b7f"
       ],
       "bench_tools": [
@@ -112,9 +106,8 @@
       "signal": null,
       "timed_out": false,
       "descendants_left": false,
-      "requests": 2,
+      "requests": 6,
       "markers": [
-        "hs-tier1-ap-skill-4d1a",
         "hs-tier1-ap-tool-2b7f",
         "hs.bench-plugin:notes"
       ],
@@ -127,25 +120,25 @@
   "recorded": {
     "clean, as published": {
       "skill_loads": true,
-      "skill_description_reaches": true,
+      "skill_description_reaches": false,
       "server_starts": false,
       "tool_reaches": false
     },
     "future (9.9.9), as published": {
       "skill_loads": true,
-      "skill_description_reaches": true,
+      "skill_description_reaches": false,
       "server_starts": false,
       "tool_reaches": false
     },
     "mixed, as published": {
       "skill_loads": true,
-      "skill_description_reaches": true,
+      "skill_description_reaches": false,
       "server_starts": false,
       "tool_reaches": false,
       "invalid_skill_loads": false
     },
     "translated": {
-      "skill_description_reaches": true,
+      "skill_description_reaches": false,
       "manifest_fields": [
         "name",
         "version",
@@ -177,8 +170,13 @@
         "CLAUDE_PLUGIN_ROOT",
         "CLAUDE_PLUGIN_DATA"
       ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
       "cwd_is_root": true,
-      "literal_kept": null
+      "literal_kept": null,
+      "literal_is_other": null
     },
     "unbridged": {
       "started": true,
@@ -190,8 +188,13 @@
         "CLAUDE_PLUGIN_ROOT",
         "CLAUDE_PLUGIN_DATA"
       ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
       "cwd_is_root": false,
-      "literal_kept": null
+      "literal_kept": null,
+      "literal_is_other": null
     },
     "literal": {
       "started": true,
@@ -203,8 +206,13 @@
         "CLAUDE_PLUGIN_ROOT",
         "CLAUDE_PLUGIN_DATA"
       ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
       "cwd_is_root": true,
-      "literal_kept": false
+      "literal_kept": false,
+      "literal_is_other": true
     },
     "dotted": {
       "started": true,
@@ -216,8 +224,13 @@
         "CLAUDE_PLUGIN_ROOT",
         "CLAUDE_PLUGIN_DATA"
       ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
       "cwd_is_root": true,
-      "literal_kept": null
+      "literal_kept": null,
+      "literal_is_other": null
     }
   },
   "folder_entries_new": [
@@ -228,19 +241,20 @@
     "sessions"
   ],
   "folder_plugins_entries": [
-    "data"
+    "data",
+    "store"
   ],
   "checks": {
     "without a plugin no marker reaches a request (premise)": true,
     "translated: the skill reaches the request, under the plugin's name": true,
-    "translated: the manifest keeps every metadata field": true,
-    "translated: the server starts with ${PLUGIN_ROOT} expanded in args": true,
+    "translated: the manifest keeps name and every metadata field, and the plugin loads from it": true,
+    "translated: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args": true,
     "translated: ${PLUGIN_DATA} is expanded in env": true,
-    "translated: PLUGIN_ROOT and PLUGIN_DATA are in the server's environment": true,
+    "translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
     "translated: the server runs in the plugin root, through the prelude": true,
     "translated: the server's tool reaches the request": true,
     "unbridged (premise of the prelude): without it the server does not run in the plugin root": true,
-    "literal (premise of plugin_placeholder_literal): Claude Code expands the env text": true,
+    "literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable's value": true,
     "literal (premise of plugin_placeholder_literal): Claude Code expands the header text": true
   },
   "verdict": "pass"

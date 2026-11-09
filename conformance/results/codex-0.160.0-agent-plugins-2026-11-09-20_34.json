@@ -1,0 +1,171 @@
+{
+  "check": "tier 1: an Agent Plugins 1.0.0 package on Codex, installed as a user installs it (design note v0.2 §5.7, §10)",
+  "at": "2026-11-09T20:34:37.147Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "b2509030ff6cd2795c49a7872d03eba44c38338b"
+  },
+  "installs": {
+    "clean": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    },
+    "future": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 1,
+        "names_manifest": true
+      }
+    },
+    "mixed": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    },
+    "literal": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    }
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "remote": []
+    },
+    "clean": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": []
+    },
+    "future": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "remote": []
+    },
+    "mixed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": []
+    },
+    "literal": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": [
+        "${HS_BENCH_OTHER}"
+      ]
+    }
+  },
+  "server_probes": {
+    "clean": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "cwd_is_root": true,
+      "literal_kept": null
+    },
+    "future": null,
+    "mixed": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "cwd_is_root": true,
+      "literal_kept": null
+    },
+    "literal": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "cwd_is_root": true,
+      "literal_kept": true
+    }
+  },
+  "plugin_data_dirs": 1,
+  "checks": {
+    "without a plugin no marker reaches a request (premise)": true,
+    "clean: marketplace add and plugin add succeed": true,
+    "clean: the skill reaches the request as <plugin>:notes, with its description": true,
+    "clean: the server starts with ${PLUGIN_ROOT} expanded in args": true,
+    "clean: ${PLUGIN_DATA} is expanded in env": true,
+    "clean: PLUGIN_ROOT and PLUGIN_DATA are in the server's environment": true,
+    "clean: the server runs in the plugin root": true,
+    "clean: the server's tool reaches the request": true,
+    "future (9.9.9): plugin add refuses it": true,
+    "future (9.9.9): written as an install writes, it loads nothing, while clean loaded": true,
+    "mixed: the valid skill's name and marker reach the request": true,
+    "mixed: the invalid skill's name and marker reach none": true,
+    "literal: the install succeeds and the stdio server starts": true,
+    "literal: the env text reaches the stdio server unexpanded": true,
+    "literal: the header text reaches the remote server unexpanded": true
+  },
+  "verdict": "pass"
+}

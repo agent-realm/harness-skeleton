@@ -64,7 +64,7 @@ That approval is a receipt bound to the plan's digest. Secrets are references
 | Sessions: `sessions.*` | yes | yes | OpenCode yes, pi no |
 
 Instructions (`AGENTS.md`), agents, commands, permissions and plugins are designed and not
-delivered yet, and so is the `reconcile` mode for the user's own folder. Eleven conformance
+delivered yet, and so is the `reconcile` mode for the user's own folder. Thirteen conformance
 checks pass on real harnesses; no version range is certified yet.
 
 ## What it is not

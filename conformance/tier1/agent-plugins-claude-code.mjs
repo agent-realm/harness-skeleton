@@ -31,8 +31,8 @@
 //               request; the package's commands/ and hooks/ stay inert (the command reaches no
 //               request and the hook does not run).
 //   flat        `clean` copied whole to the translated plugin's root instead of nested. Expected
-//               (the nesting's premise, and the positive control for "inert"): Claude Code acts on
-//               the root commands/ or hooks/.
+//               (the nesting's premise, and the positive control for each half of "inert"): the
+//               root command reaches the request, and the root hook runs.
 //   unbridged   nested, without the prelude. Expected (the prelude's premise): the server does not
 //               start in the plugin root.
 //   literal     `literal`, renamed as the translation renames and nothing more, with HS_BENCH_OTHER
@@ -179,8 +179,10 @@ try {
     'translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names': p?.root_matches === true && p.data_exists === true && p.data_writable === true && p.data_matches === true,
     'translated: the server runs in the plugin root, through the prelude': p?.cwd_is_root === true,
     'translated: the server\'s tool reaches the request': has(carried, M.tool) && offered(carried),
-    'translated: the package\'s commands/ and hooks/ stay inert: the command reaches no request and the hook does not run': !commandSeen(carried) && carried.hook_ran === false,
-    'flat (premise of nesting, and control for the line above): copied to the root, Claude Code acts on commands/ or hooks/': commandSeen(flatRun) || flatRun.hook_ran === true,
+    'translated: the package\'s commands/ stays inert: the command reaches no request': !commandSeen(carried),
+    'flat (premise of nesting, control for the line above): copied to the root, the command reaches the request': commandSeen(flatRun),
+    'translated: the package\'s hooks/ stays inert: the hook does not run': carried.hook_ran === false,
+    'flat (premise of nesting, control for the line above): copied to the root, the hook runs': flatRun.hook_ran === true,
     'unbridged (premise of the prelude): without it the server does not run in the plugin root': bare.probe?.started === true && bare.probe.cwd_is_root === false,
     'literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable\'s value': lit.probe?.started === true && lit.probe.literal_kept === false && lit.probe.literal_is_other === true,
     'literal (premise of plugin_placeholder_literal): Claude Code expands the header text': remoteGot(lit, OTHER_VALUE) && !remoteGot(lit, LITERAL_MARKERS[0]),

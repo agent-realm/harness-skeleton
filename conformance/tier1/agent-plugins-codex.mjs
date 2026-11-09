@@ -22,10 +22,15 @@
 //            expanded, PLUGIN_ROOT the plugin root and PLUGIN_DATA an existing, writable directory
 //            that ${PLUGIN_DATA} names; its tool reaches the request; commands/ stays inert (the
 //            command reaches no request). Whether the hook ran is recorded only: Codex runs no
-//            hook before its hash is trusted [CX §11], so its absence would prove nothing.
+//            hook before its hash is trusted [CX §11], so its absence here proves nothing.
+//   unvetted `clean` again, with --dangerously-bypass-hook-trust, which runs every hook Codex has
+//            registered, trusted or not [CX §11]. Expected: the root hooks/ hook does not run, so
+//            Codex never registered it. hs never launches with this flag (design note §5.6); the
+//            check uses it only to see registration.
 //   claude   `clean` with its root plugin.json replaced by a .claude-plugin/plugin.json, a layout
-//            Codex also reads [CX §10]. Expected: Codex turns commands/ into a skill and the
-//            command reaches the request; the positive control for "commands/ stays inert".
+//            Codex also reads [CX §10], also with --dangerously-bypass-hook-trust. Expected: Codex
+//            turns commands/ into a skill and the command reaches the request, and the hook runs;
+//            the positive controls for "commands/ stays inert" and "hooks/ is not registered".
 //   byhand   `clean` written into a folder by hand, as the install writes it (the cache directory
 //            and the [plugins] table). Expected: it loads, as `clean` does. The positive control
 //            for `future`.
@@ -89,10 +94,10 @@ try {
     return { exit: p.status, names_manifest: /plugin\.json/.test(`${p.stderr}${p.stdout}`) };
   };
   const install = (folder, m) => ({ marketplace_add: cli(folder, ['marketplace', 'add', m.dir]), plugin_add: cli(folder, ['add', `${NAME}@${m.name}`]) });
-  const run = async (folder, extraEnv = {}) => {
+  const run = async (folder, extraEnv = {}, { bypassHookTrust = false } = {}) => {
     for (const f of [probeOut, hookProbe]) fs.rmSync(f, { force: true });
     const spec = b.hs('launch-spec', ['--harness', 'codex', '--folder', folder, '--layer', plain, '--local', local, '--bin', codex, '--headless']);
-    const l = fromSpec(spec, extraEnv, codex, ['--skip-git-repo-check', PROMPT]);
+    const l = fromSpec(spec, extraEnv, codex, ['--skip-git-repo-check', ...(bypassHookTrust ? ['--dangerously-bypass-hook-trust'] : []), PROMPT]);
     const r = await b.launch([L, R], l.argv, l.env, cwd);
     return { ...r, probe: probe(probeOut), hook_ran: fs.existsSync(hookProbe), other_in_launch_env: l.env[OTHER] === OTHER_VALUE };
   };
@@ -146,7 +151,8 @@ try {
   fs.mkdirSync(path.join(claudePkg, '.claude-plugin'));
   fs.writeFileSync(path.join(claudePkg, '.claude-plugin', 'plugin.json'), JSON.stringify({ name: claudeManifest.name, version: claudeManifest.version, description: claudeManifest.description }, null, 2) + '\n');
   const claudeInstall = install(claudeFolder, claudeMarket);
-  const claudeRun = await run(claudeFolder);
+  const claudeRun = await run(claudeFolder, {}, { bypassHookTrust: true });
+  const unvetted = await run(cleanFolder, {}, { bypassHookTrust: true });
 
   const literalFolder = folderFor('literal');
   const literalInstall = install(literalFolder, market('literal', { marks: { skill: M.skill, tool: M.tool }, ...literalOpts(`${R.url}/mcp`) }));
@@ -167,6 +173,8 @@ try {
     'clean: the server\'s tool reaches the request': has(clean, M.tool),
     'clean: commands/ stays inert: the command reaches no request': !loaded(clean, INERT_COMMAND, M.command),
     'claude layout (control for the line above): the same commands/ reaches the request': claudeInstall.plugin_add.exit === 0 && loaded(claudeRun, INERT_COMMAND, M.command),
+    'unvetted: hooks/ is not registered: with hook trust bypassed, the hook still does not run': unvetted.hook_ran === false && has(unvetted, M.skill),
+    'claude layout (control for the line above): with hook trust bypassed, the same hooks/ hook runs': claudeRun.hook_ran === true,
     'byhand: clean written in by hand loads, skill and server (the control for future)': byhandAdd.exit === 0 && byhandWritten && has(byhand, `${NAME}:notes`) && has(byhand, M.skill) && byhand.probe?.started === true && has(byhand, M.tool),
     'future (9.9.9): plugin add refuses it, naming plugin.json': futureInstall.plugin_add.exit !== 0 && futureInstall.plugin_add.names_manifest === true,
     'future (9.9.9): written in by the same hand procedure, it loads nothing': futureWritten && !any(future) && future.probe === null,
@@ -176,14 +184,14 @@ try {
     'literal: the env text reaches the stdio server unexpanded': lit.probe?.literal_kept === true,
     'literal: the header text reaches the remote server unexpanded': lit.seen.REMOTE.some((q) => q.markers.includes(LITERAL_MARKERS[0])) && !lit.seen.REMOTE.some((q) => q.markers.includes(OTHER_VALUE)),
   };
-  const reached = [control, clean, byhand, future, mixed, claudeRun, lit].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, clean, unvetted, byhand, future, mixed, claudeRun, lit].every((r) => r.seen.ENDPOINT.length > 0);
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: an Agent Plugins 1.0.0 package on Codex, installed as a user installs it (design note v0.2 §5.7, §10)',
     at: new Date().toISOString(),
     evidence: evidence(b, codex),
     installs: { clean: { ...cleanInstall, wrote_cache_and_table: cleanWrote }, byhand: { marketplace_add: byhandAdd, written_by_hand: byhandWritten }, future: { ...futureInstall, written_by_hand: futureWritten }, mixed: mixedInstall, claude: claudeInstall, literal: literalInstall },
-    runs: { control: shape(control), clean: { ...shape(clean), hook_ran: clean.hook_ran }, byhand: shape(byhand), future: shape(future), mixed: shape(mixed), claude: shape(claudeRun), literal: { ...shape(lit), other_in_launch_env: lit.other_in_launch_env } },
+    runs: { control: shape(control), clean: { ...shape(clean), hook_ran: clean.hook_ran }, unvetted: { ...shape(unvetted), hook_ran: unvetted.hook_ran }, byhand: shape(byhand), future: shape(future), mixed: shape(mixed), claude: { ...shape(claudeRun), hook_ran: claudeRun.hook_ran }, literal: { ...shape(lit), other_in_launch_env: lit.other_in_launch_env } },
     server_probes: { clean: clean.probe, byhand: byhand.probe, future: future.probe, mixed: mixed.probe, literal: lit.probe },
     plugin_data_dirs: cleanData,
     checks,

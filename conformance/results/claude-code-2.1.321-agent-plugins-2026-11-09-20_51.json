@@ -1,11 +1,11 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Claude Code, as published and translated to the .claude-plugin layout (design note v0.2 §5.7, §10)",
-  "at": "2026-11-09T20:43:51.478Z",
+  "at": "2026-11-09T20:51:00.052Z",
   "evidence": {
     "harness": "2.1.321 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "77e8b3d804f0969b96fc437c125fb8273ea65801"
+    "hs_commit": "d59257657dc71a903fe522f0ef5ee6d0c18e4eb7"
   },
   "runs": {
     "control": {
@@ -25,6 +25,7 @@
       "descendants_left": false,
       "requests": 6,
       "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
         "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
@@ -37,6 +38,7 @@
       "descendants_left": false,
       "requests": 6,
       "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
         "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
@@ -49,6 +51,7 @@
       "descendants_left": false,
       "requests": 6,
       "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
         "hs-bench-plugin:notes"
       ],
       "bench_tools": [],
@@ -61,6 +64,22 @@
       "descendants_left": false,
       "requests": 6,
       "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": []
+    },
+    "flat": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
         "hs-bench-plugin:notes",
         "hs-tier1-ap-tool-2b7f"
       ],
@@ -122,19 +141,25 @@
       "skill_loads": true,
       "skill_description_reaches": false,
       "server_starts": false,
-      "tool_reaches": false
+      "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true
     },
     "future (9.9.9), as published": {
       "skill_loads": true,
       "skill_description_reaches": false,
       "server_starts": false,
-      "tool_reaches": false
+      "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true
     },
     "mixed, as published": {
       "skill_loads": true,
       "skill_description_reaches": false,
       "server_starts": false,
       "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true,
       "invalid_skill_loads": false
     },
     "translated": {
@@ -150,6 +175,10 @@
         "keywords"
       ]
     },
+    "flat": {
+      "root_command_loads": true,
+      "root_hook_runs": true
+    },
     "dotted name, translated": {
       "skill_loads": true,
       "server_starts": true,
@@ -161,6 +190,24 @@
     "published_future": null,
     "published_mixed": null,
     "translated": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "flat": {
       "started": true,
       "args_expanded": true,
       "data_expanded": true,
@@ -238,6 +285,7 @@
     "backups",
     "plugins",
     "projects",
+    "session-env",
     "sessions"
   ],
   "folder_plugins_entries": [
@@ -253,6 +301,8 @@
     "translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
     "translated: the server runs in the plugin root, through the prelude": true,
     "translated: the server's tool reaches the request": true,
+    "translated: the package's commands/ and hooks/ stay inert: the command reaches no request and the hook does not run": true,
+    "flat (premise of nesting, and control for the line above): copied to the root, Claude Code acts on commands/ or hooks/": true,
     "unbridged (premise of the prelude): without it the server does not run in the plugin root": true,
     "literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable's value": true,
     "literal (premise of plugin_placeholder_literal): Claude Code expands the header text": true

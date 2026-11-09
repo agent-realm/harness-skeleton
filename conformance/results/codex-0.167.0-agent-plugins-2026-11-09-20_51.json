@@ -1,11 +1,11 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Codex, installed as a user installs it (design note v0.2 §5.7, §10)",
-  "at": "2026-11-09T20:44:08.820Z",
+  "at": "2026-11-09T20:51:42.148Z",
   "evidence": {
-    "harness": "codex-cli 0.160.0",
+    "harness": "codex-cli 0.167.0",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "77e8b3d804f0969b96fc437c125fb8273ea65801"
+    "hs_commit": "d59257657dc71a903fe522f0ef5ee6d0c18e4eb7"
   },
   "installs": {
     "clean": {
@@ -38,6 +38,16 @@
       "written_by_hand": true
     },
     "mixed": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    },
+    "claude": {
       "marketplace_add": {
         "exit": 0,
         "names_manifest": false
@@ -80,7 +90,8 @@
         "hs-tier1-ap-tool-2b7f",
         "mcp__probe"
       ],
-      "remote": []
+      "remote": [],
+      "hook_ran": false
     },
     "byhand": {
       "exit": 1,
@@ -116,6 +127,19 @@
         "hs-tier1-ap-skill-4d1a",
         "hs-tier1-ap-tool-2b7f",
         "mcp__probe"
+      ],
+      "remote": []
+    },
+    "claude": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-command-7e0b",
+        "hs-tier1-ap-skill-4d1a"
       ],
       "remote": []
     },
@@ -214,6 +238,8 @@
     "clean: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
     "clean: the server runs in the plugin root": true,
     "clean: the server's tool reaches the request": true,
+    "clean: commands/ stays inert: the command reaches no request": true,
+    "claude layout (control for the line above): the same commands/ reaches the request": true,
     "byhand: clean written in by hand loads, skill and server (the control for future)": true,
     "future (9.9.9): plugin add refuses it, naming plugin.json": true,
     "future (9.9.9): written in by the same hand procedure, it loads nothing": true,

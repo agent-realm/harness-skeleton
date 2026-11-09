@@ -1,11 +1,11 @@
 {
   "check": "tier 1: a skill at launch, through --plugin-dir under a launch receipt (design note v0.2 §7.5)",
-  "at": "2026-10-24T10:02:43.544Z",
+  "at": "2026-11-09T21:25:53.249Z",
   "evidence": {
     "harness": "2.1.307 (Claude Code)",
     "node": "v24.18.0",
-    "os": "Linux 6.8.0-146-generic x64",
-    "hs_commit": "3c023d732d2414d3178a5b13a9093a4504a4d6e1"
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "87c49f654aa4047341385c6434fbe456c42e5e63"
   },
   "runs": {
     "control": {
@@ -70,13 +70,14 @@
       }
     ]
   },
-  "launch_digest": "sha256:0ddd0ecbcdbe8f267afbee84dd1df8453618a41769a8186221b2cdcc06a692e7",
+  "launch_digest": "sha256:4147cddba70a400a9043d7b99dfb2ae51a90b72014551697557377b35e0c5faa",
   "folder_entries_after": [
     ".claude.json",
     "backups",
     "projects",
     "sessions"
   ],
+  "description_reaches_request": true,
   "checks": {
     "without the plugin the skill reaches no request (premise)": true,
     "without a receipt launch-spec refuses, naming the skill as runs-code": true,

@@ -1,11 +1,11 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Claude Code, as published and translated to the .claude-plugin layout (design note v0.2 §5.7, §10)",
-  "at": "2026-11-09T20:51:00.052Z",
+  "at": "2026-11-09T21:26:01.668Z",
   "evidence": {
     "harness": "2.1.321 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "d59257657dc71a903fe522f0ef5ee6d0c18e4eb7"
+    "hs_commit": "87c49f654aa4047341385c6434fbe456c42e5e63"
   },
   "runs": {
     "control": {
@@ -301,8 +301,10 @@
     "translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
     "translated: the server runs in the plugin root, through the prelude": true,
     "translated: the server's tool reaches the request": true,
-    "translated: the package's commands/ and hooks/ stay inert: the command reaches no request and the hook does not run": true,
-    "flat (premise of nesting, and control for the line above): copied to the root, Claude Code acts on commands/ or hooks/": true,
+    "translated: the package's commands/ stays inert: the command reaches no request": true,
+    "flat (premise of nesting, control for the line above): copied to the root, the command reaches the request": true,
+    "translated: the package's hooks/ stays inert: the hook does not run": true,
+    "flat (premise of nesting, control for the line above): copied to the root, the hook runs": true,
     "unbridged (premise of the prelude): without it the server does not run in the plugin root": true,
     "literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable's value": true,
     "literal (premise of plugin_placeholder_literal): Claude Code expands the header text": true

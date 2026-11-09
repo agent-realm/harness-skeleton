@@ -8,7 +8,8 @@ where they have one.
 The first public cut.
 
 - **The design:** `docs/design/skeleton-v0.2-2026-10-22.md` (format `0.2`), with the cited
-  harness surveys, the build plan, and the reference harness's design.
+  harness surveys, the build plan, and the reference harness's design. Its portable plugin
+  format is Agent Plugins 1.0.0 (agent-plugins.org); `.claude-plugin` stays a native format.
 - **`hs`, the reference adapter (`hs/0.2`):**
   - on Claude Code and Codex: `describe`, `detect`, `validate` and `observe --state`;
   - `plan`, `apply`, `recover` and `remove` under `materialize`, with receipts, a ledger per

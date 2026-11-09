@@ -221,10 +221,16 @@ require = "required"
 
 ### 5.7 Skills, agents, commands, plugins, instructions
 
-- **Skills**: the Agent Skills specification (agentskills.io), imported by reference and normatively, never paraphrased. The standard adds one rule: `name` must equal the directory, which OpenCode enforces [OC §9]. Other frontmatter passes through and is reported as harness-specific. On Codex 0.160.0 the only per-folder location that loads today is the deprecated `$CODEX_HOME/skills` (readiness warns `deprecated`); the target is a skill-only local plugin under `$CODEX_HOME/plugins/`, adopted once tier 1 proves it loads [CX §9, §10]. A skill name starting with `.`, or one a harness keeps for itself, is refused as `skill_name_reserved` by `validate`, and its address by every write handler: Codex skips hidden directories and keeps `.system` for its bundled skills [CX §9]; Claude Code keeps `.trash`, `synced` (claude.ai-synced skills), `anthropic-skills` and `claude-ai` [CC §9]. Such a skill would install and never load as given, so it is refused rather than dropped.
+- **Skills**: the Agent Skills specification (agentskills.io), imported by reference and normatively, never paraphrased. The standard adds one rule: `name` must equal the directory, which OpenCode enforces [OC §9]. Other frontmatter passes through and is reported as harness-specific. On Codex 0.160.0 the only per-folder location that loads today is the deprecated `$CODEX_HOME/skills` (readiness warns `deprecated`); the target is a skill-only local plugin under `$CODEX_HOME/plugins/`, in the Agent Plugins format below, adopted once tier 1 proves it loads [CX §9, §10]. A skill name starting with `.`, or one a harness keeps for itself, is refused as `skill_name_reserved` by `validate`, and its address by every write handler: Codex skips hidden directories and keeps `.system` for its bundled skills [CX §9]; Claude Code keeps `.trash`, `synced` (claude.ai-synced skills), `anthropic-skills` and `claude-ai` [CC §9]. Such a skill would install and never load as given, so it is refused rather than dropped.
 - **Agents**: `agents/<name>.md`, frontmatter `name` (equal to the file name), `description` (required), `model`, `tools`; the body is the agent's prompt. Codex is translated to TOML with the body as `developer_instructions`, losing `tools` (`lossy`) [CX §14].
 - **Commands**: `commands/<name>.md`, frontmatter `description`, `argument-hint`; the body takes `$ARGUMENTS` and `$1`..`$9`, as three of four harnesses do [CC §15, OC §15, PI §15]. On Codex they become skills invoked as `$name`, and positional arguments are lost (`lossy`) [CX §15].
-- **Plugins**: `{id, source, format}`; the portable format is the `.claude-plugin` layout, which Claude Code and Codex load [CC §10, CX §10]. OpenCode plugins and pi packages are their own formats, and an adapter refuses a format it cannot load.
+- **Plugins**: `{id, source, format}`.
+  - **The portable format** is the Agent Plugins specification, version 1.0.0 (https://agent-plugins.org/specification, read 2026-11-09), imported by reference and normatively, never paraphrased, as Agent Skills is: `format = "agent-plugins"`. The package's own `$schema` names the version, and an adapter refuses a version its driver does not map. A package carries skills and MCP servers; the format leaves every other component to the harness.
+  - **Native formats** stay valid values of `format`: `claude-plugin`, the `.claude-plugin` layout, which Claude Code and Codex load [CC §10, CX §10]; OpenCode plugins and pi packages. An adapter refuses a format it cannot load. Until 2026-11-09 `claude-plugin` was the portable format, chosen by convergence (principle 1); a published standard now covers the same ground, so the skeleton reuses it (section 13).
+  - **Delivery is per component.** The descriptor reports, per format, which components the harness loads (`skills`, `mcp`). A harness that loads the package but skips a component makes the item `lossy`, with the component named in `dropped` (section 6); the item is never presented as whole.
+  - **Translation.** Where a harness has no loader for the format, its adapter may translate the package into a native format the harness does load: on Claude Code, the `.claude-plugin` layout, with `mcp.json` written as `.mcp.json` and the placeholders `${PLUGIN_ROOT}` and `${PLUGIN_DATA}` as `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_DATA}` [CC §10]. Until a tier 1 check proves a translation (section 10), its readiness is `untested`.
+  - **Secrets.** The format allows no credential in a package and leaves authentication to the client. An MCP server that needs a secret is therefore a spec `mcp.*` item with references (sections 5.3 and 5.5), not a plugin component.
+  - **Extension namespaces.** The skeleton defines none. An adapter ignores the namespaces its harness does not act on, as the format requires, and reports one it does act on as harness-specific. Hooks, agents and commands stay spec items (section 5.6 and above) while the format leaves them out; the skeleton does not carry them in a namespace of its own ahead of the format.
 - **Instructions**: `AGENTS.md`, plain markdown. Because Claude Code expands `@path` lines recursively in an imported file and strips block HTML comments, the canonical file must contain neither; `validate` refuses both [CC §3]. The Claude Code adapter writes a `CLAUDE.md` holding `@AGENTS.md` beside it, since Claude Code reads `AGENTS.md` natively only at project scope [CC §3].
 
 ### 5.8 Permissions
@@ -370,7 +376,7 @@ So on Claude Code, unless managed policy or the folder's settings say otherwise,
 | `endpoint` | yes | the wires the harness speaks |
 | `login` | yes | `isolated`, `endpoint` |
 | `mcp` | yes (question 2) | transports, exposure (`direct`, `deferred`, `codemode`). Minimum guarantee: stdio and HTTP, `exposure = direct`. pi's floor is 0.99.0 |
-| `skills`, `plugins`, `agents`, `main-agent`, `commands`, `model-list`, `session-env` | no | plugin formats |
+| `skills`, `plugins`, `agents`, `main-agent`, `commands`, `model-list`, `session-env` | no | plugin formats, and per format the components loaded (`skills`, `mcp`) |
 | `hooks` | no | events (8 portable, 3 facet) |
 | `permissions`, `sandbox` | no | predicate kinds (section 5.8) |
 | `statusline`, `runtime` | no | |
@@ -855,6 +861,7 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
 - **Inbound-read canaries**: the bench plants skills and instructions in `~/.agents/skills`, `~/.opencode/`, `~/.claude/CLAUDE.md` and an ancestor `AGENTS.md`; the scripted endpoint asserts none of them reached the model. The scan covers the whole request (system prompt, every message, tool definitions), because a harness may carry instructions outside the system prompt: Claude Code delivers `CLAUDE.md` content as a user message after the system prompt [CC §3]. Where it puts the skill list is not documented [CC §9], so the scan assumes no place for it. Each excluded canary is paired with an included one planted in the bound data folder: an absence counts only when the same scan finds the included marker (gentar's refinement, 2026-10-14).
 - **Harness-specific tool names** in scripts: `mcp__stub__ping` on Claude Code and Codex, `stub_ping` on OpenCode [OC §8]; pi tier 2 runs with `exposure = "direct"` [PI §8]; Codex tier 2 runs with `workspace-write` [CX §17].
 - **Inert detection**: deliver a Codex hook, trust it, edit its script, deliver again; `observe` must report it `inert`.
+- **Agent Plugins** (tier 1): deliver a minimal package, one skill and one stdio MCP server whose `args` use `${PLUGIN_ROOT}`, through each harness's route, native or translated, and record which components load: the skill is listed, and the server starts and answers a call. Controls in the same run: a package whose `$schema` names a version the format has not published is refused whole, and a package holding one invalid and one valid skill loads the valid one. The result sets the plugin descriptor of section 5.7; a component that does not load is named in `dropped`.
 - **Sessions at tier 2**: a scripted conversation with a tool call and a failing tool, a compaction and a resume, and a fork and a rewind where the harness supports them. `sessions.read` from empty, then `sessions.derive` from empty state, must give exactly the scripted turns, in order:
   - ids stay stable across the resume;
   - every tool call is linked to its result;
@@ -893,7 +900,7 @@ The first end-to-end job every `full` adapter must pass: one environment on a th
 | stdio MCP + secret | `env: {DB_PASS: "${HS_REF_DB_PASSWORD}"}` | `env_vars = ["DB_PASS"]`, the launch maps the ref to `DB_PASS` |
 | HTTP MCP + bearer | `headers: {Authorization: "Bearer ${HS_REF_SENTRY_TOKEN}"}` | `bearer_token_env_var = "HS_REF_SENTRY_TOKEN"` |
 | guard hook | settings `hooks.PreToolUse`, matcher `Bash`, shim | `hooks.json`, matcher `Bash`, shim; readiness `needs-trust` |
-| skill | `<harness_path>/skills/<name>/` | skill-only local plugin (tier 1 proves it) |
+| skill | `<harness_path>/skills/<name>/` | skill-only local plugin in the Agent Plugins format (tier 1 proves it) |
 | status line | settings `statusLine` | skipped (`if-supported`), listed in the plan |
 | sessions | `sessions.read` on `projects/<cwd>/<id>.jsonl` (a `stream` source, `byte_offset`), then `sessions.derive`, gives the scripted turns | the same on the rollout JSONL |
 | capture | every written path classed; `observe --state` lists the transcript and `history.jsonl` | the same, with `history.jsonl` and the SQLite thread state |
@@ -901,7 +908,7 @@ The first end-to-end job every `full` adapter must pass: one environment on a th
 
 ## 12. Mapping: Claude Code 2.1.289 and Codex 0.160.0
 
-**mapped**: the item has the same meaning in the harness (native, or a lossless translation). **partial**: lossy, bridged or gated; the note says what is lost. **missing**: refused. Rows keep v0's numbers; row 10 was removed in v0.1, and row 34 is new.
+**mapped**: the item has the same meaning in the harness (native, or a lossless translation). **partial**: lossy, bridged or gated; the note says what is lost. **missing**: refused. Rows keep v0's numbers; row 10 was removed in v0.1, row 34 is new, and row 35 was added on 2026-11-09.
 
 | # | Item | Claude Code | Note | Codex | Note |
 |---|---|---|---|---|---|
@@ -939,8 +946,9 @@ The first end-to-end job every `full` adapter must pass: one environment on a th
 | 32 | sessions, live | partial | `sessions/<pid>.json`, format undocumented [CC §16] | partial | `codex agents` on the shared daemon; output format unverified [CX §16] |
 | 33 | headless launch | mapped | `-p --output-format json` [CC §17] | mapped | `codex exec --json --skip-git-repo-check` [CX §17] |
 | 34 | sessions, read (sessions@v0) | mapped | append-only JSONL, `byte_offset`; record `uuid` ids; `reuse` impossible; hook join `yes` per the docs. Readiness `untested`: memhouse 0.20's reader is not yet on the contract (annex, claude-code row) | mapped | append-only rollouts, `byte_offset`; `payload.id`, else `@<offset>`, which is allowed for append-only streams (sessions-model §1 rule 4); hook join untested (annex, codex row) |
+| 35 | plugins, `agent-plugins` 1.0.0 | partial | no loader is known: the Claude Code 2.1.321 binary does not contain the format's schema identifier (observed 2026-11-09). The adapter translates to the `.claude-plugin` layout (section 5.7); untested | partial | a root `plugin.json` whose `$schema` names the format is read since 0.146.0 [CX §10]; which components load is unverified |
 
-Counts over the 33 rows in force: **Claude Code 29 mapped, 3 partial, 1 missing; Codex 15 mapped, 13 partial, 5 missing.** Codex's gaps are the same two whole capabilities (status line, main-agent pin) plus three facets (the Anthropic wire, the `sse` transport, the `Notification` event); Claude Code's one is a facet (the OpenAI wire).
+Counts over the 34 rows in force: **Claude Code 29 mapped, 4 partial, 1 missing; Codex 15 mapped, 14 partial, 5 missing.** Codex's gaps are the same two whole capabilities (status line, main-agent pin) plus three facets (the Anthropic wire, the `sse` transport, the `Notification` event); Claude Code's one is a facet (the OpenAI wire).
 
 ## 13. Decisions recorded
 
@@ -964,6 +972,7 @@ The decisions that shaped this note, by date.
 | 2026-10-22 | the session adapters get one home: a self-contained package in this repository, `packages/harness-session-adapters/` (`@agent-realm/harness-session-adapters`). It holds the one `host` and `harness_path` implementation and imports nothing from `hs` or memhouse; memhouse consumes it, and `hs` wraps it (section 7.3) |
 | 2026-10-22 | question 8: the retention default is 9999 days in folders a tool owns |
 | 2026-10-23 | the repository is published as a fresh public repository, together with the session contracts and sessions-sql |
+| 2026-11-09 | plugins: the portable format is Agent Plugins 1.0.0 (agent-plugins.org), imported by reference as Agent Skills is; `claude-plugin` stays a native format. The skeleton defines no extension namespace of its own: what the format leaves out (hooks, agents, commands, and everything outside a package) is delivered as spec items (section 5.7) |
 
 ## 14. Open questions
 

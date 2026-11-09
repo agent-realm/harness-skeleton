@@ -20,15 +20,18 @@
 //               Code has no loader for the format (§12 row 35), so these are recorded, not judged.
 //   translated  `clean` translated by the rules of §5.7, each stdio server started through the
 //               /bin/sh prelude that changes to the plugin root. Expected: the skill reaches the
-//               request under the plugin's name; the manifest keeps its metadata; the server starts
-//               in the plugin root, with both placeholders expanded and PLUGIN_ROOT and PLUGIN_DATA in
-//               its environment; its tool reaches the request.
+//               request under the plugin's name, from a manifest that keeps `name` and every
+//               metadata field; the server, given as a `./` command, starts in the plugin root with
+//               both placeholders expanded, PLUGIN_ROOT the plugin root and PLUGIN_DATA an existing,
+//               writable directory that ${PLUGIN_DATA} names; its tool reaches the request.
+// The translation is the check's own, built by hand to the rules of §5.7. None of the adapter's
+// refusals (version, literal text, cwd, invalid skill) is exercised here: no driver exists yet.
 //   unbridged   the same without the prelude. Expected (the prelude's premise): the server does
 //               not start in the plugin root.
 //   literal     `literal`, renamed as the translation renames and nothing more, with HS_BENCH_OTHER
 //               set in Claude Code's environment. Expected (the premise of §5.7's
 //               plugin_placeholder_literal): the stdio server's env and the remote server's header
-//               both arrive expanded, so the text did not stay literal.
+//               both arrive as the variable's value, so the text did not stay literal.
 //   dotted      `dotted`, translated. Recorded: whether Claude Code loads a plugin whose name has a
 //               dot.
 // A skill counts as loaded when its name, `<plugin>:<skill>`, or its description's marker reaches a
@@ -59,9 +62,11 @@ const b = bench('hs-tier1-agent-plugins-cc-');
 function translate(pkg, out, { prelude = true } = {}) {
   const manifest = JSON.parse(fs.readFileSync(path.join(pkg, 'plugin.json'), 'utf8'));
   const meta = Object.fromEntries(META.filter((k) => k in manifest).map((k) => [k, manifest[k]]));
+  // Everything but the two files the translation rewrites is copied as it is, modes kept.
+  const rewritten = [path.join(pkg, 'plugin.json'), path.join(pkg, 'mcp.json')];
+  fs.cpSync(pkg, out, { recursive: true, filter: (src) => !rewritten.includes(src) });
   fs.mkdirSync(path.join(out, '.claude-plugin'), { recursive: true });
   fs.writeFileSync(path.join(out, '.claude-plugin', 'plugin.json'), JSON.stringify(meta, null, 2) + '\n');
-  fs.cpSync(path.join(pkg, 'skills'), path.join(out, 'skills'), { recursive: true });
   const swap = (v) => v.replaceAll('${PLUGIN_ROOT}', '${CLAUDE_PLUGIN_ROOT}').replaceAll('${PLUGIN_DATA}', '${CLAUDE_PLUGIN_DATA}');
   const TYPE = { sse: 'sse', 'streamable-http': 'http' };
   const mcp = JSON.parse(fs.readFileSync(path.join(pkg, 'mcp.json'), 'utf8'));
@@ -79,7 +84,6 @@ function translate(pkg, out, { prelude = true } = {}) {
       : { type: 'stdio', command, args, env };
   }
   fs.writeFileSync(path.join(out, '.mcp.json'), JSON.stringify({ mcpServers: servers }, null, 2) + '\n');
-  fs.copyFileSync(path.join(pkg, 'server.mjs'), path.join(out, 'server.mjs'));
   return out;
 }
 
@@ -146,14 +150,14 @@ try {
   const checks = {
     'without a plugin no marker reaches a request (premise)': control.seen.ENDPOINT.length > 0 && !markers.some((m) => has(control, m)) && !offered(control),
     'translated: the skill reaches the request, under the plugin\'s name': has(carried, `${NAME}:notes`),
-    'translated: the manifest keeps every metadata field': META.every((k) => kept.includes(k)),
-    'translated: the server starts with ${PLUGIN_ROOT} expanded in args': p?.args_expanded === true,
+    'translated: the manifest keeps name and every metadata field, and the plugin loads from it': META.every((k) => kept.includes(k)) && has(carried, `${NAME}:notes`),
+    'translated: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args': p?.started === true && p.args_expanded === true,
     'translated: ${PLUGIN_DATA} is expanded in env': p?.data_expanded === true,
-    'translated: PLUGIN_ROOT and PLUGIN_DATA are in the server\'s environment': ['PLUGIN_ROOT', 'PLUGIN_DATA'].every((k) => p?.env_names?.includes(k)),
+    'translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names': p?.root_matches === true && p.data_exists === true && p.data_writable === true && p.data_matches === true,
     'translated: the server runs in the plugin root, through the prelude': p?.cwd_is_root === true,
     'translated: the server\'s tool reaches the request': has(carried, M.tool) && offered(carried),
     'unbridged (premise of the prelude): without it the server does not run in the plugin root': bare.probe?.started === true && bare.probe.cwd_is_root === false,
-    'literal (premise of plugin_placeholder_literal): Claude Code expands the env text': lit.probe?.started === true && lit.probe.literal_kept === false,
+    'literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable\'s value': lit.probe?.started === true && lit.probe.literal_kept === false && lit.probe.literal_is_other === true,
     'literal (premise of plugin_placeholder_literal): Claude Code expands the header text': remoteGot(lit, OTHER_VALUE) && !remoteGot(lit, LITERAL_MARKERS[0]),
   };
   const reached = [control, ...Object.values(published), carried, bare, lit, dot].every((r) => r.seen.ENDPOINT.length > 0);

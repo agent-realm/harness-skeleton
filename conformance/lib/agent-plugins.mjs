@@ -8,22 +8,45 @@ import path from 'node:path';
 
 export const SCHEMA = (v, kind) => `https://agent-plugins.org/schemas/${v}/${kind}.schema.json`;
 
+// The literal-text control (design note v0.2 §10): text the format never expands, in a stdio
+// server's env and in a remote server's header, with the variable it names set in the harness's
+// environment to OTHER_VALUE. A listener with LITERAL_MARKERS shows which form reached it.
+export const OTHER = 'HS_BENCH_OTHER';
+export const OTHER_VALUE = 'hs-bench-other-set-9f4c';
+export const LITERAL_MARKERS = ['${HS_BENCH_OTHER}', OTHER_VALUE];
+export const literalOpts = (remoteUrl) => ({
+  env: { HS_LITERAL: '${HS_BENCH_OTHER}' },
+  servers: { remote: { type: 'streamable-http', url: remoteUrl, headers: { 'X-HS-Literal': '${HS_BENCH_OTHER}' } } },
+});
+
 // A minimal stdio MCP server: newline-delimited JSON-RPC, one tool. On start it writes to
 // HS_PROBE_OUT what it can tell about its own launch, as booleans, never a value: whether its
 // script path reached it absolute (so the placeholder in `args` was expanded), whether the data
-// placeholder in `env` was expanded, which plugin variables its environment holds, whether it runs
-// in the plugin root, and whether HS_LITERAL (when the package sets it) reached it unexpanded.
+// placeholder in `env` was expanded, which plugin variables its environment holds, whether
+// PLUGIN_ROOT is the plugin root and PLUGIN_DATA an existing, writable directory that
+// ${PLUGIN_DATA} names, whether it runs in the plugin root, and whether HS_LITERAL (when the
+// package sets it) reached it unexpanded or as OTHER_VALUE.
 export function serverSource(tool, mark) {
   return `import fs from 'node:fs';
 import path from 'node:path';
 const env = process.env;
+const real = (p) => { try { return fs.realpathSync(p); } catch { return null; } };
+const root = real(path.dirname(process.argv[1] ?? '.'));
+const dataExists = typeof env.PLUGIN_DATA === 'string' && fs.existsSync(env.PLUGIN_DATA) && fs.statSync(env.PLUGIN_DATA).isDirectory();
+let dataWritable = false;
+try { fs.writeFileSync(path.join(env.PLUGIN_DATA, '.hs-probe-write'), ''); dataWritable = true; } catch {}
 fs.writeFileSync(env.HS_PROBE_OUT, JSON.stringify({
   started: true,
   args_expanded: path.isAbsolute(process.argv[1] ?? '') && !String(process.argv[1]).includes('\${'),
   data_expanded: typeof env.HS_DATA_DIR === 'string' && path.isAbsolute(env.HS_DATA_DIR) && !env.HS_DATA_DIR.includes('\${'),
   env_names: ['PLUGIN_ROOT', 'PLUGIN_DATA', 'CLAUDE_PLUGIN_ROOT', 'CLAUDE_PLUGIN_DATA'].filter((k) => env[k] !== undefined),
-  cwd_is_root: fs.realpathSync(process.cwd()) === fs.realpathSync(path.dirname(process.argv[1] ?? '.')),
+  root_matches: root !== null && typeof env.PLUGIN_ROOT === 'string' && real(env.PLUGIN_ROOT) === root,
+  data_exists: dataExists,
+  data_writable: dataWritable,
+  data_matches: typeof env.PLUGIN_DATA === 'string' && env.HS_DATA_DIR === env.PLUGIN_DATA,
+  cwd_is_root: real(process.cwd()) === root,
   literal_kept: env.HS_LITERAL === undefined ? null : env.HS_LITERAL === '\${HS_BENCH_OTHER}',
+  literal_is_other: env.HS_LITERAL === undefined ? null : env.HS_LITERAL === ${JSON.stringify(OTHER_VALUE)},
 }));
 let buf = '';
 const send = (m) => process.stdout.write(JSON.stringify(m) + '\\n');
@@ -48,7 +71,9 @@ process.stdin.on('data', (d) => {
 //   skills/no-desc/      (with `marks.invalid`) a skill without the required description; its
 //                        body's first paragraph carries the marker, so a harness that loads it
 //                        anyway shows it
-//   mcp.json             one stdio server, `probe`: command `node`, args ["${PLUGIN_ROOT}/server.mjs"],
+//   bin/hs-probe         a /bin/sh wrapper that execs this Node with its arguments
+//   mcp.json             one stdio server, `probe`: command `./bin/hs-probe` (a `./` command, §5.7),
+//                        args ["${PLUGIN_ROOT}/server.mjs"],
 //                        env { HS_PROBE_OUT, HS_DATA_DIR = "${PLUGIN_DATA}" }, plus `env` given;
 //                        plus any `servers` given (a remote one, say)
 // plugin.json carries every metadata field of the format (§5.4), so a translation shows it keeps them.
@@ -65,9 +90,11 @@ export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeO
   }
   fs.writeFileSync(path.join(dir, 'mcp.json'), JSON.stringify({
     $schema: SCHEMA(version, 'mcp'),
-    mcpServers: { probe: { type: 'stdio', command: 'node', args: ['${PLUGIN_ROOT}/server.mjs'], env: { HS_PROBE_OUT: probeOut, HS_DATA_DIR: '${PLUGIN_DATA}', ...env } }, ...servers },
+    mcpServers: { probe: { type: 'stdio', command: './bin/hs-probe', args: ['${PLUGIN_ROOT}/server.mjs'], env: { HS_PROBE_OUT: probeOut, HS_DATA_DIR: '${PLUGIN_DATA}', ...env } }, ...servers },
   }, null, 2) + '\n');
   fs.writeFileSync(path.join(dir, 'server.mjs'), serverSource(tool, marks.tool));
+  fs.mkdirSync(path.join(dir, 'bin'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'bin', 'hs-probe'), `#!/bin/sh\nexec '${process.execPath}' "$@"\n`, { mode: 0o755 });
   return dir;
 }
 
@@ -76,13 +103,3 @@ export function probe(file) {
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
 }
 
-// The literal-text control (design note v0.2 §10): text the format never expands, in a stdio
-// server's env and in a remote server's header, with the variable it names set in the harness's
-// environment to OTHER_VALUE. A listener with LITERAL_MARKERS shows which form reached it.
-export const OTHER = 'HS_BENCH_OTHER';
-export const OTHER_VALUE = 'hs-bench-other-set-9f4c';
-export const LITERAL_MARKERS = ['${HS_BENCH_OTHER}', OTHER_VALUE];
-export const literalOpts = (remoteUrl) => ({
-  env: { HS_LITERAL: '${HS_BENCH_OTHER}' },
-  servers: { remote: { type: 'streamable-http', url: remoteUrl, headers: { 'X-HS-Literal': '${HS_BENCH_OTHER}' } } },
-});

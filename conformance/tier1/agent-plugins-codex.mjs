@@ -15,16 +15,21 @@
 // `literal` (`clean` plus text the format keeps literal, in a stdio server's env and in a remote
 // server's header). Runs:
 //   control  no plugin. Expected: no marker reaches a request (the premise).
-//   clean    Expected: the install succeeds; the skill reaches the request as <plugin>:notes, with
-//            its description; the server starts with both placeholders expanded, PLUGIN_ROOT and
-//            PLUGIN_DATA in its environment, in the plugin root; its tool reaches the request.
-//   future   Expected: `codex plugin add` refuses it. Written into the folder the way the install
-//            writes (the cache directory and the [plugins] table), it still loads nothing: no
-//            marker, no server, while `clean` loaded.
+//   clean    Expected: the install succeeds and writes the cache directory and the [plugins]
+//            table; the skill reaches the request as <plugin>:notes, with its description; the
+//            server, given as a `./` command, starts in the plugin root with both placeholders
+//            expanded, PLUGIN_ROOT the plugin root and PLUGIN_DATA an existing, writable directory
+//            that ${PLUGIN_DATA} names; its tool reaches the request.
+//   byhand   `clean` written into a folder by hand, as the install writes it (the cache directory
+//            and the [plugins] table). Expected: it loads, as `clean` does. The positive control
+//            for `future`.
+//   future   Expected: `codex plugin add` refuses it, naming plugin.json. Written in by the same
+//            hand procedure as `byhand`, it still loads nothing: no marker, no server.
 //   mixed    Expected: the valid skill's name and marker reach the request; the invalid skill's
 //            reach none.
-//   literal  with HS_BENCH_OTHER set in Codex's environment. Expected: the stdio server's env and
-//            the remote server's header both arrive as written, unexpanded [AP §9.2].
+//   literal  with HS_BENCH_OTHER set in Codex's launch environment (asserted). Expected: the
+//            stdio server's env and the remote server's header both arrive as written,
+//            unexpanded [AP §9.2].
 // The model and the server record names and booleans only. The credential is a dummy; HOME and XDG
 // are scratch.
 
@@ -82,28 +87,44 @@ try {
     const spec = b.hs('launch-spec', ['--harness', 'codex', '--folder', folder, '--layer', plain, '--local', local, '--bin', codex, '--headless']);
     const l = fromSpec(spec, extraEnv, codex, ['--skip-git-repo-check', PROMPT]);
     const r = await b.launch([L, R], l.argv, l.env, cwd);
-    return { ...r, probe: probe(probeOut) };
+    return { ...r, probe: probe(probeOut), other_in_launch_env: l.env[OTHER] === OTHER_VALUE };
+  };
+  // What `codex plugin add` writes for a package it accepts, by hand: the package under
+  // plugins/cache/<marketplace>/<plugin>/<version>/, and an enabled [plugins] table.
+  const cacheDir = (folder, m) => path.join(folder, 'plugins', 'cache', m.name, NAME, '1.0.0');
+  const table = (m) => `[plugins."${NAME}@${m.name}"]`;
+  const byHand = (folder, m) => {
+    const dir = cacheDir(folder, m);
+    if (fs.existsSync(dir)) return false;
+    fs.cpSync(path.join(m.dir, NAME), dir, { recursive: true });
+    fs.appendFileSync(path.join(folder, 'config.toml'), `\n${table(m)}\nenabled = true\n`);
+    return true;
+  };
+  const installed = (folder, m) => {
+    const config = fs.existsSync(path.join(folder, 'config.toml')) ? fs.readFileSync(path.join(folder, 'config.toml'), 'utf8') : '';
+    return fs.existsSync(path.join(cacheDir(folder, m), 'plugin.json')) && config.includes(table(m)) && /enabled\s*=\s*true/.test(config.slice(config.indexOf(table(m))));
   };
 
   const control = await run(folderFor('control'));
 
   const cleanFolder = folderFor('clean');
-  const cleanInstall = install(cleanFolder, market('clean', { marks: { skill: M.skill, tool: M.tool } }));
+  const cleanMarket = market('clean', { marks: { skill: M.skill, tool: M.tool } });
+  const cleanInstall = install(cleanFolder, cleanMarket);
+  const cleanWrote = installed(cleanFolder, cleanMarket);
   const clean = await run(cleanFolder);
+
+  const byhandFolder = folderFor('byhand');
+  const byhandMarket = market('byhand', { marks: { skill: M.skill, tool: M.tool } });
+  const byhandAdd = cli(byhandFolder, ['marketplace', 'add', byhandMarket.dir]);
+  const byhandWritten = byHand(byhandFolder, byhandMarket);
+  const byhand = await run(byhandFolder);
   const dataDir = path.join(cleanFolder, 'plugins', 'data', 'agent-plugins');
   const cleanData = fs.existsSync(dataDir) ? fs.readdirSync(dataDir).length : 0;
 
   const futureFolder = folderFor('future');
   const futureMarket = market('future', { version: '9.9.9', marks: { skill: M.skill, tool: M.tool } });
   const futureInstall = install(futureFolder, futureMarket);
-  // What the install writes for a package it accepts (the cache directory and the [plugins] table),
-  // written by hand, so the launch shows what the loader does with the package.
-  const futureCache = path.join(futureFolder, 'plugins', 'cache', futureMarket.name, NAME, '1.0.0');
-  const futureWritten = !fs.existsSync(futureCache);
-  if (futureWritten) {
-    fs.cpSync(path.join(futureMarket.dir, NAME), futureCache, { recursive: true });
-    fs.appendFileSync(path.join(futureFolder, 'config.toml'), `\n[plugins."${NAME}@${futureMarket.name}"]\nenabled = true\n`);
-  }
+  const futureWritten = byHand(futureFolder, futureMarket);
   const future = await run(futureFolder);
 
   const mixedFolder = folderFor('mixed');
@@ -120,30 +141,31 @@ try {
   const p = clean.probe;
   const checks = {
     'without a plugin no marker reaches a request (premise)': control.seen.ENDPOINT.length > 0 && !any(control),
-    'clean: marketplace add and plugin add succeed': cleanInstall.marketplace_add.exit === 0 && cleanInstall.plugin_add.exit === 0,
+    'clean: marketplace add and plugin add succeed, writing the cache directory and the [plugins] table': cleanInstall.marketplace_add.exit === 0 && cleanInstall.plugin_add.exit === 0 && cleanWrote,
     'clean: the skill reaches the request as <plugin>:notes, with its description': has(clean, `${NAME}:notes`) && has(clean, M.skill),
-    'clean: the server starts with ${PLUGIN_ROOT} expanded in args': p?.args_expanded === true,
+    'clean: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args': p?.started === true && p.args_expanded === true,
     'clean: ${PLUGIN_DATA} is expanded in env': p?.data_expanded === true,
-    'clean: PLUGIN_ROOT and PLUGIN_DATA are in the server\'s environment': ['PLUGIN_ROOT', 'PLUGIN_DATA'].every((k) => p?.env_names?.includes(k)),
+    'clean: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names': p?.root_matches === true && p.data_exists === true && p.data_writable === true && p.data_matches === true,
     'clean: the server runs in the plugin root': p?.cwd_is_root === true,
     'clean: the server\'s tool reaches the request': has(clean, M.tool),
-    'future (9.9.9): plugin add refuses it': futureInstall.plugin_add.exit !== 0,
-    'future (9.9.9): written as an install writes, it loads nothing, while clean loaded': futureWritten && !any(future) && future.probe === null && has(clean, M.skill),
+    'byhand: clean written in by hand loads, skill and server (the control for future)': byhandAdd.exit === 0 && byhandWritten && has(byhand, `${NAME}:notes`) && has(byhand, M.skill) && byhand.probe?.started === true && has(byhand, M.tool),
+    'future (9.9.9): plugin add refuses it, naming plugin.json': futureInstall.plugin_add.exit !== 0 && futureInstall.plugin_add.names_manifest === true,
+    'future (9.9.9): written in by the same hand procedure, it loads nothing': futureWritten && !any(future) && future.probe === null,
     'mixed: the valid skill\'s name and marker reach the request': has(mixed, `${NAME}:notes`) && has(mixed, M.skill),
     'mixed: the invalid skill\'s name and marker reach none': !loaded(mixed, 'no-desc', M.invalid),
-    'literal: the install succeeds and the stdio server starts': literalInstall.plugin_add.exit === 0 && lit.probe?.started === true,
+    'literal: the install succeeds, HS_BENCH_OTHER is in Codex\'s launch environment, and the stdio server starts': literalInstall.plugin_add.exit === 0 && lit.other_in_launch_env && lit.probe?.started === true,
     'literal: the env text reaches the stdio server unexpanded': lit.probe?.literal_kept === true,
     'literal: the header text reaches the remote server unexpanded': lit.seen.REMOTE.some((q) => q.markers.includes(LITERAL_MARKERS[0])) && !lit.seen.REMOTE.some((q) => q.markers.includes(OTHER_VALUE)),
   };
-  const reached = [control, clean, future, mixed, lit].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, clean, byhand, future, mixed, lit].every((r) => r.seen.ENDPOINT.length > 0);
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: an Agent Plugins 1.0.0 package on Codex, installed as a user installs it (design note v0.2 §5.7, §10)',
     at: new Date().toISOString(),
     evidence: evidence(b, codex),
-    installs: { clean: cleanInstall, future: futureInstall, mixed: mixedInstall, literal: literalInstall },
-    runs: { control: shape(control), clean: shape(clean), future: shape(future), mixed: shape(mixed), literal: shape(lit) },
-    server_probes: { clean: clean.probe, future: future.probe, mixed: mixed.probe, literal: lit.probe },
+    installs: { clean: { ...cleanInstall, wrote_cache_and_table: cleanWrote }, byhand: { marketplace_add: byhandAdd, written_by_hand: byhandWritten }, future: { ...futureInstall, written_by_hand: futureWritten }, mixed: mixedInstall, literal: literalInstall },
+    runs: { control: shape(control), clean: shape(clean), byhand: shape(byhand), future: shape(future), mixed: shape(mixed), literal: { ...shape(lit), other_in_launch_env: lit.other_in_launch_env } },
+    server_probes: { clean: clean.probe, byhand: byhand.probe, future: future.probe, mixed: mixed.probe, literal: lit.probe },
     plugin_data_dirs: cleanData,
     checks,
     verdict,

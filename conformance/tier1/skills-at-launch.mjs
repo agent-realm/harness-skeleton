@@ -12,8 +12,9 @@
 //   refused   launch-spec with the skill and no receipt. Expected: receipt_required, with the launch
 //             digest and the skill as a runs-code risk, and no temp dir made.
 //   carried   launch-spec with a receipt for that digest; the harness started from it. Expected:
-//             the marker reaches the request, under the name hs:notes, and nothing is copied into
-//             the data folder.
+//             the skill reaches the request under the name hs:notes, and nothing is copied into
+//             the data folder. Whether its description's marker reaches the request too is
+//             recorded: Claude Code 2.1.321 lists a skill by name, without the description.
 // One local listener stands in for the endpoint; it records the kind of credential and which
 // markers a request carries, never a value. The credential is a dummy; HOME and XDG are scratch.
 
@@ -70,11 +71,11 @@ try {
   const marked = (r) => r.seen.ENDPOINT.some((q) => q.markers.includes(MARK));
   const named = (r) => r.seen.ENDPOINT.some((q) => q.markers.includes('hs:notes'));
   const checks = {
-    'without the plugin the skill reaches no request (premise)': control.seen.ENDPOINT.length > 0 && !marked(control),
+    'without the plugin the skill reaches no request (premise)': control.seen.ENDPOINT.length > 0 && !marked(control) && !named(control),
     'without a receipt launch-spec refuses, naming the skill as runs-code': refusal?.code === 'receipt_required' && risks.length === 1 && risks[0].item === 'skill.notes' && risks[0].risk === 'runs-code',
     'the refusal makes no temp dir': !madeDir,
     'with the receipt the launch carries --plugin-dir and the same digest': spec.argv.includes('--plugin-dir') && spec.launch_digest === digest,
-    'the skill reaches the request, as hs:notes': marked(carried) && named(carried),
+    'the skill reaches the request, as hs:notes': named(carried),
     'nothing is copied into the data folder': !folderAfter.includes('skills') && !folderAfter.some((n) => !folderBefore.includes(n) && n === 'plugins'),
   };
   const reached = control.seen.ENDPOINT.length > 0 && carried.seen.ENDPOINT.length > 0;
@@ -87,6 +88,7 @@ try {
     refusal: refusal ? { code: refusal.code, risks } : null,
     launch_digest: digest,
     folder_entries_after: folderAfter,
+    description_reaches_request: marked(carried),
     checks,
     verdict,
   };

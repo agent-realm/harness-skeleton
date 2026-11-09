@@ -1,0 +1,253 @@
+{
+  "check": "tier 1: an Agent Plugins 1.0.0 package on Codex, installed as a user installs it (design note v0.2 §5.7, §10)",
+  "at": "2026-11-09T20:51:42.148Z",
+  "evidence": {
+    "harness": "codex-cli 0.167.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "d59257657dc71a903fe522f0ef5ee6d0c18e4eb7"
+  },
+  "installs": {
+    "clean": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "wrote_cache_and_table": true
+    },
+    "byhand": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "written_by_hand": true
+    },
+    "future": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 1,
+        "names_manifest": true
+      },
+      "written_by_hand": true
+    },
+    "mixed": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    },
+    "claude": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    },
+    "literal": {
+      "marketplace_add": {
+        "exit": 0,
+        "names_manifest": false
+      },
+      "plugin_add": {
+        "exit": 0,
+        "names_manifest": false
+      }
+    }
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "remote": []
+    },
+    "clean": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": [],
+      "hook_ran": false
+    },
+    "byhand": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": []
+    },
+    "future": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "remote": []
+    },
+    "mixed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": []
+    },
+    "claude": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-command-7e0b",
+        "hs-tier1-ap-skill-4d1a"
+      ],
+      "remote": []
+    },
+    "literal": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "mcp__probe"
+      ],
+      "remote": [
+        "${HS_BENCH_OTHER}"
+      ],
+      "other_in_launch_env": true
+    }
+  },
+  "server_probes": {
+    "clean": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "byhand": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "future": null,
+    "mixed": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "literal": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": true,
+      "literal_is_other": false
+    }
+  },
+  "plugin_data_dirs": 1,
+  "checks": {
+    "without a plugin no marker reaches a request (premise)": true,
+    "clean: marketplace add and plugin add succeed, writing the cache directory and the [plugins] table": true,
+    "clean: the skill reaches the request as <plugin>:notes, with its description": true,
+    "clean: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args": true,
+    "clean: ${PLUGIN_DATA} is expanded in env": true,
+    "clean: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
+    "clean: the server runs in the plugin root": true,
+    "clean: the server's tool reaches the request": true,
+    "clean: commands/ stays inert: the command reaches no request": true,
+    "claude layout (control for the line above): the same commands/ reaches the request": true,
+    "byhand: clean written in by hand loads, skill and server (the control for future)": true,
+    "future (9.9.9): plugin add refuses it, naming plugin.json": true,
+    "future (9.9.9): written in by the same hand procedure, it loads nothing": true,
+    "mixed: the valid skill's name and marker reach the request": true,
+    "mixed: the invalid skill's name and marker reach none": true,
+    "literal: the install succeeds, HS_BENCH_OTHER is in Codex's launch environment, and the stdio server starts": true,
+    "literal: the env text reaches the stdio server unexpanded": true,
+    "literal: the header text reaches the remote server unexpanded": true
+  },
+  "verdict": "pass"
+}

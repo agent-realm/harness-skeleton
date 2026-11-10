@@ -130,10 +130,17 @@ export function checkAddress(descriptor, handler, a) {
     if (!normalized(a?.path)) refuse(`${JSON.stringify(a?.path)} is not a normalized relative path`, a?.path);
     refuseState(classify(a.path, descriptor.paths, { isDir: true }), a.path);
     const segs = a.path.split('/');
-    if (segs.length !== 2 || !w.trees.includes(segs[0])) refuse(`${a.path} is not one level under a root delivery may write (${w.trees.join(', ')})`, a.path);
+    // A root is one or more segments, where `*` stands for one name (a plugin's, in a cache keyed
+    // by name); the tree is one level under it.
+    const root = w.trees.find((r) => {
+      const rs = r.split('/');
+      return segs.length === rs.length + 1 && rs.every((x, i) => (x === '*' ? /^[a-z0-9][a-z0-9.-]*$/.test(segs[i]) : x === segs[i]));
+    });
+    if (!root) refuse(`${a.path} is not one level under a root delivery may write (${w.trees.join(', ')})`, a.path);
+    const leaf = segs.at(-1);
     // A hidden name, or one the harness keeps for itself, is never a delivered tree, whatever plan
     // asks: the harness skips the one and owns the other.
-    if (segs[1].startsWith('.') || (w.reserved?.[segs[0]] ?? []).includes(segs[1])) refuse(`${a.path} is a hidden or reserved name under ${segs[0]}/ (${descriptor.name} keeps ${(w.reserved?.[segs[0]] ?? []).join(', ') || 'none'}, and skips or owns every name starting with .)`, a.path);
+    if (leaf.startsWith('.') || (w.reserved?.[root] ?? []).includes(leaf)) refuse(`${a.path} is a hidden or reserved name under ${root}/ (${descriptor.name} keeps ${(w.reserved?.[root] ?? []).join(', ') || 'none'}, and skips or owns every name starting with .)`, a.path);
     if (classify(a.path, descriptor.paths, { isDir: true }) !== 'config') refuse(`${a.path} is not a config path`, a.path);
     return a.path;
   }

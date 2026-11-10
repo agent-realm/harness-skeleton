@@ -25,8 +25,9 @@ export const literalOpts = (remoteUrl) => ({
 // script path reached it absolute (so the placeholder in `args` was expanded), whether the data
 // placeholder in `env` was expanded, which plugin variables its environment holds, whether
 // PLUGIN_ROOT is the plugin root and PLUGIN_DATA an existing, writable directory that
-// ${PLUGIN_DATA} names, whether it runs in the plugin root, and whether HS_LITERAL (when the
-// package sets it) reached it unexpanded or as OTHER_VALUE.
+// ${PLUGIN_DATA} names, whether it runs in the plugin root, whether HS_LITERAL (when the
+// package sets it) reached it unexpanded or as OTHER_VALUE, and whether HS_BENCH_OTHER itself
+// reached its environment from the harness's.
 export function serverSource(tool, mark) {
   return `import fs from 'node:fs';
 import path from 'node:path';
@@ -48,6 +49,7 @@ fs.writeFileSync(env.HS_PROBE_OUT, JSON.stringify({
   cwd_is_root: real(process.cwd()) === root,
   literal_kept: env.HS_LITERAL === undefined ? null : env.HS_LITERAL === '\${HS_BENCH_OTHER}',
   literal_is_other: env.HS_LITERAL === undefined ? null : env.HS_LITERAL === ${JSON.stringify(OTHER_VALUE)},
+  other_forwarded: env.${OTHER} === ${JSON.stringify(OTHER_VALUE)},
 }));
 let buf = '';
 const send = (m) => process.stdout.write(JSON.stringify(m) + '\\n');
@@ -84,9 +86,14 @@ process.stdin.on('data', (d) => {
 // Two packages built with the same arguments and different `version`s differ only in the two
 // `$schema` values.
 //   server.mjs
-export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeOut, env = {}, servers = {}, inert = null }) {
+// `manifest` adds fields to plugin.json (an `extensions` table, say); `files` adds files by path.
+export function writePackage(dir, { name, version = '1.0.0', marks, tool, probeOut, env = {}, servers = {}, inert = null, manifest = {}, files = {} }) {
   fs.mkdirSync(path.join(dir, 'skills', 'notes'), { recursive: true });
-  fs.writeFileSync(path.join(dir, 'plugin.json'), JSON.stringify({ $schema: SCHEMA(version, 'plugin'), name, version: '1.0.0', description: 'A tier 1 bench package.', author: { name: 'bench', url: 'https://example.com' }, homepage: 'https://example.com/plugin', repository: 'https://example.com/plugin.git', license: 'Apache-2.0', keywords: ['bench'] }, null, 2) + '\n');
+  fs.writeFileSync(path.join(dir, 'plugin.json'), JSON.stringify({ $schema: SCHEMA(version, 'plugin'), name, version: '1.0.0', description: 'A tier 1 bench package.', author: { name: 'bench', url: 'https://example.com' }, homepage: 'https://example.com/plugin', repository: 'https://example.com/plugin.git', license: 'Apache-2.0', keywords: ['bench'], ...manifest }, null, 2) + '\n');
+  for (const [rel, content] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(dir, rel), typeof content === 'string' ? content : JSON.stringify(content, null, 2) + '\n');
+  }
   fs.writeFileSync(path.join(dir, 'skills', 'notes', 'SKILL.md'), `---\nname: notes\ndescription: Take bench notes. ${marks.skill}\n---\nWrite the notes.\n`);
   if (marks.invalid) {
     fs.mkdirSync(path.join(dir, 'skills', 'no-desc'), { recursive: true });

@@ -73,12 +73,17 @@ format = "agent-plugins"
 - **validate** checks the package as the format defines it, and refuses what the target harness
   cannot keep: a `$schema` version it does not map, a skill the Agent Skills specification
   rejects, and on Claude Code, `${…}` text the format keeps literal or a stdio server's `cwd`
-  other than the plugin root. The codes are in [the errors reference](errors.md).
+  other than the plugin root. On Codex it refuses a package holding `.codex-plugin/`, which Codex
+  acts on, and a plan names `extensions["com.openai"]` as harness-specific. The codes are in
+  [the errors reference](errors.md).
 - **A tombstone** `[remove] items = ["plugin.notes"]` removes that plugin only, never
   `plugin."notes.kit"`; `items = ["plugin"]` removes every plugin.
 - **Delivered** at launch on Claude Code, translated to its own plugin layout with one
-  `--plugin-dir` per package, under a launch receipt. Codex, `materialize` and the native formats
-  (`claude-plugin` and others) are refused as `not_implemented`.
+  `--plugin-dir` per package, under a launch receipt. On Codex, under `materialize`: a plan
+  installs the package in Codex's plugin cache, and each launch through `launch-spec` enables it.
+  `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`materialize`
+  on Claude Code, `overlay` on Codex, the native formats such as `claude-plugin`) a plugin item is
+  refused, by name.
 
 ## `local.toml`
 
@@ -111,12 +116,13 @@ On Claude Code:
   a bare start never reaches the endpoint.
 
 On Codex:
-- **at launch:** model roles, endpoints, MCP servers and hooks;
-- **under `materialize`:** skills.
+- **at launch:** model roles, endpoints, MCP servers and hooks, and the Agent Plugins packages a
+  plan installed;
+- **under `materialize`:** skills and Agent Plugins packages.
 
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
-So does a plugin item anywhere but at launch on Claude Code (above).
+So does a plugin item outside the routes above.
 
 ## Risks
 

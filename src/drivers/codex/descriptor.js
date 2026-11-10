@@ -21,7 +21,55 @@ export default Object.freeze({
   // file). The handlers check every address against this, whatever plan they are handed.
   // A name starting with . is never a tree (Codex skips hidden directories, ext/skills loader,
   // [CX §9]), and `reserved` names are the harness's own: skills/.system holds its bundled skills.
-  writable: { json: {}, trees: ['skills'], reserved: { skills: ['.system'] }, reserved_source: 'CX §9 [S-ext/skills/src/host_roots.rs]' },
+  // The plugin cache root takes one package per plugin name, under a version directory hs names
+  // (plugins['agent-plugins'] below).
+  writable: { json: {}, trees: ['skills', 'plugins/cache/harness-skeleton/*'], reserved: { skills: ['.system'] }, reserved_source: 'CX §9 [S-ext/skills/src/host_roots.rs]' },
+
+  // Plugin formats this adapter maps (§5.7). Codex reads an Agent Plugins package natively: a root
+  // plugin.json whose $schema names the format, read since 0.146.0 [CX §10], and on 0.160.0 and
+  // 0.167.0 every component loads as the format says, literal text included (tier 1,
+  // conformance/tier1/agent-plugins-codex.mjs, 2026-11-09). A plugin loads only from the cache,
+  // plugins/cache/<marketplace>/<plugin>/<version>/, and only when enabled [CX §10]. Measured: a
+  // package copied there loads with no marketplace added and no config.toml, enabled for one launch
+  // by `-c plugins={"<plugin>@<marketplace>"={enabled=true}}`; unenabled it does not load; any
+  // version directory name loads (tier 1, conformance/tier1/agent-plugins-codex-cache.mjs, 0.160.0
+  // and 0.167.0, 2026-11-10). The override is one inline table because Codex splits an override's
+  // key on every `.`, with no quoting, and deep-merges the override layer into the config's tables,
+  // so the user's other plugin entries stay (codex-rs/config/src/overrides.rs and merge.rs, tag
+  // rust-v0.160.0, read 2026-11-10); measured, a quoted dotted key does not load.
+  plugins: {
+    'agent-plugins': {
+      versions: ['1.0.0'],
+      mechanism: 'native',
+      components: ['skills', 'mcp'],
+      keeps_literal: true,
+      cwd: 'format',
+      // Codex reads more than the format's components from a package of this format (rust-v0.160.0,
+      // read 2026-11-10): extensions["com.openai"] in plugin.json or, when it is absent,
+      // .codex-plugin/plugin.json, for apps, hooks, an onboarding skill and an interface
+      // (codex-rs/core-plugins/src/agent_plugin_manifest.rs, manifest/manifest_cache.rs `load`). The
+      // loader drops the hooks and apps for this format (loader.rs). .codex-plugin/plugin.json's
+      // mcpServers also add env_vars, variables forwarded from Codex's own environment, to a stdio
+      // server of the same name (agent_plugin_mcp_overlay.rs), and that is not dropped.
+      // extensions["com.openai"] is the format's own namespace mechanism [AP §8]: a package
+      // carrying it is reported as harness-specific, and planned as runs-code, since a plan cannot
+      // tell what Codex makes of it. .codex-plugin/ is a path the format never discovers [AP §6.1,
+      // §8], and Codex acts on it, so a package holding it is refused (validate,
+      // plugin_path_unsupported). Measured with hook trust bypassed: neither's hook runs, and
+      // neither's app, onboarding skill or interface reaches a request; the overlay's env_vars
+      // reach the server (tier 1, conformance/tier1/agent-plugins-codex-cache.mjs).
+      namespace: { name: 'com.openai', reads: ['apps', 'hooks', 'onboarding skill', 'interface'], dropped: ['hooks', 'apps'] },
+      acts_on_paths: ['.codex-plugin'],
+      acts_on_source: 'Codex reads .codex-plugin/plugin.json for an Agent Plugins package, its MCP servers\' environment included (rust-v0.160.0, agent_plugin_mcp_overlay.rs, manifest_cache.rs)',
+      cache: { root: 'plugins/cache', marketplace: 'harness-skeleton', version_dir: 'hs' },
+      enable: { config_key: 'plugins' },
+      // config.toml is never written (delivery_modes, §7.5), so a bare `codex` start in the folder
+      // does not enable the plugin.
+      bare_start: 'a bare `codex` start in this folder does not load it: it is enabled only by launches made through launch-spec, since config.toml is never written',
+      readiness: 'untested',
+      source: 'design note §5.7; CX §10; tier 1, 2026-11-09 and 2026-11-10',
+    },
+  },
 
   versions: { certified: [], compatible: { min: '0.160.0', below: '0.161.0' } },
 

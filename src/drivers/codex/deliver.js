@@ -17,14 +17,15 @@ import { readFolderFile } from '../../folder-config.js';
 import { readLedger } from '../../records.js';
 import { treeLink } from '../../native.js';
 import { digestPath } from '../../spec/layers.js';
+import { AGENT_PLUGINS, readPackage } from '../../spec/agent-plugins.js';
 
 const HOOK_SHIM = fileURLToPath(new URL('../../shim/codex.js', import.meta.url));
 
 const NO_TOML_WRITE = 'Codex config.toml is not written in this build, so the value covers only launches made through launch-spec';
 
 // What a plan delivers on Codex. Under `overlay` nothing is written. Under `materialize` only skills
-// are, as trees under skills/ (milestone 6a.10); every other item is what it is under overlay,
-// since config.toml is never written.
+// are, as trees under skills/ (milestone 6a.10), and Agent Plugins packages, as trees in the plugin
+// cache (6a.15); every other item is what it is under overlay, since config.toml is never written.
 export function deliverables(resolved, { mode, descriptor }) {
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
@@ -53,8 +54,54 @@ export function deliverables(resolved, { mode, descriptor }) {
       // §5.10: an unsupported if-supported item is skipped and named; a required one refuses.
       if (item.value?.require === 'required') throw new HsError('item_unsupported', `statusline is required, and ${descriptor.launch.statusline.reason}`, [item.id]);
       out.skipped.push({ item: item.id, reason: descriptor.launch.statusline.reason });
+    } else if (item.kind === 'plugin') {
+      plugin(item);
     } else out.not_implemented.push(item.id);
   }
+
+  // An Agent Plugins package under materialize (§5.7): the package as a tree in the plugin cache,
+  // plugins/cache/<marketplace>/<name>/<version dir>/, enabled at each launch through launch-spec.
+  // Under overlay nothing is written, and Codex loads a plugin only from that cache: refused.
+  function plugin(item) {
+    if (item.value?.format !== AGENT_PLUGINS) {
+      out.not_implemented.push(`${item.id} (format ${item.value?.format})`);
+      return;
+    }
+    const R = descriptor.plugins[AGENT_PLUGINS];
+    if (mode !== 'materialize') {
+      out.refused.push({ item: item.id, code: 'item_unsupported', reason: `under overlay nothing is written, and Codex loads a plugin only from its cache in the data folder (${R.cache.root}/) [CX §10]: plan it under materialize` });
+      return;
+    }
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    const link = treeLink(bound.path);
+    if (link !== null) {
+      out.refused.push({ item: item.id, code: 'write_refused', reason: `the package holds a symlink (${link}); hs installs no tree with one` });
+      return;
+    }
+    const p = pluginPlacement(item, descriptor);
+    const pkg = readPackage(bound.path);
+    const servers = Object.values(pkg.mcp?.mcpServers ?? {});
+    // Skills may carry scripts the agent is told to run, and a stdio server is code; a remote server
+    // sends data to its destination (§3 principle 6).
+    // Codex's own namespace (the descriptor's namespace): reported as harness-specific, and
+    // runs-code, since a plan cannot tell what Codex makes of it.
+    const ns = pkg.manifest.extensions?.[R.namespace.name];
+    const harnessSpecific = ns !== null && typeof ns === 'object' && !Array.isArray(ns);
+    const risk = [
+      ...(pkg.skills.length || servers.some((x) => x.type === 'stdio') || harnessSpecific ? ['runs-code'] : []),
+      ...(servers.some((x) => x.type !== 'stdio') ? ['sends-data'] : []),
+    ];
+    out.deliverables.push({
+      item: item.id, handler: 'tree', address: { path: p.address }, address_id: p.address,
+      source: bound.path, source_sha256: bound.sha256, source_is_dir: true, risk,
+      note: [
+        `Agent Plugins ${pkg.version}, read natively; enabled as ${p.key} by -c ${R.enable.config_key} at each launch through launch-spec; ${R.bare_start}`,
+        ...(harnessSpecific ? [`harness-specific: it carries extensions["${R.namespace.name}"], which Codex reads for ${R.namespace.reads.join(', ')}, and drops ${R.namespace.dropped.join(' and ')} for this format (rust-v0.160.0); planned as runs-code`] : []),
+      ].join('; '),
+    });
+    out.launch_only.push({ item: item.id, via: `-c ${R.enable.config_key}={${JSON.stringify(p.key)}={enabled=true}}, at each launch through launch-spec; ${R.bare_start}` });
+  }
+
   const SK = descriptor.launch.skills;
   for (const f of resolved.files) {
     if (f.kind !== 'skill') {
@@ -129,14 +176,22 @@ function tomlValue(v) {
 const canonical = (v) => (Array.isArray(v) ? v.map(canonical) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, canonical(v[k])])) : v);
 export const hookHash = (identity) => `sha256:${crypto.createHash('sha256').update(JSON.stringify(canonical(identity))).digest('hex')}`;
 
+// Where a plugin item lives in the folder, and the key that enables it: one marketplace name hs keeps
+// for its packages, the package's name, and a version directory of hs's own (any loads, measured).
+export function pluginPlacement(item, descriptor) {
+  const R = descriptor.plugins[AGENT_PLUGINS];
+  const name = item.id.slice('plugin.'.length);
+  return { address: `${R.cache.root}/${R.cache.marketplace}/${name}/${R.cache.version_dir}`, key: `${name}@${R.cache.marketplace}` };
+}
+
 export function launchParts(resolved, { headless, descriptor, folder }) {
   const L = descriptor.launch;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
   const flags = [];
   let ephemeral = false;
   for (const item of resolved.items) {
-    // MCP servers are carried below, under the launch receipt.
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    // MCP servers are carried below, under the launch receipt; plugins below too.
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     if (item.kind === 'unknown') {
       out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     } else if (item.kind === 'model.catalog') {
@@ -363,6 +418,33 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   }
   if (missing.length && !L.skills.at_launch) throw new HsError('item_unsupported', `${missing.join(', ')}: ${L.skills.reason}`, missing);
   for (const f of resolved.files) if (f.kind !== 'skill') out.not_implemented.push(f.id);
+
+  // Plugins (§5.7): a package a plan installed in the plugin cache, at this content, is enabled for
+  // this launch by one inline table, which Codex deep-merges, so the folder's other plugin entries
+  // stay. The plan's receipt covered what it runs. A package not installed so is refused: a launch
+  // adds no plugin to Codex, which loads one only from its cache.
+  const enabled = [];
+  const absent = [];
+  for (const item of resolved.items.filter((i) => i.kind === 'plugin')) {
+    if (item.value.format !== AGENT_PLUGINS) {
+      out.not_implemented.push(`${item.id} (format ${item.value.format})`);
+      continue;
+    }
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    const p = pluginPlacement(item, descriptor);
+    const entry = ledger.addresses[p.address];
+    const planned = entry ? Object.values(entry.owners).some((o) => o.installed === bound.sha256) : false;
+    const at = path.join(folder, p.address);
+    if (planned && fs.existsSync(at) && digestPath(at) === bound.sha256) {
+      enabled.push(p.key);
+      out.items.push({ item: item.id, via: `-c ${descriptor.plugins[AGENT_PLUGINS].enable.config_key}, as ${p.key}, installed in the folder by a plan at this content (${p.address}); the plan's receipt covered it` });
+    } else absent.push(item.id);
+  }
+  if (absent.length) throw new HsError('item_unsupported', `${absent.join(', ')}: Codex loads a plugin only from its cache in the data folder, and a launch adds none [CX §10]; plan and apply it under materialize, at this content, first`, absent);
+  if (enabled.length) {
+    flags.push('-c', `${descriptor.plugins[AGENT_PLUGINS].enable.config_key}={${enabled.map((k) => `${JSON.stringify(k)}={enabled=true}`).join(',')}}`);
+    out.unverified.push('a plugin of the same name installed in the folder from another marketplace would load beside this one, and how Codex names their skills then is not measured');
+  }
   if (resolved.agents_md.length) out.not_implemented.push('instructions (AGENTS.md)');
   if (resolved.permissions.length) out.not_implemented.push('permissions');
   out.argv = () => (headless ? [...L.headless.argv, ...flags, ...(ephemeral ? L.state.sessions_none.headless_argv : [])] : flags);

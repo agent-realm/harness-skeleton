@@ -41,7 +41,9 @@ Problem codes inside `spec_invalid`:
   (the item's id is not the package's name), `plugin_name_reserved`, `plugin_version_unsupported`
   (a `$schema` version this harness's route does not map), `plugin_skill_invalid` (names the skill),
   `plugin_placeholder_literal` (`${…}` text the format keeps literal, on a route that would expand
-  it), `plugin_cwd_unsupported`; the warning `plugin_field_unknown`;
+  it), `plugin_cwd_unsupported`, `plugin_path_unsupported` (the package holds a path the format
+  never discovers that the harness acts on, such as `.codex-plugin/` on Codex); the warning
+  `plugin_field_unknown`;
 - **refs:** `ref_unbound`, `ref_undeclared`, `ref_not_reference`;
 - **instructions:** `agents_md_import`, `agents_md_comment`;
 - **state:** `install_local_misplaced`, `state_value_invalid`, `state_unexpressible`;

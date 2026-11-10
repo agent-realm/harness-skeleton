@@ -26,6 +26,11 @@
 //                  rewritten. Recorded: whether it loads.
 //   cache_records  cache_known plus the cli run's installed_plugins.json, rewritten the same way.
 //                  Recorded: whether it loads.
+//   cache_settings the cache directory, and the cli run's settings.json (enabledPlugins and
+//                  extraKnownMarketplaces, which names the directory marketplace), with no record.
+//                  Recorded: whether it loads, and what Claude Code wrote under plugins/ on start.
+//   settings_only  that settings.json and nothing else: no cache directory, no record. Recorded:
+//                  whether Claude Code installs the plugin from the marketplace on start, and loads it.
 // A plugin counts as loaded when its skill reaches a request by name (<plugin>:notes) or by its
 // description's marker, and its server's tool is offered. The listener and the server record names
 // and booleans only. The credential is a dummy; HOME and XDG are scratch.
@@ -182,6 +187,23 @@ try {
   const recordsCopied = copyRecord(cliFolder, recordsFolder, 'known_marketplaces.json') && copyRecord(cliFolder, recordsFolder, 'installed_plugins.json');
   const recordsRun = await run(recordsFolder);
 
+  // settings.json as the install wrote it (enabledPlugins and extraKnownMarketplaces), copied.
+  const cliSettings = fs.readFileSync(path.join(cliFolder, 'settings.json'), 'utf8');
+  const knownShape = (() => {
+    const e = readJson(path.join(cliFolder, 'settings.json'))?.extraKnownMarketplaces?.[MARKET];
+    return e && typeof e === 'object' ? { keys: Object.keys(e).sort(), source_keys: e.source && typeof e.source === 'object' ? Object.keys(e.source).sort() : null, source_type: typeof e.source?.source === 'string' ? e.source.source : null } : null;
+  })();
+  const settingsFolder = folderFor('cache-settings');
+  cacheAt(settingsFolder, version);
+  fs.writeFileSync(path.join(settingsFolder, 'settings.json'), cliSettings.split(cliFolder).join(settingsFolder));
+  const settingsRun = await run(settingsFolder);
+  const settingsListing = listing(settingsFolder);
+
+  const onlyFolder = folderFor('settings-only');
+  fs.writeFileSync(path.join(onlyFolder, 'settings.json'), cliSettings.split(cliFolder).join(onlyFolder));
+  const onlyRun = await run(onlyFolder);
+  const onlyListing = listing(onlyFolder);
+
   const has = (r, m) => r.seen.ENDPOINT.some((q) => q.markers.includes(m));
   const offered = (r) => r.seen.ENDPOINT.some((q) => (q.tools ?? []).some((t) => typeof t === 'string' && t.includes(TOOL)));
   const loads = (r) => ({ skill_loads: has(r, `${NAME}:notes`) || has(r, M.skill), server_starts: r.probe?.started === true, tool_offered: offered(r), server_in_root: r.probe?.cwd_is_root ?? null });
@@ -196,14 +218,17 @@ try {
     cache_enabled: loads(enabledRun),
     cache_known: { ...loads(knownRun), record_copied: knownCopied },
     cache_records: { ...loads(recordsRun), records_copied: recordsCopied },
+    extra_known_marketplace_shape: knownShape,
+    cache_settings: { ...loads(settingsRun), after_start: settingsListing },
+    settings_only: { ...loads(onlyRun), after_start: onlyListing },
   };
-  const reached = [control, cliRun, enabledRun, knownRun, recordsRun].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, cliRun, enabledRun, knownRun, recordsRun, settingsRun, onlyRun].every((r) => r.seen.ENDPOINT.length > 0);
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : !checks['cli: marketplace add and install succeed, and the translated plugin loads in a bare start (positive control)'] ? 'inconclusive: the positive control did not load' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: what makes a translated Agent Plugins package load in a bare start of a Claude Code data folder (design note v0.2 §5.7, §12 row 35)',
     at: new Date().toISOString(),
     evidence: evidence(b, claude),
-    runs: { control: shape(control), cli: shape(cliRun), cache_enabled: shape(enabledRun), cache_known: shape(knownRun), cache_records: shape(recordsRun) },
+    runs: { control: shape(control), cli: shape(cliRun), cache_enabled: shape(enabledRun), cache_known: shape(knownRun), cache_records: shape(recordsRun), cache_settings: shape(settingsRun), settings_only: shape(onlyRun) },
     installs: install,
     recorded,
     checks,

@@ -89,7 +89,13 @@ export function launchSpec(driver, args, opts = {}) {
   const env_from_refs = parts.env_from_refs ?? {};
   const generated = [
     ...parts.files.map((f) => ({ role: f.role, sha256: sha256(Buffer.from(f.content)) })),
-    ...trees.map((t) => ({ role: t.role, manifest: sha256(Buffer.from(t.manifest.content)), entries: t.entries.map((e) => ({ path: e.rel, sha256: e.sha256 })) })),
+    ...trees.map((t) => ({
+      role: t.role, manifest: sha256(Buffer.from(t.manifest.content)),
+      // A tree's other generated files (a translated plugin's .mcp.json), only where it has any, so
+      // a launch without one keeps its digest.
+      ...(t.files?.length ? { files: t.files.map((f) => ({ path: f.rel, sha256: sha256(Buffer.from(f.content)) })) } : {}),
+      entries: t.entries.map((e) => ({ path: e.rel, sha256: e.sha256 })),
+    })),
   ];
   const digest = launchDigest({
     format: LAUNCH_FORMAT,
@@ -122,6 +128,10 @@ export function launchSpec(driver, args, opts = {}) {
       const root = path.join(tempDir, t.name);
       fs.mkdirSync(path.join(root, path.dirname(t.manifest.rel)), { recursive: true, mode: 0o700 });
       fs.writeFileSync(path.join(root, t.manifest.rel), t.manifest.content, { mode: 0o600, flag: 'wx' });
+      for (const f of t.files ?? []) {
+        fs.mkdirSync(path.join(root, path.dirname(f.rel)), { recursive: true, mode: 0o700 });
+        fs.writeFileSync(path.join(root, f.rel), f.content, { mode: 0o600, flag: 'wx' });
+      }
       for (const e of t.entries) {
         const dst = path.join(root, e.rel);
         fs.mkdirSync(path.dirname(dst), { recursive: true, mode: 0o700 });

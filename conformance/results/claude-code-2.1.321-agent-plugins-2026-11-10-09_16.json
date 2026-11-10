@@ -1,11 +1,11 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Claude Code, as published and translated to the .claude-plugin layout (design note v0.2 §5.7, §10)",
-  "at": "2026-11-09T21:26:01.668Z",
+  "at": "2026-11-10T09:16:29.706Z",
   "evidence": {
     "harness": "2.1.321 (Claude Code)",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "87c49f654aa4047341385c6434fbe456c42e5e63"
+    "hs_commit": "0cd0057"
   },
   "runs": {
     "control": {
@@ -168,11 +168,50 @@
         "name",
         "version",
         "description",
-        "author",
         "homepage",
         "repository",
         "license",
+        "author",
         "keywords"
+      ],
+      "launch_risks": [
+        "runs-code"
+      ]
+    },
+    "refusals": {
+      "clean": [],
+      "future": [
+        {
+          "code": "plugin_version_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        },
+        {
+          "code": "plugin_version_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        }
+      ],
+      "mixed": [
+        {
+          "code": "plugin_skill_invalid",
+          "item": "plugin.hs-bench-plugin",
+          "skill": "no-desc"
+        }
+      ],
+      "literal": [
+        {
+          "code": "plugin_placeholder_literal",
+          "item": "plugin.hs-bench-plugin"
+        },
+        {
+          "code": "plugin_placeholder_literal",
+          "item": "plugin.hs-bench-plugin"
+        }
+      ],
+      "cwd": [
+        {
+          "code": "plugin_cwd_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        }
       ]
     },
     "flat": {
@@ -294,6 +333,12 @@
   ],
   "checks": {
     "without a plugin no marker reaches a request (premise)": true,
+    "refusals: clean validates": true,
+    "refusals: future is plugin_version_unsupported": true,
+    "refusals: mixed is plugin_skill_invalid, naming no-desc": true,
+    "refusals: literal is plugin_placeholder_literal": true,
+    "refusals: cwd is plugin_cwd_unsupported": true,
+    "translated: launch-spec refuses without a receipt, naming the package as runs-code": true,
     "translated: the skill reaches the request, under the plugin's name": true,
     "translated: the manifest keeps name and every metadata field, and the plugin loads from it": true,
     "translated: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args": true,

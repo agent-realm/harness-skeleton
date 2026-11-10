@@ -3,6 +3,8 @@
 The harness-skeleton spec as code (design note v0.2 §5):
 - spec layers and `local.toml`, read and resolved (`layers.js`);
 - validation, including the checks on anything a spec runs (`validate.js`, `process-checks.js`);
+- an Agent Plugins package read as that format defines it, for validation and for a driver's
+  translation (`agent-plugins.js`);
 - the safe file readers both use (`files.js`).
 
 `hs` and the reference harness both import it, so one spec is never read two ways. It imports

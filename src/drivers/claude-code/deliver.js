@@ -18,6 +18,8 @@ import { refuseLoggedIn, storedLogin } from './login.js';
 import { layerPath, processRisks, refuseInterpolation, shellQuote } from '../../process.js';
 import { hookMatcher } from '../../hooks.js';
 import { fileURLToPath } from 'node:url';
+import { AGENT_PLUGINS } from '../../spec/agent-plugins.js';
+import { translatedPlugin } from './plugins.js';
 
 // The hook shim Claude Code runs for each hook (§5.6), by its absolute path, under this node.
 const HOOK_SHIM = fileURLToPath(new URL('../../shim/claude-code.js', import.meta.url));
@@ -144,6 +146,13 @@ export function deliverables(resolved, { folder, mode, home, state: stateOpts, d
     else if (item.kind === 'mcp') {
       if (overlay) out.launch_only.push({ item: item.id, via: `launch-spec: ${descriptor.launch.mcp.flag}, under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'}); not persisted under overlay` });
       else mcpServer(item);
+    }
+    // A plugin reaches a launch as a translated plugin directory (§5.7); this build persists none
+    // in the folder, and delivers no native format.
+    else if (item.kind === 'plugin') {
+      if (item.value?.format !== AGENT_PLUGINS) out.not_implemented.push(`${item.id} (format ${item.value?.format})`);
+      else if (overlay) out.launch_only.push({ item: item.id, via: `launch-spec: ${descriptor.launch.plugin.flag}, translated to the .claude-plugin layout, under a launch receipt; not persisted under overlay` });
+      else out.not_implemented.push(`${item.id} (under materialize: this build carries an Agent Plugins package at launch only)`);
     }
     else out.not_implemented.push(item.id);
   }
@@ -528,7 +537,7 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
   let sessionsNone = false;
   for (const item of resolved.items) {
     // MCP servers are carried below, under the launch receipt.
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'statusline' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'statusline' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     if (item.kind === 'unknown') {
       out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     } else if (item.kind === 'model.catalog') {
@@ -737,6 +746,26 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
     out.trees.push({ name: 'plugin', role: 'plugin', manifest: { rel: P.manifest, content: JSON.stringify({ name: P.name, description: 'skills carried at launch by harness-skeleton' }, null, 2) + '\n' }, entries });
     out.notes.push(`skills at launch are namespaced: /${P.name}:<name>, where a materialized folder has /<name> [CC §9]`);
   }
+
+  // Plugins at launch (§5.7): each Agent Plugins package translated into a plugin directory of its
+  // own in the launch's temp dir, one --plugin-dir each, under the launch receipt.
+  const pluginRoles = [];
+  for (const item of resolved.items.filter((i) => i.kind === 'plugin')) {
+    if (item.value.format !== AGENT_PLUGINS) {
+      out.not_implemented.push(`${item.id} (format ${item.value.format})`);
+      continue;
+    }
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    const t = translatedPlugin(item, bound, descriptor);
+    out.trees.push(t.tree);
+    out.risks.push(...t.risks);
+    out.items.push({ item: item.id, via: t.via });
+    pluginRoles.push(t.tree.role);
+  }
+  if (pluginRoles.length) {
+    out.unverified.push(`a plugin named like one the folder has installed may lose to it or shadow it: how ${P.flag} ranks against installed plugins is not documented [CC §10]`);
+    out.unverified.push('the format asks that PLUGIN_DATA keep its contents across updates [AP §9.1]; Claude Code keeps plugins/data/<id>/ across updates of an installed plugin [CC §10], and whether it keeps the same directory for a plugin passed with --plugin-dir across launches is not measured');
+  }
   if (resolved.agents_md.length) out.not_implemented.push('instructions (AGENTS.md)');
   if (resolved.permissions.length) out.not_implemented.push('permissions');
   // A settings `env` value overwrites the shell value [CC §19], so a variable the folder's settings
@@ -748,6 +777,7 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
   out.argv = (paths) => [
     ...(paths.settings ? [L.settings_flag, paths.settings] : []),
     ...(paths.plugin ? [P.flag, paths.plugin] : []),
+    ...pluginRoles.flatMap((r) => (paths[r] ? [P.flag, paths[r]] : [])),
     ...(paths.mcp ? [M.flag, paths.mcp] : []),
     ...flags,
     ...(headless ? L.headless.argv : []),

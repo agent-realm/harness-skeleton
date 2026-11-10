@@ -1,0 +1,75 @@
+// An Agent Plugins package on Claude Code (design note v0.2 §5.7, Translation): the package turned
+// into a plugin in the .claude-plugin layout, which a launch passes with --plugin-dir. validate has
+// refused what the translation cannot keep (a version it does not map, ${…} text the format keeps
+// literal, a working directory beyond the root); this builds the rest. The rules and their sources
+// are in the descriptor (plugins['agent-plugins']); the order here is §5.7's.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { HsError } from '../../protocol.js';
+import { treeLink } from '../../native.js';
+import { digestPath } from '../../spec/layers.js';
+import { AGENT_PLUGINS, METADATA_FIELDS, PLACEHOLDERS, inRoot, readPackage } from '../../spec/agent-plugins.js';
+
+const [ROOT, DATA] = PLACEHOLDERS;
+
+// The plugin a launch carries for one item: a generated tree for launch-spec (its manifest, its
+// .mcp.json, and the package and its skills/ copied from the layer, each checked against its
+// digest), the item's launch risks, and how it is carried.
+export function translatedPlugin(item, bound, descriptor) {
+  const R = descriptor.plugins[AGENT_PLUGINS];
+  const T = R.translation;
+  const id = item.id.slice('plugin.'.length);
+  const link = treeLink(bound.path);
+  if (link !== null) throw new HsError('write_refused', `${item.id}: the package holds a symlink (${link}); hs copies no tree with one`, [item.id]);
+  const pkg = readPackage(bound.path);
+  const root = `${T.root_var}/${T.nest}`;
+
+  // plugin.json becomes the manifest, keeping name and the metadata fields; $schema and
+  // extensions are dropped.
+  const manifest = { name: pkg.manifest.name };
+  for (const k of METADATA_FIELDS) if (Object.hasOwn(pkg.manifest, k)) manifest[k] = pkg.manifest[k];
+
+  // mcp.json becomes .mcp.json without its $schema. The two placeholders become Claude Code's in
+  // args and env; each stdio server's env gains PLUGIN_ROOT and PLUGIN_DATA, which the format has the
+  // client provide; a ./ command is given under the nested root; and the server starts through the
+  // prelude, which changes to the root first.
+  const swap = (v) => v.replaceAll(ROOT, root).replaceAll(DATA, T.data_var);
+  const servers = {};
+  const risks = [];
+  let stdio = 0;
+  for (const [name, s] of Object.entries(pkg.mcp?.mcpServers ?? {})) {
+    if (s.type !== 'stdio') {
+      servers[name] = { type: T.types[s.type], url: s.url, ...(s.headers ? { headers: { ...s.headers } } : {}) };
+      risks.push({ item: item.id, layer: item.layer, risk: 'sends-data', server: name, destination: s.url });
+      continue;
+    }
+    stdio++;
+    const command = s.command.startsWith('./') ? `${root}/${inRoot(s.command)}` : s.command;
+    const env = { ...Object.fromEntries(Object.entries(s.env ?? {}).map(([k, v]) => [k, swap(v)])), PLUGIN_ROOT: root, PLUGIN_DATA: T.data_var };
+    servers[name] = { type: T.types.stdio, command: T.prelude[0], args: [...T.prelude.slice(1), command, ...(s.args ?? []).map(swap)], env };
+  }
+
+  const skills = path.join(bound.path, 'skills');
+  const hasSkills = pkg.skills.length > 0;
+  const entries = [{ rel: T.nest, source: bound.path, sha256: bound.sha256 }];
+  if (hasSkills) entries.push({ rel: 'skills', source: skills, sha256: digestPath(skills) });
+  const files = pkg.mcp ? [{ rel: T.mcp_file, content: JSON.stringify({ mcpServers: servers }, null, 2) + '\n' }] : [];
+  // Skills may carry scripts the agent is told to run, and a stdio server is code: the package is
+  // runs-code, bound by its digest. Each remote server sends data to its destination.
+  if (hasSkills || stdio) risks.unshift({ item: item.id, layer: item.layer, risk: 'runs-code', sha256: bound.sha256 });
+
+  const parts = [
+    hasSkills ? `skills as /${id}:<skill>` : null,
+    Object.keys(servers).length ? `${Object.keys(servers).length} MCP server(s)${stdio ? ', each stdio one started in the plugin root through a /bin/sh prelude (bridged)' : ''}` : null,
+  ].filter(Boolean);
+  return {
+    tree: {
+      name: `plugins/${id}`, role: item.id,
+      manifest: { rel: T.manifest, content: JSON.stringify(manifest, null, 2) + '\n' },
+      files, entries,
+    },
+    risks,
+    via: `${descriptor.launch.plugin.flag}, Agent Plugins ${pkg.version} translated to the .claude-plugin layout, the package nested under ${T.nest}/${parts.length ? `: ${parts.join('; ')}` : ''}`,
+  };
+}

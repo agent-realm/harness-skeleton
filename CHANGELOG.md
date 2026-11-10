@@ -15,7 +15,8 @@ The first public cut.
   - `plan`, `apply`, `recover` and `remove` under `materialize`, with receipts, a ledger per
     owner, and in-place edits of the user's JSON;
   - `launch-spec` with an overlay and launch receipts, for model roles, endpoints and login, MCP
-    servers, hooks through a shim, the status line and skills;
+    servers, hooks through a shim, the status line, skills, and Agent Plugins packages
+    (translated on Claude Code, one `--plugin-dir` each);
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
   - `@agent-realm/harness-session-adapters`: session readers;

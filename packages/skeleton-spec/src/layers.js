@@ -217,8 +217,39 @@ function processFiles(proc, layerDir) {
   return out;
 }
 
-function covers(removal, id) {
-  return id === removal || id.startsWith(removal + '.');
+// The package a plugin item names (§5.7): `source`, a directory in the item's layer, given relative
+// to it and reached without a symlink, bound by its content in the spec digest, as a file item is
+// (§5.1). Returns { abs, sha256 }, or null when `source` names no such directory; validate then
+// refuses the item.
+function pluginPackage(item, layerDir) {
+  const src = isTable(item.value) ? item.value.source : undefined;
+  if (typeof src !== 'string' || src === '' || path.isAbsolute(src) || !layerDir) return null;
+  const abs = path.resolve(layerDir, src);
+  const rel = path.relative(layerDir, abs);
+  if (rel === '' || rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return null;
+  let cur = layerDir;
+  for (const seg of rel.split(path.sep)) {
+    cur = path.join(cur, seg);
+    let st;
+    try {
+      st = fs.lstatSync(cur);
+    } catch {
+      return null;
+    }
+    if (st.isSymbolicLink() || !st.isDirectory()) return null;
+  }
+  return { abs, sha256: digestPath(abs) };
+}
+
+// Whether a tombstone removes an entry: its own id, or a prefix of its kind (`model.roles` removes
+// each `model.roles.<role>`, `plugin` each plugin). The dots inside an item's own name are not
+// steps: `plugin.notes` removes that plugin, never `plugin.notes.kit`. An entry of no known kind
+// keeps the dotted reading.
+function covers(removal, entry) {
+  if (entry.id === removal) return true;
+  if (!entry.id.startsWith(removal + '.')) return false;
+  const kindPath = entry.kind === 'unknown' ? entry.id : entry.kind;
+  return kindPath === removal || kindPath.startsWith(removal + '.');
 }
 
 // Resolve layer directories (lowest first) and an optional local.toml into one spec.
@@ -248,7 +279,7 @@ export function resolve(layerDirs, localFile = null) {
     for (const removal of layer.removals) {
       for (const map of [items, files]) {
         for (const id of [...map.keys()]) {
-          if (covers(removal, id)) {
+          if (covers(removal, map.get(id))) {
             removed.push({ id, by: name, from: map.get(id).layer });
             map.delete(id);
           }
@@ -303,6 +334,18 @@ export function resolve(layerDirs, localFile = null) {
     }
     if (bound.length) processes.push({ id: item.id, layer: item.layer, files: bound });
   }
+  // The package each plugin item names (§5.7), bound by its content.
+  const plugins = [];
+  for (const item of sortedItems.filter((i) => i.kind === 'plugin')) {
+    let pkg;
+    try {
+      pkg = pluginPackage(item, layerDir.get(item.layer));
+    } catch (e) {
+      problems.push({ code: 'layer_unreadable', severity: 'error', item: item.id, layer: item.layer, message: `${item.id}: its package cannot be read (${e.code ?? e.message})` });
+      continue;
+    }
+    if (pkg) plugins.push({ id: item.id, layer: item.layer, path: pkg.abs, sha256: pkg.sha256 });
+  }
   const digest = 'sha256:' + sha256(canonical({
     format: SPEC_FORMAT,
     layers: layers.map((l) => ({ name: l.name, version: l.version })),
@@ -312,7 +355,9 @@ export function resolve(layerDirs, localFile = null) {
     files: sortedFiles.map((f) => ({ id: f.id, layer: f.layer, sha256: f.sha256 })),
     // Only when a process names a file: a spec without one keeps the digest it had before 6a.3.
     ...(processes.length ? { processes: processes.map((p) => ({ id: p.id, layer: p.layer, files: p.files.map((f) => ({ path: f.path, sha256: f.sha256 })) })) } : {}),
+    // Likewise only when a plugin names a package: a spec without one keeps its digest.
+    ...(plugins.length ? { plugins: plugins.map((p) => ({ id: p.id, layer: p.layer, sha256: p.sha256 })) } : {}),
   }));
 
-  return { layers, items: sortedItems, files: sortedFiles, processes, permissions: rules, agents_md: agentsMd, removed, replaced, problems, digest };
+  return { layers, items: sortedItems, files: sortedFiles, processes, plugins, permissions: rules, agents_md: agentsMd, removed, replaced, problems, digest };
 }

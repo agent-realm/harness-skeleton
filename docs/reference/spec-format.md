@@ -73,7 +73,9 @@ format = "agent-plugins"
 - **validate** checks the package as the format defines it, and refuses what the target harness
   cannot keep: a `$schema` version it does not map, a skill the Agent Skills specification
   rejects, and on Claude Code, `${…}` text the format keeps literal or a stdio server's `cwd`
-  other than the plugin root. The codes are in [the errors reference](errors.md).
+  other than the plugin root. On Codex it refuses a package holding `.codex-plugin/`, which Codex
+  acts on, and a plan names `extensions["com.openai"]` as harness-specific. The codes are in
+  [the errors reference](errors.md).
 - **A tombstone** `[remove] items = ["plugin.notes"]` removes that plugin only, never
   `plugin."notes.kit"`; `items = ["plugin"]` removes every plugin.
 - **Delivered** at launch on Claude Code, translated to its own plugin layout with one

@@ -1,0 +1,228 @@
+{
+  "check": "tier 1: an Agent Plugins 1.0.0 package on Codex from the plugin cache, enabled by a launch override, with no config.toml write (design note v0.2 §5.7, §12 row 35)",
+  "at": "2026-11-10T09:34:39.415Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "ac3620b"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": []
+    },
+    "byhand": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f"
+      ]
+    },
+    "cache": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f"
+      ]
+    },
+    "dotted": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f",
+        "hs.bench-plugin:notes"
+      ]
+    },
+    "no_enable": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": []
+    },
+    "quoted_key": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": []
+    },
+    "other_dir": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f"
+      ]
+    },
+    "driver": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-skill-4d1a",
+        "hs-tier1-ap-tool-2b7f"
+      ]
+    }
+  },
+  "server_probes": {
+    "byhand": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "cache": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "dotted": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "no_enable": null,
+    "quoted_key": null,
+    "other_dir": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    },
+    "driver": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null
+    }
+  },
+  "recorded": {
+    "marketplace_add_config_tables": [
+      "marketplaces"
+    ],
+    "no_enable": {
+      "skill_loads": false,
+      "skill_description_reaches": false,
+      "server_starts": false,
+      "tool_reaches": false
+    },
+    "quoted_key": {
+      "skill_loads": false,
+      "skill_description_reaches": false,
+      "server_starts": false,
+      "tool_reaches": false
+    },
+    "other_dir": {
+      "skill_loads": true,
+      "skill_description_reaches": true,
+      "server_starts": true,
+      "tool_reaches": true
+    },
+    "added_beyond_control": {
+      "byhand": [],
+      "cache": [],
+      "dotted": [],
+      "no_enable": [],
+      "quoted_key": [],
+      "other_dir": [],
+      "driver": []
+    },
+    "driver": {
+      "plan_risk": [
+        "runs-code"
+      ]
+    }
+  },
+  "checks": {
+    "without a plugin no marker reaches a request (premise)": true,
+    "byhand: marketplace add, the cache directory and the [plugins] table load the package (positive control)": true,
+    "cache: the cache directory and the inline-table override alone load the package, skill and server, the server in the plugin root with both placeholders expanded": true,
+    "cache: config.toml is not written": true,
+    "dotted: a dotted plugin name loads the same way": true,
+    "driver: the plan installs the package at plugins/cache/harness-skeleton/<name>/hs, and apply refuses without a receipt": true,
+    "driver: launch-spec carries the inline-table override": true,
+    "driver: the package loads, skill and server, as in cache; config.toml is not written": true
+  },
+  "verdict": "pass"
+}

@@ -45,20 +45,24 @@
 //                 .codex-plugin/plugin.json naming the same hook and app and, under mcpServers, an
 //                 env_vars entry for the package's stdio server. Run with HS_BENCH_OTHER set in
 //                 Codex's environment and --dangerously-bypass-hook-trust, which runs every hook
-//                 Codex has registered [CX §11]. Expected: the hook does not run, and the app's,
-//                 the onboarding skill's and the interface's markers reach no request (the loader
-//                 drops hooks and apps for this format, loader.rs); the package's own skill loads.
+//                 Codex has registered [CX §11]. Expected: the hook does not run (the loader drops
+//                 hooks and apps for this format, loader.rs), and the package's own skill loads.
+//                 Recorded: whether the app's, the onboarding skill's and the interface's markers
+//                 reach a request.
 //   overlay       the same with .codex-plugin/plugin.json alone, the branch Codex reads when the
-//                 extension is absent. Expected as for `both`. And (the premise of
+//                 extension is absent, naming the same hook, app, interface and (under its own
+//                 extensions["com.openai"]) onboarding skill. Expected and recorded as for `both`.
+//                 And (the premise of
 //                 plugin_path_unsupported, design note §5.7) the overlay's env_vars hand
 //                 HS_BENCH_OTHER from Codex's environment to the stdio server
 //                 (agent_plugin_mcp_overlay.rs), where `cache`, with the variable set the same way,
 //                 does not.
 //   legacy        the positive control for both hook halves: a package in Codex's own layout
 //                 (.codex-plugin/plugin.json, no root plugin.json) with the same hook, under the
-//                 same flag. Expected: the hook runs. Apps route only under a ChatGPT login
-//                 (load_plugin_mcp_servers_with_policy), which a bench never has, so the app halves
-//                 have no positive control; they are reported, not proven.
+//                 same flag. Expected: the hook runs. No run shows an app, an onboarding skill or
+//                 an interface reaching a request in any layout (apps route only under a ChatGPT
+//                 login, load_plugin_mcp_servers_with_policy, which a bench never has), so those
+//                 markers have no positive control: they are recorded, never judged.
 // After each run the check records which top-level entries Codex added to the data folder, by name.
 // The model and the server record names and booleans only. The credential is a dummy; HOME and XDG
 // are scratch.
@@ -105,7 +109,7 @@ try {
     '.app.json': { apps: { [M.app]: { id: M.app } } },
     'onboarding/hs-onboard/SKILL.md': `---\nname: hs-onboard\ndescription: Bench onboarding. ${M.onboard}\n---\nOnboard.\n`,
   };
-  const overlayFile = (name) => ({ name, hooks: './hooks/hooks.json', apps: './.app.json', interface: { shortDescription: `Bench interface ${M.iface}` }, mcpServers: { probe: { command: 'true', env_vars: [OTHER] } } });
+  const overlayFile = (name) => ({ name, hooks: './hooks/hooks.json', apps: './.app.json', interface: { shortDescription: `Bench interface ${M.iface}` }, extensions: { 'com.openai': { onboardingSkill: './onboarding/hs-onboard' } }, mcpServers: { probe: { command: 'true', env_vars: [OTHER] } } });
   const extension = { 'com.openai': { hooks: './hooks/hooks.json', apps: './.app.json', onboardingSkill: './onboarding/hs-onboard', interface: { shortDescription: `Bench interface ${M.iface}` } } };
 
   // One package per name, and a marketplace of it for the byhand run's `marketplace add`.
@@ -237,14 +241,13 @@ try {
     'cache: config.toml is not written': cached.config_tables === null,
     'dotted: a dotted plugin name loads the same way': whole(dotted, DOTTED) && dotted.config_tables === null,
     'both: with hook trust bypassed, the hook extensions["com.openai"] names does not run, and the package\'s skill loads': both.hook_ran === false && has(both, `${BOTH}:notes`),
-    'both: the app\'s, the onboarding skill\'s and the interface\'s markers reach no request': !has(both, M.app) && !has(both, M.onboard) && !has(both, M.iface),
-    'overlay: with hook trust bypassed, the hook .codex-plugin/plugin.json names does not run; its app\'s and interface\'s markers reach no request; the package\'s skill loads': overlaid.hook_ran === false && !has(overlaid, M.app) && !has(overlaid, M.iface) && has(overlaid, `${OVERLAY}:notes`),
+    'overlay: with hook trust bypassed, the hook .codex-plugin/plugin.json names does not run, and the package\'s skill loads': overlaid.hook_ran === false && has(overlaid, `${OVERLAY}:notes`),
     'legacy (the positive control for both hook halves): in Codex\'s own layout the same hook runs with hook trust bypassed': legacy.hook_ran === true && has(legacy, M.legacy),
     'cache: HS_BENCH_OTHER in Codex\'s environment does not reach the package\'s stdio server': cached.probe?.started === true && cached.probe.other_forwarded === false,
     'overlay (premise of plugin_path_unsupported): .codex-plugin/plugin.json\'s env_vars hand HS_BENCH_OTHER from Codex\'s environment to the stdio server': overlaid.probe?.started === true && overlaid.probe.other_forwarded === true,
     ...(outOfRange ? {} : {
-      'driver: the plan installs the package at plugins/cache/harness-skeleton/<name>/hs, and apply refuses without a receipt': driverOp?.address_id === `plugins/cache/harness-skeleton/${NAME}/hs` && refusedApply.ok === false && refusedApply.error.code === 'receipt_required',
-      'driver: launch-spec carries the inline-table override': driverSpec.argv.includes(`plugins={"${NAME}@harness-skeleton"={enabled=true}}`),
+      'driver: the plan\'s tree is plugins/cache/harness-skeleton/<name>/hs, and apply refuses a receipt that allows nothing': driverOp?.address_id === `plugins/cache/harness-skeleton/${NAME}/hs` && refusedApply.ok === false && refusedApply.error.code === 'receipt_required',
+      'driver: launch-spec carries the inline-table override as a -c value': driverSpec.argv.some((a, i) => a === `plugins={"${NAME}@harness-skeleton"={enabled=true}}` && driverSpec.argv[i - 1] === '-c'),
       'driver: the package loads, skill and server, as in cache; config.toml is not written': whole(driver) && driver.config_tables === null,
     }),
   };
@@ -252,6 +255,11 @@ try {
     marketplace_add_config_tables: marketTables,
     no_enable: loads(bare),
     both_server_gets_other: both.probe?.other_forwarded ?? null,
+    // No run shows these reaching a request in any layout, so they are recorded, never judged.
+    markers_reaching_a_request: {
+      both: { app: has(both, M.app), onboarding_skill: has(both, M.onboard), interface: has(both, M.iface) },
+      overlay: { app: has(overlaid, M.app), onboarding_skill: has(overlaid, M.onboard), interface: has(overlaid, M.iface) },
+    },
     apps: 'routed only under a ChatGPT login, which a bench never has: the app halves above have no positive control',
     quoted_key: loads(quoted),
     other_dir: loads(other),

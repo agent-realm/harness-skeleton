@@ -60,14 +60,14 @@ That approval is a receipt bound to the plan's digest. Secrets are references
 | Read the folder: `describe`, `observe --state` | yes | yes | designed |
 | Drift: `observe` | yes | not yet | designed |
 | At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | designed |
-| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention | skills, Agent Plugins packages | designed |
+| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins packages | skills, Agent Plugins packages | designed |
 | Sessions: `sessions.*` | yes | yes | OpenCode yes, pi no |
 
 Instructions (`AGENTS.md`), agents, commands and permissions are designed and not delivered yet,
 and neither is the `reconcile` mode for the user's own folder. Plugins in the
-[Agent Plugins](https://agent-plugins.org/specification) format are delivered at launch on Claude
-Code, and on Codex into the folder, enabled by each launch; the native plugin formats are not yet
-built. Fourteen conformance
+[Agent Plugins](https://agent-plugins.org/specification) format are delivered on Claude Code, at launch
+and into the folder, and on Codex into the folder, enabled by each launch; the native plugin
+formats are not yet built. Fifteen conformance
 checks pass on real harnesses; no version range is certified yet.
 
 ## What it is not

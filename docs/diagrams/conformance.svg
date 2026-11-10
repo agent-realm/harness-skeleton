@@ -44,7 +44,7 @@ text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 <text class="b" x="622" y="58">Evidence</text>
 <text class="m" x="622" y="82">conformance/results/</text>
 <text class="s" x="622" y="100">one JSON report per check.</text>
-<text class="s" x="622" y="118">14 checks pass: 9 on Claude</text>
+<text class="s" x="622" y="118">15 checks pass: 10 on Claude</text>
 <text class="s" x="622" y="136">Code 2.1.307, 5 on Codex</text>
 <text class="s" x="622" y="154">0.160.0.</text>
 

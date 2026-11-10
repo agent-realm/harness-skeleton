@@ -78,11 +78,12 @@ format = "agent-plugins"
   [the errors reference](errors.md).
 - **A tombstone** `[remove] items = ["plugin.notes"]` removes that plugin only, never
   `plugin."notes.kit"`; `items = ["plugin"]` removes every plugin.
-- **Delivered** at launch on Claude Code, translated to its own plugin layout with one
-  `--plugin-dir` per package, under a launch receipt. On Codex, under `materialize`: a plan
+- **Delivered** on Claude Code, translated to its own plugin layout: at launch, one
+  `--plugin-dir` per package, under a launch receipt; under `materialize`, a directory marketplace
+  in `hs-run/` and two `settings.json` keys, so a bare start loads it. On Codex, under `materialize`: a plan
   installs the package in Codex's plugin cache, and each launch through `launch-spec` enables it.
-  `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`materialize`
-  on Claude Code, `overlay` on Codex, the native formats such as `claude-plugin`) a plugin item is
+  `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`overlay` on Codex, the
+  native formats such as `claude-plugin`) a plugin item is
   refused, by name.
 
 ## `local.toml`
@@ -111,8 +112,8 @@ Values are never secrets, and a binding that is not a reference is refused.
 On Claude Code:
 - **at launch:** model roles, endpoints and the login mode, retention, MCP servers, hooks, the
   status line, skills, and Agent Plugins packages;
-- **under `materialize`:** model roles, retention, MCP servers, hooks, the status line and
-  skills. Endpoints and the login mode stay launch-only: a credential exists only at launch, so
+- **under `materialize`:** model roles, retention, MCP servers, hooks, the status line,
+  skills, and Agent Plugins packages. Endpoints and the login mode stay launch-only: a credential exists only at launch, so
   a bare start never reaches the endpoint.
 
 On Codex:

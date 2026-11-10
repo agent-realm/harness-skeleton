@@ -11,7 +11,7 @@ adapter with file sources a sixth, `unitsFromBytes`. The shapes are the JSON for
 | `HARNESS` | the harness id, as in sessions-model §1 rule 3 |
 | `describe()` | `{adapter, adapter_ver, model_version, harness, state_ver, versions, sources, store_shape, ts_source, redaction, facets}`, and `native` where the adapter declares native paths (sessions v1.4). `store_shape` (sessions §2) says what `harness_path` names: `{kind: 'folder'}`, or `{kind: 'file', default, names}` for a harness whose every harness store is a database file (OpenCode). It is never named `store`, which is `{host, harness, harness_path}` |
 | `list(store)` | `[{session_id, incarnation, updated_hint, live, sources: [{source_key, role, mode, position_kind}]}]`, sorted by `session_id` |
-| `read(store, session, source_key, from, known)` | `{continuity, units, gone, position, held_back}` |
+| `read(store, session, source_key, from, known, {maxReadBytes})` | `{continuity, units, gone, position, held_back}`, and `more` on a stream file. The options object is optional. See [Read size](#read-size) |
 | `derive(session, input, state)` | `{changed, live, held, state, checkpoint, adapter_ver, model_version, state_ver}` |
 | `unitsFromBytes(source_key, bytes, {start})` | `{units, held_back}`. Only the adapters with file sources: claude-code, codex, copilot-cli, gemini-cli, vscode, agy, cursor-agent and opencode. See [below](#unitsfrombytes) |
 
@@ -59,6 +59,31 @@ Positions are opaque to a consumer, and carried verbatim.
 | stream | `{dev, inode, offset, line1_sha, anchor_sha}`. `dev` and `inode` are decimal strings. `anchor_sha` covers the 64 KiB before `offset`, so a same-size rewrite of the tail shows as a reset |
 | snapshot | `{sha256}` of the emitted unit |
 
+## Read size
+
+One `read` of a stream file (`position_kind: byte_offset`) returns at most a cap of bytes, cut at
+a line boundary, and says `more: true` while bytes remain. The next `read` from the returned
+position goes on, as `appended`. The last read of a pass says `more: false` and carries the
+partial last line in `held_back`.
+
+- **The cap** is `maxReadBytes` in `read`'s options, the argument after `known`:
+  `read(store, session, source_key, from, known, { maxReadBytes })`.
+  - Absent, or not a positive integer (`0`, a negative number, `1.5`, `NaN`, a string), it is
+    `MAX_READ_BYTES`, 64 MiB. A missing or null options object is the same.
+  - Below `MIN_READ_BYTES`, 1 MiB, it is raised to 1 MiB.
+  - Above 64 MiB it stands.
+  - `readCap` in `src/sources.js` is the one place this is decided; every adapter hands its
+    result to `readStream`.
+- **A single line longer than the cap** is returned whole, in a read of its own or with the lines
+  after it, up to the last newline read. A partial line longer than the cap is `held_back` whole.
+- **The same units.** Reading a source in capped reads gives the units of one uncapped read, in
+  the same order, and the last read's position is the same.
+- **Snapshot and database sources ignore it.** A snapshot's one unit is the whole file, and a
+  table's rows are read whole, whatever the cap. That includes OpenCode's `table:event`, a
+  `seq` stream from a database.
+- Where there is no stream file there is nothing to cap: goose, cursor, zed, devin, opencode and
+  cursor-agent ignore the options.
+
 ## `unitsFromBytes`
 
 `unitsFromBytes(harness, source_key, bytes, { start = 0 })` returns the units that
@@ -90,9 +115,9 @@ Errors (`SessionsError`):
 - `source_unknown` for a key that names no file source of the harness.
 
 Where it cannot match `read` exactly, and why:
-- **No read cap.** One `read` returns at most `MAX_READ_BYTES` (64 MiB) and says `more: true`.
-  `unitsFromBytes` returns every unit at once, which equals the units of `read` and its
-  continuation reads together.
+- **No read cap.** One `read` of a stream returns at most its cap (64 MiB unless `maxReadBytes`
+  sets it; see [Read size](#read-size)) and says `more: true`. `unitsFromBytes` returns every unit
+  at once, which equals the units of `read` and its continuation reads together.
 - **No session to check.** `read` checks the source against a live session. copilot-cli
   compares line 1's `session.start` id with the incarnation. Gemini CLI names only the winning
   file of a session id. OpenCode reads a spill only when a part of that session names it.

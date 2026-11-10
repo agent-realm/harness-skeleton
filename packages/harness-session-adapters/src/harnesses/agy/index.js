@@ -32,7 +32,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { isRealFile, readStream, readSnapshot, streamUnits, snapshotUnits, databaseSource, unknownSource, jsonOf } from '../../sources.js';
+import { isRealFile, readStream, readCap, readSnapshot, streamUnits, snapshotUnits, databaseSource, unknownSource, jsonOf } from '../../sources.js';
 import { openReadOnly, withRead, hasTable, readDelta, readRowsSnapshot } from '../../sqlite.js';
 import { seal, recordKey } from '../../records.js';
 import { sha256 } from '../../jcs.js';
@@ -220,7 +220,9 @@ function readTable(root, sid, table, sk, from, known) {
   }
 }
 
-export function read(store, session, sourceKey, from = null, known = null) {
+// `options.maxReadBytes` caps a read of the transcript, the one stream; the database tables and
+// the snapshots ignore it.
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   const root = store.harness_path;
   const sid = session.session_id;
   const files = typeof sid === 'string' && UUID.test(sid) ? filesOf(root, sid) : null;
@@ -240,7 +242,7 @@ export function read(store, session, sourceKey, from = null, known = null) {
     return readTable(root, sid, table, sourceKey, from, known);
   }
   if (sourceKey === transcriptRel(sid) && files.transcript) {
-    return readStream(path.join(root, sourceKey), sourceKey, from, { root });
+    return readStream(path.join(root, sourceKey), sourceKey, from, { root, maxBytes: readCap(options?.maxReadBytes) });
   }
   if ((sourceKey === annotationRel(sid) && files.annotation) || files.outputs.includes(sourceKey)) {
     return readSnapshot(path.join(root, sourceKey), sourceKey, from, { root });

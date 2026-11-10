@@ -4,6 +4,20 @@
 (sessions-model §1 rule 8): the harness, the `adapter_ver` and how old keys map to new ones. See
 [Versions](docs/adapter-interface.md#versions) for what each version bump asks of a consumer.
 
+## Unreleased
+
+- **`read` takes an options object after `known`: `{ maxReadBytes }` sets how many bytes one read
+  of a stream file returns** ([Read size](docs/adapter-interface.md#read-size)). It was fixed at
+  64 MiB.
+  - Absent, or not a positive integer, it is the 64 MiB default; below 1 MiB it is raised to
+    1 MiB. `readCap` in `src/sources.js` decides it, beside `MAX_READ_BYTES` and the new
+    `MIN_READ_BYTES`.
+  - claude-code, codex, copilot-cli, gemini-cli, vscode and agy pass it to `readStream`. Snapshot
+    and database sources ignore it, and so do the adapters with no stream file.
+  - The cut stays at a line boundary, and a line longer than the cap is still returned whole, as
+    before. Capped reads give the units of one read, so no `adapter_ver` or `state_ver` changes.
+  - A call without the options reads as before.
+
 ## 1.1.0 (2026-11-02)
 
 sessions-model v1.4.3 and sessions v1.4: every adapter emits `units`, and seven declare `native`

@@ -84,8 +84,9 @@ held     session 0, message 0, usage 0, link 0, lifecycle 0
 
 - **`read`** returns raw units: one per line of a stream, one per snapshot, one per changed row of
   a delta source. Values on the redaction paths are already replaced. A partial last line is
-  `held_back`. One read returns at most 64 MiB and says `more: true`; read on from the position it
-  returned.
+  `held_back`. One read of a stream returns at most 64 MiB and says `more: true`; read on from the
+  position it returned. To read in smaller or larger steps, pass `{ maxReadBytes }` after `known`
+  (1 MiB at least; see [Read size](adapter-interface.md#read-size)).
 - **`derive`** is pure. On a first derive (`state` null, every source `complete: true`), `changed`
   holds every record: the session, its messages and their parts, usage, links and lifecycle
   events. `live` lists every live key, and `held` the keys withheld as incomplete, which you

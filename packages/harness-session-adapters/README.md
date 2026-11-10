@@ -16,10 +16,15 @@ sessions, messages and their parts, usage, links and lifecycle events. Two contr
 |---|---|---|
 | `describe()` | nothing | the adapter's sources, versions, redaction paths and facets |
 | `list(store)` | `{host, harness, harness_path}` | every session with its sources and an `updated_hint` |
-| `read(store, session, source_key, from, known)` | a position, or none | the new raw units, `continuity`, a new position |
+| `read(store, session, source_key, from, known, {maxReadBytes})` | a position, or none | the new raw units, `continuity`, a new position |
 | `derive(session, input, state)` | units and the last state | the records that changed, the complete `live` keys, a new state |
 
 `read` never writes into a harness store. `derive` is pure.
+
+One `read` of a stream file returns at most 64 MiB, cut at a line boundary, and says `more: true`;
+the next read from the returned position goes on. `maxReadBytes` sets another cap: a value below
+1 MiB is raised to 1 MiB, and a value that is not a positive integer gives the 64 MiB default. A
+single line longer than the cap is still returned whole. Snapshot and database sources ignore it.
 
 For a file source whose raw bytes a consumer archived, `unitsFromBytes(harness, source_key, bytes,
 {start})` returns the units `read` would have returned from those bytes, with no file system:

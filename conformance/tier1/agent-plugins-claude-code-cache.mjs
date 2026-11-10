@@ -31,6 +31,15 @@
 //                  Recorded: whether it loads, and what Claude Code wrote under plugins/ on start.
 //   settings_only  that settings.json and nothing else: no cache directory, no record. Recorded:
 //                  whether Claude Code installs the plugin from the marketplace on start, and loads it.
+//   driver         hs's own route (milestone 6a.16): the package as a plugin item, `hs plan --mode
+//                  materialize`, refused by `hs apply` with a receipt that allows nothing, applied with
+//                  one, then a bare start. Expected: the plan writes hs-run/plugin.<name>/ and the two
+//                  settings.json keys; the plugin loads, skill and server, the server in the plugin
+//                  root; and hs's launch-spec for the same spec skips it rather than carry it again.
+//   driver_dotted  the same for a package whose name has a dot. Recorded: whether Claude Code takes
+//                  the marketplace hs names for it, and loads the plugin.
+//   removed        `hs remove` on the driver's folder, then a bare start. Expected: the plugin no
+//                  longer loads. Recorded: what Claude Code's own records still hold, by name.
 // A plugin counts as loaded when its skill reaches a request by name (<plugin>:notes) or by its
 // description's marker, and its server's tool is offered. The listener and the server record names
 // and booleans only. The credential is a dummy; HOME and XDG are scratch.
@@ -45,12 +54,13 @@ const claude = guard('agent-plugins-claude-code-cache.mjs');
 const PROMPT = 'tier 1 Agent Plugins cache check on Claude Code';
 const TOOL = 'hs_plugin_tool';
 const NAME = 'hs-bench-plugin';
+const DOTTED = 'hs.bench-plugin';
 const MARKET = 'hs-bench-cc-market';
 const VERSION = '1.0.0';
 const M = { skill: 'hs-tier1-ap-skill-4d1a', tool: 'hs-tier1-ap-tool-2b7f' };
 const b = bench('hs-tier1-agent-plugins-cc-cache-');
 
-const markers = [M.skill, M.tool, `${NAME}:notes`];
+const markers = [M.skill, M.tool, `${NAME}:notes`, `${DOTTED}:notes`];
 const shape = (r) => ({ exit: r.exit, signal: r.signal, timed_out: r.timed_out, descendants_left: r.descendants_left, requests: r.seen.ENDPOINT.length,
   markers: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.markers))].sort(), bench_tools: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.tools ?? []).filter((t) => typeof t === 'string' && t.includes(TOOL)))].sort() });
 
@@ -204,6 +214,40 @@ try {
   const onlyRun = await run(onlyFolder);
   const onlyListing = listing(onlyFolder);
 
+  // hs's own route: a layer holding the package as a plugin item, planned under materialize,
+  // applied under the plan's receipt, then started bare.
+  const kitFor = (name) => {
+    const dir = path.join(b.work, `kit-${name}`);
+    writePackage(path.join(dir, name), { name, tool: TOOL, probeOut, marks: M });
+    fs.writeFileSync(path.join(dir, 'spec.toml'), `[spec]\nname = "kit-${name.replaceAll('.', '-')}"\nversion = "1.0.0"\nformat = "0.2"\n\n[plugin.${JSON.stringify(name)}]\nsource = ${JSON.stringify(name)}\nformat = "agent-plugins"\n`);
+    return dir;
+  };
+  const materialize = (folder, kitDir) => {
+    const common = ['--harness', 'claude-code', '--folder', folder, '--bin', claude];
+    const plan = b.hs('plan', [...common, '--layer', plain, '--layer', kitDir, '--local', local, '--owner', 'tier1', '--mode', 'materialize']);
+    const planFile = path.join(folder, '..', `plan-${path.basename(folder)}.json`);
+    fs.writeFileSync(planFile, JSON.stringify(plan));
+    const nothing = `${planFile}.nothing`;
+    fs.writeFileSync(nothing, JSON.stringify({ format: 'hs-receipt/0.2', plan_digest: plan.digest, allows: [], by: 'tier1-bench' }));
+    const refusedApply = b.hsCall('apply', [...common, '--plan', planFile, '--receipt', nothing]);
+    const receiptFile = `${planFile}.receipt`;
+    fs.writeFileSync(receiptFile, JSON.stringify({ format: 'hs-receipt/0.2', plan_digest: plan.digest, allows: plan.operations.filter((o) => o.risk.length).map((o) => o.id), by: 'tier1-bench', at: new Date().toISOString() }));
+    b.hs('apply', [...common, '--plan', planFile, '--receipt', receiptFile]);
+    return { plan, refused: refusedApply.ok ? null : refusedApply.error.code, common };
+  };
+  const driverFolder = folderFor('driver');
+  const driverKit = kitFor(NAME);
+  const dm = materialize(driverFolder, driverKit);
+  const driverOps = dm.plan.operations.map((o) => o.address_id).sort();
+  const driverRun = await run(driverFolder);
+  const driverSpec = b.hs('launch-spec', [...dm.common, '--layer', plain, '--layer', driverKit, '--local', local, '--headless']);
+  const dottedFolder = folderFor('driver-dotted');
+  materialize(dottedFolder, kitFor(DOTTED));
+  const dottedRun = await run(dottedFolder);
+  b.hs('remove', [...dm.common, '--owner', 'tier1']);
+  const removedRun = await run(driverFolder);
+  const removedListing = listing(driverFolder);
+
   const has = (r, m) => r.seen.ENDPOINT.some((q) => q.markers.includes(m));
   const offered = (r) => r.seen.ENDPOINT.some((q) => (q.tools ?? []).some((t) => typeof t === 'string' && t.includes(TOOL)));
   const loads = (r) => ({ skill_loads: has(r, `${NAME}:notes`) || has(r, M.skill), server_starts: r.probe?.started === true, tool_offered: offered(r), server_in_root: r.probe?.cwd_is_root ?? null });
@@ -211,6 +255,10 @@ try {
   const checks = {
     'without a plugin no marker reaches a request (premise)': control.seen.ENDPOINT.length > 0 && !markers.some((m) => has(control, m)) && !offered(control),
     'cli: marketplace add and install succeed, and the translated plugin loads in a bare start (positive control)': install.marketplace_add.exit === 0 && installed && whole(cliRun),
+    'driver: the plan writes hs-run/plugin.<name> and the two settings.json keys, and apply refuses a receipt that allows nothing': JSON.stringify(driverOps) === JSON.stringify([`hs-run/plugin.${NAME}`, `settings.json#enabledPlugins/${NAME}@hs-${NAME}`, `settings.json#extraKnownMarketplaces/hs-${NAME}`].sort()) && dm.refused === 'receipt_required',
+    'driver: a bare start loads the plugin, skill and server, the server in the plugin root': whole(driverRun) && driverRun.probe.cwd_is_root === true,
+    'driver: hs launch-spec for the same spec skips the installed plugin rather than carry it': !driverSpec.argv.includes('--plugin-dir') && driverSpec.skipped.some((x) => x.item === `plugin.${NAME}`),
+    'removed: after hs remove, a bare start no longer loads the plugin': removedRun.seen.ENDPOINT.length > 0 && !has(removedRun, M.skill) && !has(removedRun, `${NAME}:notes`) && removedRun.probe === null,
   };
   const recorded = {
     cli_wrote: cliListing,
@@ -221,14 +269,16 @@ try {
     extra_known_marketplace_shape: knownShape,
     cache_settings: { ...loads(settingsRun), after_start: settingsListing },
     settings_only: { ...loads(onlyRun), after_start: onlyListing },
+    driver_dotted: { ...loads(dottedRun), skill_by_name: has(dottedRun, `${DOTTED}:notes`) },
+    removed: { after_start: removedListing },
   };
-  const reached = [control, cliRun, enabledRun, knownRun, recordsRun, settingsRun, onlyRun].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, cliRun, enabledRun, knownRun, recordsRun, settingsRun, onlyRun, driverRun, dottedRun, removedRun].every((r) => r.seen.ENDPOINT.length > 0);
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : !checks['cli: marketplace add and install succeed, and the translated plugin loads in a bare start (positive control)'] ? 'inconclusive: the positive control did not load' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: what makes a translated Agent Plugins package load in a bare start of a Claude Code data folder (design note v0.2 §5.7, §12 row 35)',
     at: new Date().toISOString(),
     evidence: evidence(b, claude),
-    runs: { control: shape(control), cli: shape(cliRun), cache_enabled: shape(enabledRun), cache_known: shape(knownRun), cache_records: shape(recordsRun), cache_settings: shape(settingsRun), settings_only: shape(onlyRun) },
+    runs: { control: shape(control), cli: shape(cliRun), cache_enabled: shape(enabledRun), cache_known: shape(knownRun), cache_records: shape(recordsRun), cache_settings: shape(settingsRun), settings_only: shape(onlyRun), driver: shape(driverRun), driver_dotted: shape(dottedRun), removed: shape(removedRun) },
     installs: install,
     recorded,
     checks,

@@ -260,8 +260,27 @@ export default Object.freeze({
         // server runs in the plugin root (tier 1, 2026-11-09).
         prelude: ['/bin/sh', '-c', 'cd "$PLUGIN_ROOT" && exec "$@"', 'sh'],
       },
+      // Under materialize (§7.5): settings.json alone makes a bare start load a plugin. With
+      // `enabledPlugins/<plugin>@<marketplace>` and `extraKnownMarketplaces/<marketplace>` naming a
+      // `directory` source, Claude Code registers the marketplace on start, loads the plugin from it in
+      // place, and writes its own records (plugins/known_marketplaces.json, installed_plugins.json,
+      // data/); a cache directory with enabledPlugins alone loads nothing (tier 1,
+      // conformance/tier1/agent-plugins-claude-code-cache.mjs, 2.1.307 and 2.1.321, 2026-11-10)
+      // [CC §2 D-sref enabledPlugins, extraKnownMarketplaces; §10 D-plug]. So a plan installs the
+      // marketplace as a generated tree, hs-run/plugin.<name>/ (its manifest and the translated plugin
+      // under plugin/), and sets the two keys.
+      persist: {
+        root: 'hs-run',
+        marketplace_prefix: 'hs-',
+        plugin_dir: 'plugin',
+        marketplace_manifest: '.claude-plugin/marketplace.json',
+        marketplaces_key: 'extraKnownMarketplaces',
+        enabled_key: 'enabledPlugins',
+        source_type: 'directory',
+        leaves_behind: 'Claude Code keeps its own records of the marketplace (plugins/known_marketplaces.json, installed_plugins.json, data/) after hs removes the plugin; whether it prunes them on its next start is not measured',
+      },
       readiness: 'untested',
-      source: 'design note §5.7; CC §8, §10; tier 1, 2026-11-09',
+      source: 'design note §5.7; CC §8, §10; tier 1, 2026-11-09 and 2026-11-10',
     },
   },
 

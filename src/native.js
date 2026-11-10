@@ -11,7 +11,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import { HsError } from './protocol.js';
 import { readBytes } from './files.js';
 import { classify } from './inventory.js';
@@ -90,6 +90,48 @@ function ownerOnly(p) {
     for (const name of fs.readdirSync(p)) ownerOnly(path.join(p, name));
   } else if (st.isFile()) {
     fs.chmodSync(p, st.mode & 0o111 ? 0o700 : 0o600);
+  }
+}
+
+// A generated tree (a translated plugin, §5.7): `{ generated: { files: [{rel, content}], entries:
+// [{rel, source, sha256}] } }`. Its files are written from the plan; each entry is copied from its
+// source in a layer. Its digest is computed from the content, as digestPath would compute it for the
+// built tree, so a plan writes nothing to know it.
+export const isGenerated = (source) => source !== null && typeof source === 'object' && source.generated !== undefined;
+const hex = (data) => createHash('sha256').update(data).digest('hex');
+function relSegments(rel) {
+  const segs = typeof rel === 'string' ? rel.split('/') : [];
+  if (!segs.length || segs.some((s) => s === '' || s === '.' || s === '..')) throw new HsError('write_refused', `${JSON.stringify(rel)} is not a normalized relative path in a generated tree`, [rel]);
+  return segs;
+}
+export function generatedDigest({ generated: g }) {
+  const root = {};
+  const place = (rel, leaf) => {
+    const segs = relSegments(rel);
+    let node = root;
+    for (const s of segs.slice(0, -1)) {
+      if (node[s] !== undefined && typeof node[s] !== 'object') throw new HsError('write_refused', `${rel} crosses a file in a generated tree`, [rel]);
+      node = node[s] ??= {};
+    }
+    if (node[segs.at(-1)] !== undefined) throw new HsError('write_refused', `${rel} appears twice in a generated tree`, [rel]);
+    node[segs.at(-1)] = leaf;
+  };
+  for (const f of g.files ?? []) place(f.rel, hex(Buffer.from(f.content)));
+  for (const e of g.entries ?? []) place(e.rel, e.sha256);
+  const digest = (node) => (typeof node === 'string' ? node : hex('dir:' + Object.keys(node).sort().map((n) => `${n}\0${digest(node[n])}`).join('\n')));
+  return digest(root);
+}
+function buildGenerated({ generated: g }, dir) {
+  fs.mkdirSync(dir, { mode: 0o700 });
+  for (const f of g.files ?? []) {
+    const p = path.join(dir, ...relSegments(f.rel));
+    fs.mkdirSync(path.dirname(p), { recursive: true, mode: 0o700 });
+    fs.writeFileSync(p, f.content, { mode: 0o600, flag: 'wx' });
+  }
+  for (const e of g.entries ?? []) {
+    const p = path.join(dir, ...relSegments(e.rel));
+    fs.mkdirSync(path.dirname(p), { recursive: true, mode: 0o700 });
+    fs.cpSync(e.source, p, { recursive: true, errorOnExist: true, force: false });
   }
 }
 
@@ -307,18 +349,22 @@ export const handlers = {
         if (fs.existsSync(target)) moveAside(folder, target, aside);
         return { replaced: fs.existsSync(aside) ? path.relative(folder, aside) : null };
       }
-      const inner = treeLink(source);
-      if (inner !== null) refuse(`${source} holds a symlink (${inner}); hs installs no tree with one`, a.path);
+      const generated = isGenerated(source);
+      for (const s of generated ? (source.generated.entries ?? []).map((e) => e.source) : [source]) {
+        const inner = treeLink(s);
+        if (inner !== null) refuse(`${s} holds a symlink (${inner}); hs installs no tree with one`, a.path);
+      }
       const tmp = path.join(recordsDir(folder), 'tmp');
       ensureDir(folder, tmp);
       const staged = path.join(tmp, `new-${path.basename(a.path)}-${randomBytes(4).toString('hex')}`);
-      fs.cpSync(source, staged, { recursive: true, errorOnExist: true, force: false });
+      if (generated) buildGenerated(source, staged);
+      else fs.cpSync(source, staged, { recursive: true, errorOnExist: true, force: false });
       // A private root holds owner-only copies: directories 0700, files 0700 if executable, else
       // 0600. The digest does not cover modes, so this changes no binding.
       if ((descriptor.writable?.private ?? []).includes(a.path.split('/')[0])) ownerOnly(staged);
       if (digestPath(staged) !== expected) {
         fs.rmSync(staged, { recursive: true, force: true });
-        throw new HsError('precondition_failed', `${source} changed since the plan was made`, [a.path]);
+        throw new HsError('precondition_failed', `${generated ? 'a source of the generated tree' : source} changed since the plan was made`, [a.path]);
       }
       ctx.onStage({ staged: path.relative(folder, staged), replaced: path.relative(folder, aside) });
       ensureDir(folder, path.dirname(target));

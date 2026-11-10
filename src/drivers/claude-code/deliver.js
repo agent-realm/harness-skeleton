@@ -8,7 +8,7 @@ import path from 'node:path';
 import { DEFAULT_RETENTION_DAYS } from '../../defaults.js';
 import { digestOf, pidAlive, readLedger } from '../../records.js';
 import { digestPath } from '../../spec/layers.js';
-import { handlers, treeLink } from '../../native.js';
+import { generatedDigest, handlers, treeLink } from '../../native.js';
 import { persistedProcess } from '../../persist.js';
 import { SHIM_DIR } from '../../shim-dir.js';
 import { compareVersions } from '../../version.js';
@@ -19,7 +19,7 @@ import { layerPath, processRisks, refuseInterpolation, shellQuote } from '../../
 import { hookMatcher } from '../../hooks.js';
 import { fileURLToPath } from 'node:url';
 import { AGENT_PLUGINS } from '../../spec/agent-plugins.js';
-import { translatedPlugin } from './plugins.js';
+import { persistedPlugin, translatedPlugin } from './plugins.js';
 
 // The hook shim Claude Code runs for each hook (§5.6), by its absolute path, under this node.
 const HOOK_SHIM = fileURLToPath(new URL('../../shim/claude-code.js', import.meta.url));
@@ -103,6 +103,29 @@ export function deliverables(resolved, { folder, mode, home, state: stateOpts, d
     }
   }
 
+  // A plugin under materialize (§7.5): the generated marketplace tree, then the key that registers
+  // it and the key that enables the plugin. The tree and the enabling key carry the package's risk.
+  function pluginDeliverables(item) {
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    let p;
+    try {
+      p = persistedPlugin(item, bound, folder, descriptor);
+    } catch (e) {
+      if (!(e instanceof HsError)) throw e;
+      out.refused.push({ item: item.id, code: e.code, reason: e.message });
+      return;
+    }
+    const P = descriptor.plugins[AGENT_PLUGINS].persist;
+    out.deliverables.push({
+      item: item.id, handler: 'tree', address: { path: p.address }, address_id: p.address,
+      source: p.generated, source_sha256: generatedDigest(p.generated), source_is_dir: true, risk: p.risk,
+      note: `${p.via}; ${P.leaves_behind}`,
+    });
+    for (const k of p.keys) {
+      out.deliverables.push({ item: item.id, handler: 'json-key', address: { file: k.file, key: k.key }, address_id: `${k.file}#${k.key}`, value: k.value, risk: k.key.startsWith(`${P.enabled_key}/`) ? p.risk : [] });
+    }
+  }
+
   function statusLine(item) {
     const run = item.value.run;
     if (run.env !== undefined || run.env_refs !== undefined || run.cwd !== undefined) {
@@ -147,12 +170,12 @@ export function deliverables(resolved, { folder, mode, home, state: stateOpts, d
       if (overlay) out.launch_only.push({ item: item.id, via: `launch-spec: ${descriptor.launch.mcp.flag}, under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'}); not persisted under overlay` });
       else mcpServer(item);
     }
-    // A plugin reaches a launch as a translated plugin directory (§5.7); this build persists none
-    // in the folder, and delivers no native format.
+    // A plugin (§5.7): translated, at launch as a plugin directory; under materialize as a directory
+    // marketplace in hs-run/ and two settings.json keys. No native format is delivered.
     else if (item.kind === 'plugin') {
       if (item.value?.format !== AGENT_PLUGINS) out.not_implemented.push(`${item.id} (format ${item.value?.format})`);
       else if (overlay) out.launch_only.push({ item: item.id, via: `launch-spec: ${descriptor.launch.plugin.flag}, translated to the .claude-plugin layout, under a launch receipt; not persisted under overlay` });
-      else out.not_implemented.push(`${item.id} (under materialize: this build carries an Agent Plugins package at launch only)`);
+      else pluginDeliverables(item);
     }
     else out.not_implemented.push(item.id);
   }
@@ -505,6 +528,25 @@ function heldAt(ledger, folder, descriptor, p) {
   return held(p.tree.address, digestPath(p.tree.source), handlers.tree.current(folder, descriptor, { path: p.tree.address }).digest);
 }
 
+// Whether a plan installed a plugin in the folder at exactly what the spec says now: the generated
+// tree and both settings.json keys, as the ledger recorded them.
+function installedPlugin(item, bound, folder, descriptor) {
+  let p;
+  try {
+    p = persistedPlugin(item, bound, folder, descriptor);
+  } catch {
+    return false;
+  }
+  const ledger = readLedger(folder);
+  const held = (addr, want, current) => {
+    const entry = ledger.addresses[addr];
+    return entry !== undefined && Object.values(entry.owners).some((o) => o.installed === want) && current === want;
+  };
+  const tree = generatedDigest(p.generated);
+  if (!held(p.address, tree, handlers.tree.current(folder, descriptor, { path: p.address }).digest)) return false;
+  return p.keys.every((k) => held(`${k.file}#${k.key}`, digestOf(k.value), handlers['json-key'].current(folder, descriptor, { file: k.file, key: k.key }).digest));
+}
+
 // Whether a plan installed the status line in the folder at exactly what the spec says now: the
 // settings key with this value, and its bound copy (if any) at this content, both as the ledger
 // recorded them. Anything else is carried at launch, under the launch receipt.
@@ -756,6 +798,12 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
       continue;
     }
     const bound = resolved.plugins.find((p) => p.id === item.id);
+    // A plan put it in the folder at this content: the folder's settings load it, and the plan's
+    // receipt covered it. Carrying it again would load the plugin twice.
+    if (installedPlugin(item, bound, folder, descriptor)) {
+      out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${descriptor.plugins[AGENT_PLUGINS].persist.root}/${item.id} and its two settings.json keys); the plan's receipt covered it` });
+      continue;
+    }
     const t = translatedPlugin(item, bound, descriptor);
     out.trees.push(t.tree);
     out.risks.push(...t.risks);

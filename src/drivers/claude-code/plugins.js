@@ -73,3 +73,33 @@ export function translatedPlugin(item, bound, descriptor) {
     via: `${descriptor.launch.plugin.flag}, Agent Plugins ${pkg.version} translated to the .claude-plugin layout, the package nested under ${T.nest}/${parts.length ? `: ${parts.join('; ')}` : ''}`,
   };
 }
+
+// What a plan persists for one plugin item under materialize (§7.5): the marketplace as a generated
+// tree, hs-run/plugin.<name>/, holding its manifest and the translated plugin under plugin/, and the
+// two settings.json keys that make a bare start register it and load the plugin. The tree's files
+// come from the plan; the package and its skills/ are copied from the layer.
+export function persistedPlugin(item, bound, folder, descriptor) {
+  const R = descriptor.plugins[AGENT_PLUGINS];
+  const P = R.persist;
+  const id = item.id.slice('plugin.'.length);
+  const t = translatedPlugin(item, bound, descriptor);
+  const marketplace = `${P.marketplace_prefix}${id}`;
+  const address = `${P.root}/${item.id}`;
+  const generated = {
+    files: [
+      { rel: P.marketplace_manifest, content: JSON.stringify({ name: marketplace, owner: { name: 'harness-skeleton' }, plugins: [{ name: id, source: `./${P.plugin_dir}` }] }, null, 2) + '\n' },
+      { rel: `${P.plugin_dir}/${t.tree.manifest.rel}`, content: t.tree.manifest.content },
+      ...t.tree.files.map((f) => ({ rel: `${P.plugin_dir}/${f.rel}`, content: f.content })),
+    ],
+    entries: t.tree.entries.map((e) => ({ rel: `${P.plugin_dir}/${e.rel}`, source: e.source, sha256: e.sha256 })),
+  };
+  const risk = [...new Set(t.risks.map((r) => r.risk))];
+  return {
+    address, generated: { generated }, marketplace, risk,
+    keys: [
+      { file: 'settings.json', key: `${P.marketplaces_key}/${marketplace}`, value: { source: { source: P.source_type, path: path.join(folder, address) } } },
+      { file: 'settings.json', key: `${P.enabled_key}/${id}@${marketplace}`, value: true },
+    ],
+    via: t.via.replace(descriptor.launch.plugin.flag, `a directory marketplace, ${marketplace}, in ${address}`),
+  };
+}

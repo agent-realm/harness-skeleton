@@ -241,8 +241,15 @@ function pluginPackage(item, layerDir) {
   return { abs, sha256: digestPath(abs) };
 }
 
-function covers(removal, id) {
-  return id === removal || id.startsWith(removal + '.');
+// Whether a tombstone removes an entry: its own id, or a prefix of its kind (`model.roles` removes
+// each `model.roles.<role>`, `plugin` each plugin). The dots inside an item's own name are not
+// steps: `plugin.notes` removes that plugin, never `plugin.notes.kit`. An entry of no known kind
+// keeps the dotted reading.
+function covers(removal, entry) {
+  if (entry.id === removal) return true;
+  if (!entry.id.startsWith(removal + '.')) return false;
+  const kindPath = entry.kind === 'unknown' ? entry.id : entry.kind;
+  return kindPath === removal || kindPath.startsWith(removal + '.');
 }
 
 // Resolve layer directories (lowest first) and an optional local.toml into one spec.
@@ -272,7 +279,7 @@ export function resolve(layerDirs, localFile = null) {
     for (const removal of layer.removals) {
       for (const map of [items, files]) {
         for (const id of [...map.keys()]) {
-          if (covers(removal, id)) {
+          if (covers(removal, map.get(id))) {
             removed.push({ id, by: name, from: map.get(id).layer });
             map.delete(id);
           }

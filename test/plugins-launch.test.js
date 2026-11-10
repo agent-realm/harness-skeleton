@@ -145,6 +145,26 @@ test('the package is bound in the spec digest; a spec without a plugin keeps the
   }
 });
 
+test('a tombstone removes the plugin it names, never one whose name extends it with a dot; `plugin` removes them all', () => {
+  const s = sandbox();
+  try {
+    const pkg = (name) => ({ [`p/${name}/plugin.json`]: JSON.stringify({ $schema: PLUGIN, name }) });
+    const base = layer(s.root, 'base', '[plugin.notes]\nsource = "p/notes"\nformat = "agent-plugins"\n\n[plugin."notes.kit"]\nsource = "p/notes.kit"\nformat = "agent-plugins"\n\n[model.roles]\nprimary = "m"\nsmall = "s"\n', { ...pkg('notes'), ...pkg('notes.kit') });
+    const one = layer(s.root, 'one', '[remove]\nitems = ["plugin.notes"]\n');
+    const r = resolve([base, one]);
+    assert.deepEqual(r.items.filter((i) => i.kind === 'plugin').map((i) => i.id), ['plugin.notes.kit']);
+    assert.deepEqual(r.plugins.map((p) => p.id), ['plugin.notes.kit']);
+    assert.deepEqual(r.removed.map((x) => x.id), ['plugin.notes']);
+    const all = layer(s.root, 'all', '[remove]\nitems = ["plugin", "model.roles"]\n');
+    const r2 = resolve([base, all]);
+    assert.deepEqual(r2.items.filter((i) => i.kind === 'plugin' || i.kind === 'model.roles'), [], 'a kind removes every item of it');
+    const model = layer(s.root, 'model', '[remove]\nitems = ["model"]\n');
+    assert.deepEqual(resolve([base, model]).items.filter((i) => i.kind === 'model.roles'), [], 'a prefix of the kind still removes');
+  } finally {
+    s.done();
+  }
+});
+
 test('plan on Claude Code: launch_only under overlay; not delivered under materialize; a native format is not delivered', () => {
   const s = sandbox();
   try {

@@ -34,6 +34,7 @@ format  = "0.2"
 | MCP server, remote | `[mcp.<id>] url, type ("http"/"sse"), headers, header_refs, bearer_ref` | by id, whole item |
 | hook | `[hook.<id>] event, match, run, timeout, require, may_allow` | by id, whole item |
 | status line | `[statusline] run, refresh, require` | last layer wins |
+| plugin | `[plugin."<name>"] source, format` | by name, whole item |
 | environment | `[env] NAME = "value"` | by name |
 | permissions | `[[permissions.rule]]` entries | appended |
 | removal | `[remove] items = ["mcp.legacy", "skill.old"]` | deletes from lower layers |
@@ -51,6 +52,33 @@ A **process** (`exec`, or `run = { … }` for hooks and the status line) is
 - **Agents:** `agents/<name>.md` with frontmatter `name`, `description`, `model`, `tools`.
 - **Commands:** `commands/<name>.md` with frontmatter `description`, `argument-hint`; the body
   takes `$ARGUMENTS` and `$1`..`$9`.
+
+## Plugins
+
+A plugin item names a package in the [Agent Plugins 1.0.0](https://agent-plugins.org/specification)
+format: a directory with a `plugin.json`, and optionally `skills/` and `mcp.json`.
+
+```toml
+[plugin."notes-kit"]                    # the package's name, from its plugin.json
+source = "plugins/notes-kit"            # a directory in this layer, relative to it
+format = "agent-plugins"
+```
+
+- **The id is the package's name.** A different id is refused as `plugin_name_mismatch`.
+- **Quote a dotted name.** The format allows dots, and TOML reads an unquoted dot as a step:
+  `[plugin.notes.kit]` is the item `plugin.notes` holding a table `kit`, and it fails validation.
+  Write `[plugin."notes.kit"]`.
+- **`source`** is a directory inside the layer, reached without a symlink. The spec digest binds
+  its content, so any edit to the package needs a new receipt.
+- **validate** checks the package as the format defines it, and refuses what the target harness
+  cannot keep: a `$schema` version it does not map, a skill the Agent Skills specification
+  rejects, and on Claude Code, `${…}` text the format keeps literal or a stdio server's `cwd`
+  other than the plugin root. The codes are in [the errors reference](errors.md).
+- **A tombstone** `[remove] items = ["plugin.notes"]` removes that plugin only, never
+  `plugin."notes.kit"`; `items = ["plugin"]` removes every plugin.
+- **Delivered** at launch on Claude Code, translated to its own plugin layout with one
+  `--plugin-dir` per package, under a launch receipt. Codex, `materialize` and the native formats
+  (`claude-plugin` and others) are refused as `not_implemented`.
 
 ## `local.toml`
 
@@ -77,7 +105,7 @@ Values are never secrets, and a binding that is not a reference is refused.
 
 On Claude Code:
 - **at launch:** model roles, endpoints and the login mode, retention, MCP servers, hooks, the
-  status line and skills;
+  status line, skills, and Agent Plugins packages;
 - **under `materialize`:** model roles, retention, MCP servers, hooks, the status line and
   skills. Endpoints and the login mode stay launch-only: a credential exists only at launch, so
   a bare start never reaches the endpoint.
@@ -86,9 +114,9 @@ On Codex:
 - **at launch:** model roles, endpoints, MCP servers and hooks;
 - **under `materialize`:** skills.
 
-The other kinds (`AGENTS.md`, permissions, agents, commands, plugins, `env`, `runtime`) validate,
-and a plan or a launch refuses them as `not_implemented`, by name, rather than leave them out
-silently.
+The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
+plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
+So does a plugin item anywhere but at launch on Claude Code (above).
 
 ## Risks
 

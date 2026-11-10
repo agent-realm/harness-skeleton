@@ -55,9 +55,10 @@ export default Object.freeze({
       // carrying it is reported as harness-specific, and planned as runs-code, since a plan cannot
       // tell what Codex makes of it. .codex-plugin/ is a path the format never discovers [AP §6.1,
       // §8], and Codex acts on it, so a package holding it is refused (validate,
-      // plugin_path_unsupported). Measured with hook trust bypassed: neither's hook runs, and
-      // neither's app, onboarding skill or interface reaches a request; the overlay's env_vars
-      // reach the server (tier 1, conformance/tier1/agent-plugins-codex-cache.mjs).
+      // plugin_path_unsupported), in any letter case. Measured with hook trust bypassed: neither's
+      // hook runs, where Codex's own layout runs it; the overlay's env_vars reach the server.
+      // Recorded only, with no positive control: neither's app, onboarding skill or interface
+      // reached a request (tier 1, conformance/tier1/agent-plugins-codex-cache.mjs).
       namespace: { name: 'com.openai', reads: ['apps', 'hooks', 'onboarding skill', 'interface'], dropped: ['hooks', 'apps'] },
       acts_on_paths: ['.codex-plugin'],
       acts_on_source: 'Codex reads .codex-plugin/plugin.json for an Agent Plugins package, its MCP servers\' environment included (rust-v0.160.0, agent_plugin_mcp_overlay.rs, manifest_cache.rs)',

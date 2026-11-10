@@ -122,7 +122,9 @@ On Codex:
 
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
-So does a plugin item outside the routes above.
+A plugin item outside the routes above is refused by name too: as `not_implemented` where this
+build does not carry it (`materialize` on Claude Code, a native format), and as `item_unsupported`
+where the harness cannot (on Codex under `overlay`, or at launch before a plan installed it).
 
 ## Risks
 

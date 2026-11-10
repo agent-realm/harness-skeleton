@@ -140,7 +140,10 @@ test('Codex: a package holding .codex-plugin/ is refused (plugin_path_unsupporte
     const v = ok(s.call('validate', { layers: [s.kit] }));
     const p = v.problems.filter((x) => x.severity === 'error');
     assert.deepEqual(p.map((x) => [x.code, x.item]), [['plugin_path_unsupported', 'plugin.notes-kit']]);
-    assert.match(p[0].message, /holds \.codex-plugin, a path the format never discovers/);
+    assert.match(p[0].message, /holds \.codex-plugin \(in some letter case\), a path the format never discovers/);
+    fs.renameSync(path.join(s.kit, s.base, '.codex-plugin'), path.join(s.kit, s.base, '.Codex-Plugin'));
+    const cased = ok(s.call('validate', { layers: [s.kit] })).problems.filter((x) => x.severity === 'error');
+    assert.deepEqual(cased.map((x) => x.code), ['plugin_path_unsupported'], 'in any letter case, whatever the file system');
     const { validate } = await import('../src/spec/validate.js');
     const cc = (await import('../src/drivers/claude-code/descriptor.js')).default;
     assert.deepEqual(validate(resolve([s.kit]), cc).problems.filter((x) => x.severity === 'error'), []);

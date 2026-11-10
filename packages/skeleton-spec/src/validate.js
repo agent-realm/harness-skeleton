@@ -295,16 +295,17 @@ export function validate(resolved, descriptor) {
       }
     }
     // A path the format never discovers [AP §6.1, §8] that this harness acts on: the package would
-    // not stay as the format says, so it is refused, by path.
+    // not stay as the format says, so it is refused, by path. Matched in any letter case: on a
+    // case-insensitive file system the harness would find `.Codex-Plugin` as `.codex-plugin`, and
+    // validate must not answer differently by file system.
+    let rootNames = [];
+    try {
+      rootNames = fs.readdirSync(pkgBound.path).map((n) => n.toLowerCase());
+    } catch {
+      // unreadable: the package's own problems say so
+    }
     for (const rel of route.acts_on_paths ?? []) {
-      let present = false;
-      try {
-        fs.lstatSync(path.join(pkgBound.path, rel));
-        present = true;
-      } catch {
-        // absent
-      }
-      if (present) push({ code: 'plugin_path_unsupported', ...at, message: `${pl.id}: the package holds ${rel}, a path the format never discovers [AP §6.1, §8], which ${H} acts on (${route.acts_on_source}); remove it, or use ${H}'s own plugin format` });
+      if (rootNames.includes(rel.toLowerCase())) push({ code: 'plugin_path_unsupported', ...at, message: `${pl.id}: the package holds ${rel} (in some letter case), a path the format never discovers [AP §6.1, §8], which ${H} acts on (${route.acts_on_source}); remove it, or use ${H}'s own plugin format` });
     }
     if (route.cwd === 'root') {
       for (const server of cwdBeyondRoot(pkg.mcp)) {

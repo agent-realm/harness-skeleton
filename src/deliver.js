@@ -17,7 +17,7 @@ import { harnessPath } from './harness-path.js';
 import { hostId } from './host.js';
 import { digestPath, resolve } from './spec/layers.js';
 import { validate } from './spec/validate.js';
-import { checkAddress, handlers, treeLink } from './native.js';
+import { checkAddress, generatedDigest, handlers, isGenerated, treeLink } from './native.js';
 import {
   acquireLock, digestOf, journal, loadRecord, newApplyId, readJournal, readLedger, recordsDir, storeRecord, sweepStaged, unfinished, writeLedger,
 } from './records.js';
@@ -256,8 +256,15 @@ function removalOp(folder, descriptor, addr, entry, owner) {
 // ---- apply, recover, remove -----------------------------------------------------------------
 
 // A tree's source is a skill directory of one of the plan's layers, or a copy the records keep.
-function checkSource(folder, planBody, op, descriptor) {
+// Exported for its unit test: apply re-derives a plan before it gets here, so a forged one never does.
+export function checkSource(folder, planBody, op, descriptor) {
   if (!op.source) return;
+  // A generated tree (§5.7): its files come from the plan; each entry it copies is checked as a
+  // tree's source is, below.
+  if (isGenerated(op.source)) {
+    for (const e of op.source.generated.entries ?? []) checkSource(folder, planBody, { ...op, source: e.source }, descriptor);
+    return;
+  }
   // hs's own shim (src/shim/), copied into the one tree persisted hooks run it from: the only
   // source outside the plan's layers, and only for that address (§7.5).
   const shimTree = descriptor?.launch?.hooks?.persist?.shim_tree;
@@ -354,7 +361,9 @@ function execute(driver, folder, planBody, owner, opts, receipt = null) {
       throw new HsError('precondition_failed', `${op.address_id} is not what the plan saw; plan again`, [op.id]);
     }
     checkSource(folder, planBody, op, descriptor);
-    if (op.source && digestPath(op.source) !== op.source_sha256) throw new HsError('precondition_failed', `${op.source} changed since the plan was made; plan again`, [op.id]);
+    if (op.source && isGenerated(op.source)) {
+      if (op.source.generated.entries.some((e) => digestPath(e.source) !== e.sha256) || generatedDigest(op.source) !== op.source_sha256) throw new HsError('precondition_failed', `a source of ${op.address_id} changed since the plan was made; plan again`, [op.id]);
+    } else if (op.source && digestPath(op.source) !== op.source_sha256) throw new HsError('precondition_failed', `${op.source} changed since the plan was made; plan again`, [op.id]);
   }
   // Stored only once the plan is cleared to run: the records list what an apply ran under.
   storeRecord(folder, 'plans', planBody.digest, planBody);

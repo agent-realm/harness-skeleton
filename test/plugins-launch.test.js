@@ -11,7 +11,9 @@ import { validate } from '../src/spec/validate.js';
 import ccDescriptor from '../src/drivers/claude-code/descriptor.js';
 import cxDescriptor from '../src/drivers/codex/descriptor.js';
 import { layer, skillMd, write } from './fixtures.js';
-import { ok, sandbox } from './sandbox.js';
+import { ok, receiptFor, sandbox, settings } from './sandbox.js';
+import { digestOf } from '../src/records.js';
+import { checkSource } from '../src/deliver.js';
 
 const PLUGIN = 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json';
 const MCP = 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json';
@@ -165,15 +167,12 @@ test('a tombstone removes the plugin it names, never one whose name extends it w
   }
 });
 
-test('plan on Claude Code: launch_only under overlay; not delivered under materialize; a native format is not delivered', () => {
+test('plan on Claude Code: launch_only under overlay; a native format is not delivered', () => {
   const s = sandbox();
   try {
     const kit = kitLayer(s.root);
     const overlay = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'overlay' }));
     assert.ok(overlay.launch_only.some((x) => x.item === 'plugin.notes-kit' && /--plugin-dir, translated to the \.claude-plugin layout/.test(x.via)));
-    const mat = s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' });
-    assert.equal(mat.error.code, 'not_implemented');
-    assert.match(mat.error.message, /plugin\.notes-kit \(under materialize/);
     const native = layer(s.root, 'native', '[plugin.cc]\nsource = "p"\nformat = "claude-plugin"\n', { 'p/.claude-plugin/plugin.json': '{"name":"cc"}' });
     const launch = s.call('launch-spec', { layers: [native] });
     assert.equal(launch.error.code, 'not_implemented');
@@ -287,6 +286,124 @@ test('describe: the plugins capability on Claude Code, by format', () => {
     assert.deepEqual(cap.facets.formats['agent-plugins'].versions, ['1.0.0']);
     assert.deepEqual(cap.facets.formats['agent-plugins'].components, ['skills', 'mcp']);
     assert.equal(cap.facets.formats['agent-plugins'].refuses.length, 2);
+  } finally {
+    s.done();
+  }
+});
+
+// Milestone 6a.16: under materialize, a directory marketplace in hs-run/ and two settings.json keys.
+test('materialize on Claude Code: the marketplace tree and two settings keys, receipted; the user\'s settings kept', () => {
+  const s = sandbox();
+  try {
+    const kit = kitLayer(s.root);
+    const plan = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
+    const ops = plan.operations.filter((o) => o.item === 'plugin.notes-kit');
+    assert.deepEqual(ops.map((o) => [o.address_id, o.risk]), [
+      ['hs-run/plugin.notes-kit', ['runs-code', 'sends-data']],
+      ['settings.json#extraKnownMarketplaces/hs-notes-kit', []],
+      ['settings.json#enabledPlugins/notes-kit@hs-notes-kit', ['runs-code', 'sends-data']],
+    ]);
+    assert.match(ops[0].note, /a directory marketplace, hs-notes-kit, in hs-run\/plugin\.notes-kit.*Claude Code keeps its own records of the marketplace/);
+    ok(s.call('apply', { plan, receipt: receiptFor(plan) }));
+    const at = path.join(s.folder, 'hs-run/plugin.notes-kit');
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(at, '.claude-plugin/marketplace.json'), 'utf8')), { name: 'hs-notes-kit', owner: { name: 'harness-skeleton' }, plugins: [{ name: 'notes-kit', source: './plugin' }] });
+    assert.deepEqual(fs.readdirSync(path.join(at, 'plugin')).sort(), ['.claude-plugin', '.mcp.json', 'package', 'skills']);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(at, 'plugin/.claude-plugin/plugin.json'), 'utf8')).name, 'notes-kit');
+    assert.ok(fs.statSync(path.join(at, 'plugin/package/bin/run')).mode & 0o100, 'modes kept');
+    const st = settings(s.folder);
+    assert.deepEqual(st.extraKnownMarketplaces, { 'hs-notes-kit': { source: { source: 'directory', path: at } } });
+    assert.deepEqual(st.enabledPlugins, { 'notes-kit@hs-notes-kit': true });
+    assert.equal(st.model, 'sonnet', 'the user\'s own keys stay');
+  } finally {
+    s.done();
+  }
+});
+
+test('materialize on Claude Code: a launch skips a plugin a plan installed at this content, and refuses while the folder holds another', () => {
+  const s = sandbox();
+  s.opts.tmpdir = path.join(s.root, 'tmp');
+  fs.mkdirSync(s.opts.tmpdir);
+  try {
+    const kit = kitLayer(s.root, { mcp: null });
+    const plan = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
+    ok(s.call('apply', { plan, receipt: receiptFor(plan) }));
+    const spec = ok(s.call('launch-spec', { layers: [kit] }));
+    assert.ok(!spec.argv.includes('--plugin-dir'), 'installed: not carried again');
+    assert.ok(spec.skipped.some((x) => x.item === 'plugin.notes-kit' && /installed in the folder by a plan, at this content/.test(x.reason)));
+    write(kit, 'plugins/notes-kit/skills/notes/extra.md', 'more');
+    const edited = s.call('launch-spec', { layers: [kit] });
+    assert.equal(edited.error.code, 'item_unsupported', 'the folder loads the installed copy: carrying the edited one too would load two plugins of one name');
+    assert.match(edited.error.message, /holds this plugin at other content \(hs-run\/plugin\.notes-kit\).*Plan and apply again, or remove it first/);
+    const again = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
+    assert.deepEqual(again.operations.filter((o) => o.item === 'plugin.notes-kit').map((o) => [o.address_id, o.action]), [['hs-run/plugin.notes-kit', 'update']]);
+    ok(s.call('apply', { plan: again, receipt: receiptFor(again) }));
+    const after = ok(s.call('launch-spec', { layers: [kit] }));
+    assert.ok(after.skipped.some((x) => x.item === 'plugin.notes-kit'), 'applied again: skipped again');
+    // Enabled by the folder's settings with no plan at all: refused the same way.
+    const t = sandbox();
+    try {
+      const kit2 = kitLayer(t.root, { mcp: null });
+      fs.writeFileSync(path.join(t.folder, 'settings.json'), JSON.stringify({ enabledPlugins: { 'notes-kit@hs-notes-kit': true } }));
+      assert.equal(t.call('launch-spec', { layers: [kit2] }).error.code, 'item_unsupported');
+    } finally {
+      t.done();
+    }
+  } finally {
+    s.done();
+  }
+});
+
+test('materialize on Claude Code: remove takes the tree and both keys away', () => {
+  const s = sandbox();
+  try {
+    const kit = kitLayer(s.root, { mcp: null });
+    const plan = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
+    ok(s.call('apply', { plan, receipt: receiptFor(plan) }));
+    ok(s.call('remove', { owner: 'builder' }));
+    assert.ok(!fs.existsSync(path.join(s.folder, 'hs-run/plugin.notes-kit')));
+    const st = settings(s.folder);
+    assert.equal(st.enabledPlugins?.['notes-kit@hs-notes-kit'], undefined);
+    assert.equal(st.extraKnownMarketplaces?.['hs-notes-kit'], undefined);
+  } finally {
+    s.done();
+  }
+});
+
+test('materialize on Claude Code: a forged plan whose generated tree copies from outside the layers is refused', () => {
+  const s = sandbox();
+  try {
+    const kit = kitLayer(s.root, { mcp: null });
+    const plan = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
+    const outside = path.join(s.root, 'outside');
+    fs.mkdirSync(outside);
+    write(outside, 'x.txt', 'not from a layer');
+    const operations = plan.operations.map((o) => (o.address_id === 'hs-run/plugin.notes-kit'
+      ? { ...o, source: { generated: { ...o.source.generated, entries: o.source.generated.entries.map((e, i) => (i === 0 ? { ...e, source: outside, sha256: resolve([outside]).digest } : e)) } } }
+      : o));
+    const { digest, ...body } = { ...plan, operations };
+    const forged = { ...body, digest: 'sha256:' + digestOf(body) };
+    const res = s.call('apply', { plan: forged, receipt: receiptFor(forged) });
+    assert.equal(res.ok, false);
+    assert.equal(res.error.code, 'plan_stale', 'apply re-derives the plan, so a forged one never reaches a write');
+    assert.ok(!fs.existsSync(path.join(s.folder, 'hs-run/plugin.notes-kit')));
+  } finally {
+    s.done();
+  }
+});
+
+test('checkSource: every entry of a generated tree must lie in the plan\'s layers and hold no symlink', () => {
+  const s = sandbox();
+  try {
+    const kit = kitLayer(s.root, { mcp: null });
+    const pkg = path.join(kit, 'plugins/notes-kit');
+    const outside = path.join(s.root, 'outside');
+    fs.mkdirSync(outside);
+    const op = (src) => ({ id: 'op', address: { path: 'hs-run/plugin.notes-kit' }, source: { generated: { files: [], entries: [{ rel: 'plugin/package', source: src, sha256: 'x' }] } } });
+    const body = { args: { layers: [kit] } };
+    assert.doesNotThrow(() => checkSource(s.folder, body, op(pkg), ccDescriptor));
+    assert.throws(() => checkSource(s.folder, body, op(outside), ccDescriptor), (e) => e.code === 'write_refused' && /in none of the plan's layers/.test(e.message));
+    fs.symlinkSync('/etc/hostname', path.join(pkg, 'link'));
+    assert.throws(() => checkSource(s.folder, body, op(pkg), ccDescriptor), (e) => e.code === 'write_refused' && /symlink/.test(e.message));
   } finally {
     s.done();
   }

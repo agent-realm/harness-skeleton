@@ -1,0 +1,339 @@
+{
+  "check": "tier 1: what makes a translated Agent Plugins package load in a bare start of a Claude Code data folder (design note v0.2 §5.7, §12 row 35)",
+  "at": "2026-11-10T10:55:22.274Z",
+  "evidence": {
+    "harness": "2.1.321 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "a65cbeb"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": []
+    },
+    "cli": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "cache_enabled": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": []
+    },
+    "cache_known": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "cache_records": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "cache_settings": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "settings_only": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "driver": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "driver_dotted": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-tier1-ap-tool-2b7f",
+        "hs.bench-plugin:notes"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs_bench-plugin_probe__hs_plugin_tool"
+      ]
+    },
+    "removed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": []
+    }
+  },
+  "installs": {
+    "marketplace_add": {
+      "exit": 0
+    },
+    "plugin_install": {
+      "exit": 0
+    }
+  },
+  "recorded": {
+    "cli_wrote": {
+      "plugins": [
+        "cache",
+        "cache/hs-bench-cc-market",
+        "installed_plugins.json",
+        "known_marketplaces.json",
+        "marketplaces"
+      ],
+      "settings_keys": [
+        "enabledPlugins",
+        "extraKnownMarketplaces"
+      ],
+      "enabled_plugins": [
+        "hs-bench-plugin@hs-bench-cc-market"
+      ],
+      "installed_plugins": {
+        "keys": [
+          "plugins",
+          "version"
+        ],
+        "names_folder": true,
+        "names_market_dir": false
+      },
+      "known_marketplaces": {
+        "keys": [
+          "hs-bench-cc-market"
+        ],
+        "names_folder": false,
+        "names_market_dir": true
+      }
+    },
+    "version_dirs": [
+      "1.0.0"
+    ],
+    "cache_enabled": {
+      "skill_loads": false,
+      "server_starts": false,
+      "tool_offered": false,
+      "server_in_root": null
+    },
+    "cache_known": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_offered": true,
+      "server_in_root": true,
+      "record_copied": true
+    },
+    "cache_records": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_offered": true,
+      "server_in_root": true,
+      "records_copied": true
+    },
+    "extra_known_marketplace_shape": {
+      "keys": [
+        "source"
+      ],
+      "source_keys": [
+        "path",
+        "source"
+      ],
+      "source_type": "directory"
+    },
+    "cache_settings": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_offered": true,
+      "server_in_root": true,
+      "after_start": {
+        "plugins": [
+          "cache",
+          "cache/hs-bench-cc-market",
+          "data",
+          "data/hs-bench-plugin-hs-bench-cc-market",
+          "installed_plugins.json",
+          "known_marketplaces.json",
+          "marketplaces",
+          "store",
+          "store/cc-plugin-agents-md_builtin-b049b47b3618.json"
+        ],
+        "settings_keys": [
+          "enabledPlugins",
+          "extraKnownMarketplaces"
+        ],
+        "enabled_plugins": [
+          "hs-bench-plugin@hs-bench-cc-market"
+        ],
+        "installed_plugins": {
+          "keys": [
+            "plugins",
+            "version"
+          ],
+          "names_folder": false,
+          "names_market_dir": false
+        },
+        "known_marketplaces": {
+          "keys": [
+            "hs-bench-cc-market"
+          ],
+          "names_folder": false,
+          "names_market_dir": true
+        }
+      }
+    },
+    "settings_only": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_offered": true,
+      "server_in_root": true,
+      "after_start": {
+        "plugins": [
+          "data",
+          "data/hs-bench-plugin-hs-bench-cc-market",
+          "installed_plugins.json",
+          "known_marketplaces.json",
+          "marketplaces",
+          "store",
+          "store/cc-plugin-agents-md_builtin-b049b47b3618.json"
+        ],
+        "settings_keys": [
+          "enabledPlugins",
+          "extraKnownMarketplaces"
+        ],
+        "enabled_plugins": [
+          "hs-bench-plugin@hs-bench-cc-market"
+        ],
+        "installed_plugins": {
+          "keys": [
+            "plugins",
+            "version"
+          ],
+          "names_folder": false,
+          "names_market_dir": false
+        },
+        "known_marketplaces": {
+          "keys": [
+            "hs-bench-cc-market"
+          ],
+          "names_folder": false,
+          "names_market_dir": true
+        }
+      }
+    },
+    "driver_dotted": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_offered": true,
+      "server_in_root": true
+    },
+    "removed": {
+      "after_start": {
+        "plugins": [
+          "data",
+          "data/hs-bench-plugin-hs-hs-bench-plugin",
+          "installed_plugins.json",
+          "known_marketplaces.json",
+          "marketplaces",
+          "store",
+          "store/cc-plugin-agents-md_builtin-b049b47b3618.json"
+        ],
+        "settings_keys": [
+          "enabledPlugins",
+          "extraKnownMarketplaces"
+        ],
+        "enabled_plugins": [],
+        "installed_plugins": {
+          "keys": [
+            "plugins",
+            "version"
+          ],
+          "names_folder": false,
+          "names_market_dir": false
+        },
+        "known_marketplaces": {
+          "keys": [
+            "hs-hs-bench-plugin"
+          ],
+          "names_folder": true,
+          "names_market_dir": false
+        }
+      }
+    }
+  },
+  "checks": {
+    "without a plugin no marker reaches a request (premise)": true,
+    "cli: marketplace add and install succeed, and the translated plugin loads in a bare start (positive control)": true,
+    "driver: the plan writes hs-run/plugin.<name> and the two settings.json keys, and apply refuses a receipt that allows nothing": true,
+    "driver: a bare start loads the plugin, skill and server, the server in the plugin root": true,
+    "driver: hs launch-spec for the same spec skips the installed plugin rather than carry it": true,
+    "removed: after hs remove, a bare start no longer loads the plugin": true
+  },
+  "verdict": "pass"
+}

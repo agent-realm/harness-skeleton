@@ -4,7 +4,12 @@
 (sessions-model §1 rule 8): the harness, the `adapter_ver` and how old keys map to new ones. See
 [Versions](docs/adapter-interface.md#versions) for what each version bump asks of a consumer.
 
-## Unreleased
+## 1.2.0 (2026-11-10)
+
+`read()` takes an optional options object after `known`: `{ maxReadBytes }` sets how many bytes one
+read of a stream file returns. No `adapter_ver` or `state_ver` changes, and no key moves, so a
+consumer re-derives nothing; a call without the options reads as before. This is the first release
+tagged in the repository, as `harness-session-adapters-v1.2.0`.
 
 - **`read` takes an options object after `known`: `{ maxReadBytes }` sets how many bytes one read
   of a stream file returns** ([Read size](docs/adapter-interface.md#read-size)). It was fixed at

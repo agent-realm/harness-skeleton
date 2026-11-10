@@ -54,7 +54,9 @@ export function capabilities(descriptor) {
         refuses: [
           ...(r.keeps_literal === false ? ['plugin_placeholder_literal: ${…} text the format keeps literal'] : []),
           ...(r.cwd === 'root' ? ['plugin_cwd_unsupported: a stdio server working directory other than the plugin root'] : []),
+          ...(r.acts_on_paths?.length ? [`plugin_path_unsupported: ${r.acts_on_paths.join(', ')} in the package`] : []),
         ],
+        ...(r.namespace ? { harness_specific: [r.namespace.name] } : {}),
       }])) },
       // What a route cannot keep is refused by validate, never dropped from a package it accepts.
       dropped: [],

@@ -38,6 +38,27 @@
 //                 override; the package loads as in `cache`; config.toml is not written. hs plans
 //                 only for a Codex inside its descriptor's range, so outside it the plan's refusal
 //                 (version_unsupported) is recorded and the driver's checks are not judged.
+//   both          `cache` for a package that also carries Codex's own data, which Codex reads for
+//                 this format (codex-rs/core-plugins/src/agent_plugin_manifest.rs and
+//                 manifest/manifest_cache.rs, rust-v0.160.0): extensions["com.openai"] naming a
+//                 hook, an app (.app.json), an onboarding skill and an interface, and a
+//                 .codex-plugin/plugin.json naming the same hook and app and, under mcpServers, an
+//                 env_vars entry for the package's stdio server. Run with HS_BENCH_OTHER set in
+//                 Codex's environment and --dangerously-bypass-hook-trust, which runs every hook
+//                 Codex has registered [CX §11]. Expected: the hook does not run, and the app's,
+//                 the onboarding skill's and the interface's markers reach no request (the loader
+//                 drops hooks and apps for this format, loader.rs); the package's own skill loads.
+//   overlay       the same with .codex-plugin/plugin.json alone, the branch Codex reads when the
+//                 extension is absent. Expected as for `both`. And (the premise of
+//                 plugin_path_unsupported, design note §5.7) the overlay's env_vars hand
+//                 HS_BENCH_OTHER from Codex's environment to the stdio server
+//                 (agent_plugin_mcp_overlay.rs), where `cache`, with the variable set the same way,
+//                 does not.
+//   legacy        the positive control for both hook halves: a package in Codex's own layout
+//                 (.codex-plugin/plugin.json, no root plugin.json) with the same hook, under the
+//                 same flag. Expected: the hook runs. Apps route only under a ChatGPT login
+//                 (load_plugin_mcp_servers_with_policy), which a bench never has, so the app halves
+//                 have no positive control; they are reported, not proven.
 // After each run the check records which top-level entries Codex added to the data folder, by name.
 // The model and the server record names and booleans only. The credential is a dummy; HOME and XDG
 // are scratch.
@@ -46,7 +67,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { REF_VAR, bench, evidence, fromSpec, guard } from '../lib/bench.mjs';
-import { probe, writePackage } from '../lib/agent-plugins.mjs';
+import { OTHER, OTHER_VALUE, probe, writePackage } from '../lib/agent-plugins.mjs';
 
 const codex = guard('agent-plugins-codex-cache.mjs', '--codex');
 const PROMPT = 'tier 1 Agent Plugins cache check on Codex';
@@ -54,10 +75,13 @@ const TOOL = 'hs_plugin_tool';
 const NAME = 'hs-bench-plugin';
 const DOTTED = 'hs.bench-plugin';
 const MARKET = 'hs-bench-cache';
-const M = { skill: 'hs-tier1-ap-skill-4d1a', tool: 'hs-tier1-ap-tool-2b7f' };
+const BOTH = 'hs-bench-both';
+const OVERLAY = 'hs-bench-overlay';
+const LEGACY = 'hs-bench-legacy';
+const M = { skill: 'hs-tier1-ap-skill-4d1a', tool: 'hs-tier1-ap-tool-2b7f', app: 'hs-tier1-ap-app-5a2e', onboard: 'hs-tier1-ap-onboard-3c9d', iface: 'hs-tier1-ap-iface-6b1f', legacy: 'hs-tier1-ap-legacy-8d4b' };
 const b = bench('hs-tier1-agent-plugins-cx-cache-');
 
-const markers = [M.skill, M.tool, `${NAME}:notes`, `${DOTTED}:notes`];
+const markers = [M.skill, M.tool, M.app, M.onboard, M.iface, M.legacy, `${NAME}:notes`, `${DOTTED}:notes`, `${BOTH}:notes`, `${OVERLAY}:notes`, `${LEGACY}:notes`];
 const shape = (r) => ({ exit: r.exit, signal: r.signal, timed_out: r.timed_out, descendants_left: r.descendants_left, requests: r.seen.ENDPOINT.length,
   markers: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.markers))].sort() });
 const table = (name) => `{${JSON.stringify(`${name}@${MARKET}`)}={enabled=true}}`;
@@ -72,13 +96,24 @@ try {
   const local = path.join(b.work, 'local.toml');
   fs.writeFileSync(local, `[endpoints.openai-responses]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
   const probeOut = path.join(b.work, 'probe');
+  const hookProbe = path.join(b.work, 'hook-ran');
+  // Codex's own data for an Agent Plugins package: a hook, an app, an onboarding skill, an
+  // interface, and (in the overlay) env_vars for the stdio server.
+  const hooks = { hooks: { SessionStart: [{ hooks: [{ type: 'command', command: `touch '${hookProbe}'` }] }] } };
+  const codexFiles = {
+    'hooks/hooks.json': hooks,
+    '.app.json': { apps: { [M.app]: { id: M.app } } },
+    'onboarding/hs-onboard/SKILL.md': `---\nname: hs-onboard\ndescription: Bench onboarding. ${M.onboard}\n---\nOnboard.\n`,
+  };
+  const overlayFile = (name) => ({ name, hooks: './hooks/hooks.json', apps: './.app.json', interface: { shortDescription: `Bench interface ${M.iface}` }, mcpServers: { probe: { command: 'true', env_vars: [OTHER] } } });
+  const extension = { 'com.openai': { hooks: './hooks/hooks.json', apps: './.app.json', onboardingSkill: './onboarding/hs-onboard', interface: { shortDescription: `Bench interface ${M.iface}` } } };
 
   // One package per name, and a marketplace of it for the byhand run's `marketplace add`.
   const pkgs = {};
-  const pkgFor = (name) => {
+  const pkgFor = (name, opts = {}) => {
     if (pkgs[name]) return pkgs[name];
     const dir = path.join(b.work, 'market', name);
-    writePackage(path.join(dir, name), { name, tool: TOOL, probeOut, marks: M });
+    writePackage(path.join(dir, name), { name, tool: TOOL, probeOut, marks: M, ...opts });
     fs.mkdirSync(path.join(dir, '.agents', 'plugins'), { recursive: true });
     fs.writeFileSync(path.join(dir, '.agents', 'plugins', 'marketplace.json'), JSON.stringify({ name: MARKET, plugins: [{ name, source: `./${name}` }] }, null, 2) + '\n');
     pkgs[name] = { market: dir, pkg: path.join(dir, name) };
@@ -101,14 +136,14 @@ try {
     // Table headers only, never a value.
     return [...new Set(fs.readFileSync(f, 'utf8').split('\n').filter((l) => /^\s*\[/.test(l)).map((l) => l.trim().replace(/^\[+|\]+$/g, '').split('.')[0]))].sort();
   };
-  const run = async (folder, extra = [], layers = [plain]) => {
-    fs.rmSync(probeOut, { force: true });
+  const run = async (folder, extra = [], layers = [plain], extraEnv = {}) => {
+    for (const f of [probeOut, hookProbe]) fs.rmSync(f, { force: true });
     const before = fs.readdirSync(folder).sort();
     const spec = b.hs('launch-spec', ['--harness', 'codex', '--folder', folder, ...layers.flatMap((l) => ['--layer', l]), '--local', local, '--bin', codex, '--headless']);
-    const l = fromSpec(spec, {}, codex, [...extra, '--skip-git-repo-check', PROMPT]);
+    const l = fromSpec(spec, extraEnv, codex, [...extra, '--skip-git-repo-check', PROMPT]);
     const r = await b.launch([L], l.argv, l.env, cwd);
     const after = fs.readdirSync(folder).sort();
-    return { ...r, probe: probe(probeOut), added: after.filter((n) => !before.includes(n)), config_tables: configTables(folder) };
+    return { ...r, probe: probe(probeOut), hook_ran: fs.existsSync(hookProbe), added: after.filter((n) => !before.includes(n)), config_tables: configTables(folder) };
   };
 
   const control = await run(folderFor('control'));
@@ -122,7 +157,7 @@ try {
 
   const cacheFolder = folderFor('cache');
   cache(cacheFolder, NAME);
-  const cached = await run(cacheFolder, ['-c', `plugins=${table(NAME)}`]);
+  const cached = await run(cacheFolder, ['-c', `plugins=${table(NAME)}`], [plain], { [OTHER]: OTHER_VALUE });
 
   const dottedFolder = folderFor('dotted');
   cache(dottedFolder, DOTTED);
@@ -135,6 +170,30 @@ try {
   const quotedFolder = folderFor('quoted-key');
   cache(quotedFolder, NAME);
   const quoted = await run(quotedFolder, ['-c', `plugins."${NAME}@${MARKET}".enabled=true`]);
+
+  const BYPASS = '--dangerously-bypass-hook-trust';
+  const bothFolder = folderFor('both');
+  pkgFor(BOTH, { manifest: { extensions: extension }, files: { ...codexFiles, '.codex-plugin/plugin.json': overlayFile(BOTH) } });
+  cache(bothFolder, BOTH);
+  const both = await run(bothFolder, ['-c', `plugins=${table(BOTH)}`, BYPASS], [plain], { [OTHER]: OTHER_VALUE });
+
+  const overlayFolder = folderFor('overlay');
+  pkgFor(OVERLAY, { files: { ...codexFiles, '.codex-plugin/plugin.json': overlayFile(OVERLAY) } });
+  cache(overlayFolder, OVERLAY);
+  const overlaid = await run(overlayFolder, ['-c', `plugins=${table(OVERLAY)}`, BYPASS], [plain], { [OTHER]: OTHER_VALUE });
+
+  // Codex's own layout: no root plugin.json, so the Agent Plugins rules do not apply.
+  const legacyFolder = folderFor('legacy');
+  const legacyDir = path.join(legacyFolder, 'plugins', 'cache', MARKET, LEGACY, '1.0.0');
+  for (const [rel, content] of Object.entries({
+    '.codex-plugin/plugin.json': { name: LEGACY, version: '1.0.0', description: 'A bench package in Codex\'s own layout.', hooks: './hooks/hooks.json' },
+    'hooks/hooks.json': hooks,
+    'skills/notes/SKILL.md': `---\nname: notes\ndescription: Take bench notes. ${M.legacy}\n---\nWrite the notes.\n`,
+  })) {
+    fs.mkdirSync(path.dirname(path.join(legacyDir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(legacyDir, rel), typeof content === 'string' ? content : JSON.stringify(content, null, 2) + '\n');
+  }
+  const legacy = await run(legacyFolder, ['-c', `plugins=${table(LEGACY)}`, BYPASS]);
 
   const otherFolder = folderFor('other-dir');
   cache(otherFolder, NAME, 'hs');
@@ -177,6 +236,12 @@ try {
     'cache: the cache directory and the inline-table override alone load the package, skill and server, the server in the plugin root with both placeholders expanded': whole(cached),
     'cache: config.toml is not written': cached.config_tables === null,
     'dotted: a dotted plugin name loads the same way': whole(dotted, DOTTED) && dotted.config_tables === null,
+    'both: with hook trust bypassed, the hook extensions["com.openai"] names does not run, and the package\'s skill loads': both.hook_ran === false && has(both, `${BOTH}:notes`),
+    'both: the app\'s, the onboarding skill\'s and the interface\'s markers reach no request': !has(both, M.app) && !has(both, M.onboard) && !has(both, M.iface),
+    'overlay: with hook trust bypassed, the hook .codex-plugin/plugin.json names does not run; its app\'s and interface\'s markers reach no request; the package\'s skill loads': overlaid.hook_ran === false && !has(overlaid, M.app) && !has(overlaid, M.iface) && has(overlaid, `${OVERLAY}:notes`),
+    'legacy (the positive control for both hook halves): in Codex\'s own layout the same hook runs with hook trust bypassed': legacy.hook_ran === true && has(legacy, M.legacy),
+    'cache: HS_BENCH_OTHER in Codex\'s environment does not reach the package\'s stdio server': cached.probe?.started === true && cached.probe.other_forwarded === false,
+    'overlay (premise of plugin_path_unsupported): .codex-plugin/plugin.json\'s env_vars hand HS_BENCH_OTHER from Codex\'s environment to the stdio server': overlaid.probe?.started === true && overlaid.probe.other_forwarded === true,
     ...(outOfRange ? {} : {
       'driver: the plan installs the package at plugins/cache/harness-skeleton/<name>/hs, and apply refuses without a receipt': driverOp?.address_id === `plugins/cache/harness-skeleton/${NAME}/hs` && refusedApply.ok === false && refusedApply.error.code === 'receipt_required',
       'driver: launch-spec carries the inline-table override': driverSpec.argv.includes(`plugins={"${NAME}@harness-skeleton"={enabled=true}}`),
@@ -186,20 +251,22 @@ try {
   const recorded = {
     marketplace_add_config_tables: marketTables,
     no_enable: loads(bare),
+    both_server_gets_other: both.probe?.other_forwarded ?? null,
+    apps: 'routed only under a ChatGPT login, which a bench never has: the app halves above have no positive control',
     quoted_key: loads(quoted),
     other_dir: loads(other),
     // What each run's folder gained beyond what the control's did, by name.
     added_beyond_control: Object.fromEntries(Object.entries({ byhand, cache: cached, dotted, no_enable: bare, quoted_key: quoted, other_dir: other, ...(driver ? { driver } : {}) }).map(([k, r]) => [k, r.added.filter((n) => !control.added.includes(n))])),
     driver: outOfRange ? { plan: 'version_unsupported: this Codex is outside the driver descriptor\'s range, so hs plans nothing; the driver\'s checks are not judged' } : { plan_risk: driverOp?.risk ?? null },
   };
-  const reached = [control, byhand, cached, dotted, bare, quoted, other, ...(driver ? [driver] : [])].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, byhand, cached, dotted, bare, quoted, other, both, overlaid, legacy, ...(driver ? [driver] : [])].every((r) => r.seen.ENDPOINT.length > 0);
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : !checks['byhand: marketplace add, the cache directory and the [plugins] table load the package (positive control)'] ? 'inconclusive: the positive control did not load' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: an Agent Plugins 1.0.0 package on Codex from the plugin cache, enabled by a launch override, with no config.toml write (design note v0.2 §5.7, §12 row 35)',
     at: new Date().toISOString(),
     evidence: evidence(b, codex),
-    runs: { control: shape(control), byhand: shape(byhand), cache: shape(cached), dotted: shape(dotted), no_enable: shape(bare), quoted_key: shape(quoted), other_dir: shape(other), ...(driver ? { driver: shape(driver) } : {}) },
-    server_probes: { byhand: byhand.probe, cache: cached.probe, dotted: dotted.probe, no_enable: bare.probe, quoted_key: quoted.probe, other_dir: other.probe, ...(driver ? { driver: driver.probe } : {}) },
+    runs: { control: shape(control), byhand: shape(byhand), cache: shape(cached), dotted: shape(dotted), no_enable: shape(bare), quoted_key: shape(quoted), other_dir: shape(other), both: { ...shape(both), hook_ran: both.hook_ran }, overlay: { ...shape(overlaid), hook_ran: overlaid.hook_ran }, legacy: { ...shape(legacy), hook_ran: legacy.hook_ran }, ...(driver ? { driver: shape(driver) } : {}) },
+    server_probes: { byhand: byhand.probe, cache: cached.probe, dotted: dotted.probe, no_enable: bare.probe, quoted_key: quoted.probe, other_dir: other.probe, both: both.probe, overlay: overlaid.probe, ...(driver ? { driver: driver.probe } : {}) },
     recorded,
     checks,
     verdict,

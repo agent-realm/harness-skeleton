@@ -44,6 +44,23 @@ export default Object.freeze({
       components: ['skills', 'mcp'],
       keeps_literal: true,
       cwd: 'format',
+      // Codex reads more than the format's components from a package of this format (rust-v0.160.0,
+      // read 2026-11-10): extensions["com.openai"] in plugin.json or, when it is absent,
+      // .codex-plugin/plugin.json, for apps, hooks, an onboarding skill and an interface
+      // (codex-rs/core-plugins/src/agent_plugin_manifest.rs, manifest/manifest_cache.rs `load`). The
+      // loader drops the hooks and apps for this format (loader.rs). .codex-plugin/plugin.json's
+      // mcpServers also add env_vars, variables forwarded from Codex's own environment, to a stdio
+      // server of the same name (agent_plugin_mcp_overlay.rs), and that is not dropped.
+      // extensions["com.openai"] is the format's own namespace mechanism [AP §8]: a package
+      // carrying it is reported as harness-specific, and planned as runs-code, since a plan cannot
+      // tell what Codex makes of it. .codex-plugin/ is a path the format never discovers [AP §6.1,
+      // §8], and Codex acts on it, so a package holding it is refused (validate,
+      // plugin_path_unsupported). Measured with hook trust bypassed: neither's hook runs, and
+      // neither's app, onboarding skill or interface reaches a request; the overlay's env_vars
+      // reach the server (tier 1, conformance/tier1/agent-plugins-codex-cache.mjs).
+      namespace: { name: 'com.openai', reads: ['apps', 'hooks', 'onboarding skill', 'interface'], dropped: ['hooks', 'apps'] },
+      acts_on_paths: ['.codex-plugin'],
+      acts_on_source: 'Codex reads .codex-plugin/plugin.json for an Agent Plugins package, its MCP servers\' environment included (rust-v0.160.0, agent_plugin_mcp_overlay.rs, manifest_cache.rs)',
       cache: { root: 'plugins/cache', marketplace: 'harness-skeleton', version_dir: 'hs' },
       enable: { config_key: 'plugins' },
       // config.toml is never written (delivery_modes, §7.5), so a bare `codex` start in the folder

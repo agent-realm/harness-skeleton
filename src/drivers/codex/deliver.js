@@ -83,14 +83,21 @@ export function deliverables(resolved, { mode, descriptor }) {
     const servers = Object.values(pkg.mcp?.mcpServers ?? {});
     // Skills may carry scripts the agent is told to run, and a stdio server is code; a remote server
     // sends data to its destination (§3 principle 6).
+    // Codex's own namespace (the descriptor's namespace): reported as harness-specific, and
+    // runs-code, since a plan cannot tell what Codex makes of it.
+    const ns = pkg.manifest.extensions?.[R.namespace.name];
+    const harnessSpecific = ns !== null && typeof ns === 'object' && !Array.isArray(ns);
     const risk = [
-      ...(pkg.skills.length || servers.some((x) => x.type === 'stdio') ? ['runs-code'] : []),
+      ...(pkg.skills.length || servers.some((x) => x.type === 'stdio') || harnessSpecific ? ['runs-code'] : []),
       ...(servers.some((x) => x.type !== 'stdio') ? ['sends-data'] : []),
     ];
     out.deliverables.push({
       item: item.id, handler: 'tree', address: { path: p.address }, address_id: p.address,
       source: bound.path, source_sha256: bound.sha256, source_is_dir: true, risk,
-      note: `Agent Plugins ${pkg.version}, read natively; enabled as ${p.key} by -c ${R.enable.config_key} at each launch through launch-spec; ${R.bare_start}`,
+      note: [
+        `Agent Plugins ${pkg.version}, read natively; enabled as ${p.key} by -c ${R.enable.config_key} at each launch through launch-spec; ${R.bare_start}`,
+        ...(harnessSpecific ? [`harness-specific: it carries extensions["${R.namespace.name}"], which Codex reads for ${R.namespace.reads.join(', ')}, and drops ${R.namespace.dropped.join(' and ')} for this format (rust-v0.160.0); planned as runs-code`] : []),
+      ].join('; '),
     });
     out.launch_only.push({ item: item.id, via: `-c ${R.enable.config_key}={${JSON.stringify(p.key)}={enabled=true}}, at each launch through launch-spec; ${R.bare_start}` });
   }

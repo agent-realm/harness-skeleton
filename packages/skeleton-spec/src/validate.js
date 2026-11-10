@@ -2,6 +2,7 @@
 // before anything is planned. It reports problems by item and layer, never a value: a
 // binding that is not a reference may be a pasted secret, so it is named, never echoed.
 
+import fs from 'node:fs';
 import path from 'node:path';
 import { processProblems } from './process-checks.js';
 import { resolve } from './layers.js';
@@ -292,6 +293,18 @@ export function validate(resolved, descriptor) {
       for (const { server, where } of literalText(pkg.mcp)) {
         push({ code: 'plugin_placeholder_literal', ...at, message: `${pl.id}: server ${JSON.stringify(server)}: ${where} holds \${…} text the format keeps literal [AP §9.2], which ${H} would expand from its environment (${route.literal_source}); the package cannot be kept as the format says on ${H}` });
       }
+    }
+    // A path the format never discovers [AP §6.1, §8] that this harness acts on: the package would
+    // not stay as the format says, so it is refused, by path.
+    for (const rel of route.acts_on_paths ?? []) {
+      let present = false;
+      try {
+        fs.lstatSync(path.join(pkgBound.path, rel));
+        present = true;
+      } catch {
+        // absent
+      }
+      if (present) push({ code: 'plugin_path_unsupported', ...at, message: `${pl.id}: the package holds ${rel}, a path the format never discovers [AP §6.1, §8], which ${H} acts on (${route.acts_on_source}); remove it, or use ${H}'s own plugin format` });
     }
     if (route.cwd === 'root') {
       for (const server of cwdBeyondRoot(pkg.mcp)) {

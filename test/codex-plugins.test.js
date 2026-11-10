@@ -126,7 +126,42 @@ test('describe on Codex: the plugins capability, native', () => {
     const d = ok(s.call('describe', {}));
     const cap = d.capabilities.find((c) => c.capability === 'plugins');
     assert.equal(cap.mechanism, 'native');
-    assert.deepEqual(cap.facets.formats['agent-plugins'].refuses, []);
+    assert.deepEqual(cap.facets.formats['agent-plugins'].refuses, ['plugin_path_unsupported: .codex-plugin in the package']);
+    assert.deepEqual(cap.facets.formats['agent-plugins'].harness_specific, ['com.openai']);
+  } finally {
+    s.done();
+  }
+});
+
+test('Codex: a package holding .codex-plugin/ is refused (plugin_path_unsupported); on Claude Code it is nested, so it passes', async () => {
+  const s = box({ mcp: false });
+  try {
+    write(s.kit, `${s.base}/.codex-plugin/plugin.json`, JSON.stringify({ name: 'notes-kit' }));
+    const v = ok(s.call('validate', { layers: [s.kit] }));
+    const p = v.problems.filter((x) => x.severity === 'error');
+    assert.deepEqual(p.map((x) => [x.code, x.item]), [['plugin_path_unsupported', 'plugin.notes-kit']]);
+    assert.match(p[0].message, /holds \.codex-plugin, a path the format never discovers/);
+    const { validate } = await import('../src/spec/validate.js');
+    const cc = (await import('../src/drivers/claude-code/descriptor.js')).default;
+    assert.deepEqual(validate(resolve([s.kit]), cc).problems.filter((x) => x.severity === 'error'), []);
+  } finally {
+    s.done();
+  }
+});
+
+test('Codex: a package carrying extensions["com.openai"] is harness-specific in the plan, and runs-code even with no skill or server', () => {
+  const s = box({ mcp: false });
+  try {
+    fs.rmSync(path.join(s.kit, s.base, 'skills'), { recursive: true });
+    write(s.kit, `${s.base}/plugin.json`, JSON.stringify({ $schema: PLUGIN, name: 'notes-kit', extensions: { 'com.openai': { apps: './.app.json' } } }));
+    const plan = ok(s.call('plan', { layers: [s.kit], owner: 'builder', mode: 'materialize' }));
+    const op = plan.operations.find((o) => o.item === 'plugin.notes-kit');
+    assert.deepEqual(op.risk, ['runs-code']);
+    assert.match(op.note, /harness-specific: it carries extensions\["com\.openai"\], which Codex reads for apps, hooks, onboarding skill, interface, and drops hooks and apps for this format/);
+    // Without it, and with no skill or server, the package runs nothing.
+    write(s.kit, `${s.base}/plugin.json`, JSON.stringify({ $schema: PLUGIN, name: 'notes-kit' }));
+    const bare = ok(s.call('plan', { layers: [s.kit], owner: 'builder', mode: 'materialize' }));
+    assert.deepEqual(bare.operations.find((o) => o.item === 'plugin.notes-kit').risk, []);
   } finally {
     s.done();
   }

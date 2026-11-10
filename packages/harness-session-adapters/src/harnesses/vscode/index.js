@@ -24,7 +24,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { readStream, readSnapshot, streamUnits, snapshotUnits, unknownSource, plainRel, jsonOf, isRealFile } from '../../sources.js';
+import { readStream, readCap, readSnapshot, streamUnits, snapshotUnits, unknownSource, plainRel, jsonOf, isRealFile } from '../../sources.js';
 import { seal, recordKey, nativeOf } from '../../records.js';
 import { jcs, sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
@@ -265,15 +265,16 @@ function readJsonSnapshot(file, sourceKey, from, root) {
   return { continuity: from ? 'unchanged' : 'reset', units: [], gone: [], position: from ?? null, held_back: tornHeld(sourceKey, d.torn) };
 }
 
-export function read(store, session, sourceKey, from = null, known = null) {
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   void known; // stream and snapshot sources ignore `known` (sessions §2, rules 3 and 5)
+  // `options.maxReadBytes` caps a read of a .jsonl change log; the snapshots ignore it.
   const sid = session.session_id;
   const srcs = validSid(sid) ? scan(store.harness_path, sid).get(sid) : null;
   if (!srcs) throw new SessionsError('session_unknown', `no session ${sid}`, [sid]);
   const src = srcs.find((s) => s.source_key === sourceKey);
   if (!src) throw new SessionsError('source_unknown', `${sourceKey} is not a source of ${sid}`, [sourceKey]);
   const file = path.join(store.harness_path, sourceKey);
-  if (src.mode === 'stream') return readStream(file, sourceKey, from, { redact: redactLine, root: store.harness_path });
+  if (src.mode === 'stream') return readStream(file, sourceKey, from, { redact: redactLine, root: store.harness_path, maxBytes: readCap(options?.maxReadBytes) });
   return readJsonSnapshot(file, sourceKey, from, store.harness_path);
 }
 

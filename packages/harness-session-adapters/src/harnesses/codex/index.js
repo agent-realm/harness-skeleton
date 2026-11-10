@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { readStream, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
+import { readStream, readCap, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
 import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
@@ -127,20 +127,21 @@ export function list(store) {
 
 // ---- read -------------------------------------------------------------------------------------
 
-export function read(store, session, sourceKey, from = null, known = null) {
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   void known; // stream sources ignore `known` (sessions §2, rule 3)
+  const opts = { root: store.harness_path, maxBytes: readCap(options?.maxReadBytes) };
   // Fast path: a rollout whose file name carries this session's id, under one of the two roots,
   // is read without walking the tree. Anything else takes the full scan below.
   const m = /^(?:sessions|archived_sessions)\/(?:[^/]+\/)*rollout-[^/]*?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.jsonl$/i.exec(sourceKey);
   if (m && m[1].toLowerCase() === String(session.session_id).toLowerCase() && !sourceKey.split('/').includes('..')) {
     let isFile = false;
     try { isFile = fs.lstatSync(path.join(store.harness_path, sourceKey)).isFile(); } catch { /* not there: full scan decides */ }
-    if (isFile) return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, { root: store.harness_path });
+    if (isFile) return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, opts);
   }
   const srcs = scan(store.harness_path).get(session.session_id);
   if (!srcs) throw new SessionsError('session_unknown', `no session ${session.session_id}`, [session.session_id]);
   if (!srcs.some((s) => s.source_key === sourceKey)) throw new SessionsError('source_unknown', `${sourceKey} is not a source of ${session.session_id}`, [sourceKey]);
-  return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, { root: store.harness_path });
+  return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, opts);
 }
 
 // The source keys `walk` names: a `rollout-*.jsonl` at any depth under one of the two roots. All

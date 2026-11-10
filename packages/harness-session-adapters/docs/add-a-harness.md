@@ -54,7 +54,10 @@ For an adapter with file sources, also add its expected source kinds to `EXPECT`
 - **`read`**: use `readStream` and `readSnapshot` from `src/sources.js` for file sources, and
   `openReadOnly`, `readDelta` and `readRowsSnapshot` from `src/sqlite.js` for databases. They open
   read-only, keep the position and continuity rules, and never leave a `-wal`, `-shm` or lock
-  behind. Redact the declared paths here, with `<redacted len=N>`.
+  behind. Redact the declared paths here, with `<redacted len=N>`. `read` takes an options object
+  after `known`; a stream file passes `maxBytes: readCap(options?.maxReadBytes)` to `readStream`
+  ([Read size](adapter-interface.md#read-size)), and `test/read-size.test.js` lists the harnesses
+  that do.
 - **`derive`**: seal every record with `seal()` from `src/records.js`. The same units must give the
   same records, whatever the order of the sources and however the units are split across calls.
   `live` and `held` each carry all five record types (`session`, `message`, `usage`, `link`,

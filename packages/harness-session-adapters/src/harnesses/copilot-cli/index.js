@@ -17,7 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { isRealFile, readStream, readSnapshot, streamUnits, snapshotUnits, unknownSource, jsonOf } from '../../sources.js';
+import { isRealFile, readStream, readCap, readSnapshot, streamUnits, snapshotUnits, unknownSource, jsonOf } from '../../sources.js';
 import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
@@ -129,8 +129,9 @@ export function list(store) {
 
 // ---- read -------------------------------------------------------------------------------------
 
-export function read(store, session, sourceKey, from = null, known = null) {
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   void known; // a stream ignores `known`, and a snapshot compares its sha (sessions §2, rules 3 and 5)
+  // `options.maxReadBytes` caps a read of events.jsonl; workspace.yaml, a snapshot, ignores it.
   const sid = session.session_id;
   if (!sidOk(sid)) throw new SessionsError('session_unknown', `no session ${sid}`, [String(sid)]);
   const events = path.join(store.harness_path, eventsKey(sid));
@@ -142,7 +143,7 @@ export function read(store, session, sourceKey, from = null, known = null) {
   if (born !== (session.incarnation ?? '')) throw gone();
 
   if (sourceKey === eventsKey(sid)) {
-    const r = readStream(events, sourceKey, from, { root: store.harness_path });
+    const r = readStream(events, sourceKey, from, { root: store.harness_path, maxBytes: readCap(options?.maxReadBytes) });
     // The id may have been reused between the check above and this read: line 1 decides.
     const first = r.units.find((u) => u.unit_key === '0');
     if (first && startIdOf(jsonOf(first)) !== born) throw gone();

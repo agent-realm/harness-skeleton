@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { readStream, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
+import { readStream, readCap, streamUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
 import { seal, recordKey, nativeOf } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
@@ -110,12 +110,12 @@ export function list(store) {
 
 // ---- read -------------------------------------------------------------------------------------
 
-export function read(store, session, sourceKey, from = null, known = null) {
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   void known; // stream sources ignore `known` (sessions §2, rule 3)
   const srcs = UUID.test(session.session_id) ? scan(store.harness_path, session.session_id).get(session.session_id) : null;
   if (!srcs) throw new SessionsError('session_unknown', `no session ${session.session_id}`, [session.session_id]);
   if (!srcs.some((s) => s.source_key === sourceKey)) throw new SessionsError('source_unknown', `${sourceKey} is not a source of ${session.session_id}`, [sourceKey]);
-  return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, { root: store.harness_path });
+  return readStream(path.join(store.harness_path, sourceKey), sourceKey, from, { root: store.harness_path, maxBytes: readCap(options?.maxReadBytes) });
 }
 
 // The source keys `scan` names: a main file `projects/<p>/<sid>.jsonl`, and a sub-agent's

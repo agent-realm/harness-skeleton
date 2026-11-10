@@ -27,7 +27,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SessionsError } from '../../errors.js';
-import { throughSymlink, readStream, readSnapshot, streamUnits, snapshotUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
+import { throughSymlink, readStream, readCap, readSnapshot, streamUnits, snapshotUnits, unknownSource, plainRel, jsonOf } from '../../sources.js';
 import { seal, recordKey } from '../../records.js';
 import { sha256 } from '../../jcs.js';
 import { describe as describeData } from './describe.js';
@@ -298,8 +298,9 @@ function entryFor(harnessPath, sessionId, sourceKey) {
   return scan(harnessPath).get(sessionId) ?? null;
 }
 
-export function read(store, session, sourceKey, from = null, known = null) {
+export function read(store, session, sourceKey, from = null, known = null, options = null) {
   void known; // stream and snapshot sources ignore `known` (sessions §2, rules 3 and 5)
+  // `options.maxReadBytes` caps a read of a .jsonl stream; the snapshots ignore it.
   const sid = session.session_id;
   // Nothing is opened, not even a header, through a symlink at any segment below harness_path.
   if (throughSymlink(store.harness_path, sourceKey)) throw new SessionsError('session_unknown', `no session ${sid} at ${sourceKey}`, [String(sid)]);
@@ -308,7 +309,7 @@ export function read(store, session, sourceKey, from = null, known = null) {
   const src = sourcesOf(e).find((s) => s.source_key === sourceKey);
   if (!src) throw new SessionsError('source_unknown', `${sourceKey} is not a source of ${sid}`, [sourceKey]);
   const file = path.join(store.harness_path, sourceKey);
-  if (src.mode === 'stream') return readStream(file, sourceKey, from, { root: store.harness_path });
+  if (src.mode === 'stream') return readStream(file, sourceKey, from, { root: store.harness_path, maxBytes: readCap(options?.maxReadBytes) });
   const r = readSnapshot(file, sourceKey, from, { root: store.harness_path });
   const held = src.role === 'main' && r.units.length ? tornLegacy(sourceKey, r.units[0]) : null;
   if (held) return { continuity: from ? 'unchanged' : 'reset', units: [], gone: [], position: from, held_back: held };

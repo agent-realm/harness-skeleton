@@ -1,7 +1,9 @@
 // The session adapters, one per harness, by sessions-model §1 rule 3's harness id. Each exports
 // sessions v1 §2's four operations: describe(), list(store), read(store, session, source_key,
-// from, known) and derive(session, input, state), with plain JSON in and out. An adapter with file
-// sources also exports unitsFromBytes(source_key, bytes, {start}), dispatched to below.
+// from, known, {maxReadBytes}) and derive(session, input, state), with plain JSON in and out.
+// `maxReadBytes` caps one read of a stream file (src/sources.js readCap); there is no dispatch
+// around `read`, so each adapter takes it itself. An adapter with file sources also exports
+// unitsFromBytes(source_key, bytes, {start}), dispatched to below.
 
 import * as claudeCode from './harnesses/claude-code/index.js';
 import * as copilotCli from './harnesses/copilot-cli/index.js';

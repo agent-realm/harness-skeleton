@@ -9,8 +9,21 @@ import { sha256 } from './jcs.js';
 import { SessionsError } from './errors.js';
 
 const ANCHOR_BYTES = 64 * 1024;
-// The most one read returns; the rest follows on the next read from the returned position.
+// The most one read of a stream returns unless the caller sets `maxReadBytes`; the rest follows
+// on the next read from the returned position.
 export const MAX_READ_BYTES = 64 * 1024 * 1024;
+// The least a caller may set: a smaller `maxReadBytes` is raised to it.
+export const MIN_READ_BYTES = 1024 * 1024;
+
+// The cap of one stream read, from the `maxReadBytes` a caller gave `read` in its options:
+// MAX_READ_BYTES when it is absent or not a positive integer, and never below MIN_READ_BYTES.
+// Every adapter hands the result to `readStream` as `maxBytes`; snapshot and database sources
+// take no cap.
+export function readCap(maxReadBytes) {
+  if (!Number.isInteger(maxReadBytes) || maxReadBytes <= 0) return MAX_READ_BYTES;
+  return Math.max(maxReadBytes, MIN_READ_BYTES);
+}
+
 const O_NOFOLLOW = fs.constants.O_NOFOLLOW ?? 0;
 const O_NONBLOCK = fs.constants.O_NONBLOCK ?? 0;
 // ignoreBOM keeps a leading byte-order mark in the body, so the body re-encodes to exactly the
@@ -215,6 +228,7 @@ export function plainRel(sourceKey) {
 //   or changed bytes just before `from.offset`. Any of them gives `reset` with every unit.
 // - One read returns at most `maxBytes`, cut at a line boundary, and says `more: true`; the next
 //   read from the returned position continues. A single line longer than the cap is read whole.
+//   An adapter passes `readCap(options?.maxReadBytes)` here, never the caller's value as given.
 // `redact(buf)` returns `{buf, redacted}` for one line. `root` is the harness_path (see openSource).
 export function readStream(file, sourceKey, from, { redact, root, maxBytes = MAX_READ_BYTES } = {}) {
   const fd = openSource(file, sourceKey, root);

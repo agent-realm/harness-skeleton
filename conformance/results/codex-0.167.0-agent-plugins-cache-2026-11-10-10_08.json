@@ -1,18 +1,18 @@
 {
   "check": "tier 1: an Agent Plugins 1.0.0 package on Codex from the plugin cache, enabled by a launch override, with no config.toml write (design note v0.2 §5.7, §12 row 35)",
-  "at": "2026-11-10T09:51:16.528Z",
+  "at": "2026-11-10T10:08:02.110Z",
   "evidence": {
-    "harness": "codex-cli 0.160.0",
+    "harness": "codex-cli 0.167.0",
     "node": "v24.18.0",
     "os": "Linux 6.8.0-147-generic x64",
-    "hs_commit": "54ef89f"
+    "hs_commit": "0fc2c50"
   },
   "runs": {
     "control": {
       "exit": 1,
       "signal": null,
       "timed_out": false,
-      "descendants_left": false,
+      "descendants_left": true,
       "requests": 1,
       "markers": []
     },
@@ -20,7 +20,7 @@
       "exit": 1,
       "signal": null,
       "timed_out": false,
-      "descendants_left": false,
+      "descendants_left": true,
       "requests": 1,
       "markers": [
         "hs-bench-plugin:notes",
@@ -64,7 +64,7 @@
       "exit": 1,
       "signal": null,
       "timed_out": false,
-      "descendants_left": true,
+      "descendants_left": false,
       "requests": 1,
       "markers": []
     },
@@ -117,18 +117,6 @@
         "hs-tier1-ap-legacy-8d4b"
       ],
       "hook_ran": true
-    },
-    "driver": {
-      "exit": 1,
-      "signal": null,
-      "timed_out": false,
-      "descendants_left": false,
-      "requests": 1,
-      "markers": [
-        "hs-bench-plugin:notes",
-        "hs-tier1-ap-skill-4d1a",
-        "hs-tier1-ap-tool-2b7f"
-      ]
     }
   },
   "server_probes": {
@@ -235,23 +223,6 @@
       "literal_kept": null,
       "literal_is_other": null,
       "other_forwarded": true
-    },
-    "driver": {
-      "started": true,
-      "args_expanded": true,
-      "data_expanded": true,
-      "env_names": [
-        "PLUGIN_ROOT",
-        "PLUGIN_DATA"
-      ],
-      "root_matches": true,
-      "data_exists": true,
-      "data_writable": true,
-      "data_matches": true,
-      "cwd_is_root": true,
-      "literal_kept": null,
-      "literal_is_other": null,
-      "other_forwarded": false
     }
   },
   "recorded": {
@@ -265,6 +236,18 @@
       "tool_reaches": false
     },
     "both_server_gets_other": true,
+    "markers_reaching_a_request": {
+      "both": {
+        "app": false,
+        "onboarding_skill": false,
+        "interface": false
+      },
+      "overlay": {
+        "app": false,
+        "onboarding_skill": false,
+        "interface": false
+      }
+    },
     "apps": "routed only under a ChatGPT login, which a bench never has: the app halves above have no positive control",
     "quoted_key": {
       "skill_loads": false,
@@ -284,13 +267,10 @@
       "dotted": [],
       "no_enable": [],
       "quoted_key": [],
-      "other_dir": [],
-      "driver": []
+      "other_dir": []
     },
     "driver": {
-      "plan_risk": [
-        "runs-code"
-      ]
+      "plan": "version_unsupported: this Codex is outside the driver descriptor's range, so hs plans nothing; the driver's checks are not judged"
     }
   },
   "checks": {
@@ -300,14 +280,10 @@
     "cache: config.toml is not written": true,
     "dotted: a dotted plugin name loads the same way": true,
     "both: with hook trust bypassed, the hook extensions[\"com.openai\"] names does not run, and the package's skill loads": true,
-    "both: the app's, the onboarding skill's and the interface's markers reach no request": true,
-    "overlay: with hook trust bypassed, the hook .codex-plugin/plugin.json names does not run; its app's and interface's markers reach no request; the package's skill loads": true,
+    "overlay: with hook trust bypassed, the hook .codex-plugin/plugin.json names does not run, and the package's skill loads": true,
     "legacy (the positive control for both hook halves): in Codex's own layout the same hook runs with hook trust bypassed": true,
     "cache: HS_BENCH_OTHER in Codex's environment does not reach the package's stdio server": true,
-    "overlay (premise of plugin_path_unsupported): .codex-plugin/plugin.json's env_vars hand HS_BENCH_OTHER from Codex's environment to the stdio server": true,
-    "driver: the plan installs the package at plugins/cache/harness-skeleton/<name>/hs, and apply refuses without a receipt": true,
-    "driver: launch-spec carries the inline-table override": true,
-    "driver: the package loads, skill and server, as in cache; config.toml is not written": true
+    "overlay (premise of plugin_path_unsupported): .codex-plugin/plugin.json's env_vars hand HS_BENCH_OTHER from Codex's environment to the stdio server": true
   },
   "verdict": "pass"
 }

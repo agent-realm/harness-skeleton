@@ -914,7 +914,7 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
 
   No run shows an app, an onboarding skill or an interface reaching a request in any layout (apps route only under a ChatGPT login, which a bench never has). So those markers have no positive control, and are recorded, never judged. Recorded only: whether a cached plugin loads with no override (`no_enable`), with the quoted dotted key (`quoted_key`), or under a version directory not named for its version (`other_dir`).
 
-  *Run 2026-11-10 on a bench at milestone 6a.15: pass on Codex 0.160.0 (all fourteen checks) and 0.167.0 (the eleven route and data checks; hs refuses to plan for it, being outside the driver's range).* Unenabled, nothing loads; the quoted key loads nothing; any version directory loads. `marketplace add` writes a `[marketplaces]` table to `config.toml`, which the route never needs.
+  *Run 2026-11-10 on a bench at milestone 6a.15: pass on Codex 0.160.0 (all thirteen checks) and 0.167.0 (the ten route and data checks; hs refuses to plan for it, being outside the driver's range).* Unenabled, nothing loads; the quoted key loads nothing; any version directory loads. `marketplace add` writes a `[marketplaces]` table to `config.toml`, which the route never needs.
 - **Sessions at tier 2**: a scripted conversation with a tool call and a failing tool, a compaction and a resume, and a fork and a rewind where the harness supports them. `sessions.read` from empty, then `sessions.derive` from empty state, must give exactly the scripted turns, in order:
   - ids stay stable across the resume;
   - every tool call is linked to its result;

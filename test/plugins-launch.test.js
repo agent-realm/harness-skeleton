@@ -13,6 +13,7 @@ import cxDescriptor from '../src/drivers/codex/descriptor.js';
 import { layer, skillMd, write } from './fixtures.js';
 import { ok, receiptFor, sandbox, settings } from './sandbox.js';
 import { digestOf } from '../src/records.js';
+import { checkSource } from '../src/deliver.js';
 
 const PLUGIN = 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json';
 const MCP = 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json';
@@ -318,7 +319,7 @@ test('materialize on Claude Code: the marketplace tree and two settings keys, re
   }
 });
 
-test('materialize on Claude Code: a launch skips a plugin a plan installed at this content, and carries an edited one', () => {
+test('materialize on Claude Code: a launch skips a plugin a plan installed at this content, and refuses while the folder holds another', () => {
   const s = sandbox();
   s.opts.tmpdir = path.join(s.root, 'tmp');
   fs.mkdirSync(s.opts.tmpdir);
@@ -331,9 +332,22 @@ test('materialize on Claude Code: a launch skips a plugin a plan installed at th
     assert.ok(spec.skipped.some((x) => x.item === 'plugin.notes-kit' && /installed in the folder by a plan, at this content/.test(x.reason)));
     write(kit, 'plugins/notes-kit/skills/notes/extra.md', 'more');
     const edited = s.call('launch-spec', { layers: [kit] });
-    assert.equal(edited.error.code, 'receipt_required', 'an edited package is not what the plan installed: carried at launch, under a receipt');
+    assert.equal(edited.error.code, 'item_unsupported', 'the folder loads the installed copy: carrying the edited one too would load two plugins of one name');
+    assert.match(edited.error.message, /holds this plugin at other content \(hs-run\/plugin\.notes-kit\).*Plan and apply again, or remove it first/);
     const again = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
     assert.deepEqual(again.operations.filter((o) => o.item === 'plugin.notes-kit').map((o) => [o.address_id, o.action]), [['hs-run/plugin.notes-kit', 'update']]);
+    ok(s.call('apply', { plan: again, receipt: receiptFor(again) }));
+    const after = ok(s.call('launch-spec', { layers: [kit] }));
+    assert.ok(after.skipped.some((x) => x.item === 'plugin.notes-kit'), 'applied again: skipped again');
+    // Enabled by the folder's settings with no plan at all: refused the same way.
+    const t = sandbox();
+    try {
+      const kit2 = kitLayer(t.root, { mcp: null });
+      fs.writeFileSync(path.join(t.folder, 'settings.json'), JSON.stringify({ enabledPlugins: { 'notes-kit@hs-notes-kit': true } }));
+      assert.equal(t.call('launch-spec', { layers: [kit2] }).error.code, 'item_unsupported');
+    } finally {
+      t.done();
+    }
   } finally {
     s.done();
   }
@@ -370,8 +384,26 @@ test('materialize on Claude Code: a forged plan whose generated tree copies from
     const forged = { ...body, digest: 'sha256:' + digestOf(body) };
     const res = s.call('apply', { plan: forged, receipt: receiptFor(forged) });
     assert.equal(res.ok, false);
-    assert.ok(['write_refused', 'plan_stale', 'plan_tampered'].includes(res.error.code), res.error.code);
+    assert.equal(res.error.code, 'plan_stale', 'apply re-derives the plan, so a forged one never reaches a write');
     assert.ok(!fs.existsSync(path.join(s.folder, 'hs-run/plugin.notes-kit')));
+  } finally {
+    s.done();
+  }
+});
+
+test('checkSource: every entry of a generated tree must lie in the plan\'s layers and hold no symlink', () => {
+  const s = sandbox();
+  try {
+    const kit = kitLayer(s.root, { mcp: null });
+    const pkg = path.join(kit, 'plugins/notes-kit');
+    const outside = path.join(s.root, 'outside');
+    fs.mkdirSync(outside);
+    const op = (src) => ({ id: 'op', address: { path: 'hs-run/plugin.notes-kit' }, source: { generated: { files: [], entries: [{ rel: 'plugin/package', source: src, sha256: 'x' }] } } });
+    const body = { args: { layers: [kit] } };
+    assert.doesNotThrow(() => checkSource(s.folder, body, op(pkg), ccDescriptor));
+    assert.throws(() => checkSource(s.folder, body, op(outside), ccDescriptor), (e) => e.code === 'write_refused' && /in none of the plan's layers/.test(e.message));
+    fs.symlinkSync('/etc/hostname', path.join(pkg, 'link'));
+    assert.throws(() => checkSource(s.folder, body, op(pkg), ccDescriptor), (e) => e.code === 'write_refused' && /symlink/.test(e.message));
   } finally {
     s.done();
   }

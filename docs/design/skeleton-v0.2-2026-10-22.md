@@ -244,6 +244,7 @@ require = "required"
     - The plan also sets two `settings.json` keys: `extraKnownMarketplaces/hs-<name>`, a `directory` source naming the tree, and `enabledPlugins/<name>@hs-<name>`.
     - On its next start Claude Code registers the marketplace, loads the plugin in place, and keeps its own records after that. hs never writes those records. Measured: a cache directory with `enabledPlugins` alone loads nothing.
     - A launch skips a plugin that a plan installed at this content, so the plugin never loads twice.
+    - If the folder holds the plugin at other content (an earlier package a plan installed, or settings enabling it), a launch refuses it as `item_unsupported`: "plan and apply again, or remove it". Carrying the new copy too would put two plugins of one name in the session, and how Claude Code ranks `--plugin-dir` against an installed plugin is not measured.
     - After `hs remove` the plugin no longer loads. Claude Code's own records stay, its marketplace record still naming the removed tree, and the plan says so.
     - A generated tree's files come from the plan, and each part it copies (the package, `skills/`) is checked as a tree's source is: inside the plan's layers, and holding no symlink. Its digest is computed from the content, so a plan writes nothing.
     - A native format is refused, as `not_implemented`, on both harnesses.

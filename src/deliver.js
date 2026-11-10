@@ -256,7 +256,8 @@ function removalOp(folder, descriptor, addr, entry, owner) {
 // ---- apply, recover, remove -----------------------------------------------------------------
 
 // A tree's source is a skill directory of one of the plan's layers, or a copy the records keep.
-function checkSource(folder, planBody, op, descriptor) {
+// Exported for its unit test: apply re-derives a plan before it gets here, so a forged one never does.
+export function checkSource(folder, planBody, op, descriptor) {
   if (!op.source) return;
   // A generated tree (§5.7): its files come from the plan; each entry it copies is checked as a
   // tree's source is, below.

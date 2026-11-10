@@ -547,6 +547,21 @@ function installedPlugin(item, bound, folder, descriptor) {
   return p.keys.every((k) => held(`${k.file}#${k.key}`, digestOf(k.value), handlers['json-key'].current(folder, descriptor, { file: k.file, key: k.key }).digest));
 }
 
+// Where the folder holds this plugin at content other than the spec's, or null: a ledger entry for
+// its tree, or its enabling key in settings.json.
+function heldElsewhere(item, bound, folder, descriptor) {
+  let p;
+  try {
+    p = persistedPlugin(item, bound, folder, descriptor);
+  } catch {
+    return null;
+  }
+  if (readLedger(folder).addresses[p.address]) return p.address;
+  const enabled = p.keys.find((k) => k.key.startsWith(`${descriptor.plugins[AGENT_PLUGINS].persist.enabled_key}/`));
+  if (handlers['json-key'].current(folder, descriptor, { file: enabled.file, key: enabled.key }).present) return `${enabled.file}#${enabled.key}`;
+  return null;
+}
+
 // Whether a plan installed the status line in the folder at exactly what the spec says now: the
 // settings key with this value, and its bound copy (if any) at this content, both as the ledger
 // recorded them. Anything else is carried at launch, under the launch receipt.
@@ -804,6 +819,12 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
       out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${descriptor.plugins[AGENT_PLUGINS].persist.root}/${item.id} and its two settings.json keys); the plan's receipt covered it` });
       continue;
     }
+    // The folder holds this plugin at other content (a plan installed an earlier package, or its
+    // settings enable it): its settings load that copy, and carrying this one too would put two
+    // plugins of one name in the session, which Claude Code's order between them leaves unknown.
+    // Refused, as Codex refuses a package not installed at this content.
+    const held = heldElsewhere(item, bound, folder, descriptor);
+    if (held) throw new HsError('item_unsupported', `${item.id}: the folder holds this plugin at other content (${held}), which its settings load; carrying this package too would load two plugins named ${item.id.slice('plugin.'.length)}. Plan and apply again, or remove it first`, [item.id]);
     const t = translatedPlugin(item, bound, descriptor);
     out.trees.push(t.tree);
     out.risks.push(...t.risks);

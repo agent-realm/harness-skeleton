@@ -1,6 +1,6 @@
 # @agent-realm/harness-session-adapters
 
-**Status: 1.0.0.** Twelve harnesses: Claude Code, Codex, Copilot CLI, Gemini CLI, VS Code,
+**Status: 1.2.0.** Twelve harnesses: Claude Code, Codex, Copilot CLI, Gemini CLI, VS Code,
 Goose, OpenCode, Antigravity (agy), Cursor IDE, cursor-agent, Zed and Devin Local.
 
 ## What it is

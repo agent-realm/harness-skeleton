@@ -277,7 +277,9 @@ export default Object.freeze({
         marketplaces_key: 'extraKnownMarketplaces',
         enabled_key: 'enabledPlugins',
         source_type: 'directory',
-        leaves_behind: 'Claude Code keeps its own records of the marketplace (plugins/known_marketplaces.json, installed_plugins.json, data/) after hs removes the plugin; whether it prunes them on its next start is not measured',
+        // Measured after `hs remove` and a start: the plugin no longer loads, and Claude Code's own
+        // records stay, its marketplace record still naming the removed tree (tier 1, 2026-11-10).
+        leaves_behind: 'after hs removes the plugin, it no longer loads, but Claude Code keeps its own records of the marketplace (plugins/known_marketplaces.json, still naming the removed tree; installed_plugins.json; data/), which hs never writes',
       },
       readiness: 'untested',
       source: 'design note §5.7; CC §8, §10; tier 1, 2026-11-09 and 2026-11-10',

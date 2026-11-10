@@ -39,7 +39,8 @@
 //   driver_dotted  the same for a package whose name has a dot. Recorded: whether Claude Code takes
 //                  the marketplace hs names for it, and loads the plugin.
 //   removed        `hs remove` on the driver's folder, then a bare start. Expected: the plugin no
-//                  longer loads. Recorded: what Claude Code's own records still hold, by name.
+//                  longer loads. Recorded: what Claude Code's own records still hold, by name, and
+//                  whether its marketplace record still names the folder.
 // A plugin counts as loaded when its skill reaches a request by name (<plugin>:notes) or by its
 // description's marker, and its server's tool is offered. The listener and the server record names
 // and booleans only. The credential is a dummy; HOME and XDG are scratch.
@@ -238,7 +239,7 @@ try {
   const driverFolder = folderFor('driver');
   const driverKit = kitFor(NAME);
   const dm = materialize(driverFolder, driverKit);
-  const driverOps = dm.plan.operations.map((o) => o.address_id).sort();
+  const driverOps = dm.plan.operations.filter((o) => o.item === `plugin.${NAME}`).map((o) => o.address_id).sort();
   const driverRun = await run(driverFolder);
   const driverSpec = b.hs('launch-spec', [...dm.common, '--layer', plain, '--layer', driverKit, '--local', local, '--headless']);
   const dottedFolder = folderFor('driver-dotted');
@@ -250,7 +251,7 @@ try {
 
   const has = (r, m) => r.seen.ENDPOINT.some((q) => q.markers.includes(m));
   const offered = (r) => r.seen.ENDPOINT.some((q) => (q.tools ?? []).some((t) => typeof t === 'string' && t.includes(TOOL)));
-  const loads = (r) => ({ skill_loads: has(r, `${NAME}:notes`) || has(r, M.skill), server_starts: r.probe?.started === true, tool_offered: offered(r), server_in_root: r.probe?.cwd_is_root ?? null });
+  const loads = (r, name = NAME) => ({ skill_loads: has(r, `${name}:notes`) || has(r, M.skill), server_starts: r.probe?.started === true, tool_offered: offered(r), server_in_root: r.probe?.cwd_is_root ?? null });
   const whole = (r) => (has(r, `${NAME}:notes`) || has(r, M.skill)) && r.probe?.started === true && offered(r);
   const checks = {
     'without a plugin no marker reaches a request (premise)': control.seen.ENDPOINT.length > 0 && !markers.some((m) => has(control, m)) && !offered(control),
@@ -269,7 +270,7 @@ try {
     extra_known_marketplace_shape: knownShape,
     cache_settings: { ...loads(settingsRun), after_start: settingsListing },
     settings_only: { ...loads(onlyRun), after_start: onlyListing },
-    driver_dotted: { ...loads(dottedRun), skill_by_name: has(dottedRun, `${DOTTED}:notes`) },
+    driver_dotted: loads(dottedRun, DOTTED),
     removed: { after_start: removedListing },
   };
   const reached = [control, cliRun, enabledRun, knownRun, recordsRun, settingsRun, onlyRun, driverRun, dottedRun, removedRun].every((r) => r.seen.ENDPOINT.length > 0);

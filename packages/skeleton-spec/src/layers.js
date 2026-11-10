@@ -217,6 +217,30 @@ function processFiles(proc, layerDir) {
   return out;
 }
 
+// The package a plugin item names (§5.7): `source`, a directory in the item's layer, given relative
+// to it and reached without a symlink, bound by its content in the spec digest, as a file item is
+// (§5.1). Returns { abs, sha256 }, or null when `source` names no such directory; validate then
+// refuses the item.
+function pluginPackage(item, layerDir) {
+  const src = isTable(item.value) ? item.value.source : undefined;
+  if (typeof src !== 'string' || src === '' || path.isAbsolute(src) || !layerDir) return null;
+  const abs = path.resolve(layerDir, src);
+  const rel = path.relative(layerDir, abs);
+  if (rel === '' || rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return null;
+  let cur = layerDir;
+  for (const seg of rel.split(path.sep)) {
+    cur = path.join(cur, seg);
+    let st;
+    try {
+      st = fs.lstatSync(cur);
+    } catch {
+      return null;
+    }
+    if (st.isSymbolicLink() || !st.isDirectory()) return null;
+  }
+  return { abs, sha256: digestPath(abs) };
+}
+
 function covers(removal, id) {
   return id === removal || id.startsWith(removal + '.');
 }
@@ -303,6 +327,18 @@ export function resolve(layerDirs, localFile = null) {
     }
     if (bound.length) processes.push({ id: item.id, layer: item.layer, files: bound });
   }
+  // The package each plugin item names (§5.7), bound by its content.
+  const plugins = [];
+  for (const item of sortedItems.filter((i) => i.kind === 'plugin')) {
+    let pkg;
+    try {
+      pkg = pluginPackage(item, layerDir.get(item.layer));
+    } catch (e) {
+      problems.push({ code: 'layer_unreadable', severity: 'error', item: item.id, layer: item.layer, message: `${item.id}: its package cannot be read (${e.code ?? e.message})` });
+      continue;
+    }
+    if (pkg) plugins.push({ id: item.id, layer: item.layer, path: pkg.abs, sha256: pkg.sha256 });
+  }
   const digest = 'sha256:' + sha256(canonical({
     format: SPEC_FORMAT,
     layers: layers.map((l) => ({ name: l.name, version: l.version })),
@@ -312,7 +348,9 @@ export function resolve(layerDirs, localFile = null) {
     files: sortedFiles.map((f) => ({ id: f.id, layer: f.layer, sha256: f.sha256 })),
     // Only when a process names a file: a spec without one keeps the digest it had before 6a.3.
     ...(processes.length ? { processes: processes.map((p) => ({ id: p.id, layer: p.layer, files: p.files.map((f) => ({ path: f.path, sha256: f.sha256 })) })) } : {}),
+    // Likewise only when a plugin names a package: a spec without one keeps its digest.
+    ...(plugins.length ? { plugins: plugins.map((p) => ({ id: p.id, layer: p.layer, sha256: p.sha256 })) } : {}),
   }));
 
-  return { layers, items: sortedItems, files: sortedFiles, processes, permissions: rules, agents_md: agentsMd, removed, replaced, problems, digest };
+  return { layers, items: sortedItems, files: sortedFiles, processes, plugins, permissions: rules, agents_md: agentsMd, removed, replaced, problems, digest };
 }

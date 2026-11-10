@@ -6,6 +6,7 @@ import path from 'node:path';
 import { processProblems } from './process-checks.js';
 import { resolve } from './layers.js';
 import { readText } from './files.js';
+import { AGENT_PLUGINS, cwdBeyondRoot, literalText, readPackage } from './agent-plugins.js';
 
 // Reference schemes (§1 `reference`).
 const REFERENCE = /^(keychain:[^\s]+|op:\/\/[^\s]+|age:[^\s]+|env:[A-Za-z_][A-Za-z0-9_]*|file:\/[^\s]*)$/;
@@ -249,6 +250,56 @@ export function validate(resolved, descriptor) {
     }
   }
 
+  // Plugins (§5.7): { source, format }, the package bound by resolve. An Agent Plugins package is
+  // read as the format defines it; then, where this harness's descriptor maps the format, against
+  // what its route keeps: the versions it maps, `${…}` text the format keeps literal, a working
+  // directory beyond the root, a name the adapter launches a plugin of its own under. A native
+  // format is the driver's to check when it delivers one.
+  const routes = descriptor?.plugins ?? {};
+  for (const pl of resolved.items.filter((i) => i.kind === 'plugin')) {
+    const v = pl.value;
+    const id = pl.id.slice('plugin.'.length);
+    const at = { item: pl.id, layer: pl.layer };
+    const bad = (message) => push({ code: 'item_malformed', ...at, message: `${pl.id}: ${message}` });
+    if (!v || typeof v !== 'object' || Array.isArray(v)) {
+      bad('a plugin is a table: source and format');
+      continue;
+    }
+    for (const k of Object.keys(v)) if (k !== 'source' && k !== 'format') bad(`${k} is not a field of a plugin (source, format)`);
+    if (typeof v.format !== 'string' || v.format === '') bad(`format names the package's format, such as "${AGENT_PLUGINS}"`);
+    const pkgBound = (resolved.plugins ?? []).find((p) => p.id === pl.id);
+    if (!pkgBound) {
+      bad('source must name a directory inside its layer, relative to it, reached without a symlink');
+      continue;
+    }
+    if (v.format !== AGENT_PLUGINS) continue;
+    const pkg = readPackage(pkgBound.path);
+    for (const p of pkg.problems) push({ ...p, ...at, message: `${pl.id}: ${p.message}` });
+    if (pkg.name !== null && pkg.name !== id) push({ code: 'plugin_name_mismatch', ...at, message: `${pl.id}: the package's plugin.json names it differently; the item's id must be the package's name (§5.7)` });
+    const route = routes[AGENT_PLUGINS];
+    if (!route) continue;
+    const H = descriptor.name;
+    if (pkg.manifest && pkg.schema_given && !route.versions.includes(pkg.version)) {
+      push({ code: 'plugin_version_unsupported', ...at, message: `${pl.id}: plugin.json's $schema names ${pkg.version ? `Agent Plugins ${pkg.version}` : 'no Agent Plugins version'}; this adapter maps ${route.versions.join(', ')} on ${H} [AP §5.2]` });
+    }
+    if (pkg.mcp && pkg.mcp_schema_given && !route.versions.includes(pkg.mcp_version)) {
+      push({ code: 'plugin_version_unsupported', ...at, message: `${pl.id}: mcp.json's $schema names ${pkg.mcp_version ? `Agent Plugins ${pkg.mcp_version}` : 'no Agent Plugins version'}; this adapter maps ${route.versions.join(', ')} on ${H}, and a client would load the package without its MCP servers [AP §7.2.2, §10.1]` });
+    }
+    if (pkg.name !== null && (route.reserved_names ?? []).includes(pkg.name)) {
+      push({ code: 'plugin_name_reserved', ...at, message: `${pl.id}: ${pkg.name} is the name of the plugin this adapter launches on ${H} itself (${route.reserved_source}); rename the package` });
+    }
+    if (route.keeps_literal === false) {
+      for (const { server, where } of literalText(pkg.mcp)) {
+        push({ code: 'plugin_placeholder_literal', ...at, message: `${pl.id}: server ${JSON.stringify(server)}: ${where} holds \${…} text the format keeps literal [AP §9.2], which ${H} would expand from its environment (${route.literal_source}); the package cannot be kept as the format says on ${H}` });
+      }
+    }
+    if (route.cwd === 'root') {
+      for (const server of cwdBeyondRoot(pkg.mcp)) {
+        push({ code: 'plugin_cwd_unsupported', ...at, message: `${pl.id}: server ${JSON.stringify(server)} sets a working directory other than the plugin root, which ${H} cannot start a server in (${route.cwd_source})` });
+      }
+    }
+  }
+
   const reserved = descriptor?.writable?.reserved?.skills ?? [];
   for (const f of resolved.files.filter((x) => x.kind === 'skill')) {
     const dir = f.id.slice('skill.'.length);
@@ -271,7 +322,7 @@ export function validate(resolved, descriptor) {
     if (comments.length) push({ code: 'agents_md_comment', layer: part.layer, lines: comments, message: `AGENTS.md of layer ${part.layer} has block HTML comments on lines ${comments.join(', ')}` });
   }
 
-  const checked = new Set(['refs', 'binding', 'state', 'unknown', 'skill', 'endpoints', 'login', 'model.roles', 'mcp', 'statusline', 'hook']);
+  const checked = new Set(['refs', 'binding', 'state', 'unknown', 'skill', 'endpoints', 'login', 'model.roles', 'mcp', 'statusline', 'hook', 'plugin']);
   const kinds = [
     ...resolved.items.map((i) => i.kind),
     ...resolved.files.map((f) => f.id.split('.')[0]),
@@ -284,6 +335,7 @@ export function validate(resolved, descriptor) {
     layers: resolved.layers.map((l) => ({ name: l.name, version: l.version, local: l.local })),
     items: resolved.items.map((i) => ({ id: i.id, layer: i.layer })),
     files: resolved.files.map((f) => ({ id: f.id, layer: f.layer, sha256: f.sha256 })),
+    plugins: (resolved.plugins ?? []).map((p) => ({ id: p.id, layer: p.layer, sha256: p.sha256 })),
     removed: resolved.removed,
     replaced: resolved.replaced,
     problems,

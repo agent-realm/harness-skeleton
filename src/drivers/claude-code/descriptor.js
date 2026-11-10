@@ -216,6 +216,55 @@ export default Object.freeze({
     },
   },
 
+  // Plugin formats this adapter maps (§5.7), and how. Claude Code has no loader for Agent Plugins: as
+  // published, only skills/ loads and mcp.json is never read (tier 1, conformance/tier1/
+  // agent-plugins-claude-code.mjs, 2.1.307 and 2.1.321, 2026-11-09). So a package is translated into
+  // the .claude-plugin layout [CC §10] and passed at launch with --plugin-dir, nested whole under
+  // `nest`, which becomes the format's plugin root, with only the manifest, .mcp.json and a copy of
+  // skills/ at the translated plugin's root: Claude Code acts on commands/, agents/, hooks/,
+  // settings.json and bin/ there [CC §10], and the format never discovers them [AP §6.1, §7].
+  plugins: {
+    'agent-plugins': {
+      versions: ['1.0.0'],
+      mechanism: 'bridged',
+      components: ['skills', 'mcp'],
+      // Claude Code expands ${VAR} in command, args, env, url and headers [CC §8 D-mcp §Environment
+      // variable expansion]; measured, the expansion reaches a stdio server's env and a remote
+      // server's header (tier 1, 2026-11-09). Text the format keeps literal cannot stay so.
+      keeps_literal: false,
+      literal_source: 'CC §8; tier 1, 2026-11-09',
+      // No working-directory field for a server [CC §8 D-mcp], and a plugin's stdio server starts
+      // outside the plugin root (tier 1, 2026-11-09): the prelude below starts it in the root, and
+      // no other directory is offered.
+      cwd: 'root',
+      cwd_source: 'CC §8; tier 1, 2026-11-09',
+      // The plugin hs carries skills at launch in (launch.plugin): a package of that name would
+      // share its namespace.
+      reserved_names: ['hs'],
+      reserved_source: 'design note §7.5, skills at launch',
+      translation: {
+        manifest: '.claude-plugin/plugin.json',
+        mcp_file: '.mcp.json',
+        nest: 'package',
+        // ${CLAUDE_PLUGIN_ROOT} and ${CLAUDE_PLUGIN_DATA} are expanded in a plugin's MCP config; the
+        // data directory is plugins/data/<id>/ in the data folder, kept across updates [CC §10
+        // D-plug loading]. Measured, both reach a server expanded, and the data directory exists and
+        // is writable (tier 1, 2026-11-09).
+        root_var: '${CLAUDE_PLUGIN_ROOT}',
+        data_var: '${CLAUDE_PLUGIN_DATA}',
+        // A server's type in .mcp.json [CC §8 D-mcp]: Claude Code names streamable HTTP `http`.
+        types: { stdio: 'stdio', sse: 'sse', 'streamable-http': 'http' },
+        // The prelude (§5.7): the root from the PLUGIN_ROOT the translation sets in env, written
+        // without braces, which Claude Code does not expand [CC §8]; the server's command and args
+        // are positional parameters after `sh`, never part of the script. Measured: through it the
+        // server runs in the plugin root (tier 1, 2026-11-09).
+        prelude: ['/bin/sh', '-c', 'cd "$PLUGIN_ROOT" && exec "$@"', 'sh'],
+      },
+      readiness: 'untested',
+      source: 'design note §5.7; CC §8, §10; tier 1, 2026-11-09',
+    },
+  },
+
   // What delivery may write (§7.2), the floor every write handler checks: JSON files with the
   // keys allowed in each (`*` for a pure config file; a mixed file would name its keys), and
   // the roots under which whole trees are installed, one directory deep.

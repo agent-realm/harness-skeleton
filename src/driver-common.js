@@ -42,6 +42,24 @@ export function capabilities(descriptor) {
       dropped,
       evidence: null,
     },
+    // Plugins (§5.7, §6): per format this adapter maps, its versions, route and the components the
+    // harness loads. Only the formats this build delivers are named.
+    ...(descriptor.plugins ? [{
+      capability: 'plugins',
+      mechanism: [...new Set(Object.values(descriptor.plugins).map((r) => r.mechanism))].join(', '),
+      fidelity: 'exact',
+      readiness: Object.values(descriptor.plugins).every((r) => r.readiness === 'ready') ? 'ready' : 'untested',
+      facets: { formats: Object.fromEntries(Object.entries(descriptor.plugins).map(([f, r]) => [f, {
+        versions: r.versions, mechanism: r.mechanism, components: r.components, readiness: r.readiness,
+        refuses: [
+          ...(r.keeps_literal === false ? ['plugin_placeholder_literal: ${…} text the format keeps literal'] : []),
+          ...(r.cwd === 'root' ? ['plugin_cwd_unsupported: a stdio server working directory other than the plugin root'] : []),
+        ],
+      }])) },
+      // What a route cannot keep is refused by validate, never dropped from a package it accepts.
+      dropped: [],
+      evidence: null,
+    }] : []),
   ];
 }
 

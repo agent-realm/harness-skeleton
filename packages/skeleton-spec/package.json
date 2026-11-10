@@ -12,6 +12,7 @@
     ".": "./src/index.js",
     "./layers": "./src/layers.js",
     "./validate": "./src/validate.js",
+    "./agent-plugins": "./src/agent-plugins.js",
     "./files": "./src/files.js",
     "./process": "./src/process-checks.js"
   },

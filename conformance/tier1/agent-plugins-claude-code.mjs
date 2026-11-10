@@ -5,10 +5,11 @@
 //   HS_BENCH=1 node conformance/tier1/agent-plugins-claude-code.mjs --claude <path> [--hs-rev <sha>] [--keep]
 //
 // What Claude Code does with an Agent Plugins 1.0.0 package (https://agent-plugins.org/specification),
-// and whether the translation of §5.7 delivers one. No hs code delivers plugins yet: the check builds
-// by hand what a driver will build (lib/agent-plugins.mjs). Each run is one `-p` launch from hs's
-// launch-spec for a plain layer (endpoint and model only), with `--plugin-dir` added, against a
-// local listener that answers 400 and records markers and tool names. The packages: `clean` (one
+// and whether hs's Claude Code driver delivers one by the translation of §5.7 (milestone 6a.14). Each
+// run is one `-p` launch against a local listener that answers 400 and records markers and tool
+// names: from hs's launch-spec for a plain layer (endpoint and model only) with `--plugin-dir` added
+// by hand, or, for the translated and dotted runs, from hs's launch-spec for that layer and a layer
+// holding the package as a plugin item, under a launch receipt. The packages: `clean` (one
 // valid skill; one stdio server whose args use ${PLUGIN_ROOT} and whose env uses ${PLUGIN_DATA};
 // every manifest metadata field), `future` (the same, with only its two $schema values naming
 // 9.9.9), `mixed` (`clean` plus a skill without the description the Agent Skills specification
@@ -20,7 +21,12 @@
 //   control     no plugin. Expected: no marker reaches a request (the premise).
 //   published   `clean`, `future` and `mixed`, each in a launch of its own, as published. Claude
 //               Code has no loader for the format (§12 row 35), so these are recorded, not judged.
-//   translated  `clean` translated by the rules of §5.7: the package nested whole under
+//   refusals    hs validate on `future`, `mixed`, `literal` and `cwd` (`clean` plus a stdio server
+//               whose cwd is ./sub). Expected: plugin_version_unsupported, plugin_skill_invalid naming
+//               no-desc, plugin_placeholder_literal, and plugin_cwd_unsupported, each by the item;
+//               `clean` validates. No harness starts.
+//   translated  `clean` as a plugin item, carried by hs's launch-spec under a receipt, which the
+//               launch refuses without. The driver's translation (§5.7): the package nested whole under
 //               `package/`, the format's plugin root there, with only the manifest, .mcp.json and a
 //               copy of skills/ at the translated plugin's root, and each stdio server started
 //               through the /bin/sh prelude that changes to the plugin root. Expected: the skill
@@ -30,7 +36,8 @@
 //               existing, writable directory that ${PLUGIN_DATA} names; its tool reaches the
 //               request; the package's commands/ and hooks/ stay inert (the command reaches no
 //               request and the hook does not run).
-//   flat        `clean` copied whole to the translated plugin's root instead of nested. Expected
+//   flat        `clean` copied whole to the translated plugin's root instead of nested, by the check's
+//               own copy of the translation (below), as are `unbridged` and `literal`. Expected
 //               (the nesting's premise, and the positive control for each half of "inert"): the
 //               root command reaches the request, and the root hook runs.
 //   unbridged   nested, without the prelude. Expected (the prelude's premise): the server does not
@@ -39,10 +46,10 @@
 //               set in Claude Code's environment. Expected (the premise of §5.7's
 //               plugin_placeholder_literal): the stdio server's env and the remote server's header
 //               both arrive as the variable's value, so the text did not stay literal.
-//   dotted      `dotted`, translated. Recorded: whether Claude Code loads a plugin whose name has a
-//               dot.
-// The translation is the check's own, built by hand to the rules of §5.7. None of the adapter's
-// refusals (version, literal text, cwd, invalid skill) is exercised here: no driver exists yet.
+//   dotted      `dotted`, carried by hs's launch-spec. Recorded: whether Claude Code loads a plugin
+//               whose name has a dot.
+// The premises need what the driver never builds (a flat copy, no prelude, literal text kept), so
+// the check keeps its own copy of the translation for them, built by hand to the rules of §5.7.
 // A skill or command counts as loaded when its name, `<plugin>:<name>`, or its description's marker reaches a
 // request: Claude Code 2.1.321 lists skills by name, without the description. Both are recorded.
 // The listeners and the server record names and booleans only. The credential is a dummy; HOME
@@ -63,9 +70,9 @@ const M = { skill: 'hs-tier1-ap-skill-4d1a', invalid: 'hs-tier1-ap-nodesc-8e3c',
 const NEST = 'package';
 const b = bench('hs-tier1-agent-plugins-cc-');
 
-// The translation of §5.7, by hand: what a Claude Code driver will write for an Agent Plugins
-// package that validate accepts. It refuses nothing: the literal run uses it to show why §5.7
-// refuses. The package is nested whole under `package/`, the format's plugin root there, so that
+// The translation of §5.7, by hand: what the Claude Code driver writes for an Agent Plugins package
+// that validate accepts, kept here for the premises, which need what the driver never builds. It
+// refuses nothing: the literal run uses it to show why §5.7 refuses. The package is nested whole under `package/`, the format's plugin root there, so that
 // nothing the format treats as inert sits where Claude Code acts on it; only the manifest,
 // .mcp.json and a copy of skills/ are at the translated plugin's root. The prelude reads
 // $PLUGIN_ROOT, without braces, from the env the translation adds, so Claude Code's own ${...}
@@ -129,16 +136,44 @@ try {
   const clean = pkg('clean', {});
   const future = pkg('future', { version: '9.9.9' });
   const mixed = pkg('mixed', { marks: M });
-  const translated = translate(clean, path.join(b.work, 'translated', NAME));
+  const cwdPkg = pkg('cwd', { servers: { sub: { type: 'stdio', command: './bin/hs-probe', cwd: './sub' } } });
+  const literalPkg = pkg('literal', literalOpts(`${R.url}/mcp`));
+  const dottedPkg = pkg('dotted', { name: DOTTED });
   const flat = translate(clean, path.join(b.work, 'flat', NAME), { nest: false });
   const unbridged = translate(clean, path.join(b.work, 'unbridged', NAME), { prelude: false });
-  const literal = translate(pkg('literal', literalOpts(`${R.url}/mcp`)), path.join(b.work, 'translated-literal', NAME));
-  const dotted = translate(pkg('dotted', { name: DOTTED }), path.join(b.work, 'translated-dotted', DOTTED));
-  const spec = b.hs('launch-spec', ['--harness', 'claude-code', '--folder', folder, '--layer', plain, '--local', local, '--bin', claude, '--headless']);
+  const literal = translate(literalPkg, path.join(b.work, 'translated-literal', NAME));
+  const base = ['--harness', 'claude-code', '--folder', folder, '--layer', plain];
+  const tail = ['--local', local, '--bin', claude, '--headless'];
+  const spec = b.hs('launch-spec', [...base, ...tail]);
+  // A layer holding a package as its plugin item: the package's parent directory, so `source` is
+  // the package's own directory name.
+  const kit = (pkgDir) => {
+    const dir = path.dirname(pkgDir);
+    const name = path.basename(pkgDir);
+    fs.writeFileSync(path.join(dir, 'spec.toml'), `[spec]\nname = "kit-${path.basename(dir)}"\nversion = "1.0.0"\nformat = "0.2"\n\n[plugin.${JSON.stringify(name)}]\nsource = ${JSON.stringify(name)}\nformat = "agent-plugins"\n`);
+    return dir;
+  };
+  const validated = (pkgDir) => b.hsCall('validate', [...base, '--layer', kit(pkgDir), '--local', local]);
+  const errors = (res) => (res.ok ? res.result.problems : []).filter((p) => p.severity === 'error').map((p) => ({ code: p.code, item: p.item, ...(p.skill ? { skill: p.skill } : {}) }));
+  const refusals = { clean: errors(validated(clean)), future: errors(validated(future)), mixed: errors(validated(mixed)), literal: errors(validated(literalPkg)), cwd: errors(validated(cwdPkg)) };
+  // launch-spec for a package as a plugin item: refused without a receipt, then carried with one.
+  const carriedSpec = (pkgDir) => {
+    const args = [...base, '--layer', kit(pkgDir), ...tail];
+    const refused = b.hsCall('launch-spec', args);
+    const items = refused.ok ? [] : refused.error.items ?? [];
+    const digest = items[0]?.launch_digest ?? null;
+    const risks = items[0]?.risks ?? [];
+    const receipt = path.join(b.work, `receipt-${path.basename(path.dirname(pkgDir))}.json`);
+    fs.writeFileSync(receipt, JSON.stringify({ format: 'hs-receipt/0.2', launch_digest: digest, allows: [...new Set(risks.map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() }));
+    return { refusal: refused.ok ? null : refused.error.code, risks, spec: b.hs('launch-spec', [...args, '--receipt', receipt]) };
+  };
+  const translatedLaunch = carriedSpec(clean);
+  const translated = translatedLaunch.spec.files.find((f) => f.role === `plugin.${NAME}`)?.path;
+  const dottedLaunch = carriedSpec(dottedPkg);
   // The plugin flag goes right after the binary, so nothing can read the prompt as a plugin path.
-  const run = async (dir, extraEnv = {}) => {
+  const run = async (dir, extraEnv = {}, from = spec) => {
     for (const f of [probeOut, hookProbe]) fs.rmSync(f, { force: true });
-    const l = fromSpec(spec, extraEnv, claude, [PROMPT]);
+    const l = fromSpec(from, extraEnv, claude, [PROMPT]);
     if (dir) l.argv.splice(1, 0, '--plugin-dir', dir);
     const r = await b.launch([L, R], l.argv, l.env, cwd);
     return { ...r, probe: probe(probeOut), hook_ran: fs.existsSync(hookProbe) };
@@ -147,11 +182,11 @@ try {
   const folderBefore = fs.readdirSync(folder).sort();
   const control = await run(null);
   const published = { clean: await run(clean), future: await run(future), mixed: await run(mixed) };
-  const carried = await run(translated);
+  const carried = await run(null, {}, translatedLaunch.spec);
   const flatRun = await run(flat);
   const bare = await run(unbridged);
   const lit = await run(literal, { [OTHER]: OTHER_VALUE });
-  const dot = await run(dotted);
+  const dot = await run(null, {}, dottedLaunch.spec);
   const folderAfter = fs.readdirSync(folder).sort();
 
   const has = (r, m) => r.seen.ENDPOINT.some((q) => q.markers.includes(m));
@@ -165,13 +200,20 @@ try {
     'clean, as published': seenAs(published.clean),
     'future (9.9.9), as published': seenAs(published.future),
     'mixed, as published': { ...seenAs(published.mixed), invalid_skill_loads: loaded(published.mixed, 'no-desc', M.invalid) },
-    translated: { skill_description_reaches: has(carried, M.skill), manifest_fields: kept },
+    translated: { skill_description_reaches: has(carried, M.skill), manifest_fields: kept, launch_risks: translatedLaunch.risks.map((r) => r.risk) },
+    refusals,
     flat: { root_command_loads: commandSeen(flatRun), root_hook_runs: flatRun.hook_ran },
     'dotted name, translated': { skill_loads: loaded(dot, 'notes', M.skill, DOTTED), server_starts: dot.probe !== null, tool_reaches: has(dot, M.tool) && offered(dot) },
   };
   const p = carried.probe;
   const checks = {
     'without a plugin no marker reaches a request (premise)': control.seen.ENDPOINT.length > 0 && !markers.some((m) => has(control, m)) && !offered(control),
+    'refusals: clean validates': refusals.clean.length === 0,
+    'refusals: future is plugin_version_unsupported': refusals.future.length > 0 && refusals.future.every((p) => p.code === 'plugin_version_unsupported' && p.item === `plugin.${NAME}`),
+    'refusals: mixed is plugin_skill_invalid, naming no-desc': refusals.mixed.length === 1 && refusals.mixed[0].code === 'plugin_skill_invalid' && refusals.mixed[0].skill === 'no-desc',
+    'refusals: literal is plugin_placeholder_literal': refusals.literal.length > 0 && refusals.literal.every((p) => p.code === 'plugin_placeholder_literal'),
+    'refusals: cwd is plugin_cwd_unsupported': refusals.cwd.length === 1 && refusals.cwd[0].code === 'plugin_cwd_unsupported',
+    'translated: launch-spec refuses without a receipt, naming the package as runs-code': translatedLaunch.refusal === 'receipt_required' && translatedLaunch.risks.some((r) => r.item === `plugin.${NAME}` && r.risk === 'runs-code'),
     'translated: the skill reaches the request, under the plugin\'s name': has(carried, `${NAME}:notes`),
     'translated: the manifest keeps name and every metadata field, and the plugin loads from it': META.every((k) => kept.includes(k)) && has(carried, `${NAME}:notes`),
     'translated: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args': p?.started === true && p.args_expanded === true,

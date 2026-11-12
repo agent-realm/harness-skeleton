@@ -167,16 +167,18 @@ test('a tombstone removes the plugin it names, never one whose name extends it w
   }
 });
 
-test('plan on Claude Code: launch_only under overlay; a native format is not delivered', () => {
+test('plan on Claude Code: launch_only under overlay; a format no route maps is not delivered', () => {
   const s = sandbox();
   try {
     const kit = kitLayer(s.root);
     const overlay = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'overlay' }));
     assert.ok(overlay.launch_only.some((x) => x.item === 'plugin.notes-kit' && /--plugin-dir, translated to the \.claude-plugin layout/.test(x.via)));
-    const native = layer(s.root, 'native', '[plugin.cc]\nsource = "p"\nformat = "claude-plugin"\n', { 'p/.claude-plugin/plugin.json': '{"name":"cc"}' });
-    const launch = s.call('launch-spec', { layers: [native] });
-    assert.equal(launch.error.code, 'not_implemented');
-    assert.match(launch.error.message, /plugin\.cc \(format claude-plugin\)/);
+    for (const format of ['opencode-plugin', 'constructor']) {
+      const other = layer(s.root, `other-${format}`, `[plugin.cc]\nsource = "p"\nformat = "${format}"\n`, { 'p/index.js': 'export {}\n' });
+      const launch = s.call('launch-spec', { layers: [other] });
+      assert.equal(launch.error.code, 'not_implemented', format);
+      assert.match(launch.error.message, new RegExp(`plugin\\.cc \\(format ${format}\\)`));
+    }
   } finally {
     s.done();
   }
@@ -280,9 +282,9 @@ test('describe: the plugins capability on Claude Code, by format', () => {
   try {
     const d = ok(s.call('describe', {}));
     const cap = d.capabilities.find((c) => c.capability === 'plugins');
-    assert.equal(cap.mechanism, 'bridged');
+    assert.equal(cap.mechanism, 'bridged, native');
     assert.equal(cap.readiness, 'untested');
-    assert.deepEqual(Object.keys(cap.facets.formats), ['agent-plugins']);
+    assert.deepEqual(Object.keys(cap.facets.formats), ['agent-plugins', 'claude-plugin']);
     assert.deepEqual(cap.facets.formats['agent-plugins'].versions, ['1.0.0']);
     assert.deepEqual(cap.facets.formats['agent-plugins'].components, ['skills', 'mcp']);
     assert.equal(cap.facets.formats['agent-plugins'].refuses.length, 2);

@@ -8,6 +8,28 @@ const ACCOUNT_STATE_KEYS = ['oauthAccount', 'cachedGrowthBookFeatures', 'cachedG
 import path from 'node:path';
 import { CLAUDE_CODE_HOOKS } from '../../shim/claude-code-hooks.js';
 
+// A plugin under materialize (§7.5), in either format: settings.json alone makes a bare start load a
+// plugin. With `enabledPlugins/<plugin>@<marketplace>` and `extraKnownMarketplaces/<marketplace>`
+// naming a `directory` source, Claude Code registers the marketplace on start, loads the plugin from
+// it in place, and writes its own records (plugins/known_marketplaces.json, installed_plugins.json,
+// data/); a cache directory with enabledPlugins alone loads nothing (tier 1,
+// conformance/tier1/agent-plugins-claude-code-cache.mjs, 2.1.307 and 2.1.321, 2026-11-10)
+// [CC §2 D-sref enabledPlugins, extraKnownMarketplaces; §10 D-plug]. So a plan installs the
+// marketplace as a generated tree, hs-run/plugin.<name>/ (its manifest and the plugin under
+// plugin/), and sets the two keys.
+const PLUGIN_PERSIST = Object.freeze({
+  root: 'hs-run',
+  marketplace_prefix: 'hs-',
+  plugin_dir: 'plugin',
+  marketplace_manifest: '.claude-plugin/marketplace.json',
+  marketplaces_key: 'extraKnownMarketplaces',
+  enabled_key: 'enabledPlugins',
+  source_type: 'directory',
+  // Measured after `hs remove` and a start: the plugin no longer loads, and Claude Code's own
+  // records stay, its marketplace record still naming the removed tree (tier 1, 2026-11-10).
+  leaves_behind: 'after hs removes the plugin, it no longer loads, but Claude Code keeps its own records of the marketplace (plugins/known_marketplaces.json, still naming the removed tree; installed_plugins.json; data/), which hs never writes',
+});
+
 export default Object.freeze({
   harness: 'claude-code',
   name: 'Claude Code',
@@ -260,29 +282,47 @@ export default Object.freeze({
         // server runs in the plugin root (tier 1, 2026-11-09).
         prelude: ['/bin/sh', '-c', 'cd "$PLUGIN_ROOT" && exec "$@"', 'sh'],
       },
-      // Under materialize (§7.5): settings.json alone makes a bare start load a plugin. With
-      // `enabledPlugins/<plugin>@<marketplace>` and `extraKnownMarketplaces/<marketplace>` naming a
-      // `directory` source, Claude Code registers the marketplace on start, loads the plugin from it in
-      // place, and writes its own records (plugins/known_marketplaces.json, installed_plugins.json,
-      // data/); a cache directory with enabledPlugins alone loads nothing (tier 1,
-      // conformance/tier1/agent-plugins-claude-code-cache.mjs, 2.1.307 and 2.1.321, 2026-11-10)
-      // [CC §2 D-sref enabledPlugins, extraKnownMarketplaces; §10 D-plug]. So a plan installs the
-      // marketplace as a generated tree, hs-run/plugin.<name>/ (its manifest and the translated plugin
-      // under plugin/), and sets the two keys.
-      persist: {
-        root: 'hs-run',
-        marketplace_prefix: 'hs-',
-        plugin_dir: 'plugin',
-        marketplace_manifest: '.claude-plugin/marketplace.json',
-        marketplaces_key: 'extraKnownMarketplaces',
-        enabled_key: 'enabledPlugins',
-        source_type: 'directory',
-        // Measured after `hs remove` and a start: the plugin no longer loads, and Claude Code's own
-        // records stay, its marketplace record still naming the removed tree (tier 1, 2026-11-10).
-        leaves_behind: 'after hs removes the plugin, it no longer loads, but Claude Code keeps its own records of the marketplace (plugins/known_marketplaces.json, still naming the removed tree; installed_plugins.json; data/), which hs never writes',
-      },
+      persist: PLUGIN_PERSIST,
       readiness: 'untested',
       source: 'design note §5.7; CC §8, §10; tier 1, 2026-11-09 and 2026-11-10',
+    },
+    // Claude Code's own format, the .claude-plugin layout [CC §10], delivered whole: no translation,
+    // the package itself is the plugin. The manifest is optional; without one the plugin's name is the
+    // directory's when loaded with --plugin-dir, or the marketplace entry's [D-plug-manifest §Manifest
+    // file], and hs makes both the item's name. `claude plugin validate` is Claude Code's own check of
+    // the rest [D-plug-manifest §Validate the manifest]; validate checks the name and the fields below.
+    // D-plug-manifest: https://code.claude.com/docs/en/plugins/manifest-reference, fetched 2026-11-12.
+    'claude-plugin': {
+      mechanism: 'native',
+      // The standard layout's components [D-plug-manifest §Standard layout].
+      components: ['skills', 'commands', 'agents', 'hooks', 'mcp', 'lsp', 'output-styles', 'workflows', 'themes', 'monitors', 'bin', 'settings'],
+      manifest: '.claude-plugin/plugin.json',
+      reserved_names: ['hs'],
+      reserved_source: 'design note §7.5, skills at launch',
+      // Manifest fields whose content would bring in what the spec neither names nor binds by digest.
+      // Refused while they hold anything; an empty list or table brings in nothing.
+      refuses_fields: {
+        // "Plugins that must be enabled for this one to work ... Bare names resolve against this
+        // plugin's own marketplace" [D-plug-manifest §dependencies].
+        dependencies: 'Claude Code enables the plugins it names, resolved from a marketplace: plugins the spec does not name and its digest does not bind',
+        // "values Claude Code prompts the user for when the plugin is enabled"; sensitive ones go to
+        // "the platform's secure credential store" [D-plug-manifest §User configuration].
+        userConfig: 'Claude Code asks the user for these values when the plugin is enabled and keeps the sensitive ones in its credential store; the skeleton carries a credential only as a reference, so a server that needs one is an mcp item (design note §5.3, §5.5)',
+        // A channel injects messages into the session from outside it and may prompt for its own
+        // userConfig [D-plug-manifest §Channels].
+        channels: 'a channel brings messages into the session from outside it and may ask the user for values, credentials among them; the skeleton has no item for it',
+      },
+      // An `mcpServers` bundle is extracted into .mcpb-cache/ under the plugin root, and a bundle URL
+      // is downloaded first [D-plug-manifest §mcpServers]: code the digest does not bind, written into
+      // the tree a plan installed.
+      refuses_values: [
+        { field: 'mcpServers', pattern: '\\.(mcpb|dxt)$|^https?:', label: 'an MCP bundle (.mcpb, .dxt, or a URL)', reason: 'an MCP bundle, extracted into .mcpb-cache/ under the plugin root (a URL is downloaded first): code the spec digest does not bind, written into the installed plugin' },
+      ],
+      // A native package is delivered whole, and what it holds runs as Claude Code runs it.
+      delivered_whole: 'delivered whole as Claude Code\'s own format: its hooks run as Claude Code runs a plugin\'s hooks, not through hs\'s hook shim; bin/ joins the Bash tool\'s PATH; its settings may set the main agent [D-plug-manifest §Standard layout]',
+      persist: PLUGIN_PERSIST,
+      readiness: 'untested',
+      source: 'design note §5.7; CC §10; D-plug-manifest, fetched 2026-11-12',
     },
   },
 

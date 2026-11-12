@@ -55,6 +55,8 @@ export function capabilities(descriptor) {
           ...(r.keeps_literal === false ? ['plugin_placeholder_literal: ${…} text the format keeps literal'] : []),
           ...(r.cwd === 'root' ? ['plugin_cwd_unsupported: a stdio server working directory other than the plugin root'] : []),
           ...(r.acts_on_paths?.length ? [`plugin_path_unsupported: ${r.acts_on_paths.join(', ')} in the package`] : []),
+          ...(r.refuses_fields ? [`plugin_field_unsupported: ${Object.keys(r.refuses_fields).join(', ')} in ${r.manifest}, while they hold anything`] : []),
+          ...(r.refuses_values ?? []).map((v) => `plugin_field_unsupported: ${v.field} naming ${v.label}`),
         ],
         ...(r.namespace ? { harness_specific: [r.namespace.name] } : {}),
       }])) },

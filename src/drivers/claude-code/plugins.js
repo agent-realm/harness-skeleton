@@ -1,8 +1,9 @@
-// An Agent Plugins package on Claude Code (design note v0.2 §5.7, Translation): the package turned
-// into a plugin in the .claude-plugin layout, which a launch passes with --plugin-dir. validate has
+// Plugin packages on Claude Code (design note v0.2 §5.7). An Agent Plugins package is translated into
+// a plugin in the .claude-plugin layout, which a launch passes with --plugin-dir. validate has
 // refused what the translation cannot keep (a version it does not map, ${…} text the format keeps
 // literal, a working directory beyond the root); this builds the rest. The rules and their sources
-// are in the descriptor (plugins['agent-plugins']); the order here is §5.7's.
+// are in the descriptor (plugins['agent-plugins']); the order here is §5.7's. A package in Claude
+// Code's own format, claude-plugin, is carried as it is (nativePlugin).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -74,24 +75,46 @@ export function translatedPlugin(item, bound, descriptor) {
   };
 }
 
+// A package in Claude Code's own format (§5.7): the plugin a launch carries is the package itself,
+// copied whole and checked against its digest, with no manifest of hs's making. validate has checked
+// its name and refused the fields that would bring in what the spec does not bind. What it holds runs
+// as Claude Code runs a plugin, which hs does not inspect: the package is runs-code, bound by its
+// digest.
+export function nativePlugin(item, bound, descriptor) {
+  const R = descriptor.plugins[item.value.format];
+  const link = treeLink(bound.path);
+  if (link !== null) throw new HsError('write_refused', `${item.id}: the package holds a symlink (${link}); hs copies no tree with one`, [item.id]);
+  return {
+    tree: { name: `plugins/${item.id.slice('plugin.'.length)}`, role: item.id, files: [], entries: [{ rel: '.', source: bound.path, sha256: bound.sha256 }] },
+    risks: [{ item: item.id, layer: item.layer, risk: 'runs-code', sha256: bound.sha256 }],
+    via: `${descriptor.launch.plugin.flag}, the package ${R.delivered_whole}`,
+  };
+}
+
+// The plugin a launch carries for one item, by its format.
+export function launchPlugin(item, bound, descriptor) {
+  return item.value.format === AGENT_PLUGINS ? translatedPlugin(item, bound, descriptor) : nativePlugin(item, bound, descriptor);
+}
+
 // What a plan persists for one plugin item under materialize (§7.5): the marketplace as a generated
-// tree, hs-run/plugin.<name>/, holding its manifest and the translated plugin under plugin/, and the
-// two settings.json keys that make a bare start register it and load the plugin. The tree's files
-// come from the plan; the package and its skills/ are copied from the layer.
+// tree, hs-run/plugin.<name>/, holding its manifest and the plugin under plugin/ (translated, or the
+// package itself), and the two settings.json keys that make a bare start register it and load the
+// plugin. The tree's files come from the plan; the package (and a translation's skills/) is copied
+// from the layer.
 export function persistedPlugin(item, bound, folder, descriptor) {
-  const R = descriptor.plugins[AGENT_PLUGINS];
+  const R = descriptor.plugins[item.value.format];
   const P = R.persist;
   const id = item.id.slice('plugin.'.length);
-  const t = translatedPlugin(item, bound, descriptor);
+  const t = launchPlugin(item, bound, descriptor);
   const marketplace = `${P.marketplace_prefix}${id}`;
   const address = `${P.root}/${item.id}`;
   const generated = {
     files: [
       { rel: P.marketplace_manifest, content: JSON.stringify({ name: marketplace, owner: { name: 'harness-skeleton' }, plugins: [{ name: id, source: `./${P.plugin_dir}` }] }, null, 2) + '\n' },
-      { rel: `${P.plugin_dir}/${t.tree.manifest.rel}`, content: t.tree.manifest.content },
+      ...(t.tree.manifest ? [{ rel: `${P.plugin_dir}/${t.tree.manifest.rel}`, content: t.tree.manifest.content }] : []),
       ...t.tree.files.map((f) => ({ rel: `${P.plugin_dir}/${f.rel}`, content: f.content })),
     ],
-    entries: t.tree.entries.map((e) => ({ rel: `${P.plugin_dir}/${e.rel}`, source: e.source, sha256: e.sha256 })),
+    entries: t.tree.entries.map((e) => ({ rel: e.rel === '.' ? P.plugin_dir : `${P.plugin_dir}/${e.rel}`, source: e.source, sha256: e.sha256 })),
   };
   const risk = [...new Set(t.risks.map((r) => r.risk))];
   return {

@@ -68,7 +68,7 @@ and neither is the `reconcile` mode for the user's own folder. Plugins in the
 [Agent Plugins](https://agent-plugins.org/specification) format are delivered on Claude Code, at launch
 and into the folder, and on Codex into the folder, enabled by each launch. Claude Code's own plugin
 format is delivered whole on Claude Code, at launch and into the folder; the other native plugin
-formats are not yet built. Nineteen conformance
+formats are not yet built. Twenty conformance
 checks pass on real harnesses; no version range is certified yet.
 
 ## What it is not

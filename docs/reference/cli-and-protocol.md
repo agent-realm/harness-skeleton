@@ -49,7 +49,7 @@ absolute paths only; the flags make them absolute.
 
 | Op | Does | Writes |
 |---|---|---|
-| `describe` | protocol versions, operations, the harness descriptor (binding, path classes, version ranges), the session adapter's own description | nothing |
+| `describe` | protocol versions, operations, the harness descriptor (binding, path classes, version ranges), the known limits (escapes a launch cannot close), the session adapter's own description | nothing |
 | `detect` | whether the harness is present, its version, its range | nothing |
 | `validate` | the resolved spec against the standard and the harness: items and their layers, digests, problems | nothing |
 | `observe` | with `--state`: the state inventory and the values in effect; without: drift in a delivered folder | nothing |
@@ -57,7 +57,7 @@ absolute paths only; the flags make them absolute.
 | `apply` | a plan under a receipt, journaled | config paths and `.harness-skeleton/` |
 | `recover` | finishes an interrupted apply from its journal | config paths and `.harness-skeleton/` |
 | `remove` | one owner's items, where still as installed | config paths and `.harness-skeleton/` |
-| `launch-spec` | argv, environment, overlay files and references for a launch | a temp directory, never the folder |
+| `launch-spec` | argv, environment (`env_set`, and `env_unset`, which never names a variable `env_set` sets), overlay files and references for a launch | a temp directory, never the folder |
 | `sessions.list` | the store's sessions, with keys and sources | nothing |
 | `sessions.read` | raw units of one source from a position | nothing |
 | `sessions.derive` | records from units; pure | nothing |

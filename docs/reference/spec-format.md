@@ -148,6 +148,11 @@ On Codex:
   plan installed;
 - **under `materialize`:** skills and Agent Plugins packages.
 
+On OpenCode (2.x, launch only):
+- **at launch:** the primary model, the endpoint and the login mode, MCP servers, skills and
+  `AGENTS.md`, every launch with `--standalone`;
+- **under `materialize`:** nothing yet.
+
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
 A plugin item outside the routes above is refused by name too: as `not_implemented` where this

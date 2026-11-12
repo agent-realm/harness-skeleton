@@ -28,7 +28,7 @@ export function bindingEnv(descriptor, folder) {
 
 // What a launch cannot close, by name (§8): the escapes a descriptor marks as known limits.
 export function knownLimits(descriptor) {
-  return escapesHere(descriptor).filter((e) => e.known_limit).map((e) => ({ path: e.path, kind: e.kind, note: e.note, source: e.source, ...(e.strict ? { strict: e.strict } : {}) }));
+  return escapesHere(descriptor).filter((e) => e.known_limit).map((e) => ({ path: e.path, kind: e.kind, note: e.note, source: e.source, ...(e.strict ? { strict: e.strict } : {}), ...(e.closed_by ? { closed_by: e.closed_by } : {}) }));
 }
 
 export function escapesHere(descriptor, platform = process.platform) {
@@ -102,6 +102,8 @@ export function describeHarness(descriptor) {
     known_limits: knownLimits(descriptor),
     // What `isolation = "default"` and `"strict"` do on this harness (§8).
     isolation: describeIsolation(descriptor),
+    // Where a launch puts the session, when it computes a harness internal to do so (pi).
+    ...(descriptor.launch?.session_dir ? { session_dir: { flag: descriptor.launch.session_dir.flag, when: descriptor.launch.session_dir.when, coupling: descriptor.launch.session_dir.coupling, versions: descriptor.versions.compatible, source: descriptor.launch.session_dir.source } } : {}),
     // What a launch contacts on the network, where the descriptor says.
     ...(descriptor.launch?.network ? { launch_network: descriptor.launch.network } : {}),
     // Hook behaviours a caller must know, where the descriptor names any (pi's Stop loop).

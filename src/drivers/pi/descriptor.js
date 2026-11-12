@@ -68,6 +68,7 @@ export default Object.freeze({
       { kind: 'inbound-read', path: '~/.pi/agent', class: 'config', closable: true,
         note: 'closed: PI_CODING_AGENT_DIR replaces the default root', source: 'P15:configuration; T1' },
       { kind: 'outbound-write', path: '.pi/settings.json sessionDir in the working directory', class: 'sessions', closable: false, known_limit: true,
+        closed_by: 'launch-spec given the working directory (cwd): --session-dir <folder>/sessions/<pi\'s own group for it>, which a project\'s sessionDir cannot outrank (launch.session_dir)',
         note: 'pi reads a project\'s sessionDir before it resolves project trust, so --no-approve does not stop it: a project can move session writes out of the folder',
         source: 'P15:security (project trust is not a complete startup boundary); P15:configuration' },
       { kind: 'outbound-write', path: 'the folder\'s settings.json sessionDir', class: 'sessions', closable: false,
@@ -189,6 +190,24 @@ export default Object.freeze({
       tilde: 'pi expands a leading ~/ in an MCP server\'s command, arguments and working directory to the home directory [P15:mcp]',
     },
     skills: { flag: '--skill', tree: 'skills' },
+    // The session's directory (§8). pi keeps a working directory's sessions in
+    // <agent dir>/sessions/<group>, the group its own encoding of that directory's path; a session
+    // dir given explicitly is used as it is, with no group [P15:dist/core/session-manager.js
+    // getDefaultSessionDirPath; P15:dist/utils/paths.js resolvePath; tier 1, pi-session-dir]. Given
+    // the working directory, a launch passes --session-dir with that very path, so the layout is
+    // pi's own and a project's sessionDir, which pi reads before project trust [P15:security],
+    // cannot move the session out of the folder. The encoding is a pi internal: it holds for this
+    // descriptor's version range, and tier 1 compares it with the group pi itself writes.
+    session_dir: {
+      flag: '--session-dir',
+      root: 'sessions',
+      group: (cwd) => `--${cwd.replace(/^[/\\]/, '').replace(/[/\\:]/g, '-')}--`,
+      when: 'launch-spec is given cwd, and the folder\'s settings.json sets no sessionDir',
+      coupling: 'the group is pi\'s own encoding of the working directory (getDefaultSessionDirPath), a pi internal hs computes: it holds for the 1.5 line this driver targets, and tier 1 (pi-session-dir) fails, rather than sessions scattering, if a pi changes it',
+      unbound: 'no cwd was given, so this launch passes no --session-dir: a .pi/settings.json sessionDir in the directory pi runs in would move the session out of the folder (pi reads it before project trust); give launch-spec the cwd to close it',
+      folder_set: 'the folder\'s settings.json sets sessionDir, which this launch leaves as it is (observe --state reports it); a project\'s .pi/settings.json sessionDir can still move the session',
+      source: 'P15:dist/core/session-manager.js; P15:dist/utils/paths.js; tier 1, pi-session-dir',
+    },
     // AGENTS.md is carried as a system-prompt append, which is not a context file: the folder's own
     // context files still load [P15:cli; T1].
     agents_md: { flag: '--append-system-prompt', file: 'hs-agents.md', role: 'instructions' },

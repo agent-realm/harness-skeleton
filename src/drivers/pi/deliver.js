@@ -275,7 +275,7 @@ function walk(v, fn) {
   }
 }
 
-export function launchParts(resolved, { headless, descriptor, folder, home, platform }) {
+export function launchParts(resolved, { headless, descriptor, folder, home, platform, cwd }) {
   const L = descriptor.launch;
   const I = L.interpolation;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
@@ -522,11 +522,27 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
   if (strict) refuseFolderExtras(folder, descriptor, mcpItems.filter((i) => installedMcp(i, layerDirs.get(i.layer), folder, descriptor, resolved)).map((i) => i.id.slice('mcp.'.length)));
   const strictArgv = strict ? descriptor.isolation.strict.argv : [];
 
+  // The session's directory (descriptor, launch.session_dir): given the working directory, pi's own
+  // path for it, so a project's sessionDir cannot move the session out of the folder. The folder's
+  // own sessionDir is the folder's choice, left as it is.
+  const SD = L.session_dir;
+  let sessionArgv = [];
+  const ownSettings = readDoc(path.join(folder, descriptor.persist.settings_file));
+  if (ownSettings.blocked || ownSettings.doc?.sessionDir !== undefined) out.notes.push(ownSettings.blocked ? `${descriptor.persist.settings_file}: ${ownSettings.blocked}; whether it sets sessionDir cannot be told, so this launch passes no ${SD.flag}` : SD.folder_set);
+  else if (cwd !== undefined) {
+    const group = SD.group(cwd);
+    sessionArgv = [SD.flag, path.join(folder, SD.root, group)];
+    out.bound_cwd = cwd;
+    out.items.push({ item: 'sessions', via: `${SD.flag} <folder>/${SD.root}/${group}: pi's own path for ${cwd}, which a project's sessionDir cannot outrank` });
+    out.notes.push(`argv is bound to the working directory ${cwd}: run pi there`);
+  } else out.unverified.push(SD.unbound);
+
   if (!headless) out.unverified.push('the interactive launch is not measured; tier 1 runs pi in JSON mode');
   const skills = entries.map((e) => e.rel);
   out.argv = (paths) => [
     ...(headless ? L.headless.argv : L.interactive.argv),
     ...strictArgv,
+    ...sessionArgv,
     ...(provider ? [E.provider_flag, E.provider_id] : []),
     ...flags,
     ...(extension ? [L.extension.flag, paths[L.extension.role]] : []),

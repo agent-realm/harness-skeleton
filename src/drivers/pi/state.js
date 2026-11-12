@@ -59,6 +59,12 @@ export function stateInEffect(harnessPath, descriptor, { cwd } = {}) {
       interactive: present.length ? interactive : 'nothing to load',
       // What the known limit asks: a project .pi/ that a launch here loads.
       trusted_project_pi: present.length > 0 && json,
+      // Whether the project's settings.json moves sessions, which pi reads before trust; a launch
+      // given this cwd closes it (descriptor, launch.session_dir). Presence only.
+      project_session_dir: (() => {
+        const r = readDoc(path.join(cwd, '.pi', 'settings.json'));
+        return r.blocked ? 'unreadable' : r.doc?.sessionDir !== undefined;
+      })(),
     };
   }
   return {

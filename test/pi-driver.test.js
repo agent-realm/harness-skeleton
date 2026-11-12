@@ -102,12 +102,12 @@ test('observe --state: project trust is reported by default, counts and, with --
     assert.ok(o.escapes.some((e) => e.path === 'settings.json sessionDir' && e.applies === true), 'a sessionDir moving sessions out is reported');
     // No .pi/ there: nothing to load, whatever the decision.
     o = ok(s.call('observe', { state: true, cwd: work }));
-    assert.deepEqual(o.project_trust.cwd, { protected_present: [], saved_decision: true, headless: 'nothing to load', interactive: 'nothing to load', trusted_project_pi: false });
+    assert.deepEqual(o.project_trust.cwd, { protected_present: [], saved_decision: true, headless: 'nothing to load', interactive: 'nothing to load', trusted_project_pi: false, project_session_dir: false });
     // A .pi/ with protected resources, trusted through its parent's saved decision: it loads.
     write(work, '.pi/mcp.json', '{}');
     write(work, '.pi/APPEND_SYSTEM.md', 'x\n');
     o = ok(s.call('observe', { state: true, cwd: work }));
-    assert.deepEqual(o.project_trust.cwd, { protected_present: ['mcp.json', 'APPEND_SYSTEM.md'], saved_decision: true, headless: 'loads', interactive: 'loads', trusted_project_pi: true });
+    assert.deepEqual(o.project_trust.cwd, { protected_present: ['mcp.json', 'APPEND_SYSTEM.md'], saved_decision: true, headless: 'loads', interactive: 'loads', trusted_project_pi: true, project_session_dir: false });
     // With no saved decision, the default decides: "never" skips.
     write(s.folder, 'trust.json', '{}');
     o = ok(s.call('observe', { state: true, cwd: work }));

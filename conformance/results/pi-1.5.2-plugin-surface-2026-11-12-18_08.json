@@ -1,0 +1,193 @@
+{
+  "check": "tier 1: how pi loads a local package, ahead of translating Agent Plugins packages into one (design note v0.2 §5.7)",
+  "at": "2026-11-12T15:07:46.351Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "c8d9781"
+  },
+  "runs": {
+    "control": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "skill_reached": false,
+      "declared_extension": false,
+      "listed": null,
+      "undeclared_extension": {
+        "package": false,
+        "root": false
+      },
+      "mcp": {
+        "started": false,
+        "offered": false,
+        "result_reached": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "elocal": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "skill_reached": true,
+      "declared_extension": true,
+      "listed": {
+        "prompts": [],
+        "skills": [
+          "skill:wskill"
+        ]
+      },
+      "undeclared_extension": {
+        "package": false,
+        "root": false
+      },
+      "mcp": {
+        "started": true,
+        "offered": true,
+        "result_reached": true
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "settings": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "skill_reached": true,
+      "declared_extension": true,
+      "listed": {
+        "prompts": [],
+        "skills": [
+          "skill:wskill"
+        ]
+      },
+      "undeclared_extension": {
+        "package": false,
+        "root": false
+      },
+      "mcp": {
+        "started": true,
+        "offered": true,
+        "result_reached": true
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "extdir": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "skill_reached": false,
+      "declared_extension": true,
+      "listed": {
+        "prompts": [],
+        "skills": []
+      },
+      "undeclared_extension": {
+        "package": false,
+        "root": false
+      },
+      "mcp": {
+        "started": true,
+        "offered": true,
+        "result_reached": true
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "noskills": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "skill_reached": true,
+      "declared_extension": true,
+      "listed": {
+        "prompts": [],
+        "skills": [
+          "skill:wskill"
+        ]
+      },
+      "undeclared_extension": {
+        "package": false,
+        "root": false
+      },
+      "mcp": {
+        "started": true,
+        "offered": true,
+        "result_reached": true
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "static": {
+      "e_values": 1,
+      "all_local_in_temp": true,
+      "remote_source_in_argv": false
+    }
+  },
+  "recorded": {
+    "extdir": {
+      "declared_extension": true,
+      "skill_reached": false,
+      "undeclared": {
+        "package": false,
+        "root": false
+      }
+    },
+    "noskills": {
+      "skill_reached": true,
+      "listed_skills": [
+        "skill:wskill"
+      ]
+    },
+    "folder_added": {
+      "control": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "elocal": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "settings": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "extdir": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "noskills": [
+        "auth.json",
+        "models-store.json"
+      ]
+    },
+    "themes": "not observable in JSON mode; the manifest rule covers all four resource kinds alike (dist/core/package-manager.js, collectPackageResources)"
+  },
+  "checks": {
+    "control: hs's launch for a plain spec reaches the model, with no marker (premise)": true,
+    "elocal: with -e <dir>, the declared skill reaches the model and the declared extension loads; neither undeclared extension loads and no undeclared prompt is listed": true,
+    "elocal: the declared extension's MCP server starts, its tool is offered, and its result reaches the model": true,
+    "settings: named in the folder's settings.json packages, the package loads at a start with no -e, the same way": true,
+    "static: every -e value hs passes is an absolute path inside its own temp dir, and no argv element is an npm, git or URL source": true,
+    "no host is asked for in any run": true
+  },
+  "verdict": "pass"
+}

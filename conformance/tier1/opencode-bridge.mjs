@@ -105,6 +105,8 @@ try {
   const hosts = [];
   let blocked = false;
   const proxy = http.createServer((req, res) => {
+    req.on('error', () => {});
+    res.on('error', () => {});
     let host = null;
     try {
       host = new URL(req.url).hostname;
@@ -114,7 +116,9 @@ try {
     hosts.push({ host, via: 'http', refused: true });
     res.writeHead(blocked ? 403 : 502).end();
   });
+  proxy.on('clientError', (_e, socket) => socket.destroy());
   proxy.on('connect', (req, socket) => {
+    socket.on('error', () => {});
     const [host, port] = String(req.url).split(':');
     hosts.push({ host, via: 'connect', refused: blocked });
     if (blocked) return socket.end('HTTP/1.1 403 Forbidden\r\n\r\n');
@@ -125,6 +129,7 @@ try {
     });
     up.on('error', () => socket.destroy());
     socket.on('error', () => up.destroy());
+    socket.on('close', () => up.destroy());
   });
   await new Promise((r) => proxy.listen(0, '127.0.0.1', r));
   const proxyUrl = `http://127.0.0.1:${proxy.address().port}`;
@@ -132,7 +137,7 @@ try {
   const cwd = path.join(b.work, 'work');
   fs.mkdirSync(cwd);
   const steps = () => [
-    { when: { turn: 1 }, reply: { tool_calls: [{ id: 'call_ok', name: 'bash', args: { command: 'echo hs-allowed', description: 'echo' } }] } },
+    { when: { tool: 'bash' }, reply: { tool_calls: [{ id: 'call_ok', name: 'bash', args: { command: 'echo hs-allowed', description: 'echo' } }] } },
     { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'bash', args: { command: 'echo DENYME', description: 'echo' } }] } },
     { when: { after_tool: 'call_deny' }, reply: { text: 'done' } },
   ];

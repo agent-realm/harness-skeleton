@@ -33,3 +33,5 @@ sh examples/08-full-spec/run.sh
 
 The format of each item is in [the spec reference](../../docs/reference/spec-format.md), and the
 design behind it in [the design note](../../docs/design/skeleton-v0.2-2026-10-22.md) §5.
+
+Next: [09-opencode-launch](../09-opencode-launch/), the same steps on OpenCode and pi.

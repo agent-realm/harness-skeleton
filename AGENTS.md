@@ -10,7 +10,8 @@ working on this repo, and how to install and deploy what it ships.
   plugins, hooks, permissions, status line, agents, sessions.
 - **Adapters**, one per harness, that map the skeleton to and from that harness's native
   layout. `hs` (`bin/hs.js`, `src/`) is the reference adapter, being built one milestone at a
-  time; its first driver is Claude Code.
+  time. Its drivers are Claude Code, Codex, OpenCode (the 2.x line) and pi (the 1.5 line), one
+  directory each under `src/drivers/`, each with its facts in `descriptor.js`.
 - **The session adapters**, `packages/harness-session-adapters/` (`@agent-realm/harness-session-adapters`): one
   reader per harness for the sessions contract v0 (`describe`, `list`, `read`, `derive`), with
   the one `host` and `harness_path` implementation. **Maintained with memhouse**: changes there
@@ -119,7 +120,7 @@ git clone https://github.com/agent-realm/harness-skeleton
 cd harness-skeleton
 npm ci --ignore-scripts        # one dependency, smol-toml, pinned in package-lock.json
 npm test                       # unit tests of hs and every package; starts no harness
-node bin/hs.js describe --harness claude-code --pretty
+node bin/hs.js describe --harness claude-code --pretty   # or codex, opencode, pi
 ```
 
 - **The CLI:** `bin/hs.js`, or `npm link` for an `hs` on PATH. A tool calls it with one `hs/0.2`
@@ -128,6 +129,8 @@ node bin/hs.js describe --harness claude-code --pretty
   `@agent-realm/scripted-model` are npm workspaces. Another project depends on the session
   adapters from npm (`npm install @agent-realm/harness-session-adapters`), and on the other two
   through a workspace or a `file:` path to this checkout.
+- **Per harness:** what `hs` does with OpenCode and pi, from the data folder to strict isolation:
+  [`docs/guides/opencode.md`](docs/guides/opencode.md), [`docs/guides/pi.md`](docs/guides/pi.md).
 - **Against a real harness:** point `--folder` at a data folder you own. `observe`, `validate`,
   `launch-spec` and the `sessions.*` operations never write it. `plan` writes nothing, and
   `apply` writes only under a receipt. Try writes on a scratch folder first, as the

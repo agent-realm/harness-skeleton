@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "notes-kit",
+  "version": "1.0.0",
+  "description": "Notes in the team's format, and a server that keeps them."
+}

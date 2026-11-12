@@ -122,18 +122,22 @@ Guide: [run a conformance check](../guides/run-a-conformance-check.md).
 
 ## What is built today
 
-| | Claude Code | Codex | OpenCode, pi |
-|---|---|---|---|
-| Read the folder: `describe`, `observe --state` | yes | yes | designed |
-| Drift: `observe` | yes | not yet | designed |
-| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills | model roles, endpoint, login, MCP servers, hooks | designed |
-| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention | skills | designed |
-| Sessions: `sessions.*` | yes | yes | OpenCode yes, pi no |
+| | Claude Code | Codex | OpenCode | pi |
+|---|---|---|---|---|
+| Read the folder: `describe`, `observe --state` | yes | yes | yes (2.x) | yes (1.5) |
+| Drift: `observe` | yes | not yet | not yet | designed |
+| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, hooks (six events), skills, `AGENTS.md` (a system-prompt append), Agent Plugins packages; the session's directory, given `--cwd` |
+| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | primary model, MCP servers, skills, Agent Plugins packages |
+| Strict isolation: `isolation = "strict"` | refused, naming each path | refused, naming each path | yes | yes |
+| Sessions: `sessions.*` | yes | yes | yes | no |
 
 - A Codex skill is refused at launch, because Codex has no skill root a launch can add. Deliver it
   into the folder instead. Codex has no custom status line.
-- Instructions (`AGENTS.md`), agents, commands, permissions and plugins are designed and not
-  delivered yet. `reconcile` is designed for every harness.
+- `AGENTS.md` is delivered at launch on OpenCode and pi. Agents, commands and permissions are
+  designed and not delivered yet. `reconcile` is designed for every harness.
+- Agent Plugins packages are delivered on Claude Code, Codex and pi, each its own way; see the
+  [README](../../README.md#what-is-built-today).
+- Per harness: [OpenCode](../guides/opencode.md) and [pi](../guides/pi.md).
 - The [build plan](../design/build-v0-2026-10-22.md) lists every milestone with its status.
 
 ## What it is not

@@ -59,17 +59,24 @@ That approval is a receipt bound to the plan's digest. Secrets are references
 |---|---|---|---|---|
 | Read the folder: `describe`, `observe --state` | yes | yes | yes (2.x) | yes (1.5) |
 | Drift: `observe` | yes | not yet | not yet | designed |
-| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, hooks (six events), skills, `AGENTS.md` (a system-prompt append) |
-| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | primary model, MCP servers, skills |
+| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, hooks (six events), skills, `AGENTS.md` (a system-prompt append), Agent Plugins packages; the session's directory, given `--cwd` |
+| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | primary model, MCP servers, skills, Agent Plugins packages |
+| Strict isolation: `isolation = "strict"` | refused, naming each path | refused, naming each path | yes | yes |
 | Sessions: `sessions.*` | yes | yes | yes | no |
 
-Instructions (`AGENTS.md`, except at launch on OpenCode), agents, commands and permissions are designed and not delivered yet,
-and neither is the `reconcile` mode for the user's own folder. Plugins in the
-[Agent Plugins](https://agent-plugins.org/specification) format are delivered on Claude Code, at launch
-and into the folder, and on Codex into the folder, enabled by each launch. Claude Code's own plugin
-format is delivered whole on Claude Code, at launch and into the folder; the other native plugin
-formats are not yet built. Twenty-four conformance
-checks pass on real harnesses; no version range is certified yet.
+Instructions (`AGENTS.md`) are delivered at launch on OpenCode and pi. Agents, commands and
+permissions are designed and not delivered yet, and neither is the `reconcile` mode for the user's
+own folder.
+
+Plugins in the [Agent Plugins](https://agent-plugins.org/specification) format are delivered on
+three harnesses:
+- on Claude Code, at launch and into the folder;
+- on Codex, into the folder, enabled by each launch;
+- on pi, at launch and into the folder, translated into a pi package.
+
+Claude Code's own plugin format is delivered whole on Claude Code, and refused, with the reason, on
+Codex and pi. The other native plugin formats are not yet built. Twenty-eight conformance checks
+pass on real harnesses; no version range is certified yet.
 
 ## What it is not
 
@@ -88,6 +95,8 @@ checks pass on real harnesses; no version range is certified yet.
 - [`docs/concepts/how-it-works.md`](docs/concepts/how-it-works.md): the parts and how they fit, in
   five diagrams.
 - [`examples/`](examples/): from `describe` to a full spec, each runnable.
+- [`docs/guides/opencode.md`](docs/guides/opencode.md) and [`docs/guides/pi.md`](docs/guides/pi.md):
+  what `hs` does with each of those harnesses, from the data folder to strict isolation.
 - [`docs/`](docs/README.md): the guides, the reference and the design notes.
 - [`AGENTS.md`](AGENTS.md): conventions for contributors, and how to install and deploy.
 - [`packages/`](packages/):

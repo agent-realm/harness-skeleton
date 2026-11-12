@@ -23,6 +23,14 @@
 //                   one), then AGENTS.md rewritten with a new marker and a run attached to the service
 //                   without --standalone: whether the service picks up the change without a restart.
 //                   Then `service stop`. Expected: no process left.
+//   driver          hs's own route (milestone 7.2): a layer holding a stdio MCP server (self-contained
+//                   in its directory) and a skill, planned under materialize, refused by `hs apply`
+//                   with a receipt that allows nothing, applied with one, then a start through hs's
+//                   launch for the plain layer. Expected: the plan writes opencode.json's
+//                   mcp.servers.probe, the copy hs-run/mcp.probe and config/opencode/skills/notes; the
+//                   start loads the skill and runs the server from its copy; hs's launch-spec for the
+//                   same layer skips both.
+//   removed         `hs remove`, then a start. Expected: neither the skill nor the server.
 // Names and booleans only. The credential is a dummy; HOME and XDG are scratch.
 
 import { spawnSync } from 'node:child_process';
@@ -141,7 +149,34 @@ try {
   await new Promise((r) => setTimeout(r, 2000));
   const left = benchPids();
 
+  // driver: hs's own plan, apply, and a start through hs's launch for the plain layer.
+  const kit = path.join(b.work, 'kit');
+  put(path.join(kit, 'srv', 'server.mjs'), serverSource('hs_ocp_tool', M.tool));
+  put(path.join(kit, 'skills', 'notes', 'SKILL.md'), `---\nname: notes\ndescription: ${M.skill}\n---\nA bench skill.\n`);
+  put(path.join(kit, 'spec.toml'), ['[spec]', 'name = "kit"', 'version = "1.0.0"', 'format = "0.2"', '',
+    '[mcp.probe]', `exec = ${JSON.stringify(process.execPath)}`, 'args = ["srv/server.mjs"]', `env = { HS_PROBE_OUT = ${JSON.stringify(probeOut)} }`, 'self_contained = true', ''].join('\n'));
+  const dFolder = folderFor('driver');
+  const common = ['--harness', 'opencode', '--folder', dFolder, '--bin', oc];
+  const plan = b.hs('plan', [...common, '--layer', kit, '--owner', 'tier1', '--mode', 'materialize']);
+  const planFile = path.join(b.work, 'plan.json');
+  put(planFile, plan);
+  const nothing = path.join(b.work, 'receipt-nothing.json');
+  put(nothing, { format: 'hs-receipt/0.2', plan_digest: plan.digest, allows: [], by: 'tier1-bench' });
+  const refusedApply = b.hsCall('apply', [...common, '--plan', planFile, '--receipt', nothing]);
+  const receiptFile = path.join(b.work, 'receipt.json');
+  put(receiptFile, { format: 'hs-receipt/0.2', plan_digest: plan.digest, allows: plan.operations.filter((o) => o.risk.length).map((o) => o.id), by: 'tier1-bench', at: new Date().toISOString() });
+  b.hs('apply', [...common, '--plan', planFile, '--receipt', receiptFile]);
+  const driverOps = plan.operations.map((o) => o.address_id).sort();
+  const driver = await run(dFolder);
+  const driverSpec = b.hs('launch-spec', [...common, '--layer', kit, '--headless']);
+  b.hs('remove', [...common, '--owner', 'tier1']);
+  const removed = await run(dFolder);
+
   const checks = {
+    'driver: the plan writes mcp.servers.probe, its copy in hs-run and the skill, and apply refuses a receipt that allows nothing': JSON.stringify(driverOps) === JSON.stringify(['config/opencode/opencode.json#mcp/servers/probe', 'config/opencode/skills/notes', 'hs-run/mcp.probe'].sort()) && !refusedApply.ok && refusedApply.error.code === 'receipt_required',
+    'driver: a start through hs\'s launch loads the skill and runs the server from its copy': has(driver, M.skill) && driver.probe?.started === true && has(driver, M.tool),
+    'driver: hs launch-spec for the same layer skips both': ['mcp.probe', 'skill.notes'].every((id) => driverSpec.skipped.some((x) => x.item === id)) && driverSpec.env_set.OPENCODE_CONFIG_CONTENT === undefined,
+    'removed: after hs remove a start has neither': removed.seen.ENDPOINT.length > 0 && !has(removed, M.skill) && removed.probe === null,
     'control: hs\'s launch for a plain layer reaches the model, with no marker (premise)': control.seen.ENDPOINT.length > 0 && !Object.values(M).some((m) => has(control, m)),
     'byhand: the folder\'s config/opencode/ gives a start its skill, AGENTS.md and MCP server, under hs\'s inline layer (positive control)': has(byhand, M.skill) && has(byhand, M.agents) && byhand.probe?.started === true,
     'service_reload: the service starts, and after `service stop` no process with the bench\'s environment is left': svcStart === 0 && svcStop === 0 && left.length === 0,
@@ -157,7 +192,7 @@ try {
     check: 'tier 1: what a data folder\'s own config directory gives an OpenCode start, and how OpenCode treats it (design note v0.2 §7.4, §7.5)',
     at: new Date().toISOString(),
     evidence: evidence(b, oc),
-    runs: { control: shape(control), byhand: shape(byhand), jsonc: shape(jsonc), attached_before: shape(attachedBefore), attached_after: shape(attachedAfter) },
+    runs: { control: shape(control), byhand: shape(byhand), jsonc: shape(jsonc), attached_before: shape(attachedBefore), attached_after: shape(attachedAfter), driver: shape(driver), removed: shape(removed) },
     recorded,
     checks,
     verdict,

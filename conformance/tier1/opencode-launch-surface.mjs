@@ -38,7 +38,10 @@
 //                --standalone, and whether a launch with the 2.x config reaches the model.
 // Recorded for every run: which canaries reach a request (~/.claude/CLAUDE.md, ~/.agents/skills,
 // ~/.opencode/skills, an AGENTS.md above the working directory), and what OpenCode writes in the
-// folder, in OPENCODE_CONFIG_DIR and in HOME (names only). The credential is a dummy.
+// folder, in OPENCODE_CONFIG_DIR and in HOME (names only). 2.x has no switch for ~/.agents/skills:
+// its docs list it as a "Global compatibility" skill root, and the server reads only
+// OPENCODE_DISABLE_CLAUDE_CODE(_SKILLS), which gates the .claude roots (server-process.ts, v2.2.7).
+// The credential is a dummy.
 
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -183,7 +186,7 @@ try {
   }
 
   const checks = {
-    'control: the provider and model through OPENCODE_CONFIG_CONTENT reach the model, with the dummy key (premise)': control.seen.ENDPOINT.length > 0 && models(control).every((m) => m === 'bench-primary') && control.seen.ENDPOINT.every((q) => q.credential === 'bench-dummy'),
+    'control: the provider and model through OPENCODE_CONFIG_CONTENT reach the model, with the dummy key (premise)': control.seen.ENDPOINT.length > 0 && models(control).every((m) => m === 'bench-primary') && control.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
     'config_dir: OPENCODE_CONFIG_DIR\'s AGENTS.md and skill reach a request': has(dir, M.agents) && has(dir, M.skill),
     'mcp: a local server in OPENCODE_CONFIG_CONTENT starts': mcp.probe?.started === true,
     'service: started in the folder with its own config': svcStart.exit === 0,

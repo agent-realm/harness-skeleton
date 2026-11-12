@@ -29,7 +29,8 @@ const pi = guard('agent-plugins-pi.mjs', '--pi');
 const PROMPT = 'tier 1 agent plugins on pi check';
 const M = { skill: 'hs-tier1-app-skill-6d20', tool: 'hs-tier1-app-tool-a3f9' };
 const NAME = 'bench-kit';
-const TOOL = `mcp__${NAME}__probe__ping`;
+// pi names a server's tools mcp__<id>__<tool>, a - in the id made _ (measured here).
+const TOOL = `mcp__${NAME.replace(/-/g, '_')}__probe__ping`;
 const b = bench('hs-tier1-agent-plugins-pi-');
 
 const put = (file, content) => {

@@ -147,7 +147,9 @@ test('pi launch refuses, by name: an sse server, a server named like the spec\'s
     assert.equal(r.error.code, 'item_unsupported');
     assert.match(r.error.message, /server "old": pi supports streamable HTTP, not SSE/);
     r = s.call('launch-spec', { layers: [kit(s.root, { layerName: 'clash', extra: '\n[mcp.notes-kit__local]\nexec = "/bin/true"\n' })], headless: true });
-    assert.match(r.error.message, /its server notes-kit__local has the name of the spec's mcp\.notes-kit__local/);
+    assert.match(r.error.message, /its server notes-kit__local has the tools' names of the spec's mcp\.notes-kit__local/);
+    r = s.call('launch-spec', { layers: [kit(s.root, { layerName: 'clash-ns', extra: '\n[mcp.notes_kit__local]\nexec = "/bin/true"\n' })], headless: true });
+    assert.match(r.error.message, /has the tools' names of the spec's mcp\.notes_kit__local \(pi makes a - in a server id _\)/, 'a - and a _ name the same tools');
     write(s.folder, 'mcp.json', JSON.stringify({ mcpServers: { 'notes-kit__remote': { command: '/bin/true' } } }));
     r = s.call('launch-spec', { layers: [kit(s.root, { layerName: 'folder-clash' })], headless: true });
     assert.match(r.error.message, /has the name of one the folder's mcp\.json defines/);

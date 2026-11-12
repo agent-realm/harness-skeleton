@@ -74,6 +74,9 @@ export default Object.freeze({
         // A package's server, registered for the session under the plugin's name, so two packages,
         // or a package and the spec, never share one [P15:mcp: a server id names its tools].
         server_id: (plugin, server) => `${plugin}__${server}`,
+        // pi names a server's tools mcp__<id>__<tool> with a - in the id made _ (tier 1,
+        // agent-plugins-pi, 1.5.2), so two ids that differ only there share their tools' names.
+        tool_namespace: (id) => id.replace(/-/g, '_'),
         unsupported_types: { sse: 'pi supports streamable HTTP, not SSE [P15:mcp]' },
         exposure: 'direct',
         flag: '-e',

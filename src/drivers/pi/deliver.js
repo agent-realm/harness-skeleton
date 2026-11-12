@@ -293,13 +293,15 @@ function refuseFolderExtras(folder, descriptor, planned, plannedPackages = []) {
 // spec server's or one the folder's mcp.json defines: pi would run the folder's in its place
 // (tier 1, pi-launch-surface), or two registrations would share one name.
 function refuseServerIds(item, ids, resolved, folder, descriptor) {
-  const spec = new Set(resolved.items.filter((i) => i.kind === 'mcp').map((i) => i.id.slice('mcp.'.length)));
+  // Compared as pi names their tools, where a - is _ (descriptor, translation.tool_namespace).
+  const ns = descriptor.plugins[AGENT_PLUGINS].translation.tool_namespace;
+  const spec = new Map(resolved.items.filter((i) => i.kind === 'mcp').map((i) => [ns(i.id.slice('mcp.'.length)), i.id]));
   const r = readDoc(path.join(folder, descriptor.launch.mcp.folder_file));
   if (r.blocked) throw new HsError('bad_request', `${descriptor.launch.mcp.folder_file}: ${r.blocked}; whether it defines a server under ${item.id}'s names cannot be told`, [item.id]);
-  const own = new Set(r.doc?.mcpServers && typeof r.doc.mcpServers === 'object' ? Object.keys(r.doc.mcpServers) : []);
+  const own = new Set((r.doc?.mcpServers && typeof r.doc.mcpServers === 'object' ? Object.keys(r.doc.mcpServers) : []).map(ns));
   for (const id of ids) {
-    if (spec.has(id)) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of the spec's mcp.${id}; rename one`, [item.id]);
-    if (own.has(id)) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of one the folder's ${descriptor.launch.mcp.folder_file} defines, which pi starts instead`, [item.id]);
+    if (spec.has(ns(id))) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the tools' names of the spec's ${spec.get(ns(id))} (pi makes a - in a server id _); rename one`, [item.id]);
+    if (own.has(ns(id))) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of one the folder's ${descriptor.launch.mcp.folder_file} defines (pi makes a - in a server id _ in its tools' names), which pi starts instead`, [item.id]);
   }
 }
 

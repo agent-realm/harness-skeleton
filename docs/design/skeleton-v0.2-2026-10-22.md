@@ -1008,7 +1008,16 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - `ctx.permission.hook("evaluate")` setting `effect` to `deny` blocks the call, so its command never runs, and the reason reaches the model; the allowed call runs. With no plugin, both run.
   - Recorded only: the fields of each hook's event (`tool.execute.before`: `agent`, `id`, `input`, `messageID`, `sessionID`, `tool`; `permission.evaluate`: `action`, `agent`, `effect`, `metadata`, `resources`, `sessionID`, `source`; `shell.create.before`: `command`, `cwd`, `env`, `shell`, `timeout`), and that `session.prompt` and `tool.execute.after` fire.
 
-  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks).*
+  Ahead of the bridge's code (milestone 7.3), with the network blocked, a `throw` run. Its plain `.js` plugin's `execute.before` awaits an async `child_process.spawn`, and throws for the command it denies. In 2.2.7, "Only tool execute.before may fail: a Tool.Error rejects the call before it runs" (source v2.2.7, `packages/core/src/plugin/hooks.ts`). The promise API turns any rejection there into a `Tool.Error` with its message (`packages/plugin/src/promise/adapter.ts`). Judged:
+  - a throw in `execute.before` blocks the call, so its command never runs, and its message reaches the model; the allowed call runs;
+  - a hook that awaits an async spawn gets the exit code, stdout and stderr;
+  - a hook whose process runs past a 2 s limit, in its own process group with a descendant holding its pipes, kills the group there and throws at once. The session goes on to its answer, and no process is left. Waiting for the pipes to close instead held the hook for the descendant's whole run (measured, 30 s).
+
+  Also recorded:
+  - `ctx.location.directory` names the run's directory, and so does the plugin's own working directory.
+  - With Code Mode off, an MCP server `probe`'s tool `ping` is offered and reaches the hook as `probe_ping`. With Code Mode on (the default), only `execute` is offered.
+
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.

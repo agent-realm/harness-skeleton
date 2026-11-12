@@ -670,6 +670,23 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
   - the endpoint, the login, `AGENTS.md` and hooks stay launch only;
   - a launch skips what a plan installed at this content. A running background service picks up a change without a restart (measured), so a plan needs no quiet folder.
 
+  **On pi** (milestone 8.1, the 1.5 line), a launch writes nothing into the folder, pi's one root, `PI_CODING_AGENT_DIR`. It carries:
+  - **One extension** hs generates in the launch's temp dir, passed with `-e`, which pi loads and awaits before startup continues. It registers:
+    - the endpoint's provider, `hs`, on the `openai-completions` API, with its key read from `$HS_ENDPOINT_KEY`, which the caller fills from the credential reference; the launch names it with `--provider hs --model <primary>`;
+    - the spec's MCP servers, for the session only, each with an exposure (`direct` unless the spec gives another: with none pi offers only `codemode`), a ref as `${HS_REF_<ref>}` in `env` or `headers`.
+
+    Its configuration is `JSON.stringify` of one whole object in place of a marker, so no spec value, quotes, backticks, `*/` and line breaks included, is ever code.
+  - **Skills** with `--skill`, one per skill, copied into the temp dir.
+  - **`AGENTS.md`** with `--append-system-prompt`, the layers concatenated. That is a system-prompt append, not a context file; the folder's own context files still load.
+  - **With an endpoint:** `PI_OFFLINE`, `PI_SKIP_VERSION_CHECK` and `PI_TELEMETRY=0`, so pi's own network stays off, and every other provider key variable unset (measured: no host asked for, and no connection but loopback).
+  - **Refused, with the reason:**
+    - spec text that pi would expand or run: a `$` or a leading `!` in the endpoint's `base_url`, a model id, an MCP server's env names and values, header names and values, and url. pi runs a leading `!command` and expands `$NAME` and `${NAME}` in a provider's key and headers and a server's env and headers (measured); the base_url and model ids are not measured, and refused to be safe. The finished configuration is walked again, keys and values, with only hs's own names allowed. A server's command and arguments are passed as written (measured), so a shell string's own `$1` stays the shell's;
+    - a leading `~` in a server's command, arguments or working directory, which pi takes as the home directory;
+    - a server named like one in the folder's `mcp.json`, which pi starts instead of the launch's (measured);
+    - an SSE server (pi supports streamable HTTP), permissions (pi has none), and a required status line;
+    - an endpoint launch while the folder holds a login. pi writes an empty `auth.json` on every start, 2 bytes, mode 600 (measured, by its size and mode only), so a regular file of exactly that size holds no login, told from its metadata. Any other size, or a link, counts as one, and the file is never opened.
+  - Hooks come in milestone 8.2, and `materialize` in 8.3.
+
   When the spec's endpoints offer no wire the harness speaks, the request is refused as `gateway_required`, naming the wire. Model roles are carried as follows:
   - Claude Code: `--model`, and `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`, `CLAUDE_CODE_EFFORT_LEVEL` [CC §5, §19];
   - Codex: `-m`, and `-c agents.default_subagent_model` and `-c model_reasoning_effort` [CX §5]. Codex has no small-model role, so that one is skipped and named.
@@ -851,6 +868,11 @@ Since milestone 5 (`build-v0-2026-10-22.md`):
 - **Known limits**: escapes a launch cannot close are named in `describe` (`known_limits`), and `observe --state` reports each one whose path exists on the machine. On OpenCode 2.x (milestone 7.1):
   - `~/.agents/skills`: a "Global compatibility" skill root with no switch; its skills reach every launch, measured (section 10);
   - `~/.opencode/`: when it exists, OpenCode reads it as a config directory and writes a `.gitignore` into it, outside the data folder, measured.
+
+  On pi 1.5 (milestone 8.1):
+  - `~/.agents/skills`, read from `$HOME`; its skills reach every launch, measured;
+  - context files, `AGENTS.md` and `CLAUDE.md`, in the working directory and every parent, which load with no trust, measured;
+  - the project's `.pi/`, trust-gated. A launch leaves the decision to pi: the closest saved decision in the folder's `trust.json`, else its `defaultProjectTrust`. `observe --state` reports the default and the counts of saved decisions, and with `--cwd` whether a trusted project `.pi/` is there, never a path.
 
 ## 9. State and capture
 
@@ -1078,7 +1100,15 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
     - an `-e` extension that does not parse stops pi: exit 1, no request;
     - a `tool_call` handler that blocks, or throws, keeps its bash command from running, and both reasons reach the model.
 
-  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (twelve checks).*
+  Since milestone 8.1, hs's own launch: `hs launch-spec --harness pi` for a spec with an endpoint, a model, a stdio MCP server whose ref reaches its env, a skill and an `AGENTS.md`, run as a caller runs it. Judged:
+  - pi writes an empty login store, `auth.json`, 2 bytes and mode 600, on every start;
+  - the launch is refused without a receipt, and leaves in the folder only what pi itself writes (`sessions/`, the empty `auth.json` and `models-store.json`);
+  - the model is reached with the dummy key, and no host is asked for;
+  - the skill and `AGENTS.md` reach a request;
+  - the MCP server starts with its ref expanded, and its tool is offered;
+  - a second launch in the same folder is not refused, and reaches the model.
+
+  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (twelve checks); again with hs's own launch (eighteen checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1208,6 +1238,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | pi, milestone 8.1: the launch writes nothing into the folder; one generated extension registers the endpoint's provider and the MCP servers, its configuration JSON of one whole object; skills by `--skill`, `AGENTS.md` as a system-prompt append. Spec text with `$` or a leading `!` is refused in every carrier pi expands or runs, a leading `~` in a server's command, arguments or cwd too, and a server named like the folder's. pi's empty `auth.json` (2 bytes) is told from a login by its size alone (sections 7.5, 8, 10) |
 | 2026-11-12 | pi: the driver targets the 1.5 line (1.5.2 up to 1.6), widened one minor at a time with a tier 1 run each; 0.x is out of range. A launch writes nothing into the folder: one extension hs generates carries the endpoint's provider and the MCP servers (and later the hooks). Spec text pi could interpolate or execute (`$`, `${…}`, a leading `!`) is refused in every carrier before launch. Project trust is left to pi and named as a known limit (section 10) |
 | 2026-11-12 | OpenCode: the hooks bridge writes a readiness marker into the launch's temp dir once its hooks are registered, and `launch-spec` names it (`readiness`), so a bridge OpenCode skips is visible, not silent. A tool call that names no tool fails closed under a guard with a matcher (sections 7.5, 10) |
 | 2026-11-12 | The hook shim runs a hook's process in a process group of its own, and kills the whole group at the limit: before, only the direct process was killed, and a command a shell forked outlived the decision (section 7.5) |

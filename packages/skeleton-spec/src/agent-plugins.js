@@ -281,6 +281,34 @@ export function literalText(mcp) {
   return out;
 }
 
+// Text a harness would change that the format keeps as written [AP §9.2], for a route that names
+// where its harness expands (`expands`): in `dollar` fields, a `$` (the two placeholders aside, which
+// the translation replaces) or a leading `!`, which the harness expands from its environment or runs
+// as a command; in `tilde` fields, a leading `~`, which it takes as the home directory. Returns
+// [{ server, where, what }], never the text.
+export function expandedText(mcp, expands) {
+  const out = [];
+  if (!isObject(mcp?.mcpServers) || !expands) return out;
+  const rest = (v) => PLACEHOLDERS.reduce((s, p) => s.replaceAll(p, ''), v);
+  const dollar = new Set(expands.dollar ?? []);
+  const tilde = new Set(expands.tilde ?? []);
+  for (const [id, s] of Object.entries(mcp.mcpServers)) {
+    if (!isObject(s)) continue;
+    const fields = [
+      ['command', 'command', s.command], ['url', 'url', s.url], ['cwd', 'cwd', typeof s.cwd === 'string' ? rest(s.cwd) : s.cwd],
+      ...(isObject(s.headers) ? Object.entries(s.headers).flatMap(([n, v]) => [['headers', 'a header name', n], ['headers', 'a header value', v]]) : []),
+      ...(Array.isArray(s.args) ? s.args.map((a, i) => ['args', `args[${i}]`, a]) : []),
+      ...(isObject(s.env) ? Object.entries(s.env).flatMap(([n, v]) => [['env', 'an env name', n], ['env', `env ${JSON.stringify(n)}`, typeof v === 'string' ? rest(v) : v]]) : []),
+    ];
+    for (const [field, where, v] of fields) {
+      if (typeof v !== 'string') continue;
+      if (dollar.has(field) && (v.includes('$') || v.trimStart().startsWith('!'))) out.push({ server: id, where, what: 'dollar' });
+      else if (tilde.has(field) && v.startsWith('~')) out.push({ server: id, where, what: 'tilde' });
+    }
+  }
+  return out;
+}
+
 // The stdio servers whose working directory is not the plugin root (§5.7): a route that can only
 // start a server in the root cannot keep them.
 export function cwdBeyondRoot(mcp) {

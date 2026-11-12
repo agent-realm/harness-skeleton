@@ -7,7 +7,7 @@ import path from 'node:path';
 import { processProblems } from './process-checks.js';
 import { resolve } from './layers.js';
 import { readJson, readText } from './files.js';
-import { AGENT_PLUGINS, cwdBeyondRoot, literalText, readPackage } from './agent-plugins.js';
+import { AGENT_PLUGINS, cwdBeyondRoot, expandedText, literalText, readPackage } from './agent-plugins.js';
 
 // Reference schemes (§1 `reference`).
 const REFERENCE = /^(keychain:[^\s]+|op:\/\/[^\s]+|age:[^\s]+|env:[A-Za-z_][A-Za-z0-9_]*|file:\/[^\s]*)$/;
@@ -341,6 +341,11 @@ export function validate(resolved, descriptor) {
       for (const { server, where } of literalText(pkg.mcp)) {
         push({ code: 'plugin_placeholder_literal', ...at, message: `${pl.id}: server ${JSON.stringify(server)}: ${where} holds \${…} text the format keeps literal [AP §9.2], which ${H} would expand from its environment (${route.literal_source}); the package cannot be kept as the format says on ${H}` });
       }
+    }
+    // Where the harness changes text the format keeps as written (route.expands): pi expands $ and
+    // runs a leading ! in env, headers and url, and takes a leading ~ as the home directory.
+    for (const { server, where, what } of expandedText(pkg.mcp, route.expands)) {
+      push({ code: 'plugin_placeholder_literal', ...at, message: `${pl.id}: server ${JSON.stringify(server)}: ${where} ${what === 'dollar' ? 'holds $ or a leading !, which' : 'starts with ~, which'} ${H} would ${what === 'dollar' ? 'expand from its environment or run as a command' : 'take as the home directory'} (${route.expands.source}); the format keeps it as written [AP §9.2], so the package cannot be kept as the format says on ${H}` });
     }
     // A path the format never discovers [AP §6.1, §8] that this harness acts on: the package would
     // not stay as the format says, so it is refused, by path. Matched in any letter case: on a

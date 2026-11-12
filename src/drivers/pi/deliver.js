@@ -11,11 +11,17 @@ import { HsError } from '../../protocol.js';
 import { hookMatcher } from '../../hooks.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks } from '../../process.js';
-import { handlers, readDoc, treeLink } from '../../native.js';
+import { generatedDigest, handlers, readDoc, treeLink } from '../../native.js';
 import { persistedProcess } from '../../persist.js';
 import { digestOf, readLedger } from '../../records.js';
 import { digestPath } from '../../spec/layers.js';
 import { extensionSource } from './extension.js';
+import { heldElsewhere, installedPackage, persistedPackage, translatedPackage } from './plugins.js';
+import { AGENT_PLUGINS } from '../../spec/agent-plugins.js';
+
+// pi would expand $ or run a leading ! in a path a plugin's server gets in its env (descriptor,
+// plugins['agent-plugins'].expands).
+const unsafePlace = (p) => p.includes('$') || p.trimStart().startsWith('!');
 
 const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const SHIM = fileURLToPath(new URL('../../shim/pi.js', import.meta.url));
@@ -88,8 +94,37 @@ export function deliverables(resolved, { descriptor, mode, folder, home, platfor
       }
       jsonKey(item, P.mcp_file, p.address.key, p.value, p.risk, p.notes.join('; '));
     } else if (item.kind === 'hook') out.launch_only.push({ item: item.id, via: `launch-spec: the launch extension (${L.extension.flag}) runs it on pi's ${L.bridge.on[item.value.event]}, through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
+    else if (item.kind === 'plugin' && item.value?.format === AGENT_PLUGINS) plugin(item);
     else out.not_implemented.push(s.label ?? item.id);
   }
+  // An Agent Plugins package (§5.7), translated into a pi package: at launch with -e; under
+  // materialize the generated tree in hs-run/ and its member of settings.json `packages`, both
+  // carrying the package's risk.
+  function plugin(item) {
+    const R = descriptor.plugins[AGENT_PLUGINS];
+    if (!materialize) {
+      out.launch_only.push({ item: item.id, via: `launch-spec: ${R.translation.flag} <temp>/${R.translation.tree_prefix}${item.id.slice('plugin.'.length)}, translated into a pi package, under a launch receipt; not persisted under overlay` });
+      return;
+    }
+    let p;
+    try {
+      p = persistedPackage(item, resolved.plugins.find((x) => x.id === item.id), folder, descriptor);
+      if (unsafePlace(folder)) throw new HsError('item_unsupported', `${item.id}: the folder's path holds $ or a leading !, which pi would expand or run in the plugin's server env`, [item.id]);
+      refuseServerIds(item, p.servers, resolved, folder, descriptor);
+    } catch (e) {
+      refusedBy(item, e);
+      return;
+    }
+    const risk = [...new Set(p.risks.map((r) => r.risk))];
+    out.deliverables.push({
+      item: item.id, handler: 'tree', address: { path: p.address }, address_id: p.address,
+      source: p.generated, source_sha256: generatedDigest(p.generated), source_is_dir: true, risk,
+      note: `${p.via}; ${R.data.dir.replace('<name>', item.id.slice('plugin.'.length))} holds its servers' data, ${R.data.kept_on_remove}`,
+    });
+    const e = p.element;
+    out.deliverables.push({ item: item.id, handler: 'json-element', address: { file: e.file, key: e.key, id: e.id }, address_id: `${e.file}#${e.key}[${e.id}]`, value: e.value, risk, note: `a member of ${e.file} ${e.key}, which a start loads the package from (tier 1, pi-plugin-surface)` });
+  }
+
   for (const f of resolved.files) {
     if (f.kind !== 'skill') {
       out.not_implemented.push(f.id);
@@ -186,7 +221,11 @@ function sorted(item, descriptor) {
     return { skip: L.statusline.reason };
   }
   if (item.kind === 'hook') return hookRoute(item, descriptor);
-  if (item.kind === 'plugin') return { label: `${item.id} (format ${item.value?.format})` };
+  if (item.kind === 'plugin') {
+    const refused = descriptor.plugin_formats_refused?.[item.value?.format];
+    if (refused) return { refuse: `${item.id}: format ${item.value.format}: ${refused.reason}` };
+    return item.value?.format === AGENT_PLUGINS ? {} : { label: `${item.id} (format ${item.value?.format})` };
+  }
   return {};
 }
 
@@ -211,7 +250,7 @@ function hookRoute(item, descriptor) {
 // Under strict, the folder content no switch keeps out (descriptor, isolation.strict.refuses):
 // instruction files, extensions and package lists, and servers no plan of this spec installed. Names
 // and stat only, and the folder's settings.json and mcp.json through the safe reader, keys only.
-function refuseFolderExtras(folder, descriptor, planned) {
+function refuseFolderExtras(folder, descriptor, planned, plannedPackages = []) {
   const R = descriptor.isolation.strict.refuses;
   const found = [];
   for (const f of R.files) {
@@ -235,7 +274,9 @@ function refuseFolderExtras(folder, descriptor, planned) {
   if (settings.blocked) found.push(`${descriptor.persist.settings_file} (${settings.blocked}; whether it lists extensions or packages cannot be told)`);
   for (const k of R.settings_keys) {
     const v = settings.doc?.[k];
-    if (Array.isArray(v) ? v.length : v !== undefined && v !== null) found.push(`${descriptor.persist.settings_file}#${k}`);
+    // A `packages` member a plan of this spec installed (a translated plugin) is the spec's own.
+    const left = Array.isArray(v) ? v.filter((m) => !(k === descriptor.plugins[AGENT_PLUGINS].persist.packages_key && plannedPackages.includes(m))) : v;
+    if (Array.isArray(left) ? left.length : left !== undefined && left !== null) found.push(`${descriptor.persist.settings_file}#${k}`);
   }
   const mcp = readDoc(path.join(folder, descriptor.launch.mcp.folder_file));
   if (mcp.blocked) found.push(`${descriptor.launch.mcp.folder_file} (${mcp.blocked}; its servers cannot be told)`);
@@ -245,6 +286,20 @@ function refuseFolderExtras(folder, descriptor, planned) {
   }
   if (found.length) {
     throw new HsError('isolation_unmet', `isolation = "strict": the folder holds ${found.join('; ')}, which pi would load and no switch keeps out without dropping hs's own extension; remove them from the folder, or launch without strict isolation`, found);
+  }
+}
+
+// A plugin's server ids (descriptor, plugins['agent-plugins'].translation.server_id) must not be a
+// spec server's or one the folder's mcp.json defines: pi would run the folder's in its place
+// (tier 1, pi-launch-surface), or two registrations would share one name.
+function refuseServerIds(item, ids, resolved, folder, descriptor) {
+  const spec = new Set(resolved.items.filter((i) => i.kind === 'mcp').map((i) => i.id.slice('mcp.'.length)));
+  const r = readDoc(path.join(folder, descriptor.launch.mcp.folder_file));
+  if (r.blocked) throw new HsError('bad_request', `${descriptor.launch.mcp.folder_file}: ${r.blocked}; whether it defines a server under ${item.id}'s names cannot be told`, [item.id]);
+  const own = new Set(r.doc?.mcpServers && typeof r.doc.mcpServers === 'object' ? Object.keys(r.doc.mcpServers) : []);
+  for (const id of ids) {
+    if (spec.has(id)) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of the spec's mcp.${id}; rename one`, [item.id]);
+    if (own.has(id)) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of one the folder's ${descriptor.launch.mcp.folder_file} defines, which pi starts instead`, [item.id]);
   }
 }
 
@@ -290,6 +345,7 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
+    else if (item.kind === 'plugin' && item.value?.format === AGENT_PLUGINS) continue; // below
     else out.not_implemented.push(s.label ?? item.id);
   }
   if (resolved.permissions.length) throw new HsError('item_unsupported', `permissions: ${L.permissions.reason}`, ['permissions']);
@@ -510,6 +566,44 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
   }
   if (entries.length) out.trees.push({ name: L.skills.tree, role: L.skills.tree, files: [], entries });
 
+  // Plugins (§5.7): each Agent Plugins package translated into a pi package in the temp dir, passed
+  // with -e, under the launch receipt. One a plan installed at this content is the folder's
+  // settings.json `packages` member, which a start loads; under strict it is named again with -e
+  // from the folder, as a plan-installed skill is. One the folder holds at other content is refused:
+  // its member would load that copy beside this one.
+  const R = descriptor.plugins[AGENT_PLUGINS];
+  const pluginRoles = [];
+  const plannedPackages = [];
+  const installedPlugins = [];
+  let pluginData = false;
+  for (const item of resolved.items.filter((i) => i.kind === 'plugin' && i.value?.format === AGENT_PLUGINS)) {
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    if (installedPackage(item, bound, folder, descriptor)) {
+      const p = persistedPackage(item, bound, folder, descriptor);
+      plannedPackages.push(p.element.value);
+      if (strict) {
+        installedPlugins.push(path.join(folder, p.address));
+        out.items.push({ item: item.id, via: `${R.translation.flag} <folder>/${p.address}: installed by a plan at this content, and named again under strict isolation; the plan's receipt covered it` });
+      } else out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${p.address} and its member of ${p.element.file} ${p.element.key}); the plan's receipt covered it` });
+      continue;
+    }
+    const held = heldElsewhere(item, bound, folder, descriptor);
+    if (held) throw new HsError('item_unsupported', `${item.id}: the folder holds this plugin at other content (${held}), which a start loads beside this one; plan and apply again, or remove it first`, [item.id]);
+    const t = translatedPackage(item, bound, descriptor);
+    refuseServerIds(item, t.servers, resolved, folder, descriptor);
+    out.trees.push(t.tree);
+    out.risks.push(...t.risks);
+    out.items.push({ item: item.id, via: `${R.translation.flag} <temp>/${t.tree.name}: ${t.via}` });
+    pluginRoles.push(t.tree.role);
+    if (t.stdio) pluginData = true;
+  }
+  if (pluginData) out.unverified.push(`PLUGIN_DATA: ${R.data.at_launch}; a plan keeps it in ${R.data.dir} [AP §9.1]`);
+  if (pluginRoles.length) {
+    out.checkRoot = (root) => {
+      if (unsafePlace(root)) throw new HsError('item_unsupported', `the temp root ${root} holds $ or a leading !, which pi would expand or run in a plugin server's env; point TMPDIR elsewhere`, pluginRoles);
+    };
+  }
+
   // AGENTS.md, concatenated in layer order, each part headed by its layer's name (§5.1), passed as
   // a system-prompt append.
   if (resolved.agents_md.length) {
@@ -519,7 +613,7 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
 
   // Strict (descriptor, isolation.strict): what the switches cannot keep out without dropping hs's
   // own extension is refused when the folder holds it, each by its path.
-  if (strict) refuseFolderExtras(folder, descriptor, mcpItems.filter((i) => installedMcp(i, layerDirs.get(i.layer), folder, descriptor, resolved)).map((i) => i.id.slice('mcp.'.length)));
+  if (strict) refuseFolderExtras(folder, descriptor, mcpItems.filter((i) => installedMcp(i, layerDirs.get(i.layer), folder, descriptor, resolved)).map((i) => i.id.slice('mcp.'.length)), plannedPackages);
   const strictArgv = strict ? descriptor.isolation.strict.argv : [];
 
   // The session's directory (descriptor, launch.session_dir): given the working directory, pi's own
@@ -547,6 +641,8 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
     ...flags,
     ...(extension ? [L.extension.flag, paths[L.extension.role]] : []),
     ...installedSkills.flatMap((p) => [L.skills.flag, p]),
+    ...pluginRoles.flatMap((r) => [R.translation.flag, paths[r]]),
+    ...installedPlugins.flatMap((p) => [R.translation.flag, p]),
     ...skills.flatMap((n) => [L.skills.flag, path.join(paths[L.skills.tree], n)]),
     ...(resolved.agents_md.length ? [L.agents_md.flag, paths[L.agents_md.role]] : []),
   ];

@@ -87,6 +87,9 @@ export function launchSpec(driver, args, opts = {}) {
     if (root === folder || root.startsWith(folder + path.sep)) {
       throw new HsError('write_refused', `the temp root ${root} is inside the data folder; point TMPDIR elsewhere`, [root]);
     }
+    // A driver whose generated files take their paths from where they sit can refuse a temp root
+    // the harness would read as something else (pi: $ or a leading !).
+    if (parts.checkRoot) parts.checkRoot(root);
   }
   const placeholders = Object.fromEntries([...parts.files, ...trees].map((f) => [f.role, `<${f.role}>`]));
   const roleArgv = parts.argv(placeholders);

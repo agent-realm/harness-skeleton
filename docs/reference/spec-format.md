@@ -83,7 +83,9 @@ format = "agent-plugins"
   in `hs-run/` and two `settings.json` keys, so a bare start loads it. On Codex, under `materialize`: a plan
   installs the package in Codex's plugin cache, and each launch through `launch-spec` enables it.
   `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`overlay` on
-  Codex, `claude-plugin` on Codex) a plugin item is refused, by name.
+  Codex, `claude-plugin` on Codex) a plugin item is refused, by name. On Codex, `claude-plugin` is
+  refused with the reason: from a package in Codex's cache only the skills load (its stdio servers do
+  not start, its commands are not migrated, its hooks wait for trust); use the Agent Plugins format.
 
 ### Claude Code's own format
 
@@ -149,9 +151,9 @@ On Codex:
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
 A plugin item outside the routes above is refused by name too: as `not_implemented` where this
-build does not carry it (`claude-plugin` on Codex, or a format no route maps), and as
-`item_unsupported` where the harness cannot (on Codex under `overlay`, or at launch before a plan
-installed it; on Claude Code, at launch while the folder holds the plugin at other content).
+build does not carry it (a format no route maps), and as `item_unsupported` where the harness
+cannot (`claude-plugin` on Codex; on Codex under `overlay`, or at launch before a plan installed
+it; on Claude Code, at launch while the folder holds the plugin at other content).
 
 ## Risks
 

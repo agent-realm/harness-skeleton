@@ -1,0 +1,156 @@
+{
+  "check": "tier 1: what Codex loads from a claude-plugin package in its plugin cache (design note v0.2 §5.7, §12 row 18)",
+  "at": "2026-11-12T10:42:36.617Z",
+  "evidence": {
+    "harness": "codex-cli 0.160.0",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "61b2985"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "hook_ran": false,
+      "server": null
+    },
+    "byhand": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-skill-7e2c"
+      ],
+      "hook_ran": true,
+      "server": null
+    },
+    "cache": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-skill-7e2c"
+      ],
+      "hook_ran": true,
+      "server": null
+    },
+    "trusted": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-skill-7e2c"
+      ],
+      "hook_ran": false,
+      "server": null
+    },
+    "relative": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [
+        "hs-bench-relative:notes",
+        "hs-tier1-cp-skill-7e2c"
+      ],
+      "hook_ran": false,
+      "server": null
+    },
+    "bare": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": true,
+      "requests": 1,
+      "markers": [],
+      "hook_ran": false,
+      "server": null
+    }
+  },
+  "recorded": {
+    "byhand": {
+      "skill": true,
+      "skill_by_name": true,
+      "command": false,
+      "command_name": false,
+      "tool": false,
+      "server_started": false,
+      "args_expanded": null,
+      "root_matches": null,
+      "cwd_is_root": null,
+      "hook": true
+    },
+    "cache": {
+      "skill": true,
+      "skill_by_name": true,
+      "command": false,
+      "command_name": false,
+      "tool": false,
+      "server_started": false,
+      "args_expanded": null,
+      "root_matches": null,
+      "cwd_is_root": null,
+      "hook": true
+    },
+    "trusted": {
+      "skill": true,
+      "skill_by_name": true,
+      "command": false,
+      "command_name": false,
+      "tool": false,
+      "server_started": false,
+      "args_expanded": null,
+      "root_matches": null,
+      "cwd_is_root": null,
+      "hook": false
+    },
+    "relative": {
+      "skill": true,
+      "skill_by_name": true,
+      "command": false,
+      "command_name": false,
+      "tool": false,
+      "server_started": false,
+      "args_expanded": null,
+      "root_matches": null,
+      "cwd_is_root": null,
+      "hook": false
+    },
+    "bare": {
+      "skill": false,
+      "skill_by_name": false,
+      "command": false,
+      "command_name": false,
+      "tool": false,
+      "server_started": false,
+      "args_expanded": null,
+      "root_matches": null,
+      "cwd_is_root": null,
+      "hook": false
+    }
+  },
+  "checks": {
+    "without a plugin no marker reaches a request, no hook runs, no server starts (premise)": true,
+    "byhand: marketplace add, the cache directory and the [plugins] table load the package's skill (positive control)": true,
+    "cache: enabled by -c plugins, the skill loads from the cache": true,
+    "cache: the stdio server, given with ${CLAUDE_PLUGIN_ROOT}, does not start (premise of the refusal)": true,
+    "relative: the stdio server given relative to the plugin root does not start (premise of the refusal)": true,
+    "cache: the command does not reach a request, as Codex migrates commands only at install (premise of the refusal)": true,
+    "trusted: as hs launches, the package's hook does not run, while with hook trust bypassed it does (premise of the refusal)": true
+  },
+  "verdict": "pass"
+}

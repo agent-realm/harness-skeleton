@@ -140,7 +140,7 @@ try {
   // Each command leaves a file, so a run shows which of them ran.
   const steps = (ran) => [
     { when: { tool: 'shell' }, reply: { tool_calls: [{ id: 'call_ok', name: 'shell', args: { command: `touch ${ran}.allowed`, description: 'touch' } }] } },
-    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'shell', args: { command: `touch ${ran}.denied # DENYME`, description: 'touch' } }] } },
+    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'shell', args: { command: `touch ${ran}.DENYME`, description: 'touch' } }] } },
     { when: { after_tool: 'call_deny' }, reply: { text: 'done' } },
   ];
   const folderFor = (variant) => {
@@ -175,7 +175,7 @@ try {
       tool_results: r.seen.ENDPOINT.flatMap((q) => q.tool_results ?? []).length,
       deny_reason_reached_model: r.seen.ENDPOINT.some((q) => q.markers.includes(M.deny)),
       allowed_ran: fs.existsSync(`${ran}.allowed`),
-      denied_ran: fs.existsSync(`${ran}.denied`),
+      denied_ran: fs.existsSync(`${ran}.DENYME`),
       plugin: {
         loaded: lines.some((l) => l.setup), ctx: lines.find((l) => l.setup)?.ctx ?? null,
         registered: lines.filter((l) => l.hook).map((l) => [l.hook, l.registered, l.reason ?? null]),

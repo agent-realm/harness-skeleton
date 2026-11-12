@@ -43,6 +43,12 @@
 //                request; the server starts with the ref's value substituted.
 //   driver_service  the same in a folder whose background service is up on its own config.
 //                Expected: hs's --standalone keeps the launch on the spec's config.
+//   catalog_on, catalog_off  the control's launch with OpenCode's network through a local proxy that
+//                records host names and refuses every one (the network blocked), without and with
+//                OPENCODE_DISABLE_MODELS_FETCH (read by packages/cli/src/server-process.ts at v2.2.7).
+//                Expected: with it, the explicit provider and model still reach the endpoint and no
+//                host is asked for; recorded: what is asked for without it. The driver runs go
+//                through the same proxy: hs's launch with an endpoint asks for no host.
 // Recorded for every run: which canaries reach a request (~/.claude/CLAUDE.md, ~/.agents/skills,
 // ~/.opencode/skills, an AGENTS.md above the working directory), and what OpenCode writes in the
 // folder, in OPENCODE_CONFIG_DIR and in HOME (names only). 2.x has no switch for ~/.agents/skills:
@@ -52,6 +58,7 @@
 
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import { DUMMY, REF_VAR, arg, bench, evidence, guard } from '../lib/bench.mjs';
 import { probe, serverSource } from '../lib/agent-plugins.mjs';
@@ -95,6 +102,34 @@ const benchPids = () => {
 };
 
 try {
+  // A recording proxy that refuses every host: the network, blocked, by name.
+  const hosts = [];
+  const proxy = http.createServer((req, res) => {
+    req.on('error', () => {});
+    let host = null;
+    try {
+      host = new URL(req.url).hostname;
+    } catch {
+      host = (req.headers.host ?? '').split(':')[0] || null;
+    }
+    hosts.push(host);
+    res.writeHead(403).end();
+  });
+  proxy.on('clientError', (_e, socket) => socket.destroy());
+  proxy.on('connect', (req, socket) => {
+    socket.on('error', () => {});
+    hosts.push(String(req.url).split(':')[0]);
+    socket.end('HTTP/1.1 403 Forbidden\r\n\r\n');
+  });
+  await new Promise((r) => proxy.listen(0, '127.0.0.1', r));
+  const proxyUrl = `http://127.0.0.1:${proxy.address().port}`;
+  const blocked = { HTTPS_PROXY: proxyUrl, HTTP_PROXY: proxyUrl, https_proxy: proxyUrl, http_proxy: proxyUrl, NO_PROXY: '127.0.0.1,localhost', no_proxy: '127.0.0.1,localhost' };
+  const asked = async (fn) => {
+    const from = hosts.length;
+    const r = await fn();
+    return { ...r, hosts: [...new Set(hosts.slice(from))].sort() };
+  };
+
   const L = await b.model('ENDPOINT', { markers: Object.values(M) });
   const work = path.join(b.work, 'work');
   const cwd = path.join(work, 'proj');
@@ -211,12 +246,15 @@ try {
     const receipt = path.join(b.work, `receipt-${path.basename(folder)}.json`);
     put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
     const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
-    const env = { ...spec.env_set, ...resolveRefs(spec) };
+    const env = { ...spec.env_set, ...resolveRefs(spec), ...blocked };
     for (const v of spec.env_unset) env[v] = undefined;
+    const from = hosts.length;
     const r = await b.launch([L], [oc, ...spec.argv.slice(1), PROMPT], env, cwd);
     fs.rmSync(spec.temp_dir, { recursive: true, force: true });
-    return { ...r, probe: probe(probeOut), refused: refused.ok ? null : refused.error.code, standalone: spec.argv.includes('--standalone') };
+    return { ...r, probe: probe(probeOut), refused: refused.ok ? null : refused.error.code, standalone: spec.argv.includes('--standalone'), hosts: [...new Set(hosts.slice(from))].sort(), no_catalog: spec.env_set.OPENCODE_DISABLE_MODELS_FETCH === '1' };
   };
+  const catalogOn = await asked(() => run(oc, folderFor('catalog-on'), { extra: { OPENCODE_CONFIG_CONTENT: config('bench-primary'), ...blocked } }));
+  const catalogOff = await asked(() => run(oc, folderFor('catalog-off'), { extra: { OPENCODE_CONFIG_CONTENT: config('bench-primary'), OPENCODE_DISABLE_MODELS_FETCH: '1', ...blocked } }));
   const driver = await driverRun(folderFor('driver'));
   const dsFolder = folderFor('driver-service');
   const dsEnv = { OPENCODE_CONFIG_CONTENT: config('bench-service') };
@@ -235,7 +273,10 @@ try {
     v1 = { version: b.version(oc1), run_offers_standalone: /--standalone/.test(`${help.stdout}${help.stderr}`), launch_with_2x_config: shape(r) };
   }
 
+  proxy.close();
   const checks = {
+    'catalog_off: with OPENCODE_DISABLE_MODELS_FETCH and the network blocked, the explicit provider and model reach the endpoint, and no host is asked for': catalogOff.seen.ENDPOINT.length > 0 && models(catalogOff).every((m) => m === 'bench-primary') && catalogOff.hosts.length === 0,
+    'driver: hs\'s launch with an endpoint sets OPENCODE_DISABLE_MODELS_FETCH and asks for no host, the network blocked': driver.no_catalog && driver.hosts.length === 0 && driverService.hosts.length === 0,
     'canaries: with OPENCODE_DISABLE_CLAUDE_CODE, ~/.claude/CLAUDE.md does not reach a request': [control, dir, mcp].every((r) => !has(r, M.claude)),
     'canaries: ~/.opencode/skills does not reach a request': [control, dir, mcp].every((r) => !has(r, M.dotOpencode)),
     'canaries: ~/.agents/skills reaches every run (no switch in 2.x; the driver names it a known limit, and a release that adds a switch fails here)': [control, dir, mcp].every((r) => has(r, M.agentsDir)),
@@ -255,6 +296,7 @@ try {
     'service: after `service stop` no process with the bench\'s environment is left': svcStop.exit === 0 && left.length === 0,
   };
   const recorded = {
+    catalog: { on: { hosts: catalogOn.hosts, reached: catalogOn.seen.ENDPOINT.length > 0, models: models(catalogOn) }, off: { hosts: catalogOff.hosts } },
     global_agents_md_with_config_dir: has(dir, M.global),
     mcp_tool_marker: has(mcp, M.tool),
     canaries: { control: canaries(control), config_dir: canaries(dir), mcp: canaries(mcp) },

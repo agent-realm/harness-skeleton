@@ -171,6 +171,38 @@ test('launch-spec on Claude Code: a package without a manifest takes its directo
   }
 });
 
+test('launch-spec on Claude Code: a plugin that would start off is turned on by its session id, and only then', () => {
+  const s = sandbox();
+  s.opts.tmpdir = path.join(s.root, 'tmp');
+  fs.mkdirSync(s.opts.tmpdir);
+  const launch = (layers) => {
+    const [{ launch_digest, risks }] = s.call('launch-spec', { layers }).error.items;
+    const spec = ok(s.call('launch-spec', { layers, receipt: { format: 'hs-receipt/0.2', launch_digest, allows: [...new Set(risks.map((r) => r.item))] } }));
+    const f = spec.files.find((x) => x.role === 'settings');
+    return { spec, enabled: f ? JSON.parse(fs.readFileSync(f.path, 'utf8')).enabledPlugins : undefined };
+  };
+  try {
+    // A package and hs's skills plugin that start on: no overlay key.
+    const on = natLayer(s.root);
+    assert.equal(launch([s.team, on]).enabled, undefined);
+    fs.rmSync(on, { recursive: true });
+    // A manifest that starts the plugin off: validate accepts it, the launch turns it on.
+    const off = natLayer(s.root, { manifest: { defaultEnabled: false } });
+    assert.deepEqual(codesOf(off), [], 'defaultEnabled is no reason to refuse: the launch turns the plugin on');
+    const a = launch([s.team, off]);
+    assert.deepEqual(a.enabled, { 'deploy-kit@inline': true });
+    assert.ok(a.spec.notes.some((n) => /turned on for this session.*deploy-kit@inline/.test(n)));
+    assert.ok(a.spec.unverified.some((u) => /project or local settings in the working directory, and managed settings/.test(u)));
+    fs.rmSync(off, { recursive: true });
+    // Folder settings that turn names off: those carried are turned on, the user's own keys stay
+    // in the folder, and a name the launch does not carry is left alone.
+    fs.writeFileSync(path.join(s.folder, 'settings.json'), JSON.stringify({ model: 'sonnet', enabledPlugins: { 'deploy-kit@inline': false, 'hs@inline': false, 'other@inline': false } }));
+    assert.deepEqual(launch([s.team, natLayer(s.root)]).enabled, { 'hs@inline': true, 'deploy-kit@inline': true });
+  } finally {
+    s.done();
+  }
+});
+
 test('plan on Claude Code: a claude-plugin package is launch_only under overlay', () => {
   const s = sandbox();
   try {

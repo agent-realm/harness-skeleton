@@ -26,6 +26,14 @@
 //             loads whole, and hs's launch-spec for the same spec skips it rather than carry it again.
 //   removed   `hs remove` on the driver's folder, then a bare start. Expected: the plugin no longer
 //             loads: no marker, no hook, no server.
+//   off_direct   a package whose manifest sets `defaultEnabled: false`, passed by hand. Recorded:
+//             whether it loads (as documented, it should not).
+//   off_launch   the same package through hs launch-spec, whose --settings overlay turns it on by its
+//             session id, <name>@inline. Expected: it loads whole.
+//   folder_direct  the first package passed by hand to a folder whose settings.json sets
+//             <name>@inline to false. Recorded: whether it loads (as documented, it should not).
+//   folder_launch  the same folder through hs launch-spec. Expected: the overlay outranks the
+//             folder's settings, and the plugin loads whole.
 // A plugin loads whole when its skill reaches a request by name (<plugin>:notes) or by its
 // description's marker, its server starts and its tool is offered, and its hook has run. The listener,
 // the server and the hook record names and booleans only. The credential is a dummy; HOME and XDG are
@@ -43,10 +51,11 @@ const PROMPT = 'tier 1 claude-plugin check on Claude Code';
 const TOOL = 'hs_native_tool';
 const NAME = 'hs-bench-native';
 const BARE = 'hs-bench-bare';
+const OFF = 'hs-bench-off';
 const M = { skill: 'hs-tier1-cp-skill-7e2c', command: 'hs-tier1-cp-command-91d3', tool: 'hs-tier1-cp-tool-5a08' };
 const b = bench('hs-tier1-claude-plugin-cc-');
 
-const markers = [M.skill, M.command, M.tool, `${NAME}:notes`, `${BARE}:notes`];
+const markers = [M.skill, M.command, M.tool, `${NAME}:notes`, `${BARE}:notes`, `${OFF}:notes`, `${NAME}:hs-bench-hello`];
 const shape = (r) => ({ exit: r.exit, signal: r.signal, timed_out: r.timed_out, descendants_left: r.descendants_left, requests: r.seen.ENDPOINT.length,
   markers: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.markers))].sort(), bench_tools: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.tools ?? []).filter((t) => typeof t === 'string' && t.includes(TOOL)))].sort(), hook_ran: r.hook, server: r.probe ? { started: r.probe.started, cwd_is_root: r.probe.cwd_is_root, root_matches: r.probe.root_matches, data_exists: r.probe.data_exists } : null });
 
@@ -140,6 +149,18 @@ try {
   b.hs('remove', [...dm.common, '--owner', 'tier1']);
   const removedRun = await run(driverFolder);
 
+  // A package that starts disabled, and a folder that turns the name off: by hand, then through hs.
+  const offKit = kitFor(OFF, { manifest: { defaultEnabled: false } });
+  const offDirect = await run(folderFor('off-direct'), ['--plugin-dir', path.join(offKit, OFF)]);
+  const offLaunch = await launch(folderFor('off-launch'), offKit, OFF);
+  const turnedOff = (variant) => {
+    const f = folderFor(variant);
+    fs.writeFileSync(path.join(f, 'settings.json'), JSON.stringify({ enabledPlugins: { [`${NAME}@inline`]: false } }, null, 2) + '\n');
+    return f;
+  };
+  const folderDirect = await run(turnedOff('folder-direct'), ['--plugin-dir', pkg]);
+  const folderLaunch = await launch(turnedOff('folder-launch'), kit, NAME);
+
   const has = (r, m) => r.seen.ENDPOINT.some((q) => q.markers.includes(m));
   const offered = (r) => r.seen.ENDPOINT.some((q) => (q.tools ?? []).some((t) => typeof t === 'string' && t.includes(TOOL)));
   const whole = (r, name = NAME) => (has(r, `${name}:notes`) || has(r, M.skill)) && r.probe?.started === true && offered(r) && r.hook === true;
@@ -154,19 +175,24 @@ try {
     'driver: the installed plugin is the package byte for byte, and a bare start loads it whole': installedDigest === pkgDigest && whole(driverRun),
     'driver: hs launch-spec for the same spec skips the installed plugin rather than carry it': !driverSpec.argv.includes('--plugin-dir') && driverSpec.skipped.some((x) => x.item === `plugin.${NAME}`),
     'removed: after hs remove, a bare start no longer loads the plugin': none(removedRun),
+    'off_launch: a package that starts disabled loads whole through hs, turned on by its session id': whole(offLaunch, OFF),
+    'folder_launch: a folder that turns the name off is outranked by the launch overlay, and the plugin loads whole': whole(folderLaunch),
   };
   const recorded = {
     command_marker: { direct: has(direct, M.command), launch: has(launched, M.command), bare: has(bare, M.command), driver: has(driverRun, M.command) },
     skill_by_name: { direct: has(direct, `${NAME}:notes`), launch: has(launched, `${NAME}:notes`), bare: has(bare, `${BARE}:notes`), driver: has(driverRun, `${NAME}:notes`) },
+    command_by_name: { direct: has(direct, `${NAME}:hs-bench-hello`), launch: has(launched, `${NAME}:hs-bench-hello`), driver: has(driverRun, `${NAME}:hs-bench-hello`) },
+    off_direct_loads: { skill: has(offDirect, `${OFF}:notes`) || has(offDirect, M.skill), server: offDirect.probe?.started === true, hook: offDirect.hook },
+    folder_direct_loads: { skill: has(folderDirect, `${NAME}:notes`) || has(folderDirect, M.skill), server: folderDirect.probe?.started === true, hook: folderDirect.hook },
   };
-  const reached = [control, direct, launched, bare, driverRun, removedRun].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, direct, launched, bare, driverRun, removedRun, offDirect, offLaunch, folderDirect, folderLaunch].every((r) => r.seen.ENDPOINT.length > 0);
   const positive = 'direct: the package passed by hand with --plugin-dir loads whole: skill, server and hook (positive control)';
   const verdict = !reached ? 'inconclusive: a start reached no endpoint' : !checks[positive] ? 'inconclusive: the positive control did not load' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: a claude-plugin package delivered whole by hs on Claude Code, at launch and under materialize (design note v0.2 §5.7, §12 row 18)',
     at: new Date().toISOString(),
     evidence: evidence(b, claude),
-    runs: { control: shape(control), direct: shape(direct), launch: shape(launched), bare: shape(bare), driver: shape(driverRun), removed: shape(removedRun) },
+    runs: { control: shape(control), direct: shape(direct), launch: shape(launched), bare: shape(bare), driver: shape(driverRun), removed: shape(removedRun), off_direct: shape(offDirect), off_launch: shape(offLaunch), folder_direct: shape(folderDirect), folder_launch: shape(folderLaunch) },
     recorded,
     checks,
     verdict,

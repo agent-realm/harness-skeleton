@@ -1,0 +1,363 @@
+{
+  "check": "tier 1: an Agent Plugins 1.0.0 package on Claude Code, as published and translated to the .claude-plugin layout (design note v0.2 §5.7, §10)",
+  "at": "2026-11-12T10:30:16.762Z",
+  "evidence": {
+    "harness": "2.1.321 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "c3b25ab"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": [],
+      "remote": []
+    },
+    "published_clean": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
+        "hs-bench-plugin:notes"
+      ],
+      "bench_tools": [],
+      "remote": []
+    },
+    "published_future": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
+        "hs-bench-plugin:notes"
+      ],
+      "bench_tools": [],
+      "remote": []
+    },
+    "published_mixed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
+        "hs-bench-plugin:notes"
+      ],
+      "bench_tools": [],
+      "remote": []
+    },
+    "translated": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": []
+    },
+    "flat": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:hs-bench-cmd",
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": []
+    },
+    "unbridged": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": []
+    },
+    "literal": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-plugin:notes",
+        "hs-tier1-ap-tool-2b7f"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": [
+        "hs-bench-other-set-9f4c"
+      ]
+    },
+    "dotted": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-tier1-ap-tool-2b7f",
+        "hs.bench-plugin:notes"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs_bench-plugin_probe__hs_plugin_tool"
+      ],
+      "remote": []
+    }
+  },
+  "recorded": {
+    "clean, as published": {
+      "skill_loads": true,
+      "skill_description_reaches": false,
+      "server_starts": false,
+      "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true
+    },
+    "future (9.9.9), as published": {
+      "skill_loads": true,
+      "skill_description_reaches": false,
+      "server_starts": false,
+      "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true
+    },
+    "mixed, as published": {
+      "skill_loads": true,
+      "skill_description_reaches": false,
+      "server_starts": false,
+      "tool_reaches": false,
+      "root_command_loads": true,
+      "root_hook_runs": true,
+      "invalid_skill_loads": false
+    },
+    "translated": {
+      "skill_description_reaches": false,
+      "manifest_fields": [
+        "name",
+        "version",
+        "description",
+        "homepage",
+        "repository",
+        "license",
+        "author",
+        "keywords"
+      ],
+      "launch_risks": [
+        "runs-code"
+      ]
+    },
+    "refusals": {
+      "clean": [],
+      "future": [
+        {
+          "code": "plugin_version_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        },
+        {
+          "code": "plugin_version_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        }
+      ],
+      "mixed": [
+        {
+          "code": "plugin_skill_invalid",
+          "item": "plugin.hs-bench-plugin",
+          "skill": "no-desc"
+        }
+      ],
+      "literal": [
+        {
+          "code": "plugin_placeholder_literal",
+          "item": "plugin.hs-bench-plugin"
+        },
+        {
+          "code": "plugin_placeholder_literal",
+          "item": "plugin.hs-bench-plugin"
+        }
+      ],
+      "cwd": [
+        {
+          "code": "plugin_cwd_unsupported",
+          "item": "plugin.hs-bench-plugin"
+        }
+      ]
+    },
+    "flat": {
+      "root_command_loads": true,
+      "root_hook_runs": true
+    },
+    "dotted name, translated": {
+      "skill_loads": true,
+      "server_starts": true,
+      "tool_reaches": true
+    }
+  },
+  "server_probes": {
+    "published_clean": null,
+    "published_future": null,
+    "published_mixed": null,
+    "translated": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null,
+      "other_forwarded": false
+    },
+    "flat": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null,
+      "other_forwarded": false
+    },
+    "unbridged": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": false,
+      "literal_kept": null,
+      "literal_is_other": null,
+      "other_forwarded": false
+    },
+    "literal": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": false,
+      "literal_is_other": true,
+      "other_forwarded": true
+    },
+    "dotted": {
+      "started": true,
+      "args_expanded": true,
+      "data_expanded": true,
+      "env_names": [
+        "PLUGIN_ROOT",
+        "PLUGIN_DATA",
+        "CLAUDE_PLUGIN_ROOT",
+        "CLAUDE_PLUGIN_DATA"
+      ],
+      "root_matches": true,
+      "data_exists": true,
+      "data_writable": true,
+      "data_matches": true,
+      "cwd_is_root": true,
+      "literal_kept": null,
+      "literal_is_other": null,
+      "other_forwarded": false
+    }
+  },
+  "folder_entries_new": [
+    ".claude.json",
+    "backups",
+    "plugins",
+    "projects",
+    "session-env",
+    "sessions"
+  ],
+  "folder_plugins_entries": [
+    "data",
+    "store"
+  ],
+  "checks": {
+    "without a plugin no marker reaches a request (premise)": true,
+    "refusals: clean validates": true,
+    "refusals: future is plugin_version_unsupported": true,
+    "refusals: mixed is plugin_skill_invalid, naming no-desc": true,
+    "refusals: literal is plugin_placeholder_literal": true,
+    "refusals: cwd is plugin_cwd_unsupported": true,
+    "translated: launch-spec refuses without a receipt, naming the package as runs-code": true,
+    "translated: the skill reaches the request, under the plugin's name": true,
+    "translated: the manifest keeps name and every metadata field, and the plugin loads from it": true,
+    "translated: the server, a ./ command, starts with ${PLUGIN_ROOT} expanded in args": true,
+    "translated: ${PLUGIN_DATA} is expanded in env": true,
+    "translated: PLUGIN_ROOT is the plugin root, and PLUGIN_DATA an existing, writable directory that ${PLUGIN_DATA} names": true,
+    "translated: the server runs in the plugin root, through the prelude": true,
+    "translated: the server's tool reaches the request": true,
+    "translated: the package's commands/ stays inert: the command reaches no request": true,
+    "flat (premise of nesting, control for the line above): copied to the root, the command reaches the request": true,
+    "translated: the package's hooks/ stays inert: the hook does not run": true,
+    "flat (premise of nesting, control for the line above): copied to the root, the hook runs": true,
+    "unbridged (premise of the prelude): without it the server does not run in the plugin root": true,
+    "literal (premise of plugin_placeholder_literal): Claude Code expands the env text to the variable's value": true,
+    "literal (premise of plugin_placeholder_literal): Claude Code expands the header text": true
+  },
+  "verdict": "pass"
+}

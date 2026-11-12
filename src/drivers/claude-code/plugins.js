@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { HsError } from '../../protocol.js';
 import { treeLink } from '../../native.js';
+import { readJson } from '../../files.js';
 import { digestPath } from '../../spec/layers.js';
 import { AGENT_PLUGINS, METADATA_FIELDS, PLACEHOLDERS, inRoot, readPackage } from '../../spec/agent-plugins.js';
 
@@ -84,8 +85,11 @@ export function nativePlugin(item, bound, descriptor) {
   const R = descriptor.plugins[item.value.format];
   const link = treeLink(bound.path);
   if (link !== null) throw new HsError('write_refused', `${item.id}: the package holds a symlink (${link}); hs copies no tree with one`, [item.id]);
+  // A manifest that sets defaultEnabled false starts the plugin off at launch (descriptor,
+  // launch.plugin); the launch turns it on. validate has read the manifest as a JSON object.
+  const manifest = readJson(path.join(bound.path, R.manifest)).value;
   return {
-    tree: { name: `plugins/${item.id.slice('plugin.'.length)}`, role: item.id, files: [], entries: [{ rel: '.', source: bound.path, sha256: bound.sha256 }] },
+    tree: { name: `plugins/${item.id.slice('plugin.'.length)}`, role: item.id, files: [], entries: [{ rel: '.', source: bound.path, sha256: bound.sha256 }], starts_off: manifest?.defaultEnabled === false },
     risks: [{ item: item.id, layer: item.layer, risk: 'runs-code', sha256: bound.sha256 }],
     via: `${descriptor.launch.plugin.flag}, the package ${R.delivered_whole}`,
   };

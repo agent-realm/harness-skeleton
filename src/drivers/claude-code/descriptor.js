@@ -159,7 +159,18 @@ export default Object.freeze({
     // skills are namespaced `/<plugin>:<skill>` [CC §9 D-skills, §10 D-plug manifest]. Observed on a
     // bench, 2.1.307: a skill so passed reaches the request as `<plugin>:<name>`, and nothing is
     // copied into the data folder [CC §9 B-skills].
-    plugin: { flag: '--plugin-dir', name: 'hs', manifest: '.claude-plugin/plugin.json', skills_dir: 'skills' },
+    // A plugin passed this way has the id `<name>@inline`, where <name> is its manifest's name, and
+    // it is on for the session unless its manifest sets `defaultEnabled: false` or a settings file
+    // sets the id to false; enabledPlugins merges key by key across sources, and the --settings
+    // file is the `flag` source, above user, project and local and below managed
+    // [D-plug-loading §Find where a plugin came from, §Find where a plugin is enabled, §Keep a
+    // session-only plugin from loading]. So a launch turns a plugin it carries on, by that id, in its
+    // --settings overlay, where it would otherwise start off: a package whose manifest sets
+    // defaultEnabled false, or a name the folder's settings.json turns off. Only then: with the key
+    // set, 2.1.307 writes an empty plugins/installed_plugins.json into the folder (tier 1,
+    // conformance/tier1/skills-at-launch.mjs with the key always set, 2026-11-12).
+    // D-plug-loading: https://code.claude.com/docs/en/plugins/loading, fetched 2026-11-12.
+    plugin: { flag: '--plugin-dir', name: 'hs', manifest: '.claude-plugin/plugin.json', skills_dir: 'skills', enabled_key: 'enabledPlugins', origin: 'inline' },
     // MCP servers at launch: one file in the mcpServers form, `--mcp-config <file>`, not strict, so
     // the folder's own servers still load [CC §8 L-help]. Server fields: type, command, args, env,
     // url, headers; no working directory [CC §8 D-mcp]. `${VAR}` is expanded in command, args, env,
@@ -314,7 +325,13 @@ export default Object.freeze({
       },
       // An `mcpServers` bundle is extracted into .mcpb-cache/ under the plugin root, and a bundle URL
       // is downloaded first [D-plug-manifest §mcpServers]: code the digest does not bind, written into
-      // the tree a plan installed.
+      // the tree a plan installed. Only the manifest's key names a bundle: `.mcp.json`, and a JSON
+      // file the key names, are read as a map of server configs [D-plug-manifest §mcpServers;
+      // D-plug-components §MCP servers, §Include a packaged MCPB server, fetched 2026-11-12].
+      // A package's own package.json brings in nothing either: Claude Code installs a plugin's Node
+      // dependencies only into a copy it makes in its cache, never for a plugin loaded in place, as
+      // both routes here are (--plugin-dir, and a relative path in a directory marketplace)
+      // [D-plug-loading §In-place and copied plugins, §When the dependency install runs].
       refuses_values: [
         { field: 'mcpServers', pattern: '\\.(mcpb|dxt)$|^https?:', label: 'an MCP bundle (.mcpb, .dxt, or a URL)', reason: 'an MCP bundle, extracted into .mcpb-cache/ under the plugin root (a URL is downloaded first): code the spec digest does not bind, written into the installed plugin' },
       ],

@@ -834,11 +834,11 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
       continue;
     }
     // The folder holds this plugin at other content (a plan installed an earlier package, or its
-    // settings enable it): its settings load that copy, and carrying this one too would put two
-    // plugins of one name in the session, which Claude Code's order between them leaves unknown.
-    // Refused, as Codex refuses a package not installed at this content.
+    // settings enable it): its settings load that copy, and a --plugin-dir copy of the same name
+    // replaces it silently [D-plug-loading §Name conflicts], so the session would run what the
+    // folder does not hold. Refused, as Codex refuses a package not installed at this content.
     const held = heldElsewhere(item, bound, folder, descriptor);
-    if (held) throw new HsError('item_unsupported', `${item.id}: the folder holds this plugin at other content (${held}), which its settings load; carrying this package too would load two plugins named ${item.id.slice('plugin.'.length)}. Plan and apply again, or remove it first`, [item.id]);
+    if (held) throw new HsError('item_unsupported', `${item.id}: the folder holds this plugin at other content (${held}), which its settings load; carrying this package would replace that copy for the session, silently. Plan and apply again, or remove it first`, [item.id]);
     const t = launchPlugin(item, bound, descriptor);
     out.trees.push(t.tree);
     out.risks.push(...t.risks);
@@ -849,7 +849,28 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
   }
   if (native) out.unverified.push(NATIVE_UNVERIFIED);
   if (pluginRoles.length) {
-    out.unverified.push(`a plugin named like one the folder has installed may lose to it or shadow it: how ${P.flag} ranks against installed plugins is not documented [CC §10]`);
+    out.unverified.push(`a plugin passed with ${P.flag} replaces a same-named plugin the folder installed, silently, and managed settings that name it lock it out [D-plug-loading §Name conflicts]: documented, not measured`);
+  }
+  // A plugin this launch carries that would start off is turned on by its session id in the
+  // overlay, which outranks the folder's settings and a manifest's defaultEnabled (descriptor,
+  // launch.plugin): a package whose manifest sets defaultEnabled false, or a name the folder's
+  // settings.json turns off. Only then: a start whose settings name a plugin writes Claude Code's
+  // own plugin record into the folder on 2.1.307 (tier 1, 2026-11-12). The name is the manifest's:
+  // hs's own for the skills plugin, and the item's for a package, which validate holds equal to its
+  // manifest's or gives a package without one.
+  if (entries.length || pluginRoles.length) {
+    const fsv = readFolderSettings(folder, descriptor, home).value;
+    const folderIds = fsv && typeof fsv[P.enabled_key] === 'object' && fsv[P.enabled_key] !== null ? fsv[P.enabled_key] : {};
+    const offInFolder = (n) => Object.hasOwn(folderIds, `${n}@${P.origin}`) && folderIds[`${n}@${P.origin}`] === false;
+    const on = [
+      ...(entries.length && offInFolder(P.name) ? [P.name] : []),
+      ...out.trees.filter((t) => pluginRoles.includes(t.role)).filter((t) => t.starts_off || offInFolder(t.role.slice('plugin.'.length))).map((t) => t.role.slice('plugin.'.length)),
+    ];
+    if (on.length) {
+      settings[P.enabled_key] = Object.fromEntries(on.map((n) => [`${n}@${P.origin}`, true]));
+      out.notes.push(`turned on for this session in the --settings overlay, as it would start off: ${on.map((n) => `${n}@${P.origin}`).join(', ')}`);
+    }
+    out.unverified.push(`project or local settings in the working directory, and managed settings, can turn a session plugin off as <name>@${P.origin}; hs reads only the folder's settings.json, and turns a plugin on only where its manifest or the folder's settings turn it off [D-plug-loading]`);
   }
   if (translated) {
     out.unverified.push('the format asks that PLUGIN_DATA keep its contents across updates [AP §9.1]; Claude Code keeps plugins/data/<id>/ across updates of an installed plugin [CC §10], and whether it keeps the same directory for a plugin passed with --plugin-dir across launches is not measured');

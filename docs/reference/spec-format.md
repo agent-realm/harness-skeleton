@@ -101,7 +101,9 @@ format = "claude-plugin"
   Claude Code runs a plugin: its hooks do not go through hs's hook shim, and `bin/` joins the Bash
   tool's `PATH`. So the package is always `runs-code`, bound by its digest.
 - **The manifest is optional.** Without one, the plugin takes the item's name. With one, its `name`
-  must be the item's.
+  must be the item's. A manifest may set `defaultEnabled: false`: a launch turns the plugin on for
+  its session, and so it does for any plugin it carries whose name the folder's `settings.json`
+  turns off (`"<name>@inline": false`).
 - **validate refuses** the manifest fields that would bring in what the spec neither names nor binds,
   as `plugin_field_unsupported`: `dependencies` (other plugins Claude Code would enable), `userConfig`
   (values Claude Code asks the user for, credentials among them) and `channels`, while they hold

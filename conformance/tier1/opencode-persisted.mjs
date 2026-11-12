@@ -30,6 +30,13 @@
 //                   mcp.servers.probe, the copy hs-run/mcp.probe and config/opencode/skills/notes; the
 //                   start loads the skill and runs the server from its copy; hs's launch-spec for the
 //                   same layer skips both.
+//   mixed           on the driver's folder, with an AGENTS.md of the folder's own added: hs's launch
+//                   for that layer and another holding an AGENTS.md, a skill and a PostToolUse hook,
+//                   under a launch receipt. Expected: the plan's skill and server (which the launch
+//                   skips), the folder's AGENTS.md, and the launch's AGENTS.md and skill all reach a
+//                   request; the hooks bridge writes its readiness marker; the launch sets no
+//                   OPENCODE_CONFIG_DIR, which in 2.x replaces the folder's config/opencode/ rather
+//                   than adding to it (packages/cli/src/index.ts, packages/core/src/config/discovery.ts).
 //   removed         `hs remove`, then a start. Expected: neither the skill nor the server.
 // Names and booleans only. The credential is a dummy; HOME and XDG are scratch.
 
@@ -42,7 +49,10 @@ import { probe, serverSource } from '../lib/agent-plugins.mjs';
 
 const oc = guard('opencode-persisted.mjs', '--opencode');
 const PROMPT = 'tier 1 OpenCode persisted check';
-const M = { skill: 'hs-tier1-ocp-skill-3a9d', agents: 'hs-tier1-ocp-agents-7c1e', agents2: 'hs-tier1-ocp-agents2-5f02', toolJson: 'hs-tier1-ocp-json-8b4c', toolJsonc: 'hs-tier1-ocp-jsonc-2d6f', tool: 'hs-tier1-ocp-tool-9e3b' };
+const M = {
+  skill: 'hs-tier1-ocp-skill-3a9d', agents: 'hs-tier1-ocp-agents-7c1e', agents2: 'hs-tier1-ocp-agents2-5f02', toolJson: 'hs-tier1-ocp-json-8b4c', toolJsonc: 'hs-tier1-ocp-jsonc-2d6f', tool: 'hs-tier1-ocp-tool-9e3b',
+  mixFolder: 'hs-tier1-ocp-mixfolder-61d7', mixAgents: 'hs-tier1-ocp-mixagents-0f3a', mixSkill: 'hs-tier1-ocp-mixskill-b84e',
+};
 const b = bench('hs-tier1-opencode-persisted-');
 
 const put = (file, content) => {
@@ -169,6 +179,30 @@ try {
   const driverOps = plan.operations.map((o) => o.address_id).sort();
   const driver = await run(dFolder);
   const driverSpec = b.hs('launch-spec', [...common, '--layer', kit, '--headless']);
+
+  // mixed: the folder's own AGENTS.md, and a second layer the launch carries itself.
+  put(path.join(cfg(dFolder), 'AGENTS.md'), `Folder instructions. ${M.mixFolder}\n`);
+  const extra = path.join(b.work, 'extra');
+  put(path.join(extra, 'AGENTS.md'), `Spec instructions. ${M.mixAgents}\n`);
+  put(path.join(extra, 'skills', 'extra', 'SKILL.md'), `---\nname: extra\ndescription: ${M.mixSkill}\n---\nA bench skill.\n`);
+  put(path.join(extra, 'spec.toml'), ['[spec]', 'name = "extra"', 'version = "1.0.0"', 'format = "0.2"', '', '[model.roles]', 'primary = "bench-primary"', '', '[hook.log]', 'event = "PostToolUse"', 'run = { exec = "/bin/true" }', ''].join('\n'));
+  const mixArgs = [...common, '--layer', kit, '--layer', extra, '--local', local, '--headless'];
+  const mixRefused = b.hsCall('launch-spec', mixArgs);
+  const mixItems = mixRefused.ok ? [] : mixRefused.error.items ?? [];
+  const mixReceipt = path.join(b.work, 'receipt-mixed.json');
+  put(mixReceipt, { format: 'hs-receipt/0.2', launch_digest: mixItems[0]?.launch_digest ?? null, allows: [...new Set((mixItems[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
+  const mixSpec = b.hs('launch-spec', [...mixArgs, '--receipt', mixReceipt]);
+  fs.rmSync(probeOut, { force: true });
+  const mixEnv = { ...mixSpec.env_set };
+  for (const [v, ref] of Object.entries(mixSpec.env_from_refs)) {
+    if (ref !== `env:${REF_VAR}`) throw new Error(`unexpected reference for ${v}`);
+    mixEnv[v] = DUMMY;
+  }
+  for (const v of mixSpec.env_unset) mixEnv[v] = undefined;
+  const mixRun = await b.launch([L], [oc, ...mixSpec.argv.slice(1), PROMPT], mixEnv, cwd);
+  const mixed = { ...mixRun, probe: probe(probeOut) };
+  const mixMarker = (mixSpec.readiness ?? []).some((r) => r.what === 'hooks' && fs.existsSync(r.path));
+  if (mixSpec.temp_dir) fs.rmSync(mixSpec.temp_dir, { recursive: true, force: true });
   b.hs('remove', [...common, '--owner', 'tier1']);
   const removed = await run(dFolder);
 
@@ -180,6 +214,12 @@ try {
     'control: hs\'s launch for a plain layer reaches the model, with no marker (premise)': control.seen.ENDPOINT.length > 0 && !Object.values(M).some((m) => has(control, m)),
     'byhand: the folder\'s config/opencode/ gives a start its skill, AGENTS.md and MCP server, under hs\'s inline layer (positive control)': has(byhand, M.skill) && has(byhand, M.agents) && byhand.probe?.started === true,
     'service_reload: the service starts, and after `service stop` no process with the bench\'s environment is left': svcStart === 0 && svcStop === 0 && left.length === 0,
+    'mixed: with the launch carrying an AGENTS.md, a skill and a hook of its own, the plan\'s skill and server, the folder\'s AGENTS.md, and the launch\'s AGENTS.md and skill all reach, the bridge is ready, and no OPENCODE_CONFIG_DIR is set':
+      !mixRefused.ok && mixRefused.error.code === 'receipt_required'
+      && ['mcp.probe', 'skill.notes'].every((id) => mixSpec.skipped.some((x) => x.item === id))
+      && !('OPENCODE_CONFIG_DIR' in mixSpec.env_set) && mixSpec.env_unset.includes('OPENCODE_CONFIG_DIR') && mixed.seen.ENDPOINT.length > 0
+      && has(mixed, M.skill) && mixed.probe?.started === true && has(mixed, M.tool)
+      && has(mixed, M.mixFolder) && has(mixed, M.mixAgents) && has(mixed, M.mixSkill) && mixMarker,
   };
   const recorded = {
     writes,
@@ -192,7 +232,7 @@ try {
     check: 'tier 1: what a data folder\'s own config directory gives an OpenCode start, and how OpenCode treats it (design note v0.2 §7.4, §7.5)',
     at: new Date().toISOString(),
     evidence: evidence(b, oc),
-    runs: { control: shape(control), byhand: shape(byhand), jsonc: shape(jsonc), attached_before: shape(attachedBefore), attached_after: shape(attachedAfter), driver: shape(driver), removed: shape(removed) },
+    runs: { control: shape(control), byhand: shape(byhand), jsonc: shape(jsonc), attached_before: shape(attachedBefore), attached_after: shape(attachedAfter), driver: shape(driver), mixed: { ...shape(mixed), bridge_ready: mixMarker }, removed: shape(removed) },
     recorded,
     checks,
     verdict,

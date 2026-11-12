@@ -76,7 +76,8 @@ export function launchSpec(driver, args, opts = {}) {
       throw new HsError('write_refused', `the temp root ${root} is inside the data folder; point TMPDIR elsewhere`, [root]);
     }
   }
-  const roleArgv = parts.argv(Object.fromEntries([...parts.files, ...trees].map((f) => [f.role, `<${f.role}>`])));
+  const placeholders = Object.fromEntries([...parts.files, ...trees].map((f) => [f.role, `<${f.role}>`]));
+  const roleArgv = parts.argv(placeholders);
   // A launch that needs a receipt binds the version of the binary it runs: it probes that binary
   // (args.bin, else the harness's name on PATH) and names it by its path in argv. A binary that
   // cannot be found has no version to bind, and the launch is refused.
@@ -87,8 +88,16 @@ export function launchSpec(driver, args, opts = {}) {
   const binary = detected ? detected.binary : descriptor.binary;
   // A variable that names a generated file or tree (`pathEnv`: variable -> role) is digested as
   // `<role>`, as argv is, and set to the temp path only after the receipt.
+  // A variable whose value names generated paths inside it (`envFrom`: variable -> function of the
+  // paths, as argv is) is digested with each path as `<role>`, and built from the temp paths only
+  // after the receipt.
   const pathEnv = parts.pathEnv ?? {};
-  const env_set = { ...bindingEnv(descriptor, folder), ...parts.env, ...Object.fromEntries(Object.entries(pathEnv).map(([v, role]) => [v, `<${role}>`])) };
+  const envFrom = parts.envFrom ?? {};
+  const env_set = {
+    ...bindingEnv(descriptor, folder), ...parts.env,
+    ...Object.fromEntries(Object.entries(pathEnv).map(([v, role]) => [v, `<${role}>`])),
+    ...Object.fromEntries(Object.entries(envFrom).map(([v, value]) => [v, value(placeholders)])),
+  };
   // A variable the launch sets is never also in env_unset: setting it replaces the host's value, and
   // a caller then gets the same environment whichever list it applies first.
   const env_unset = [...descriptor.binding.env_unset, ...(parts.unset ?? [])].filter((v) => !Object.hasOwn(env_set, v));
@@ -158,6 +167,14 @@ export function launchSpec(driver, args, opts = {}) {
   for (const [v, role] of Object.entries(pathEnv)) {
     if (!paths[role]) throw new HsError('internal', `${v} names the generated ${role}, which this launch did not make`, [v]);
     env_set[v] = paths[role];
+  }
+  for (const [v, value] of Object.entries(envFrom)) {
+    try {
+      env_set[v] = value(paths);
+    } catch (e) {
+      if (tempDir) fs.rmSync(tempDir, { recursive: true, force: true });
+      throw e;
+    }
   }
   return {
     harness: descriptor.harness,

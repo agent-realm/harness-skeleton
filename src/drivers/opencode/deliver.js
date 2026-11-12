@@ -1,7 +1,8 @@
 // What OpenCode makes of a spec (design note v0.2 §4, §5). A launch carries an inline config layer
-// (OPENCODE_CONFIG_CONTENT) and a config directory in its temp dir (OPENCODE_CONFIG_DIR), and passes
-// --standalone, so a background service running in the folder never supplies the config
-// (milestone 7.1). Under materialize (7.2) a plan writes into the folder's own config directory,
+// (OPENCODE_CONFIG_CONTENT) that names its skills, AGENTS.md and hooks bridge in its temp dir by
+// path, and passes --standalone, so a background service running in the folder never supplies the
+// config (milestone 7.1). It never sets OPENCODE_CONFIG_DIR, which would replace the folder's own
+// config directory (descriptor, launch). Under materialize (7.2) a plan writes into the folder's own config directory,
 // config/opencode/: opencode.json's `model` and `mcp.servers.<id>` keys, one by one, the bound
 // copies of stdio servers into hs-run/, and the skills into its skills/ (descriptor, persist).
 
@@ -85,7 +86,7 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
       }
       jsonKey(item, p.address.key, p.value, p.risk, p.notes.join('; '));
     } else if (item.kind === 'hook') {
-      out.launch_only.push({ item: item.id, via: `launch-spec: the hooks bridge plugin in ${L.config_dir_env}/${L.bridge.file} (tool.${L.bridge.on[item.value.event]}), through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
+      out.launch_only.push({ item: item.id, via: `launch-spec: the hooks bridge plugin, <temp>/${L.bridge.dir} in ${L.config_content_env}'s ${L.bridge.config_key} (tool.${L.bridge.on[item.value.event]}), through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
     } else out.not_implemented.push(s.label ?? item.id);
   }
   for (const f of resolved.files) {
@@ -94,7 +95,7 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
       continue;
     }
     if (!materialize) {
-      out.launch_only.push({ item: f.id, via: `launch-spec: ${L.config_dir_env}/${L.skills.dir}, under a launch receipt (runs-code)` });
+      out.launch_only.push({ item: f.id, via: `launch-spec: <temp>/${L.skills.tree} in ${L.config_content_env}'s ${L.skills.config_key}, under a launch receipt (runs-code)` });
       continue;
     }
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
@@ -110,7 +111,7 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
       note: 'OpenCode reads the skills in its global config directory, config/opencode/skills/ [D2:skills]',
     });
   }
-  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: ${L.config_dir_env}/${L.agents_md}, which replaces the folder's global AGENTS.md${materialize ? '; not persisted in this build' : ''}` });
+  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: <temp>/${L.agents_md.file} in ${L.config_content_env}'s ${L.agents_md.config_key}, beside the folder's own AGENTS.md${materialize ? '; not persisted in this build' : ''}` });
   if (resolved.permissions.length) out.not_implemented.push('permissions');
   return out;
 }
@@ -234,7 +235,7 @@ function refuseSubstitution(id, value, own) {
 
 export function launchParts(resolved, { headless, descriptor, folder }) {
   const L = descriptor.launch;
-  const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: { ...L.always_env }, env_from_refs: {}, unset: [], notes: [], unverified: [], pathEnv: {} };
+  const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: { ...L.always_env }, env_from_refs: {}, unset: [], notes: [], unverified: [], envFrom: {} };
   const config = {};
   const flags = [];
   for (const item of resolved.items) {
@@ -391,20 +392,21 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     const blocks = HK.blocking_events.includes(v.event);
     const [codeRisk, ...more] = processRisks(hk, run, resolved);
     out.risks.push({ ...codeRisk, blocks }, ...more);
-    out.items.push({ item: hk.id, via: `${L.config_dir_env}/${B.file} (tool.${r.on}${matcher !== null ? `, ${matcher}` : ''}), through hs's hook shim${blocks ? '' : `; ${v.event} cannot block on OpenCode, so a deny there changes nothing`}` });
+    out.items.push({ item: hk.id, via: `<temp>/${B.dir} in ${L.config_content_env}'s ${B.config_key} (tool.${r.on}${matcher !== null ? `, ${matcher}` : ''}), through hs's hook shim${blocks ? '' : `; ${v.event} cannot block on OpenCode, so a deny there changes nothing`}` });
   }
-  const bridgeFiles = [];
+  // The plugin is a directory of its own in the temp dir; the marker sits beside it, one level up
+  // from its entry.
   if (bridged.length) {
-    // The marker sits in the launch's temp dir, which holds the config directory as one tree: one
-    // `../` per segment of the plugin's path reaches it from the plugin file.
-    const marker = '../'.repeat(B.file.split('/').length) + B.marker;
-    bridgeFiles.push({ rel: B.file, content: bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, marker, hooks: bridged }) });
+    const marker = '../'.repeat(B.entry.split('/').length) + B.marker;
+    const content = bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, marker, hooks: bridged });
+    out.trees.push({ name: B.dir, role: 'hooks_plugin', files: [{ rel: B.entry, content }], entries: [] });
     out.readiness = [{ what: 'hooks', rel: B.marker, means: B.marker_means }];
     out.notes.push(B.fail_closed, B.load, B.context, B.mcp_class);
   }
 
-  // Skills and instructions: a config directory in the launch's temp dir (descriptor, launch.skills,
-  // launch.agents_md). A skill may carry scripts the agent is told to run, so it is runs-code.
+  // Skills and instructions, in the launch's temp dir and named in the inline layer (descriptor,
+  // launch.skills, launch.agents_md). A skill may carry scripts the agent is told to run, so it is
+  // runs-code.
   const entries = [];
   for (const f of resolved.files) {
     if (f.kind !== 'skill') {
@@ -423,25 +425,29 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     if (fs.existsSync(installed)) out.unverified.push(`${f.id}: the folder's ${rel} holds a skill of the same name; which of the two OpenCode loads is not measured`);
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
     if (link !== null) throw new HsError('write_refused', `${f.id} holds a symlink (${link}); hs copies no tree with one`, [f.id]);
-    entries.push({ rel: `${L.skills.dir}/${name}`, source: f.path, sha256: f.sha256 });
+    entries.push({ rel: name, source: f.path, sha256: f.sha256 });
     out.risks.push({ item: f.id, layer: f.layer, risk: 'runs-code', sha256: f.sha256 });
-    out.items.push({ item: f.id, via: `${L.config_dir_env}/${L.skills.dir}/${name}` });
+    out.items.push({ item: f.id, via: `<temp>/${L.skills.tree}/${name}, in ${L.config_content_env}'s ${L.skills.config_key}` });
   }
+  if (entries.length) out.trees.push({ name: L.skills.tree, role: L.skills.tree, files: [], entries });
   // AGENTS.md, concatenated in layer order, each part headed by its layer's name (§5.1).
-  const files = resolved.agents_md.length
-    ? [{ rel: L.agents_md, content: resolved.agents_md.map((a) => `# ${a.layer}\n\n${a.text.replace(/\n*$/, '\n')}`).join('\n') }]
-    : [];
-  files.push(...bridgeFiles);
-  if (files.length) out.items.push({ item: 'instructions (AGENTS.md)', via: `${L.config_dir_env}/${L.agents_md}, which replaces the folder's global AGENTS.md` });
-  if (entries.length || files.length) {
-    out.trees.push({ name: 'config-dir', role: 'config_dir', files, entries });
-    out.pathEnv[L.config_dir_env] = 'config_dir';
+  if (resolved.agents_md.length) {
+    out.files.push({ name: L.agents_md.file, role: L.agents_md.role, content: resolved.agents_md.map((a) => `# ${a.layer}\n\n${a.text.replace(/\n*$/, '\n')}`).join('\n') });
+    out.items.push({ item: 'instructions (AGENTS.md)', via: `<temp>/${L.agents_md.file}, in ${L.config_content_env}'s ${L.agents_md.config_key}, beside the folder's own AGENTS.md` });
   }
   if (resolved.permissions.length) out.not_implemented.push('permissions');
 
-  if (Object.keys(config).length) {
+  // The inline layer, with each generated path in it (launch.js digests them as <role>). A temp path
+  // that OpenCode would read as a substitution is refused, as spec text is.
+  const carriers = [[L.skills.config_key, L.skills.tree, entries.length], [L.agents_md.config_key, L.agents_md.role, resolved.agents_md.length], [B.config_key, 'hooks_plugin', bridged.length]]
+    .filter(([, , n]) => n > 0);
+  if (Object.keys(config).length || carriers.length) {
     refuseSubstitution('the launch', config, own);
-    out.env[L.config_content_env] = JSON.stringify(config);
+    out.envFrom[L.config_content_env] = (paths) => {
+      const named = Object.fromEntries(carriers.map(([key, role]) => [key, [paths[role]]]));
+      refuseSubstitution('the temp dir', named, new Set());
+      return JSON.stringify({ ...config, ...named });
+    };
   }
   out.notes.push(`${L.standalone} on every launch: a run in a folder whose background service is up would otherwise run on that service's config, not this launch's`);
   if (!headless) out.unverified.push('the interactive launch is not measured; tier 1 runs OpenCode headless (opencode run)');

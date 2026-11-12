@@ -109,7 +109,9 @@ test('launch-spec: the endpoint, the model, MCP servers with refs, a skill and A
     for (const v of ['OPENCODE_CONFIG', 'OPENCODE_PERMISSION', 'OPENCODE_DB', 'OPENCODE_AUTH_CONTENT', 'OPENAI_API_KEY']) assert.ok(spec.env_unset.includes(v), v);
     // A variable the launch sets is never also unset, so a caller gets one environment whichever
     // list it applies first; the host's own value is replaced by the set.
-    for (const v of ['OPENCODE_CONFIG_DIR', 'OPENCODE_CONFIG_CONTENT']) assert.ok(!spec.env_unset.includes(v) && v in spec.env_set, v);
+    assert.ok(!spec.env_unset.includes('OPENCODE_CONFIG_CONTENT') && 'OPENCODE_CONFIG_CONTENT' in spec.env_set);
+    // Never set: OPENCODE_CONFIG_DIR would replace the folder's config/opencode/, not add to it.
+    assert.ok(spec.env_unset.includes('OPENCODE_CONFIG_DIR') && !('OPENCODE_CONFIG_DIR' in spec.env_set));
     for (const v of Object.keys(spec.env_set)) assert.ok(!spec.env_unset.includes(v), v);
     // The inline layer: the provider, and the servers, refs as {env:…} placeholders.
     const c = content(spec);
@@ -118,17 +120,22 @@ test('launch-spec: the endpoint, the model, MCP servers with refs, a skill and A
     assert.deepEqual(c.mcp.servers.docs, { type: 'remote', url: 'https://docs.example/mcp', headers: { 'X-Token': '{env:HS_REF_DOCS_TOKEN}' }, oauth: false });
     assert.deepEqual(spec.env_from_refs, { HS_ENDPOINT_KEY: REF, HS_REF_DB_PASSWORD: 'keychain:example/db', HS_REF_DOCS_TOKEN: 'env:DOCS_TOKEN' });
     assert.doesNotMatch(spec.env_set.OPENCODE_CONFIG_CONTENT, /keychain:|env:DOCS/, 'no reference in what OpenCode reads');
-    // The config directory: the skill, and AGENTS.md by layer.
-    const dir = spec.env_set.OPENCODE_CONFIG_DIR;
-    assert.equal(dir, spec.files.find((f) => f.role === 'config_dir').path);
-    assert.ok(dir.startsWith(spec.temp_dir + path.sep));
-    assert.equal(fs.readFileSync(path.join(dir, 'skills/notes/SKILL.md'), 'utf8'), skillMd('notes'));
-    assert.equal(fs.readFileSync(path.join(dir, 'AGENTS.md'), 'utf8'), '# team\n\nTeam rules.\n\n# proj\n\nProject rules.\n');
+    // The skill and AGENTS.md by layer, in the temp dir and named in the inline layer by path, beside
+    // the folder's own.
+    const role = (r) => spec.files.find((f) => f.role === r).path;
+    assert.deepEqual(c.skills, [role('skills')]);
+    assert.deepEqual(c.instructions, [role('instructions')]);
+    assert.equal(c.plugins, undefined, 'no bridge without a hook');
+    for (const p of [...c.skills, ...c.instructions]) assert.ok(p.startsWith(spec.temp_dir + path.sep), p);
+    assert.equal(fs.readFileSync(path.join(role('skills'), 'notes/SKILL.md'), 'utf8'), skillMd('notes'));
+    assert.equal(fs.readFileSync(role('instructions'), 'utf8'), '# team\n\nTeam rules.\n\n# proj\n\nProject rules.\n');
+    assert.match(spec.launch_items.find((x) => x.item === 'instructions (AGENTS.md)').via, /beside the folder's own AGENTS\.md/);
     assert.ok(spec.skipped.some((x) => x.item === 'model.roles.small'));
-    // The digest leaves the temp path out: a second launch, the same digest.
+    // The digest leaves the temp path out: a second launch, the same digest, another temp dir in
+    // the inline layer.
     const again = ok(s.call('launch-spec', { layers, local, headless: true, receipt: allow(refused) }));
     assert.equal(again.launch_digest, spec.launch_digest);
-    assert.notEqual(again.env_set.OPENCODE_CONFIG_DIR, dir);
+    assert.notEqual(content(again).skills[0], c.skills[0]);
   } finally {
     s.done();
   }

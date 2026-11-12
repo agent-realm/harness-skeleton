@@ -54,12 +54,12 @@ function fakeCtx(directory) {
   const hooks = {};
   return { hooks, ctx: { location: { directory }, tool: { hook: async (name, fn) => { hooks[name] = fn; } } } };
 }
-// The plugin, written where a launch puts it: <temp dir>/config-dir/plugins/, so its readiness
+// The plugin, written where a launch puts it: its own directory in <temp dir>, so its readiness
 // marker lands in <temp dir>.
 let loaded = 0;
 async function load(source, dir) {
   const temp = path.join(dir, `launch-${loaded++}`);
-  const f = path.join(temp, 'config-dir', 'plugins', 'hs-hooks.mjs');
+  const f = path.join(temp, 'hs-hooks', 'server.mjs');
   fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, source);
   const plugin = (await import(pathToFileURL(f).href)).default;
@@ -75,7 +75,7 @@ const alive = (pid) => {
   }
 };
 
-test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin in the config directory, under a receipt; an if-supported event with no route is skipped', async () => {
+test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin, a directory the inline layer names, under a receipt; an if-supported event with no route is skipped', async () => {
   const s = box();
   try {
     const out = path.join(s.root, 'envelopes.jsonl');
@@ -85,13 +85,17 @@ test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin in the conf
     const risks = refused.error.items[0].risks;
     assert.deepEqual(risks.map((r) => [r.item, r.risk, r.blocks]), [['hook.guard', 'runs-code', true], ['hook.log', 'runs-code', false]]);
     const spec = ok(s.call('launch-spec', { layers: [team], headless: true, receipt: allow(refused) }));
-    const dir = spec.env_set.OPENCODE_CONFIG_DIR;
-    const plugin = fs.readFileSync(path.join(dir, 'plugins/hs-hooks.js'), 'utf8');
+    const dir = spec.files.find((f) => f.role === 'hooks_plugin').path;
+    assert.deepEqual(JSON.parse(spec.env_set.OPENCODE_CONFIG_CONTENT).plugins, [dir], 'a configured plugin path is a directory');
+    assert.equal(JSON.parse(spec.env_set.OPENCODE_CONFIG_CONTENT).instructions, undefined, 'no instructions without an AGENTS.md');
+    assert.ok(!('OPENCODE_CONFIG_DIR' in spec.env_set));
+    assert.ok(!spec.launch_items.some((i) => i.item === 'instructions (AGENTS.md)'), 'a bridge alone carries no instructions');
+    const plugin = fs.readFileSync(path.join(dir, 'server.js'), 'utf8');
     assert.doesNotMatch(plugin, /^\s*import .* from '(?!node:)/m, 'no import but node: modules, so OpenCode installs nothing');
     assert.ok(plugin.includes(JSON.stringify(SHIM)), 'it runs hs\'s shim for OpenCode');
     assert.equal(plugin.split('/* hs:config */').length, 1, 'the configuration is written in');
     const guard = spec.launch_items.find((i) => i.item === 'hook.guard');
-    assert.match(guard.via, /OPENCODE_CONFIG_DIR\/plugins\/hs-hooks\.js \(tool\.execute\.before, \^\(shell\)\$\), through hs's hook shim$/);
+    assert.match(guard.via, /<temp>\/hs-hooks in OPENCODE_CONFIG_CONTENT's plugins \(tool\.execute\.before, \^\(shell\)\$\), through hs's hook shim$/);
     assert.match(spec.launch_items.find((i) => i.item === 'hook.log').via, /tool\.execute\.after.*cannot block on OpenCode/);
     assert.match(spec.skipped.find((x) => x.item === 'hook.prompt').reason, /UserPromptSubmit: .*session\.prompt.* not refuse/);
     assert.ok(spec.notes.some((n) => /fails closed/.test(n)) && spec.notes.some((n) => /context output is not delivered/.test(n)) && spec.notes.some((n) => /tool\.class null/.test(n)));
@@ -99,7 +103,7 @@ test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin in the conf
     // What a caller checks before it takes the guards as active.
     assert.deepEqual(spec.readiness.map((r) => [r.what, r.path]), [['hooks', path.join(spec.temp_dir, 'hs-hooks.loaded')]]);
     assert.match(spec.readiness[0].means, /until it exists, no hook of this launch is active/);
-    assert.equal(path.dirname(spec.files.find((f) => f.role === 'config_dir').path), spec.temp_dir, 'the config directory is one tree in the temp dir, as the marker\'s relative path assumes');
+    assert.equal(path.dirname(dir), spec.temp_dir, 'the plugin directory is one tree in the temp dir, as the marker\'s relative path assumes');
     // Under a plan, hooks stay launch only.
     const plan = ok(s.call('plan', { layers: [team], owner: 'builder', mode: 'materialize' }));
     assert.match(plan.launch_only.find((x) => x.item === 'hook.guard').via, /hooks bridge plugin.*not persisted in this build/);
@@ -138,7 +142,7 @@ test('the bridge: PreToolUse continues or blocks by the hook, with the envelope 
     const team = layer(s.root, 'team', hookToml(out), { 'hook.mjs': HOOK });
     const refused = s.call('launch-spec', { layers: [team], headless: true });
     const spec = ok(s.call('launch-spec', { layers: [team], headless: true, receipt: allow(refused) }));
-    const plugin = await load(fs.readFileSync(path.join(spec.env_set.OPENCODE_CONFIG_DIR, 'plugins/hs-hooks.js'), 'utf8'), s.root);
+    const plugin = await load(fs.readFileSync(path.join(spec.files.find((f) => f.role === 'hooks_plugin').path, 'server.js'), 'utf8'), s.root);
     assert.equal(plugin.id, 'hs-hooks');
     const work = path.join(s.root, 'work');
     const { ctx, hooks } = fakeCtx(work);

@@ -46,8 +46,11 @@ them and the receipt no longer fits.
   skill on Codex is refused at launch; deliver it into the folder instead
   ([deliver to a folder](deliver-to-a-folder.md)).
 - **OpenCode:** `--standalone` on every launch.
-  - `OPENCODE_CONFIG_CONTENT` carries the endpoint's provider and MCP servers.
-  - `OPENCODE_CONFIG_DIR` holds the skills, `AGENTS.md` and the hooks bridge plugin.
+  - `OPENCODE_CONFIG_CONTENT` carries the endpoint's provider and MCP servers, and names by path
+    the skills, `AGENTS.md` and hooks bridge plugin the launch writes into its temp dir. The
+    folder's own skills and `AGENTS.md` still load beside them.
+  - `OPENCODE_CONFIG_DIR` is never set: in OpenCode 2.x it would replace the folder's own config
+    directory, and with it what a plan installed there.
   - The four XDG roots point at the folder.
 
 An item the plan already installed in the folder, at this content, is skipped, so it never runs

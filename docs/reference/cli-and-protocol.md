@@ -18,7 +18,7 @@ usage error.
 | `--folder <path>` | `args.harness_path`, made absolute | all but `describe` |
 | `--bin <path>` | `args.bin`: the harness binary to run `--version` on | `detect`, `plan`, `apply`, `launch-spec` |
 | `--state` | `args.state` | `observe` |
-| `--cwd <dir>` | `args.cwd`: the working directory whose layers to read (on pi, whether a trusted project `.pi/` is there) | `observe --state` |
+| `--cwd <dir>` | `args.cwd`: for `observe --state`, the working directory whose layers to read (on pi, whether a trusted project `.pi/` is there, and whether the project sets `sessionDir`); for `launch-spec`, the directory the harness will run in (on pi, the session's directory is pi's own for it, and the result names the `cwd` argv is bound to) | `observe --state`, `launch-spec` |
 | `--layer <dir>` (repeatable, lowest first) | `args.layers` | `validate`, `plan`, `launch-spec` |
 | `--local <file>` | `args.local`: `local.toml` | `validate`, `plan`, `launch-spec` |
 | `--owner <name>` | `args.owner` (`[a-z][a-z0-9-]*`) | `plan`, `remove` |

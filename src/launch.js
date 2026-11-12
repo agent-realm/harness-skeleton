@@ -42,6 +42,18 @@ export function launchSpec(driver, args, opts = {}) {
   if (args.local !== undefined && (typeof args.local !== 'string' || !path.isAbsolute(args.local))) {
     throw new HsError('bad_request', 'args.local must be the absolute path of local.toml');
   }
+  // The directory the caller will run the harness in, when it says. Its real path: a harness sees
+  // its working directory with symlinks resolved. A driver that uses it binds it through argv.
+  let cwd;
+  if (args.cwd !== undefined) {
+    if (typeof args.cwd !== 'string' || !path.isAbsolute(args.cwd)) throw new HsError('bad_request', 'args.cwd must be the absolute path of the directory the harness will run in');
+    try {
+      cwd = fs.realpathSync.native(args.cwd);
+    } catch (e) {
+      throw new HsError('bad_request', `args.cwd ${args.cwd} cannot be resolved (${e.code})`);
+    }
+    if (!fs.statSync(cwd).isDirectory()) throw new HsError('bad_request', `args.cwd ${args.cwd} is not a directory`);
+  }
   const folder = harnessPath(args.harness_path);
   const resolved = resolve(args.layers, args.local ?? null);
   const checked = validate(resolved, descriptor);
@@ -50,7 +62,7 @@ export function launchSpec(driver, args, opts = {}) {
 
   const headless = args.headless === true;
   const parts = driver.launchParts(resolved, {
-    headless, descriptor, folder, given: args.harness_path, home: opts.home,
+    headless, descriptor, folder, given: args.harness_path, home: opts.home, cwd,
     platform: opts.host?.platform ?? process.platform, keychain: opts.keychain,
   });
   if (parts.not_implemented.length) {
@@ -193,6 +205,8 @@ export function launchSpec(driver, args, opts = {}) {
     ...(risks.length ? { receipt: { by: args.receipt.by ?? null, at: args.receipt.at ?? null } } : {}),
     temp_dir: tempDir,
     cwd_requirements: descriptor.launch.cwd,
+    // The working directory argv is bound to, where a driver used the one the caller gave.
+    ...(parts.bound_cwd ? { cwd: parts.bound_cwd } : {}),
     ...(headless ? { headless: { result: descriptor.launch.headless.result, source: descriptor.launch.headless.source } } : {}),
     launch_items: parts.items,
     skipped: parts.skipped,

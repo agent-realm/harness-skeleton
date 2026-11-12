@@ -10,21 +10,50 @@ import { HsError } from '../../protocol.js';
 import { hookMatcher } from '../../hooks.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks } from '../../process.js';
-import { readDoc, treeLink } from '../../native.js';
+import { handlers, readDoc, treeLink } from '../../native.js';
+import { persistedProcess } from '../../persist.js';
+import { digestOf, readLedger } from '../../records.js';
+import { digestPath } from '../../spec/layers.js';
 import { extensionSource } from './extension.js';
 
 const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const SHIM = fileURLToPath(new URL('../../shim/pi.js', import.meta.url));
 
-// A plan under overlay names what a launch carries.
-export function deliverables(resolved, { descriptor }) {
+// A plan: under overlay it names what a launch carries; under materialize it writes what can
+// persist into the folder's own files and names the rest (the endpoint, the login, AGENTS.md and
+// hooks stay launch only).
+export function deliverables(resolved, { descriptor, mode, folder }) {
   const L = descriptor.launch;
+  const P = descriptor.persist;
+  const I = L.interpolation;
+  const materialize = mode === 'materialize';
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
+  const layerDirs = new Map(resolved.layers.map((l) => [l.name, l.local ? path.dirname(l.path) : l.path]));
+  const jsonKey = (item, file, key, value, risk, note) => out.deliverables.push({ item: item.id, handler: 'json-key', address: { file, key }, address_id: `${file}#${key}`, value, risk, ...(note ? { note } : {}) });
+  const refusedBy = (item, e) => {
+    if (!(e instanceof HsError)) throw e;
+    out.refused.push({ item: item.id, code: e.code, reason: e.message });
+  };
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
   for (const [role, item] of Object.entries(roles)) {
     const r = L.roles[role];
     if (r.unsupported) out.skipped.push({ item: item.id, reason: r.unsupported });
-    else out.launch_only.push({ item: item.id, value: item.value, via: `launch-spec: ${r.flag}` });
+    // With an endpoint the model is the launch's own provider's, which exists only at launch.
+    else if (materialize && !endpoint) {
+      try {
+        refuseText(item.id, 'the model id', item.value, I);
+      } catch (e) {
+        refusedBy(item, e);
+        continue;
+      }
+      const slash = String(item.value).indexOf('/');
+      if (slash <= 0 || slash === String(item.value).length - 1) {
+        out.refused.push({ item: item.id, code: 'item_unsupported', reason: `${item.id}: pi keeps a persisted model as defaultProvider and defaultModel [P15:settings]; give it as provider/model` });
+        continue;
+      }
+      jsonKey(item, P.settings_file, P.provider_key, item.value.slice(0, slash), []);
+      jsonKey(item, P.settings_file, P.model_key, item.value.slice(slash + 1), []);
+    } else out.launch_only.push({ item: item.id, value: item.value, via: `launch-spec: ${r.flag}${materialize ? '; with an endpoint, the model is the launch\'s own provider\'s, which never persists' : ''}` });
   }
   if (endpoint) out.launch_only.push({ item: endpoint.id, via: `launch-spec: provider ${L.endpoint.provider_id}, registered by the launch extension (${L.extension.flag}), and the credential reference for the caller to resolve; never written to the folder` });
   if (login) out.launch_only.push({ item: login.id, value: login.value, via: 'launch-spec' });
@@ -33,17 +62,110 @@ export function deliverables(resolved, { descriptor }) {
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) out.refused.push({ item: item.id, code: 'item_unsupported', reason: s.refuse });
-    else if (item.kind === 'mcp') out.launch_only.push({ item: item.id, via: `launch-spec: registered by the launch extension (${L.extension.flag}), under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'})` });
-    else if (item.kind === 'hook') out.launch_only.push({ item: item.id, via: `launch-spec: the launch extension (${L.extension.flag}) runs it on pi's ${L.bridge.on[item.value.event]}, through hs's hook shim, under a launch receipt (runs-code)` });
+    else if (item.kind === 'mcp') {
+      if (!materialize) {
+        out.launch_only.push({ item: item.id, via: `launch-spec: registered by the launch extension (${L.extension.flag}), under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'})` });
+        continue;
+      }
+      let p;
+      try {
+        p = persistedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved);
+      } catch (e) {
+        refusedBy(item, e);
+        continue;
+      }
+      if (p.tree) {
+        out.deliverables.push({
+          item: item.id, handler: 'tree', address: { path: p.tree.address }, address_id: p.tree.address,
+          source: p.tree.source, source_sha256: digestPath(p.tree.source), source_is_dir: true, risk: p.risk, note: p.notes.join('; '),
+        });
+      }
+      jsonKey(item, P.mcp_file, p.address.key, p.value, p.risk, p.notes.join('; '));
+    } else if (item.kind === 'hook') out.launch_only.push({ item: item.id, via: `launch-spec: the launch extension (${L.extension.flag}) runs it on pi's ${L.bridge.on[item.value.event]}, through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
     else out.not_implemented.push(s.label ?? item.id);
   }
   for (const f of resolved.files) {
-    if (f.kind === 'skill') out.launch_only.push({ item: f.id, via: `launch-spec: ${L.skills.flag}, under a launch receipt (runs-code)` });
-    else out.not_implemented.push(f.id);
+    if (f.kind !== 'skill') {
+      out.not_implemented.push(f.id);
+      continue;
+    }
+    if (!materialize) {
+      out.launch_only.push({ item: f.id, via: `launch-spec: ${L.skills.flag}, under a launch receipt (runs-code)` });
+      continue;
+    }
+    const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
+    if (link !== null) {
+      out.refused.push({ item: f.id, code: 'write_refused', reason: `the skill holds a symlink (${link}); hs installs no tree with one` });
+      continue;
+    }
+    // A skill can carry scripts the agent is told to run: runs-code, under the plan's receipt.
+    const address = `${P.skills_dir}/${f.id.slice('skill.'.length)}`;
+    out.deliverables.push({
+      item: f.id, handler: 'tree', address: { path: address }, address_id: address,
+      source: f.path, source_sha256: f.sha256, source_is_dir: fs.statSync(f.path).isDirectory(), risk: ['runs-code'],
+      note: 'pi reads the skills in its agent dir, skills/ (tier 1, pi-persisted, 1.5.2)',
+    });
   }
-  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: ${L.agents_md.flag}, a system-prompt append; the folder's own context files still load` });
+  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: ${L.agents_md.flag}, a system-prompt append; the folder's own context files still load${materialize ? '; not persisted in this build' : ''}` });
   if (resolved.permissions.length) out.refused.push({ item: 'permissions', code: 'item_unsupported', reason: `permissions: ${L.permissions.reason}` });
   return out;
+}
+
+// What a plan persists for one MCP server: mcp.json's mcpServers.<id>, and the bound copy in hs-run/
+// of a stdio server that names files in its layer. Refused, with the reason: refs (a bare start
+// would get an empty secret), a working directory (not carried by this build under materialize),
+// spec text pi would expand or run, an SSE server.
+function persistedMcp(item, dir, folder, descriptor, resolved) {
+  const P = descriptor.persist;
+  const M = descriptor.launch.mcp;
+  const I = descriptor.launch.interpolation;
+  const v = item.value;
+  const id = item.id.slice('mcp.'.length);
+  if (!M.id.test(id)) throw new HsError('item_unsupported', `${item.id}: this build names a pi server by its id, letters, digits, _ and - only`, [item.id]);
+  if (v.env_refs || v.header_refs || v.bearer_ref) {
+    throw new HsError('item_unsupported', `${item.id}: a persisted server cannot carry a ref: its \${HS_REF_…} would be filled only by a launch through hs, so a bare start would get an empty secret; deliver it at launch, or persist a server without refs`, [item.id]);
+  }
+  if (v.cwd !== undefined) throw new HsError('item_unsupported', `${item.id}: a persisted server's working directory is not carried in this build; deliver it at launch`, [item.id]);
+  const key = `${P.mcp_key}/${id}`;
+  const exposure = v.exposure ?? M.default_exposure;
+  if (v.url) {
+    if ((v.type ?? 'http') !== 'http') throw new HsError('item_unsupported', `${item.id}: pi supports streamable HTTP, not ${v.type} [P15:mcp]`, [item.id]);
+    refuseText(item.id, 'url', v.url, I);
+    for (const [h, x] of Object.entries(v.headers ?? {})) {
+      refuseText(item.id, `the header name ${JSON.stringify(h)}`, h, I);
+      refuseText(item.id, `headers.${h}`, x, I);
+    }
+    return { address: { file: P.mcp_file, key }, value: { url: v.url, ...(v.headers ? { headers: { ...v.headers } } : {}), exposure }, tree: null, risk: ['sends-data'], notes: [`sends data to ${v.url}`] };
+  }
+  for (const [name, x] of Object.entries(v.env ?? {})) {
+    refuseText(item.id, `the env name ${JSON.stringify(name)}`, name, I);
+    refuseText(item.id, `env.${name}`, x, I);
+  }
+  const p = persistedProcess(item, v, dir, folder, P.root);
+  refuseTilde(item.id, 'the command', p.argv[0], I);
+  p.argv.slice(1).forEach((a, i) => refuseTilde(item.id, `argument ${i + 1}`, a, I));
+  const value = { command: p.argv[0], args: p.argv.slice(1), ...(v.env ? { env: { ...v.env } } : {}), exposure };
+  const risk = [...new Set(processRisks(item, v, resolved).map((r) => r.risk))];
+  return { address: { file: P.mcp_file, key }, value, tree: p.tree, risk, notes: p.notes };
+}
+
+// Whether the ledger holds `addr` at `want`, and the folder too.
+function held(folder, addr, want, current) {
+  const entry = readLedger(folder).addresses[addr];
+  return entry !== undefined && Object.values(entry.owners).some((o) => o.installed === want) && current === want;
+}
+
+// Whether a plan installed an MCP server in the folder at exactly what the spec says now.
+function installedMcp(item, dir, folder, descriptor, resolved) {
+  let p;
+  try {
+    p = persistedMcp(item, dir, folder, descriptor, resolved);
+  } catch {
+    return false;
+  }
+  if (!held(folder, `${p.address.file}#${p.address.key}`, digestOf(p.value), handlers['json-key'].current(folder, descriptor, p.address).digest)) return false;
+  if (!p.tree) return true;
+  return held(folder, p.tree.address, digestPath(p.tree.source), handlers.tree.current(folder, descriptor, { path: p.tree.address }).digest);
 }
 
 // How one non-launch item is handled, the same in a plan and at launch.
@@ -199,7 +321,13 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     const v = item.value;
     const id = item.id.slice('mcp.'.length);
     if (!M.id.test(id)) throw new HsError('item_unsupported', `${item.id}: this build names a pi server by its id, letters, digits, _ and - only`, [item.id]);
-    if (folderServer(id)) throw new HsError('item_unsupported', `${item.id}: ${M.same_name}; rename the spec's server, or remove the folder's`, [item.id]);
+    // A plan put it in the folder's mcp.json at this content: a start reads it there, and the
+    // plan's receipt covered it. Registering it again would be overruled by the file anyway.
+    if (installedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved)) {
+      out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${descriptor.persist.mcp_file}#${descriptor.persist.mcp_key}/${id}); the plan's receipt covered it` });
+      continue;
+    }
+    if (folderServer(id)) throw new HsError('item_unsupported', `${item.id}: ${M.same_name}; plan and apply it, rename the spec's server, or remove the folder's`, [item.id]);
     const exposure = v.exposure ?? M.default_exposure;
     if (v.url) {
       if ((v.type ?? 'http') !== 'http') throw new HsError('item_unsupported', `${item.id}: pi supports streamable HTTP, not ${v.type} [P15:mcp]`, [item.id]);
@@ -308,6 +436,14 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
       continue;
     }
     const name = f.id.slice('skill.'.length);
+    // A skill a plan installed in the folder at this content is read from there; the plan's receipt
+    // covered it.
+    const rel = `${descriptor.persist.skills_dir}/${name}`;
+    const installed = path.join(folder, rel);
+    if (held(folder, rel, f.sha256, fs.existsSync(installed) ? digestPath(installed) : null)) {
+      out.skipped.push({ item: f.id, reason: `installed in the folder by a plan, at this content (${rel}); the plan's receipt covered it` });
+      continue;
+    }
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
     if (link !== null) throw new HsError('write_refused', `${f.id} holds a symlink (${link}); hs copies no tree with one`, [f.id]);
     if (fs.existsSync(path.join(folder, 'skills', name))) out.unverified.push(`${f.id}: the folder's skills/${name} holds a skill of the same name; pi keeps the first it finds [PI §9], and which one that is at launch is not measured`);

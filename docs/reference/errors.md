@@ -32,9 +32,11 @@ An error response is `{"ok": false, "error": {"code", "message", "items", "retry
 | `spec_invalid` | `validate` found errors; `plan` and `launch-spec` refuse such a spec | read `items`, each a problem with its code (below) |
 | `item_unsupported` | the harness cannot carry an item this way, with the reason | follow the reason: deliver it at launch instead, or change the item |
 | `interpolation_refused` | a string the harness would expand holds `${…}` | remove it; secrets go through refs |
+| `isolation_unmet` | `isolation = "strict"`, and the harness would still read what the spec does not name; `items` names each path | remove what the folder holds that is named, deliver without strict isolation, or use a harness that keeps it (`describe`, `isolation`) |
 
 Problem codes inside `spec_invalid`:
 - **layers:** `layer_unreadable`, `spec_header_missing`, `format_unsupported`,
+  `spec_key_misplaced` (a top-level key such as `isolation` written after `[spec]`, so inside it),
   `layer_name_duplicate`;
 - **items:** `item_malformed`, `skill_malformed`, `skill_name_mismatch`, `skill_name_reserved`;
 - **plugins:** `plugin_malformed` (the package breaks the Agent Plugins format, or a

@@ -384,7 +384,12 @@ export function validate(resolved, descriptor) {
     if (comments.length) push({ code: 'agents_md_comment', layer: part.layer, lines: comments, message: `AGENTS.md of layer ${part.layer} has block HTML comments on lines ${comments.join(', ')}` });
   }
 
-  const checked = new Set(['refs', 'binding', 'state', 'unknown', 'skill', 'endpoints', 'login', 'model.roles', 'mcp', 'statusline', 'hook', 'plugin']);
+  // Isolation (§8): `default`, or `strict`: only what the spec names reaches the agent.
+  for (const it of resolved.items.filter((i) => i.kind === 'isolation')) {
+    if (!['default', 'strict'].includes(it.value)) push({ code: 'item_malformed', item: it.id, layer: it.layer, message: 'isolation is "default" or "strict"' });
+  }
+
+  const checked = new Set(['refs', 'binding', 'state', 'unknown', 'skill', 'endpoints', 'login', 'model.roles', 'mcp', 'statusline', 'hook', 'plugin', 'isolation']);
   const kinds = [
     ...resolved.items.map((i) => i.kind),
     ...resolved.files.map((f) => f.id.split('.')[0]),

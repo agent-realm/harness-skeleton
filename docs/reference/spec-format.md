@@ -38,6 +38,7 @@ format  = "0.2"
 | environment | `[env] NAME = "value"` | by name |
 | permissions | `[[permissions.rule]]` entries | appended |
 | removal | `[remove] items = ["mcp.legacy", "skill.old"]` | deletes from lower layers |
+| isolation | `isolation = "default"` or `"strict"`, a top-level key, so before the first table | last layer wins |
 
 A **process** (`exec`, or `run = { … }` for hooks and the status line) is
 `{ exec, args, cwd, env, env_refs }` or `{ shell }`, with paths relative to its layer;

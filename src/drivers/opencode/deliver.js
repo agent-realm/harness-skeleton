@@ -8,6 +8,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { isolationLaunch, isolationPlan } from '../../isolation.js';
 import { HsError } from '../../protocol.js';
 import { hookMatcher } from '../../hooks.js';
 import { SHIM, bridgeSource } from './bridge.js';
@@ -22,11 +23,16 @@ const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 // A plan: under overlay it names what a launch carries; under materialize it writes what can
 // persist and names the rest (the endpoint, the login and AGENTS.md stay launch only).
-export function deliverables(resolved, { descriptor, mode, folder }) {
+export function deliverables(resolved, { descriptor, mode, folder, home, platform }) {
   const L = descriptor.launch;
   const P = descriptor.persist;
   const materialize = mode === 'materialize';
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
+  // Isolation (§8): first, so a strict plan this driver cannot keep is refused as isolation_unmet.
+  const iso = isolationPlan(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.refused) out.refused.unshift(iso.refused);
+  if (iso.launch_only) out.launch_only.push(iso.launch_only);
   const layerDirs = new Map(resolved.layers.map((l) => [l.name, l.local ? path.dirname(l.path) : l.path]));
   // An opencode.jsonc in the folder outranks the opencode.json hs writes (descriptor, persist).
   const jsonc = materialize && fs.existsSync(path.join(folder, P.jsonc_file));
@@ -57,7 +63,7 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
   if (endpoint) out.launch_only.push({ item: endpoint.id, via: `launch-spec: a provider of its own in ${L.config_content_env}, and the credential reference for the caller to resolve; never written to the folder` });
   if (login) out.launch_only.push({ item: login.id, value: login.value, via: 'launch-spec' });
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) out.refused.push({ item: item.id, code: 'item_unsupported', reason: s.refuse });
@@ -233,13 +239,19 @@ function refuseSubstitution(id, value, own) {
   });
 }
 
-export function launchParts(resolved, { headless, descriptor, folder }) {
+export function launchParts(resolved, { headless, descriptor, folder, home, platform }) {
   const L = descriptor.launch;
-  const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: { ...L.always_env }, env_from_refs: {}, unset: [], notes: [], unverified: [], envFrom: {} };
+  const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: { ...L.always_env }, env_from_refs: {}, unset: [], notes: [], unverified: [], envFrom: {}, pathEnv: {} };
+  // Isolation (§8): a strict launch this driver cannot keep is refused before anything else.
+  const iso = isolationLaunch(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.item) out.items.push(iso.item);
+  if (iso.note) out.notes.push(iso.note);
+  const strict = Boolean(iso.item);
   const config = {};
   const flags = [];
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
@@ -326,11 +338,12 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   for (const item of mcpItems) {
     const v = item.value;
     const id = item.id.slice('mcp.'.length);
-    if (installedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved)) {
+    // Under strict the folder's config/opencode/ is not read, so the launch carries the server itself.
+    if (!strict && installedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved)) {
       out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${P.config_file}#${P.mcp_key}/${id}); the plan's receipt covered it` });
       continue;
     }
-    const there = M.id.test(id) ? folderServer(id) : null;
+    const there = M.id.test(id) && !strict ? folderServer(id) : null;
     if (there) throw new HsError('item_unsupported', `${item.id}: the folder's ${there} defines ${M.config_key}.${M.servers_key}.${id}, and the launch's would merge into it key by key; plan and apply it, rename the spec's server, or remove the folder's`, [item.id]);
     if (!M.id.test(id)) throw new HsError('item_unsupported', `${item.id}: this build names an OpenCode server by its id, letters, digits, _ and - only`, [item.id]);
     if (v.exposure !== undefined && v.exposure !== 'direct') out.skipped.push({ item: `${item.id}.exposure`, reason: `exposure ${v.exposure} is not carried in this build` });
@@ -418,11 +431,11 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     // covered it. A copy edited in place to match an edited layer is not what any receipt allowed.
     const rel = `${P.skills_dir}/${name}`;
     const installed = path.join(folder, rel);
-    if (held(folder, rel, f.sha256, fs.existsSync(installed) ? digestPath(installed) : null)) {
+    if (!strict && held(folder, rel, f.sha256, fs.existsSync(installed) ? digestPath(installed) : null)) {
       out.skipped.push({ item: f.id, reason: `installed in the folder by a plan, at this content (${rel}); the plan's receipt covered it` });
       continue;
     }
-    if (fs.existsSync(installed)) out.unverified.push(`${f.id}: the folder's ${rel} holds a skill of the same name; which of the two OpenCode loads is not measured`);
+    if (!strict && fs.existsSync(installed)) out.unverified.push(`${f.id}: the folder's ${rel} holds a skill of the same name; which of the two OpenCode loads is not measured`);
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
     if (link !== null) throw new HsError('write_refused', `${f.id} holds a symlink (${link}); hs copies no tree with one`, [f.id]);
     entries.push({ rel: name, source: f.path, sha256: f.sha256 });
@@ -436,6 +449,20 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     out.items.push({ item: 'instructions (AGENTS.md)', via: `<temp>/${L.agents_md.file}, in ${L.config_content_env}'s ${L.agents_md.config_key}, beside the folder's own AGENTS.md` });
   }
   if (resolved.permissions.length) out.not_implemented.push('permissions');
+
+  // Strict (descriptor, isolation.strict): the project walk off; skill permissions that deny every
+  // skill but the spec's, the last match winning; and a config directory of the launch's own, which
+  // replaces the folder's config/opencode/.
+  if (strict) {
+    const S = descriptor.isolation.strict;
+    Object.assign(out.env, S.env);
+    config.permissions = [
+      { action: S.skill_permission, resource: '*', effect: 'deny' },
+      ...entries.map((e) => ({ action: S.skill_permission, resource: e.rel, effect: 'allow' })),
+    ];
+    out.trees.push({ name: S.config_dir.tree, role: S.config_dir.tree, files: [{ rel: S.config_dir.file, content: S.config_dir.content }], entries: [] });
+    out.pathEnv[S.config_dir.env] = S.config_dir.tree;
+  }
 
   // The inline layer, with each generated path in it (launch.js digests them as <role>). A temp path
   // that OpenCode would read as a substitution is refused, as spec text is.

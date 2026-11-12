@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isolationLaunch, isolationPlan } from '../../isolation.js';
 import { HsError } from '../../protocol.js';
 import { hookMatcher } from '../../hooks.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
@@ -22,12 +23,17 @@ const SHIM = fileURLToPath(new URL('../../shim/pi.js', import.meta.url));
 // A plan: under overlay it names what a launch carries; under materialize it writes what can
 // persist into the folder's own files and names the rest (the endpoint, the login, AGENTS.md and
 // hooks stay launch only).
-export function deliverables(resolved, { descriptor, mode, folder }) {
+export function deliverables(resolved, { descriptor, mode, folder, home, platform }) {
   const L = descriptor.launch;
   const P = descriptor.persist;
   const I = L.interpolation;
   const materialize = mode === 'materialize';
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
+  // Isolation (§8): first, so a strict plan this driver cannot keep is refused as isolation_unmet.
+  const iso = isolationPlan(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.refused) out.refused.unshift(iso.refused);
+  if (iso.launch_only) out.launch_only.push(iso.launch_only);
   const layerDirs = new Map(resolved.layers.map((l) => [l.name, l.local ? path.dirname(l.path) : l.path]));
   const jsonKey = (item, file, key, value, risk, note) => out.deliverables.push({ item: item.id, handler: 'json-key', address: { file, key }, address_id: `${file}#${key}`, value, risk, ...(note ? { note } : {}) });
   const refusedBy = (item, e) => {
@@ -58,7 +64,7 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
   if (endpoint) out.launch_only.push({ item: endpoint.id, via: `launch-spec: provider ${L.endpoint.provider_id}, registered by the launch extension (${L.extension.flag}), and the credential reference for the caller to resolve; never written to the folder` });
   if (login) out.launch_only.push({ item: login.id, value: login.value, via: 'launch-spec' });
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) out.refused.push({ item: item.id, code: 'item_unsupported', reason: s.refuse });
@@ -202,6 +208,46 @@ function hookRoute(item, descriptor) {
   return { on };
 }
 
+// Under strict, the folder content no switch keeps out (descriptor, isolation.strict.refuses):
+// instruction files, extensions and package lists, and servers no plan of this spec installed. Names
+// and stat only, and the folder's settings.json and mcp.json through the safe reader, keys only.
+function refuseFolderExtras(folder, descriptor, planned) {
+  const R = descriptor.isolation.strict.refuses;
+  const found = [];
+  for (const f of R.files) {
+    try {
+      fs.lstatSync(path.join(folder, f));
+      found.push(f);
+    } catch {
+      // absent
+    }
+  }
+  for (const d of R.dirs) {
+    let names = [];
+    try {
+      names = fs.readdirSync(path.join(folder, d));
+    } catch {
+      // absent
+    }
+    if (names.length) found.push(`${d}/ (${names.length} entr${names.length === 1 ? 'y' : 'ies'})`);
+  }
+  const settings = readDoc(path.join(folder, descriptor.persist.settings_file));
+  if (settings.blocked) found.push(`${descriptor.persist.settings_file} (${settings.blocked}; whether it lists extensions or packages cannot be told)`);
+  for (const k of R.settings_keys) {
+    const v = settings.doc?.[k];
+    if (Array.isArray(v) ? v.length : v !== undefined && v !== null) found.push(`${descriptor.persist.settings_file}#${k}`);
+  }
+  const mcp = readDoc(path.join(folder, descriptor.launch.mcp.folder_file));
+  if (mcp.blocked) found.push(`${descriptor.launch.mcp.folder_file} (${mcp.blocked}; its servers cannot be told)`);
+  const servers = mcp.doc?.mcpServers;
+  for (const id of servers && typeof servers === 'object' ? Object.keys(servers) : []) {
+    if (!planned.includes(id)) found.push(`${descriptor.launch.mcp.folder_file}#mcpServers/${id}`);
+  }
+  if (found.length) {
+    throw new HsError('isolation_unmet', `isolation = "strict": the folder holds ${found.join('; ')}, which pi would load and no switch keeps out without dropping hs's own extension; remove them from the folder, or launch without strict isolation`, found);
+  }
+}
+
 // pi keeps no lock hs could ask, and this build writes nothing into its folder.
 export function liveCheck() {
   return null;
@@ -229,12 +275,18 @@ function walk(v, fn) {
   }
 }
 
-export function launchParts(resolved, { headless, descriptor, folder }) {
+export function launchParts(resolved, { headless, descriptor, folder, home, platform }) {
   const L = descriptor.launch;
   const I = L.interpolation;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
+  // Isolation (§8): a strict launch this driver cannot keep is refused before anything else.
+  const iso = isolationLaunch(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.item) out.items.push(iso.item);
+  if (iso.note) out.notes.push(iso.note);
+  const strict = Boolean(iso.item);
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
@@ -430,6 +482,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   // Skills: one --skill per skill, copied into the temp dir. A skill may carry scripts the agent is
   // told to run, so it is runs-code.
   const entries = [];
+  const installedSkills = [];
   for (const f of resolved.files) {
     if (f.kind !== 'skill') {
       out.not_implemented.push(f.id);
@@ -441,12 +494,16 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     const rel = `${descriptor.persist.skills_dir}/${name}`;
     const installed = path.join(folder, rel);
     if (held(folder, rel, f.sha256, fs.existsSync(installed) ? digestPath(installed) : null)) {
-      out.skipped.push({ item: f.id, reason: `installed in the folder by a plan, at this content (${rel}); the plan's receipt covered it` });
+      // Under strict --no-skills drops the folder's skills, so one a plan installed is named again.
+      if (strict) {
+        installedSkills.push(installed);
+        out.items.push({ item: f.id, via: `${L.skills.flag} <folder>/${rel}: installed by a plan at this content, and named again since --no-skills drops discovery; the plan's receipt covered it` });
+      } else out.skipped.push({ item: f.id, reason: `installed in the folder by a plan, at this content (${rel}); the plan's receipt covered it` });
       continue;
     }
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
     if (link !== null) throw new HsError('write_refused', `${f.id} holds a symlink (${link}); hs copies no tree with one`, [f.id]);
-    if (fs.existsSync(path.join(folder, 'skills', name))) out.unverified.push(`${f.id}: the folder's skills/${name} holds a skill of the same name; pi keeps the first it finds [PI §9], and which one that is at launch is not measured`);
+    if (!strict && fs.existsSync(path.join(folder, 'skills', name))) out.unverified.push(`${f.id}: the folder's skills/${name} holds a skill of the same name; pi keeps the first it finds [PI §9], and which one that is at launch is not measured`);
     entries.push({ rel: name, source: f.path, sha256: f.sha256 });
     out.risks.push({ item: f.id, layer: f.layer, risk: 'runs-code', sha256: f.sha256 });
     out.items.push({ item: f.id, via: `${L.skills.flag} <temp>/${L.skills.tree}/${name}` });
@@ -460,13 +517,20 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     out.items.push({ item: 'instructions (AGENTS.md)', via: `${L.agents_md.flag}: a system-prompt append, not a context file; the folder's own context files still load` });
   }
 
+  // Strict (descriptor, isolation.strict): what the switches cannot keep out without dropping hs's
+  // own extension is refused when the folder holds it, each by its path.
+  if (strict) refuseFolderExtras(folder, descriptor, mcpItems.filter((i) => installedMcp(i, layerDirs.get(i.layer), folder, descriptor, resolved)).map((i) => i.id.slice('mcp.'.length)));
+  const strictArgv = strict ? descriptor.isolation.strict.argv : [];
+
   if (!headless) out.unverified.push('the interactive launch is not measured; tier 1 runs pi in JSON mode');
   const skills = entries.map((e) => e.rel);
   out.argv = (paths) => [
     ...(headless ? L.headless.argv : L.interactive.argv),
+    ...strictArgv,
     ...(provider ? [E.provider_flag, E.provider_id] : []),
     ...flags,
     ...(extension ? [L.extension.flag, paths[L.extension.role]] : []),
+    ...installedSkills.flatMap((p) => [L.skills.flag, p]),
     ...skills.flatMap((n) => [L.skills.flag, path.join(paths[L.skills.tree], n)]),
     ...(resolved.agents_md.length ? [L.agents_md.flag, paths[L.agents_md.role]] : []),
   ];

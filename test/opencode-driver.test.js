@@ -32,15 +32,18 @@ function box(version = '2.2.7') {
 const allow = (refused) => ({ format: 'hs-receipt/0.2', launch_digest: refused.error.items[0].launch_digest, allows: [...new Set(refused.error.items[0].risks.map((r) => r.item))], by: 'test', at: 'now' });
 const content = (spec) => JSON.parse(spec.env_set.OPENCODE_CONFIG_CONTENT);
 
-test('describe: the four XDG roots bind the folder; the two escapes a launch cannot close are named known limits', () => {
+test('describe: the four XDG roots bind the folder; the escapes a default launch cannot close are named known limits, with the strict switch where one exists', () => {
   const s = box();
   try {
     const d = ok(s.call('describe', {}));
     assert.equal(d.harness, 'opencode');
     assert.deepEqual(d.binding.env_set, ['XDG_CONFIG_HOME', 'XDG_DATA_HOME', 'XDG_CACHE_HOME', 'XDG_STATE_HOME']);
     assert.deepEqual(d.binding.folder_layout, { XDG_CONFIG_HOME: 'config', XDG_DATA_HOME: 'data', XDG_CACHE_HOME: 'cache', XDG_STATE_HOME: 'state' });
-    assert.deepEqual(d.known_limits.map((k) => [k.path, k.kind]), [['~/.agents/skills', 'inbound-read'], ['~/.opencode/', 'outbound-write']]);
+    assert.deepEqual(d.known_limits.map((k) => [k.path.split(' ')[0], k.kind]), [['~/.agents/skills', 'inbound-read'], ['AGENTS.md', 'inbound-read'], ['.agents/,', 'inbound-read'], ['~/.opencode/', 'outbound-write']]);
     assert.match(d.known_limits[0].note, /no switch in 2\.x/);
+    assert.match(d.known_limits[0].strict, /skill permissions/);
+    assert.match(d.known_limits[1].strict, /OPENCODE_DISABLE_PROJECT_CONFIG=1/);
+    assert.equal(d.known_limits[3].strict, undefined, 'no switch keeps ~/.opencode/ from being written');
     assert.match(d.versions.note, /1\.x .* out of range: its run has no --standalone/);
     assert.match(d.launch_network.with_endpoint, /no model catalog fetch/);
     assert.ok(d.operations.includes('launch-spec') && d.operations.includes('observe --state'));

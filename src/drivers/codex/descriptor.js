@@ -95,6 +95,10 @@ export default Object.freeze({
   versions: { certified: [], compatible: { min: '0.160.0', below: '0.161.0' } },
 
 
+  // Strict isolation (§8): no switch is measured, so a strict launch or plan is refused, naming each
+  // inbound escape (binding.escapes).
+  isolation: { strict: null, reason: 'this build has measured no switch that keeps Codex\'s project instructions or its $HOME skill roots out' },
+
   binding: {
     // Must already exist and be a directory, or startup fails; Codex canonicalizes it [CX §1].
     env_set: 'CODEX_HOME',
@@ -106,6 +110,8 @@ export default Object.freeze({
         note: 'user skills, resolved from the OS home, not CODEX_HOME', source: 'CX §1 [S-ext/skills/src/host_roots.rs]' },
       { kind: 'inbound-read', path: '~/.agents/plugins/marketplace.json', class: 'config', closable: false,
         note: 'personal marketplace; also ~/.claude-plugin/ and ~/.cursor-plugin/marketplace.json', source: 'CX §1 [S-core-plugins/src/marketplace.rs]' },
+      { kind: 'inbound-read', path: 'AGENTS.md from the project root (its .git) down to the working directory', class: 'config', closable: false,
+        note: 'project instructions; an untrusted project supplies none (0.150.0 and later), and this build has not measured a switch', source: 'CX §3 [D-agentsmd]' },
       { kind: 'inbound-read', path: '/etc/codex/', class: 'config', closable: false,
         note: 'system and managed layers: config.toml, requirements.toml, managed_config.toml, skills', source: 'CX §1, §2 [D-basic][D-managed]' },
       { kind: 'credential-namespace', path: 'OS keyring, service "Codex MCP Credentials"', class: 'credentials', closable: false,

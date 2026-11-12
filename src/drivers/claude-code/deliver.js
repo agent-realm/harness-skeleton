@@ -12,6 +12,7 @@ import { generatedDigest, handlers, treeLink } from '../../native.js';
 import { persistedProcess } from '../../persist.js';
 import { SHIM_DIR } from '../../shim-dir.js';
 import { compareVersions } from '../../version.js';
+import { isolationLaunch, isolationPlan } from '../../isolation.js';
 import { HsError } from '../../protocol.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { refuseLoggedIn, storedLogin } from './login.js';
@@ -160,8 +161,13 @@ export function deliverables(resolved, { folder, mode, home, state: stateOpts, d
     const key = descriptor.launch.statusline.settings_key;
     out.deliverables.push({ item: item.id, handler: 'json-key', address: { file: 'settings.json', key }, address_id: `settings.json#${key}`, value, risk: ['runs-code'], note: p.notes.join('; ') });
   }
+  // Isolation (§8): first, so a strict plan this driver cannot keep is refused as isolation_unmet.
+  const iso = isolationPlan(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.refused) out.refused.unshift(iso.refused);
+  if (iso.launch_only) out.launch_only.push(iso.launch_only);
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding') continue; // inputs: refs resolve at launch
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation') continue; // inputs: refs resolve at launch; isolation below
     if (LAUNCH_ITEM_KINDS.has(item.kind)) continue; // below
     if (item.kind === 'unknown') out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     else if (item.kind === 'model.catalog') out.skipped.push({ item: item.id, reason: 'model metadata for harnesses that need it; Claude Code does not' });
@@ -610,13 +616,18 @@ function installedStatusLine(sl, dir, folder, descriptor) {
 export function launchParts(resolved, { headless, descriptor, folder, platform, keychain, given, home }) {
   const L = descriptor.launch;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
+  // Isolation (§8): a strict launch this driver cannot keep is refused before anything else.
+  const iso = isolationLaunch(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.item) out.items.push(iso.item);
+  if (iso.note) out.notes.push(iso.note);
   const settings = {};
   const settingsEnv = {};
   const flags = [];
   let sessionsNone = false;
   for (const item of resolved.items) {
     // MCP servers are carried below, under the launch receipt.
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'statusline' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || item.kind === 'mcp' || item.kind === 'statusline' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     if (item.kind === 'unknown') {
       out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     } else if (item.kind === 'model.catalog') {

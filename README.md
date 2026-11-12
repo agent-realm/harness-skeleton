@@ -57,9 +57,9 @@ That approval is a receipt bound to the plan's digest. Secrets are references
 
 | | Claude Code | Codex | OpenCode | pi |
 |---|---|---|---|---|
-| Read the folder: `describe`, `observe --state` | yes | yes | yes (2.x) | designed |
+| Read the folder: `describe`, `observe --state` | yes | yes | yes (2.x) | yes (1.5) |
 | Drift: `observe` | yes | not yet | not yet | designed |
-| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | designed |
+| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, skills, `AGENTS.md` (a system-prompt append) |
 | Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | designed |
 | Sessions: `sessions.*` | yes | yes | yes | no |
 

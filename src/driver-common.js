@@ -236,6 +236,8 @@ export function observe(descriptor, stateInEffect, { harness_path: given, state,
       state: s.items,
       harness_defaults: s.harness_defaults,
       errors: s.errors,
+      // A driver's own facts in effect (pi's project trust), where it reports any.
+      ...(s.extra ?? {}),
     });
   }
   return out;

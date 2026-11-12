@@ -1,0 +1,619 @@
+{
+  "check": "tier 1: what a pi launch can carry with nothing written into the folder (design note v0.2 §4, §5, §7.5, §8)",
+  "at": "2026-11-12T13:13:43.214Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "7761735"
+  },
+  "runs": {
+    "control": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "append",
+        "cwdAgents",
+        "folderAgents",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-12-672Z_01a1cfe4-10df-7416-8a8c-6343364fdde1.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "connects": {
+        "dns": 0,
+        "other": 0
+      }
+    },
+    "online": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-14-067Z_01a1cfe4-1651-723e-bcdd-3942f30c2c20.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "connects": {
+        "dns": 0,
+        "other": 0
+      }
+    },
+    "proxy_control": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [
+        "hs-bench-provider.invalid"
+      ],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-15-145Z_01a1cfe4-1a88-7325-95d5-24b3db04d282.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      }
+    },
+    "mcp_direct": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents",
+        "mcpTool"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-30-059Z_01a1cfe4-54ca-7781-a384-ccede9b7c930.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": true
+      }
+    },
+    "mcp_default": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-31-053Z_01a1cfe4-58ac-75bd-b19e-7e57e5012c60.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": true
+      }
+    },
+    "mcp_folder": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "mcp.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-32-070Z_01a1cfe4-5ca5-7326-9f16-5fb746d4ae05.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "started": {
+        "extension": false,
+        "folder_file": true
+      }
+    },
+    "carrier_key": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-33-147Z_01a1cfe4-60da-7319-8651-bc7c649a6358.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      }
+    },
+    "carrier_bang": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-33-978Z_01a1cfe4-6419-701b-9e27-4cbe39e884f5.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "probe": null
+    },
+    "carrier_remote": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-34-897Z_01a1cfe4-67b0-727e-9ce5-c3e5c436e289.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      }
+    },
+    "carrier_var": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents",
+        "other"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "mcp-auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-35-850Z_01a1cfe4-6b69-732c-aa83-a653481374e5.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      }
+    },
+    "broken": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      }
+    },
+    "hooks": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "block",
+        "cwdAgents",
+        "folderAgents",
+        "thrown"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 6,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-37-634Z_01a1cfe4-7260-75b1-82e5-8a658889828f.jsonl"
+      ],
+      "auth_store": {
+        "bytes": 2,
+        "mode": "600"
+      },
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "thrown": false
+      }
+    },
+    "driver": {
+      "refused": "receipt_required",
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "append",
+        "cwdAgents",
+        "mcpTool",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "hosts": [],
+      "folder": [
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-40-113Z_01a1cfe4-7c10-740e-84ac-07ed0b96e6ca.jsonl"
+      ],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": false
+      }
+    },
+    "driver_again": {
+      "refused": "receipt_required",
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "append",
+        "cwdAgents",
+        "mcpTool",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "hosts": [],
+      "folder": [
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-40-113Z_01a1cfe4-7c10-740e-84ac-07ed0b96e6ca.jsonl",
+        "sessions/--tmp-hs-bench-gX8j-npmtmp-hs-tier1-pi-launch-HUTJ52-proj-work--/2026-11-12T13-13-42-647Z_01a1cfe4-85f6-727e-ae6c-f2acd4c79a11.jsonl"
+      ],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": false
+      }
+    }
+  },
+  "recorded": {
+    "home_written": [],
+    "cwd_agents_reaches": true,
+    "online_hosts": [],
+    "mcp_default_tools": [
+      "bash",
+      "codemode",
+      "edit",
+      "read",
+      "write"
+    ],
+    "mcp_default_started": true,
+    "mcp_folder_started": {
+      "extension": false,
+      "folder_file": true
+    },
+    "carriers": {
+      "executed": {
+        "apikey": true,
+        "header": true,
+        "args": false,
+        "env": true,
+        "mcp-header": true
+      },
+      "expanded": {
+        "provider_header": true,
+        "mcp_env": true,
+        "mcp_env_kept_literal": false,
+        "mcp_args": false,
+        "mcp_args_kept_literal": true,
+        "mcp_remote_header": true
+      },
+      "reached": {
+        "carrier_key": false,
+        "carrier_bang": false,
+        "carrier_remote": true,
+        "carrier_var": true
+      },
+      "remote_requests": 1
+    },
+    "online_connects": {
+      "dns": 0,
+      "other": 0
+    },
+    "strace": true,
+    "broken": {
+      "exit": 1,
+      "requests": 0
+    },
+    "hooks": {
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "thrown": false
+      },
+      "block_reason_reached": true,
+      "throw_reason_reached": true,
+      "exit": 0
+    }
+  },
+  "checks": {
+    "control: the extension's provider reaches the model with the dummy key, read from \"$HS_BENCH_PI_KEY\" (premise)": true,
+    "control: the --skill and the --append-system-prompt file reach a request": true,
+    "control: PI_CODING_AGENT_DIR binds the folder: its AGENTS.md reaches a request, the default root's does not, and the session lands in its sessions/": true,
+    "control: with PI_OFFLINE, PI_SKIP_VERSION_CHECK and PI_TELEMETRY=0, no host is asked for": true,
+    "known limits: ~/.agents/skills and an ancestor AGENTS.md reach a request; the trust-gated project .pi/ does not, in JSON mode": true,
+    "online: with the offline switches off, the explicit provider still reaches the model": true,
+    "mcp_direct: a server the extension registers starts, its ${HS_REF_…} env value expanded, and its tool is offered as mcp__probe__ping": true,
+    "proxy_control: a provider on an outside host is asked for through the proxy, so the proxy sees pi's requests (premise)": true,
+    "control: under strace, pi connects to nothing but loopback with the offline switches on (DNS apart, none either)": true,
+    "carriers: pi runs a leading !command in the provider's apiKey, a provider header, an MCP env value and a remote MCP header": true,
+    "carriers: pi expands ${VAR} in a provider header and an MCP env value": true,
+    "pi writes an empty login store on every start: auth.json, 2 bytes, mode 600 (the premise for telling it from a login by its size)": true,
+    "driver: hs launch-spec refuses without a receipt, and the launch it describes leaves in the folder only what pi itself writes on a start (sessions/, its empty auth.json and models-store.json)": true,
+    "driver: a second launch in the same folder is not refused: pi's empty store is no login, and the model is reached again": true,
+    "driver: the spec's model reaches the endpoint with the dummy key, and no host is asked for": true,
+    "driver: the skill and AGENTS.md reach a request": true,
+    "driver: the MCP server starts with its ref expanded, and its tool is offered as mcp__probe__ping": true,
+    "no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

@@ -32,15 +32,17 @@ export const ROLE_ORDER = Object.freeze(['primary', 'small', 'subagent', 'effort
 export const LAUNCH_ITEM_KINDS = new Set(['model.roles', 'endpoints', 'login']);
 
 // An endpoint launch needs a folder with no stored login (§5.2: the endpoint's credential is the
-// only login). Checked by name only: the file is never opened.
+// only login). Checked by name only: the file is never opened. A harness that writes an empty store
+// on every start names its size (`empty_bytes`): a regular file of exactly that size holds no login,
+// told from its metadata alone; any other size, or a link, counts as one.
 export function refuseStoredLogin(folder, descriptor) {
   const sl = descriptor.launch.stored_login;
   refuseSettingsCredential(folder, sl?.settings_env);
   for (const f of sl?.files ?? []) {
     let present = false;
     try {
-      fs.lstatSync(path.join(folder, f));
-      present = true;
+      const st = fs.lstatSync(path.join(folder, f));
+      present = !(sl.empty_bytes !== undefined && st.isFile() && st.size === sl.empty_bytes);
     } catch {
       // absent
     }

@@ -54,6 +54,10 @@ node bin/hs.js remove --harness claude-code --folder ./env-1 --owner builder
 what was there before. `--item <id>` removes one item. `plan --prune` plans the removal of the
 items a spec no longer has.
 
+**Plugin data.** On pi a plugin's servers keep their data in `hs-run/plugin-data/<name>/`.
+`remove` keeps it, since it is what the servers wrote, not what a plan installed, and says where:
+"plugin data kept at …". `remove --purge-data` deletes it as well.
+
 **Owners.** Each tool applies under its own `--owner`. An item two owners deliver is counted
 twice, and stays until both remove it. An item that is in the folder but in no ledger is refused
 as `unowned_conflict`; `--adopt` records it under the applying owner.

@@ -56,6 +56,10 @@ them and the receipt no longer fits.
 An item the plan already installed in the folder, at this content, is skipped, so it never runs
 twice.
 
+**Plugins on pi.** An Agent Plugins package is translated into a pi package in the temp dir and
+passed with `-e`: its skills, and its MCP servers through an extension hs generates. Nothing else
+in the package loads.
+
 **pi's sessions.** Give `launch-spec` the directory pi will run in, `--cwd <dir>`. The launch
 then passes pi's own session directory for it, so a project's `.pi/settings.json` cannot move the
 session out of the folder. Run pi in that directory: the result's `cwd` says which one.

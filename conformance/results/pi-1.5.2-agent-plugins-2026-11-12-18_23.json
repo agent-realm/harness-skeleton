@@ -1,0 +1,178 @@
+{
+  "check": "tier 1: Agent Plugins packages on pi, translated into a pi package, at launch and under materialize (design note v0.2 §5.7, milestone 8.4)",
+  "at": "2026-11-12T15:23:15.510Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "accc0cf"
+  },
+  "runs": {
+    "launch": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "receipt_needed": true,
+      "plugin_item": "carried",
+      "skill_reached": true,
+      "tools": [
+        "mcp__bench_kit__probe__ping"
+      ],
+      "tool_called": true,
+      "server": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [
+          "PLUGIN_ROOT",
+          "PLUGIN_DATA"
+        ],
+        "root_matches": true,
+        "data_exists": true,
+        "data_writable": true,
+        "data_matches": true,
+        "cwd_is_root": true
+      },
+      "undeclared_loaded": false,
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "refused": {
+      "validate": [
+        "plugin_placeholder_literal"
+      ],
+      "launch": "spec_invalid"
+    },
+    "bare": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "receipt_needed": false,
+      "plugin_item": null,
+      "skill_reached": true,
+      "tools": [
+        "mcp__bench_kit__probe__ping"
+      ],
+      "tool_called": true,
+      "server": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [
+          "PLUGIN_ROOT",
+          "PLUGIN_DATA"
+        ],
+        "root_matches": true,
+        "data_exists": true,
+        "data_writable": true,
+        "data_matches": true,
+        "cwd_is_root": true
+      },
+      "undeclared_loaded": false,
+      "folder_added": [
+        "hs-run/plugin-data/",
+        "hs-run/plugin-data/bench-kit/"
+      ],
+      "hosts": []
+    },
+    "skipped": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "receipt_needed": false,
+      "plugin_item": "skipped",
+      "skill_reached": true,
+      "tools": [
+        "mcp__bench_kit__probe__ping"
+      ],
+      "tool_called": true,
+      "server": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [
+          "PLUGIN_ROOT",
+          "PLUGIN_DATA"
+        ],
+        "root_matches": true,
+        "data_exists": true,
+        "data_writable": true,
+        "data_matches": true,
+        "cwd_is_root": true
+      },
+      "undeclared_loaded": false,
+      "folder_added": [],
+      "hosts": []
+    },
+    "strict": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 2,
+      "receipt_needed": false,
+      "plugin_item": "carried",
+      "skill_reached": true,
+      "tools": [
+        "mcp__bench_kit__probe__ping"
+      ],
+      "tool_called": true,
+      "server": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [
+          "PLUGIN_ROOT",
+          "PLUGIN_DATA"
+        ],
+        "root_matches": true,
+        "data_exists": true,
+        "data_writable": true,
+        "data_matches": true,
+        "cwd_is_root": true
+      },
+      "undeclared_loaded": false,
+      "folder_added": [],
+      "hosts": []
+    },
+    "removed": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "receipt_needed": false,
+      "plugin_item": null,
+      "skill_reached": false,
+      "tools": [],
+      "tool_called": false,
+      "server": null,
+      "undeclared_loaded": false,
+      "folder_added": [],
+      "hosts": []
+    }
+  },
+  "recorded": {
+    "planned": [
+      "hs-run/plugin.bench-kit",
+      "settings.json#packages[plugin.bench-kit]"
+    ],
+    "removed_notes": [
+      "plugin data kept at hs-run/plugin-data/bench-kit; remove with --purge-data deletes it"
+    ],
+    "purged_notes": [
+      "plugin data deleted at hs-run/plugin-data/bench-kit (--purge-data)"
+    ]
+  },
+  "checks": {
+    "launch: hs's launch needs a receipt, carries the plugin, and its skill reaches the model (premise)": true,
+    "launch: the server starts with the placeholders expanded, PLUGIN_ROOT and PLUGIN_DATA set, the data directory existing and writable, in the plugin root; its tool is offered and a call reaches it": true,
+    "launch: the package's undeclared extensions/ code does not load, and pi writes nothing into the folder beyond its own files": true,
+    "refused: a server env holding $HOME is refused by validate (plugin_placeholder_literal) and by launch-spec": true,
+    "bare: the plan writes the tree and the settings.json packages member; a start with no -e loads the skill and the server, its data in hs-run/plugin-data, and not the undeclared code": true,
+    "skipped: hs's launch for the package after the plan skips it, and the skill and server still load from the folder": true,
+    "strict: under isolation = \"strict\" the installed plugin is named again, and its skill and server load, the tool offered once": true,
+    "removed: after hs remove a start has neither skill nor server; the plugin data is kept, and remove --purge-data deletes it": true,
+    "no host is asked for in any run": true
+  },
+  "verdict": "pass"
+}

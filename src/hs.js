@@ -8,6 +8,7 @@ import { HsError, OPS, PROTOCOLS, checkEnvelope, fail, ok } from './protocol.js'
 import * as claudeCode from './drivers/claude-code/index.js';
 import * as codex from './drivers/codex/index.js';
 import * as opencode from './drivers/opencode/index.js';
+import * as pi from './drivers/pi/index.js';
 import { validateLayers } from './spec/validate.js';
 import * as delivery from './deliver.js';
 import { launchSpec } from './launch.js';
@@ -15,7 +16,7 @@ import * as sessions from './sessions.js';
 
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 
-export const DRIVERS = Object.freeze({ 'claude-code': claudeCode, codex, opencode });
+export const DRIVERS = Object.freeze({ 'claude-code': claudeCode, codex, opencode, pi });
 
 // What this build answers. Every other op of §7.1 answers `not_implemented`.
 export const IMPLEMENTED = Object.freeze(['describe', 'detect', 'validate', 'observe', 'plan', 'apply', 'recover', 'remove', 'launch-spec', 'sessions.list', 'sessions.read', 'sessions.derive']);

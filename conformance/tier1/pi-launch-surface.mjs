@@ -46,6 +46,12 @@
 //                starts, and reaches the model.
 //   hooks        the extension's tool_call handler blocks one bash command and throws for another
 //                (recorded, ahead of hooks): neither runs, and whether their reasons reach the model.
+//   driver       hs's own launch (milestone 8.1): `hs launch-spec --harness pi` for a spec with an
+//                endpoint, a model, a stdio MCP server whose ref reaches its env, a skill and an
+//                AGENTS.md, refused without a receipt and run with one, as a caller runs it.
+//                Expected: the model is reached with the dummy key and no host is asked for; the skill
+//                and AGENTS.md reach a request; the server starts with its ref expanded and its tool
+//                is offered; nothing is written into the folder but pi's sessions.
 // Names, booleans and counts only. The credential is a dummy.
 
 import { spawnSync } from 'node:child_process';
@@ -54,7 +60,7 @@ import http from 'node:http';
 import net from 'node:net';
 import path from 'node:path';
 import { OTHER, OTHER_VALUE, serverSource } from '../lib/agent-plugins.mjs';
-import { DUMMY, bench, evidence, guard } from '../lib/bench.mjs';
+import { DUMMY, REF_VAR, bench, evidence, guard } from '../lib/bench.mjs';
 
 const pi = guard('pi-launch-surface.mjs', '--pi');
 const PROMPT = 'tier 1 pi launch-surface check';
@@ -301,6 +307,55 @@ try {
   });
   runs.hooks.ran = { allowed: fs.existsSync(`${ran}.allowed`), denied: fs.existsSync(`${ran}.DENYME`), thrown: fs.existsSync(`${ran}.THROWME`) };
 
+  // driver: hs's own launch-spec, and the launch it describes, run as a caller runs it: its argv and
+  // env_set, each reference resolved here into its variable (the dummy key, the probe directory),
+  // env_unset removed.
+  const driverKit = path.join(b.work, 'kit-driver');
+  const driverOut = out('driver');
+  put(path.join(driverKit, 'spec.toml'), [
+    '[spec]', 'name = "kit"', 'version = "1.0.0"', 'format = "0.2"', '',
+    '[model.roles]', 'primary = "bench-primary"', '',
+    '[refs.PROBE_DIR]', 'description = "the probe directory"', '',
+    '[mcp.probe]', `exec = ${JSON.stringify(process.execPath)}`, `args = [${JSON.stringify(server)}]`,
+    `env = { HS_PROBE_OUT = ${JSON.stringify(driverOut)} }`, 'env_refs = { HS_DATA_DIR = "PROBE_DIR" }', '',
+  ].join('\n'));
+  put(path.join(driverKit, 'skills', 'notes', 'SKILL.md'), skill('notes', M.skill));
+  put(path.join(driverKit, 'AGENTS.md'), `Kit instructions. ${M.append}\n`);
+  const driverRun = async () => {
+    const from = hosts.length;
+    const L = await b.model('ENDPOINT', { markers: Object.values(M), fallback: { text: 'done' }, inspect: stamp });
+    const folder = path.join(b.work, 'pi-driver');
+    fs.mkdirSync(folder, { recursive: true });
+    const local = path.join(b.work, 'local-driver.toml');
+    put(local, `[refs]\nPROBE_DIR = "env:HS_BENCH_PROBE_DIR"\n\n[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
+    const args = ['--harness', 'pi', '--folder', folder, '--layer', driverKit, '--local', local, '--bin', pi, '--headless'];
+    const refused = b.hsCall('launch-spec', args);
+    const items = refused.ok ? [] : refused.error.items ?? [];
+    const receipt = path.join(b.work, 'receipt-driver.json');
+    put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
+    const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
+    const env = { ...spec.env_set, ...viaProxy };
+    for (const [v, ref] of Object.entries(spec.env_from_refs)) {
+      if (ref === `env:${REF_VAR}`) env[v] = DUMMY;
+      else if (ref === 'env:HS_BENCH_PROBE_DIR') env[v] = probeDir;
+      else throw new Error(`unexpected reference for ${v}`);
+    }
+    for (const v of spec.env_unset) env[v] = undefined;
+    const r = await b.launch([L], [pi, ...spec.argv.slice(1), PROMPT], env, cwd);
+    fs.rmSync(spec.temp_dir, { recursive: true, force: true });
+    const seen = r.seen.ENDPOINT;
+    return {
+      refused: refused.ok ? null : refused.error.code, exit: r.exit, timed_out: r.timed_out, requests: seen.length,
+      credential: [...new Set(seen.map((q) => q.credential))],
+      markers: Object.entries(M).filter(([, m]) => seen.some((q) => q.markers.includes(m))).map(([k]) => k).sort(),
+      tools: [...new Set(seen.flatMap((q) => q.tools ?? []))].filter((t) => typeof t === 'string').sort(),
+      hosts: [...new Set(hosts.slice(from))].sort(),
+      folder: names(folder, 3),
+      probe: probe(driverOut),
+    };
+  };
+  runs.driver = await driverRun();
+
   const left = benchPids();
   proxy.close();
 
@@ -318,6 +373,10 @@ try {
     'control: under strace, pi connects to nothing but loopback with the offline switches on (DNS apart, none either)': !STRACE || (C.connects !== null && C.connects.other === 0 && C.connects.dns === 0),
     'carriers: pi runs a leading !command in the provider\'s apiKey, a provider header, an MCP env value and a remote MCP header': carriers.executed.apikey && carriers.executed.header && carriers.executed.env && carriers.executed['mcp-header'],
     'carriers: pi expands ${VAR} in a provider header and an MCP env value': carriers.expanded.provider_header && carriers.expanded.mcp_env === true,
+    'driver: hs launch-spec refuses without a receipt, and the launch it describes writes nothing into the folder but pi\'s sessions': runs.driver.refused === 'receipt_required' && runs.driver.folder.length > 0 && runs.driver.folder.every((n) => n === 'sessions' || n.startsWith('sessions/')),
+    'driver: the spec\'s model reaches the endpoint with the dummy key, and no host is asked for': runs.driver.requests > 0 && runs.driver.credential.length === 1 && runs.driver.credential[0] === 'bearer:bench-dummy' && runs.driver.hosts.length === 0,
+    'driver: the skill and AGENTS.md reach a request': runs.driver.markers.includes('skill') && runs.driver.markers.includes('append'),
+    'driver: the MCP server starts with its ref expanded, and its tool is offered as mcp__probe__ping': runs.driver.probe?.started === true && runs.driver.probe?.data_expanded === true && runs.driver.tools.includes('mcp__probe__ping'),
     'no process with the bench\'s environment is left': left.length === 0,
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';

@@ -1,0 +1,224 @@
+{
+  "check": "tier 1: what a bare pi start reads from the folder's own files (design note v0.2 §7.4, §7.5)",
+  "at": "2026-11-12T13:42:25.649Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "3b2d6ad"
+  },
+  "runs": {
+    "control": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "rewritten": [],
+      "added": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "hosts": []
+    },
+    "byhand": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agents",
+        "mcp",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "rewritten": [],
+      "added": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "hosts": [],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": false,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": false
+      }
+    },
+    "exposure": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "rewritten": [],
+      "added": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "hosts": [],
+      "started": true
+    },
+    "driver": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "mcp",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "rewritten": [],
+      "added": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "hosts": [],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": false,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": false
+      },
+      "plan": {
+        "operations": [
+          "hs-run/mcp.probe",
+          "mcp.json#mcpServers/probe",
+          "settings.json#defaultModel",
+          "settings.json#defaultProvider",
+          "skills/notes"
+        ],
+        "refused_apply": "receipt_required",
+        "server_from_copy": true
+      },
+      "launch_skipped": [
+        "mcp.probe",
+        "skill.notes"
+      ]
+    },
+    "removed": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "rewritten": [],
+      "added": [],
+      "hosts": [],
+      "server_started_again": false
+    }
+  },
+  "recorded": {
+    "rewritten": {
+      "control": [],
+      "byhand": [],
+      "exposure": [],
+      "driver": [],
+      "removed": []
+    },
+    "added": {
+      "control": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "byhand": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "exposure": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "driver": [
+        "auth.json",
+        "models-store.json",
+        "sessions"
+      ],
+      "removed": []
+    },
+    "exposure_default_tools": [
+      "bash",
+      "codemode",
+      "edit",
+      "read",
+      "write"
+    ],
+    "exposure_default_started": true
+  },
+  "checks": {
+    "control: the folder's settings.json (defaultProvider, defaultModel) picks the model a bare start reaches, with the dummy key (premise)": true,
+    "byhand: a stdio server in the folder's mcp.json, exposure \"direct\", starts and its tool is offered as mcp__probe__ping": true,
+    "byhand: a skill in the folder's skills/ and its AGENTS.md reach a request": true,
+    "driver: the plan writes mcp.json's mcpServers.probe, its copy in hs-run, the skill and settings.json's defaultProvider and defaultModel; apply refuses a receipt that allows nothing": true,
+    "driver: a bare start reaches the model settings.json names, runs the server from its copy in hs-run and offers its tool, and loads the skill": true,
+    "driver: hs launch-spec for the same layer skips the server and the skill the plan installed": true,
+    "driver: after hs remove, a bare start offers no tool of the server, does not start it, and loads no skill": true,
+    "no host is asked for, and no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

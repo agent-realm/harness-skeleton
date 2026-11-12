@@ -156,10 +156,13 @@ test('launch-spec: the endpoint, the model, MCP servers with refs, a skill and A
     ]);
     assert.doesNotMatch(fs.readFileSync(role('extension'), 'utf8'), /keychain:|env:DOCS/, 'no reference in what pi reads');
     assert.deepEqual(fs.readdirSync(s.folder), [], 'nothing written into the folder');
-    // A plan names it all launch only; materialize is not in this build.
+    // A plan under overlay names it all launch only.
     const plan = ok(s.call('plan', { layers: [team], local, owner: 'builder', mode: 'overlay' }));
     assert.deepEqual(plan.launch_only.map((x) => x.item).sort(), ['endpoints.openai-chat', 'instructions (AGENTS.md)', 'login.mode', 'mcp.db', 'mcp.docs', 'model.roles.primary', 'skill.notes']);
-    assert.equal(s.call('plan', { layers: [team], local, owner: 'builder', mode: 'materialize' }).error.code, 'not_implemented');
+    // Under materialize a server with refs is refused: a bare start would get an empty secret.
+    const m = s.call('plan', { layers: [team], local, owner: 'builder', mode: 'materialize' });
+    assert.equal(m.error?.code, 'item_unsupported');
+    assert.match(JSON.stringify(m.error.items), /cannot carry a ref/);
   } finally {
     s.done();
   }

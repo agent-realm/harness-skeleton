@@ -4,7 +4,8 @@
 // - `P15:<doc>`: the docs shipped in @earendil-works/pi-coding-agent@1.5.2 (docs/<doc>.md), read
 //   2026-11-12; `P15:dist/<file>` its shipped code;
 // - `T1`: the tier 1 check conformance/tier1/pi-launch-surface.mjs on 1.5.2, 2026-11-12;
-// - `T2`: the tier 1 check conformance/tier1/pi-hooks.mjs on 1.5.2, 2026-11-12.
+// - `T2`: the tier 1 check conformance/tier1/pi-hooks.mjs on 1.5.2, 2026-11-12;
+// - `T3`: the tier 1 check conformance/tier1/pi-persisted.mjs on 1.5.2, 2026-11-12.
 
 import { PI_HOOKS } from '../../shim/pi-hooks.js';
 
@@ -14,8 +15,8 @@ export default Object.freeze({
   binary: 'pi',
   version_args: ['--version'], // prints `1.5.2` [T1]
 
-  // Launch only (milestone 8.1); materialize comes with 8.3.
-  delivery_modes: ['overlay'],
+  // Launch (milestone 8.1), and into the folder, the agent dir itself (8.3).
+  delivery_modes: ['materialize', 'overlay'],
 
   // The 1.5 line, from the release measured [T1]. 0.x is out of range: before 0.99 there is no
   // built-in MCP, before 0.84.3 a model switch rewrites the global settings, before 0.86 user_bash
@@ -56,6 +57,7 @@ export default Object.freeze({
   // Path classes (§9.1), relative to harness_path, the agent dir [P15:configuration; PI §1, §20].
   paths: [
     { pattern: '.harness-skeleton', class: 'skeleton', source: 'design note v0.2 §9.3' },
+    { pattern: 'hs-run', class: 'config', note: 'harness-skeleton\'s bound copies of the processes a plan persists; owner-only; pi does not read it', source: 'design note v0.2 §7.5' },
     { pattern: 'settings.json', class: 'config', source: 'P15:configuration' },
     { pattern: 'keybindings.json', class: 'config', source: 'P15:configuration' },
     { pattern: 'models.json', class: 'config', source: 'P15:configuration' },
@@ -201,6 +203,26 @@ export default Object.freeze({
       source: 'P15:extensions; T2',
     },
     permissions: { supported: false, reason: 'pi has no permission system by design [PI §12; P15:security]' },
+  },
+
+  // Under materialize (milestone 8.3): the folder's own files, which a bare start reads (T3: a
+  // server in mcp.json, exposure "direct", starts and its tool is offered; a skill in skills/
+  // reaches a request; settings.json's defaultProvider and defaultModel pick the model). A start
+  // rewrites none of them; it adds auth.json, models-store.json and sessions/ [T3]. The endpoint and
+  // the login never persist (§5.2), nor AGENTS.md or hooks in this build: launch only.
+  persist: {
+    mcp_file: 'mcp.json',
+    mcp_key: 'mcpServers',
+    settings_file: 'settings.json',
+    provider_key: 'defaultProvider',
+    model_key: 'defaultModel',
+    skills_dir: 'skills',
+    root: 'hs-run',
+  },
+  writable: {
+    json: { 'mcp.json': { keys: [], prefixes: ['mcpServers/'] }, 'settings.json': { keys: ['defaultProvider', 'defaultModel'] } },
+    trees: ['skills', 'hs-run'],
+    private: ['hs-run'],
   },
 
   state: {

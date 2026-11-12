@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { processProblems } from './process-checks.js';
 import { resolve } from './layers.js';
-import { readText } from './files.js';
+import { readJson, readText } from './files.js';
 import { AGENT_PLUGINS, cwdBeyondRoot, literalText, readPackage } from './agent-plugins.js';
 
 // Reference schemes (§1 `reference`).
@@ -76,6 +76,48 @@ export function agentsMdProblems(text) {
     if (/^\s*<!--/.test(line)) comments.push(i + 1);
   });
   return { imports, comments };
+}
+
+// A package in a harness's own plugin format (§5.7), checked by what that harness's route names. The
+// item's name is not one the adapter launches a plugin of its own under. The manifest is optional:
+// without one the plugin takes its directory's name, which the adapter makes the item's. Where there
+// is one, it is a JSON object whose `name` is the item's; a field that would bring in what the spec
+// neither names nor binds is refused while it holds anything, and so is a value matching a refused
+// pattern. The manifest is read without a symlink on its way, and no value is quoted.
+function nativeProblems(dir, id, route, H) {
+  const out = [];
+  if ((route.reserved_names ?? []).includes(id)) {
+    out.push({ code: 'plugin_name_reserved', message: `${id} is the name of the plugin this adapter launches on ${H} itself (${route.reserved_source}); rename the package` });
+  }
+  if (!route.manifest) return out;
+  let cur = dir;
+  for (const seg of path.dirname(route.manifest).split('/').filter((s) => s !== '.')) {
+    cur = path.join(cur, seg);
+    try {
+      if (fs.lstatSync(cur).isSymbolicLink()) return [...out, { code: 'plugin_malformed', message: `${route.manifest} is reached through a symlink` }];
+    } catch {
+      return out; // no manifest directory: no manifest
+    }
+  }
+  const m = readJson(path.join(dir, route.manifest));
+  if (!m.present) return out;
+  if (m.error) return [...out, { code: 'plugin_malformed', message: `${route.manifest}: ${m.error}` }];
+  const manifest = m.value;
+  if (typeof manifest.name !== 'string' || manifest.name === '') return [...out, { code: 'plugin_malformed', message: `${route.manifest}: name must be a non-empty string` }];
+  if (manifest.name !== id) out.push({ code: 'plugin_name_mismatch', message: `${route.manifest} names it differently; the item's id must be the package's name (§5.7)` });
+  const empty = (v) => v === null || (Array.isArray(v) && v.length === 0) || (typeof v === 'object' && v !== null && !Array.isArray(v) && Object.keys(v).length === 0);
+  for (const [field, reason] of Object.entries(route.refuses_fields ?? {})) {
+    if (Object.hasOwn(manifest, field) && !empty(manifest[field])) out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${field}: ${reason}` });
+  }
+  for (const r of route.refuses_values ?? []) {
+    if (!Object.hasOwn(manifest, r.field)) continue;
+    const v = manifest[r.field];
+    const re = new RegExp(r.pattern, 'i');
+    if ((Array.isArray(v) ? v : [v]).some((x) => typeof x === 'string' && re.test(x))) {
+      out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${r.field}: ${r.reason}` });
+    }
+  }
+  return out;
 }
 
 export function validate(resolved, descriptor) {
@@ -255,7 +297,8 @@ export function validate(resolved, descriptor) {
   // read as the format defines it; then, where this harness's descriptor maps the format, against
   // what its route keeps: the versions it maps, `${…}` text the format keeps literal, a working
   // directory beyond the root, a name the adapter launches a plugin of its own under. A native
-  // format is the driver's to check when it delivers one.
+  // format is checked only where this harness's descriptor maps it, by what its route names: the
+  // manifest's name, and the fields that would bring in what the spec does not bind (nativeProblems).
   const routes = descriptor?.plugins ?? {};
   for (const pl of resolved.items.filter((i) => i.kind === 'plugin')) {
     const v = pl.value;
@@ -273,7 +316,12 @@ export function validate(resolved, descriptor) {
       bad('source must name a directory inside its layer, relative to it, reached without a symlink');
       continue;
     }
-    if (v.format !== AGENT_PLUGINS) continue;
+    if (v.format !== AGENT_PLUGINS) {
+      if (Object.hasOwn(routes, v.format) && routes[v.format].mechanism === 'native') {
+        for (const p of nativeProblems(pkgBound.path, id, routes[v.format], descriptor.name)) push({ ...p, ...at, message: `${pl.id}: ${p.message}` });
+      }
+      continue;
+    }
     const pkg = readPackage(pkgBound.path);
     for (const p of pkg.problems) push({ ...p, ...at, message: `${pl.id}: ${p.message}` });
     if (pkg.name !== null && pkg.name !== id) push({ code: 'plugin_name_mismatch', ...at, message: `${pl.id}: the package's plugin.json names it differently; the item's id must be the package's name (§5.7)` });

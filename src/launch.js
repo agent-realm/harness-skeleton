@@ -90,7 +90,8 @@ export function launchSpec(driver, args, opts = {}) {
   const generated = [
     ...parts.files.map((f) => ({ role: f.role, sha256: sha256(Buffer.from(f.content)) })),
     ...trees.map((t) => ({
-      role: t.role, manifest: sha256(Buffer.from(t.manifest.content)),
+      // A tree carried as it is (a claude-plugin package) has no manifest of hs's making.
+      role: t.role, ...(t.manifest ? { manifest: sha256(Buffer.from(t.manifest.content)) } : {}),
       // A tree's other generated files (a translated plugin's .mcp.json), only where it has any, so
       // a launch without one keeps its digest.
       ...(t.files?.length ? { files: t.files.map((f) => ({ path: f.rel, sha256: sha256(Buffer.from(f.content)) })) } : {}),
@@ -126,8 +127,10 @@ export function launchSpec(driver, args, opts = {}) {
     // digest the receipt bound. A copy that differs is a source that changed since resolve.
     for (const t of trees) {
       const root = path.join(tempDir, t.name);
-      fs.mkdirSync(path.join(root, path.dirname(t.manifest.rel)), { recursive: true, mode: 0o700 });
-      fs.writeFileSync(path.join(root, t.manifest.rel), t.manifest.content, { mode: 0o600, flag: 'wx' });
+      if (t.manifest) {
+        fs.mkdirSync(path.join(root, path.dirname(t.manifest.rel)), { recursive: true, mode: 0o700 });
+        fs.writeFileSync(path.join(root, t.manifest.rel), t.manifest.content, { mode: 0o600, flag: 'wx' });
+      }
       for (const f of t.files ?? []) {
         fs.mkdirSync(path.join(root, path.dirname(f.rel)), { recursive: true, mode: 0o700 });
         fs.writeFileSync(path.join(root, f.rel), f.content, { mode: 0o600, flag: 'wx' });

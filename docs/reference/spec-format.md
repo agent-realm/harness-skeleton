@@ -82,9 +82,32 @@ format = "agent-plugins"
   `--plugin-dir` per package, under a launch receipt; under `materialize`, a directory marketplace
   in `hs-run/` and two `settings.json` keys, so a bare start loads it. On Codex, under `materialize`: a plan
   installs the package in Codex's plugin cache, and each launch through `launch-spec` enables it.
-  `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`overlay` on Codex, the
-  native formats such as `claude-plugin`) a plugin item is
-  refused, by name.
+  `config.toml` is never written, so a bare `codex` start does not load it. Elsewhere (`overlay` on
+  Codex, `claude-plugin` on Codex) a plugin item is refused, by name.
+
+### Claude Code's own format
+
+On Claude Code a plugin item may also name a package in Claude Code's own plugin layout
+([the manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference)):
+
+```toml
+[plugin."deploy-kit"]                   # the name in .claude-plugin/plugin.json, if it has one
+source = "plugins/deploy-kit"
+format = "claude-plugin"
+```
+
+- **Delivered whole**, the package being the plugin: at launch, one `--plugin-dir`; under
+  `materialize`, the plugin of the same directory marketplace in `hs-run/`. What it holds runs as
+  Claude Code runs a plugin: its hooks do not go through hs's hook shim, and `bin/` joins the Bash
+  tool's `PATH`. So the package is always `runs-code`, bound by its digest.
+- **The manifest is optional.** Without one, the plugin takes the item's name. With one, its `name`
+  must be the item's.
+- **validate refuses** the manifest fields that would bring in what the spec neither names nor binds,
+  as `plugin_field_unsupported`: `dependencies` (other plugins Claude Code would enable), `userConfig`
+  (values Claude Code asks the user for, credentials among them) and `channels`, while they hold
+  anything, and an `mcpServers` entry naming an MCP bundle (`.mcpb`, `.dxt`, or a URL). An MCP
+  server that needs a secret is an `mcp` item with references.
+- `claude plugin validate` remains Claude Code's own check of the rest of the package.
 
 ## `local.toml`
 
@@ -111,9 +134,9 @@ Values are never secrets, and a binding that is not a reference is refused.
 
 On Claude Code:
 - **at launch:** model roles, endpoints and the login mode, retention, MCP servers, hooks, the
-  status line, skills, and Agent Plugins packages;
+  status line, skills, and plugin packages (Agent Plugins and `claude-plugin`);
 - **under `materialize`:** model roles, retention, MCP servers, hooks, the status line,
-  skills, and Agent Plugins packages. Endpoints and the login mode stay launch-only: a credential exists only at launch, so
+  skills, and plugin packages (Agent Plugins and `claude-plugin`). Endpoints and the login mode stay launch-only: a credential exists only at launch, so
   a bare start never reaches the endpoint.
 
 On Codex:
@@ -124,8 +147,9 @@ On Codex:
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.
 A plugin item outside the routes above is refused by name too: as `not_implemented` where this
-build does not carry it (`materialize` on Claude Code, a native format), and as `item_unsupported`
-where the harness cannot (on Codex under `overlay`, or at launch before a plan installed it).
+build does not carry it (`claude-plugin` on Codex, or a format no route maps), and as
+`item_unsupported` where the harness cannot (on Codex under `overlay`, or at launch before a plan
+installed it; on Claude Code, at launch while the folder holds the plugin at other content).
 
 ## Risks
 

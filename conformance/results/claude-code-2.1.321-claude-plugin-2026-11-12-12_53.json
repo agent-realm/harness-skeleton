@@ -1,0 +1,144 @@
+{
+  "check": "tier 1: a claude-plugin package delivered whole by hs on Claude Code, at launch and under materialize (design note v0.2 §5.7, §12 row 18)",
+  "at": "2026-11-12T09:53:03.904Z",
+  "evidence": {
+    "harness": "2.1.321 (Claude Code)",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "c02f0e4"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": [],
+      "hook_ran": false,
+      "server": null
+    },
+    "direct": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-tool-5a08"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-native_probe__hs_native_tool"
+      ],
+      "hook_ran": true,
+      "server": {
+        "started": true,
+        "cwd_is_root": false,
+        "root_matches": true,
+        "data_exists": true
+      }
+    },
+    "launch": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-tool-5a08"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-native_probe__hs_native_tool"
+      ],
+      "hook_ran": true,
+      "server": {
+        "started": true,
+        "cwd_is_root": false,
+        "root_matches": true,
+        "data_exists": true
+      }
+    },
+    "bare": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-bare:notes",
+        "hs-tier1-cp-tool-5a08"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-bare_probe__hs_native_tool"
+      ],
+      "hook_ran": true,
+      "server": {
+        "started": true,
+        "cwd_is_root": false,
+        "root_matches": true,
+        "data_exists": true
+      }
+    },
+    "driver": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [
+        "hs-bench-native:notes",
+        "hs-tier1-cp-tool-5a08"
+      ],
+      "bench_tools": [
+        "mcp__plugin_hs-bench-native_probe__hs_native_tool"
+      ],
+      "hook_ran": true,
+      "server": {
+        "started": true,
+        "cwd_is_root": false,
+        "root_matches": true,
+        "data_exists": true
+      }
+    },
+    "removed": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 6,
+      "markers": [],
+      "bench_tools": [],
+      "hook_ran": false,
+      "server": null
+    }
+  },
+  "recorded": {
+    "command_marker": {
+      "direct": false,
+      "launch": false,
+      "bare": false,
+      "driver": false
+    },
+    "skill_by_name": {
+      "direct": true,
+      "launch": true,
+      "bare": true,
+      "driver": true
+    }
+  },
+  "checks": {
+    "without a plugin no marker reaches a request, no hook runs, no server starts (premise)": true,
+    "direct: the package passed by hand with --plugin-dir loads whole: skill, server and hook (positive control)": true,
+    "launch: refused without a receipt, its one risk runs-code": true,
+    "launch: one --plugin-dir, its tree the package byte for byte, and the plugin loads whole": true,
+    "bare: a package without a manifest loads under the item's name": true,
+    "driver: the plan writes hs-run/plugin.<name> and the two settings.json keys, runs-code, and apply refuses a receipt that allows nothing": true,
+    "driver: the installed plugin is the package byte for byte, and a bare start loads it whole": true,
+    "driver: hs launch-spec for the same spec skips the installed plugin rather than carry it": true,
+    "removed: after hs remove, a bare start no longer loads the plugin": true
+  },
+  "verdict": "pass"
+}

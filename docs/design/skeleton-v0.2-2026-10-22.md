@@ -1181,6 +1181,20 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - with the project file removed, a plain start with `--continue` takes up the session hs's launch wrote: no new file, and that file grows.
 
   *Run 2026-11-12 on a bench: pass on pi 1.5.2 (five checks).*
+- **How pi loads a local package** (tier 1, `conformance/tier1/pi-plugin-surface.mjs`, ahead of delivering Agent Plugins packages to pi, section 5.7): a package built by hand as a translation would build it. Its `package.json` `pi` manifest declares only one skill root (`./package/skills`) and one extension. The extension registers a stdio MCP server and records which prompt templates and skills pi lists. Beside them lie code and resources the manifest does not declare: an extension, prompts and a theme under `package/`, and an extension and a prompt at the package's own root. Each run is hs's launch for a plain spec, plus the package. Judged:
+  - passed with `-e <dir>`: the declared skill reaches the model and the declared extension loads; neither undeclared extension loads, and no undeclared prompt is listed;
+  - the declared extension's MCP server starts, its tool is offered, and a tool call reaches it;
+  - named in the folder's `settings.json` `packages` (`./hs-run/…`), the package loads the same way at a start with no `-e`;
+  - every `-e` value hs's own launch passes is an absolute path inside its temp dir, and no argument is an npm, git or URL source (a unit test refuses a plugin `source` that is one);
+  - no host is asked for.
+
+  Recorded:
+  - the package as a directory in the folder's `extensions/` loads its extension but not its skill;
+  - `--no-skills` does not drop a `-e` package's skills;
+  - pi writes nothing into the folder beyond its own `auth.json` and `models-store.json`;
+  - themes are not observable in JSON mode; the manifest rule covers all four resource kinds alike (the 1.5.2 package: `dist/core/package-manager.js`, `collectPackageResources`).
+
+  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (six checks).*
 - **The isolation known limits, and switches that close them** (tier 1, `conformance/tier1/isolation-canaries.mjs`, OpenCode and pi, question 7): material the spec never named that reaches a launched agent anyway.
   - **Canaries** in a scratch HOME, with the working directory two levels below it: a skill in `~/.agents/skills`, an `AGENTS.md` in a parent of the working directory, a skill in that parent's `.agents/skills`, and the working directory's own `AGENTS.md`.
   - **Carriers** that a switch must not break: the spec's skill and its `AGENTS.md`. Each launch is hs's own `launch-spec` for that spec, then the same launch with a candidate switch added.

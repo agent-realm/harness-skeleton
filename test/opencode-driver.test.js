@@ -104,7 +104,11 @@ test('launch-spec: the endpoint, the model, MCP servers with refs, a skill and A
     assert.equal(spec.env_set.XDG_DATA_HOME, path.join(s.folder, 'data'));
     assert.equal(spec.env_set.XDG_STATE_HOME, path.join(s.folder, 'state'));
     assert.equal(spec.env_set.OPENCODE_DISABLE_CLAUDE_CODE, '1');
-    for (const v of ['OPENCODE_CONFIG', 'OPENCODE_CONFIG_DIR', 'OPENCODE_CONFIG_CONTENT', 'OPENCODE_PERMISSION', 'OPENCODE_DB', 'OPENCODE_AUTH_CONTENT', 'OPENAI_API_KEY']) assert.ok(spec.env_unset.includes(v), v);
+    for (const v of ['OPENCODE_CONFIG', 'OPENCODE_PERMISSION', 'OPENCODE_DB', 'OPENCODE_AUTH_CONTENT', 'OPENAI_API_KEY']) assert.ok(spec.env_unset.includes(v), v);
+    // A variable the launch sets is never also unset, so a caller gets one environment whichever
+    // list it applies first; the host's own value is replaced by the set.
+    for (const v of ['OPENCODE_CONFIG_DIR', 'OPENCODE_CONFIG_CONTENT']) assert.ok(!spec.env_unset.includes(v) && v in spec.env_set, v);
+    for (const v of Object.keys(spec.env_set)) assert.ok(!spec.env_unset.includes(v), v);
     // The inline layer: the provider, and the servers, refs as {env:…} placeholders.
     const c = content(spec);
     assert.deepEqual(c.providers, { hs: { name: 'harness-skeleton endpoint', env: ['HS_ENDPOINT_KEY'], package: '@opencode/ai/providers/openai-compatible', settings: { baseURL: 'https://gateway.example/v1' }, models: { 'bench-primary': { name: 'bench-primary' } } } });
@@ -145,6 +149,7 @@ test('every launch passes --standalone, headless or not, whatever it carries, an
     }
     const spec = ok(s.call('launch-spec', { layers: [model], headless: false }));
     assert.deepEqual(spec.argv.slice(1), ['--standalone', '-m', 'openai/gpt-x'], 'without an endpoint the model is passed as given');
+    assert.ok(spec.env_unset.includes('OPENCODE_CONFIG_DIR') && spec.env_unset.includes('OPENCODE_CONFIG_CONTENT'), 'unset when the launch sets neither');
     assert.ok(spec.unverified.some((u) => /interactive launch is not measured/.test(u)));
   } finally {
     s.done();

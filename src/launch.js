@@ -89,7 +89,9 @@ export function launchSpec(driver, args, opts = {}) {
   // `<role>`, as argv is, and set to the temp path only after the receipt.
   const pathEnv = parts.pathEnv ?? {};
   const env_set = { ...bindingEnv(descriptor, folder), ...parts.env, ...Object.fromEntries(Object.entries(pathEnv).map(([v, role]) => [v, `<${role}>`])) };
-  const env_unset = [...descriptor.binding.env_unset, ...(parts.unset ?? [])];
+  // A variable the launch sets is never also in env_unset: setting it replaces the host's value, and
+  // a caller then gets the same environment whichever list it applies first.
+  const env_unset = [...descriptor.binding.env_unset, ...(parts.unset ?? [])].filter((v) => !Object.hasOwn(env_set, v));
   const env_from_refs = parts.env_from_refs ?? {};
   const generated = [
     ...parts.files.map((f) => ({ role: f.role, sha256: sha256(Buffer.from(f.content)) })),

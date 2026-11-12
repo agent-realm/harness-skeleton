@@ -20,6 +20,9 @@ The first public cut.
     plan installs; on Codex, installed into the plugin cache by a plan and enabled by each launch);
     on Claude Code also packages in its own format, `claude-plugin`, delivered whole the same two
     ways (refused on Codex, with the reason);
+  - on OpenCode 2.x, launch only: `describe` with its known limits, `detect`, `observe --state`, and
+    `launch-spec` with `--standalone` on every launch, for the endpoint, the primary model, MCP
+    servers, skills and `AGENTS.md`;
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
   - `@agent-realm/harness-session-adapters`: session readers;

@@ -11,6 +11,7 @@ import { digestPath, resolve } from './spec/layers.js';
 import { validate } from './spec/validate.js';
 import { digestOf, sha256 } from './records.js';
 import { hostId } from './host.js';
+import { bindingEnv } from './driver-common.js';
 
 export const LAUNCH_FORMAT = 'hs-launch/0.2';
 export const RECEIPT_FORMAT = 'hs-receipt/0.2';
@@ -84,8 +85,13 @@ export function launchSpec(driver, args, opts = {}) {
     throw new HsError('version_unsupported', `the ${descriptor.binary} binary was not found; a launch that needs a receipt binds the version of the binary it runs`, []);
   }
   const binary = detected ? detected.binary : descriptor.binary;
-  const env_set = { [descriptor.binding.env_set]: folder, ...parts.env };
-  const env_unset = [...descriptor.binding.env_unset, ...(parts.unset ?? [])];
+  // A variable that names a generated file or tree (`pathEnv`: variable -> role) is digested as
+  // `<role>`, as argv is, and set to the temp path only after the receipt.
+  const pathEnv = parts.pathEnv ?? {};
+  const env_set = { ...bindingEnv(descriptor, folder), ...parts.env, ...Object.fromEntries(Object.entries(pathEnv).map(([v, role]) => [v, `<${role}>`])) };
+  // A variable the launch sets is never also in env_unset: setting it replaces the host's value, and
+  // a caller then gets the same environment whichever list it applies first.
+  const env_unset = [...descriptor.binding.env_unset, ...(parts.unset ?? [])].filter((v) => !Object.hasOwn(env_set, v));
   const env_from_refs = parts.env_from_refs ?? {};
   const generated = [
     ...parts.files.map((f) => ({ role: f.role, sha256: sha256(Buffer.from(f.content)) })),
@@ -147,7 +153,12 @@ export function launchSpec(driver, args, opts = {}) {
       files.push({ path: root, role: t.role, sha256: digestPath(root) });
     }
   }
-  const argv = [binary, ...parts.argv(Object.fromEntries(files.map((f) => [f.role, f.path])))];
+  const paths = Object.fromEntries(files.map((f) => [f.role, f.path]));
+  const argv = [binary, ...parts.argv(paths)];
+  for (const [v, role] of Object.entries(pathEnv)) {
+    if (!paths[role]) throw new HsError('internal', `${v} names the generated ${role}, which this launch did not make`, [v]);
+    env_set[v] = paths[role];
+  }
   return {
     harness: descriptor.harness,
     harness_path: folder,

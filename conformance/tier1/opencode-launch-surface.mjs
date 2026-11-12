@@ -36,6 +36,13 @@
 //                Expected: no process with the bench's environment is left.
 //   v1           with --opencode1, the 1.x line: its version, whether `run --help` offers
 //                --standalone, and whether a launch with the 2.x config reaches the model.
+//   driver       hs's own launch (milestone 7.1): `hs launch-spec --harness opencode` for a spec with
+//                an endpoint, a model, a stdio MCP server whose ref reaches it as {env:…}, a skill and
+//                an AGENTS.md, refused without a receipt and run with one. Expected: the model the
+//                spec names, through the endpoint, with the dummy key; the skill and AGENTS.md reach a
+//                request; the server starts with the ref's value substituted.
+//   driver_service  the same in a folder whose background service is up on its own config.
+//                Expected: hs's --standalone keeps the launch on the spec's config.
 // Recorded for every run: which canaries reach a request (~/.claude/CLAUDE.md, ~/.agents/skills,
 // ~/.opencode/skills, an AGENTS.md above the working directory), and what OpenCode writes in the
 // folder, in OPENCODE_CONFIG_DIR and in HOME (names only). 2.x has no switch for ~/.agents/skills:
@@ -46,7 +53,7 @@
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { DUMMY, arg, bench, evidence, guard } from '../lib/bench.mjs';
+import { DUMMY, REF_VAR, arg, bench, evidence, guard } from '../lib/bench.mjs';
 import { probe, serverSource } from '../lib/agent-plugins.mjs';
 
 const oc = guard('opencode-launch-surface.mjs', '--opencode');
@@ -80,7 +87,7 @@ const benchPids = () => {
   if (!fs.existsSync('/proc')) return [];
   return fs.readdirSync('/proc').filter((p) => /^\d+$/.test(p) && Number(p) !== process.pid).filter((p) => {
     try {
-      return fs.readFileSync(`/proc/${p}/environ`, 'latin1').includes(b.work);
+      return fs.readFileSync(`/proc/${p}/environ`, 'latin1').includes(`${b.work}/`);
     } catch {
       return false;
     }
@@ -176,6 +183,49 @@ try {
     }
   }
 
+  // driver: hs's own launch-spec, and the launch it describes, run as a caller runs it: its argv
+  // and env_set, each reference resolved here into its variable (a dummy key, and the probe's
+  // directory for the server's ref), env_unset removed.
+  const kit = path.join(b.work, 'kit');
+  put(path.join(kit, 'spec.toml'), [
+    '[spec]', 'name = "kit"', 'version = "1.0.0"', 'format = "0.2"', '',
+    '[model.roles]', 'primary = "bench-primary"', '',
+    '[refs.PROBE_DIR]', 'description = "the probe directory"', '',
+    '[mcp.probe]', `exec = ${JSON.stringify(process.execPath)}`, `args = [${JSON.stringify(server)}]`,
+    `env = { HS_PROBE_OUT = ${JSON.stringify(probeOut)} }`, 'env_refs = { HS_DATA_DIR = "PROBE_DIR" }', '',
+  ].join('\n'));
+  put(path.join(kit, 'skills', 'notes', 'SKILL.md'), skill('notes', M.skill));
+  put(path.join(kit, 'AGENTS.md'), `Kit instructions. ${M.agents}\n`);
+  const local = path.join(b.work, 'local.toml');
+  put(local, `[refs]\nPROBE_DIR = "env:HS_BENCH_PROBE_DIR"\n\n[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
+  const resolveRefs = (spec) => Object.fromEntries(Object.entries(spec.env_from_refs).map(([v, ref]) => {
+    if (ref === `env:${REF_VAR}`) return [v, DUMMY];
+    if (ref === 'env:HS_BENCH_PROBE_DIR') return [v, path.join(b.work, 'probe-dir')];
+    throw new Error(`unexpected reference for ${v}`);
+  }));
+  const driverRun = async (folder) => {
+    fs.rmSync(probeOut, { force: true });
+    const args = ['--harness', 'opencode', '--folder', folder, '--layer', kit, '--local', local, '--bin', oc, '--headless'];
+    const refused = b.hsCall('launch-spec', args);
+    const items = refused.ok ? [] : refused.error.items ?? [];
+    const receipt = path.join(b.work, `receipt-${path.basename(folder)}.json`);
+    put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
+    const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
+    const env = { ...spec.env_set, ...resolveRefs(spec) };
+    for (const v of spec.env_unset) env[v] = undefined;
+    const r = await b.launch([L], [oc, ...spec.argv.slice(1), PROMPT], env, cwd);
+    fs.rmSync(spec.temp_dir, { recursive: true, force: true });
+    return { ...r, probe: probe(probeOut), refused: refused.ok ? null : refused.error.code, standalone: spec.argv.includes('--standalone') };
+  };
+  const driver = await driverRun(folderFor('driver'));
+  const dsFolder = folderFor('driver-service');
+  const dsEnv = { OPENCODE_CONFIG_CONTENT: config('bench-service') };
+  const dsStart = cli(oc, dsFolder, ['service', 'start'], dsEnv);
+  const driverService = await driverRun(dsFolder);
+  const dsStop = cli(oc, dsFolder, ['service', 'stop'], dsEnv);
+  await new Promise((r) => setTimeout(r, 2000));
+  const dsLeft = benchPids();
+
   // v1: the 1.x line, out of range.
   let v1 = null;
   if (oc1) {
@@ -186,6 +236,15 @@ try {
   }
 
   const checks = {
+    'canaries: with OPENCODE_DISABLE_CLAUDE_CODE, ~/.claude/CLAUDE.md does not reach a request': [control, dir, mcp].every((r) => !has(r, M.claude)),
+    'canaries: ~/.opencode/skills does not reach a request': [control, dir, mcp].every((r) => !has(r, M.dotOpencode)),
+    'canaries: ~/.agents/skills reaches every run (no switch in 2.x; the driver names it a known limit, and a release that adds a switch fails here)': [control, dir, mcp].every((r) => has(r, M.agentsDir)),
+    'driver: hs launch-spec refuses without a receipt, and passes --standalone': driver.refused === 'receipt_required' && driver.standalone,
+    'driver: the spec\'s model reaches the endpoint with the dummy key': driver.seen.ENDPOINT.length > 0 && models(driver).every((m) => m === 'bench-primary') && driver.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
+    'driver: the skill and AGENTS.md reach a request': has(driver, M.skill) && has(driver, M.agents),
+    'driver: the MCP server starts, its ref substituted from {env:…}': driver.probe?.started === true && driver.probe?.data_expanded === true,
+    'driver_service: with the folder\'s service up on its own config, hs\'s launch still runs on the spec\'s': dsStart.exit === 0 && driverService.seen.ENDPOINT.length > 0 && models(driverService).every((m) => m === 'bench-primary'),
+    'driver_service: after `service stop` no process with the bench\'s environment is left': dsStop.exit === 0 && dsLeft.length === 0,
     'control: the provider and model through OPENCODE_CONFIG_CONTENT reach the model, with the dummy key (premise)': control.seen.ENDPOINT.length > 0 && models(control).every((m) => m === 'bench-primary') && control.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
     'config_dir: OPENCODE_CONFIG_DIR\'s AGENTS.md and skill reach a request': has(dir, M.agents) && has(dir, M.skill),
     'mcp: a local server in OPENCODE_CONFIG_CONTENT starts': mcp.probe?.started === true,
@@ -208,14 +267,14 @@ try {
     service: { start: svcStart, stop: svcStop, processes_while_running: otherLeft, left_after_stop: left.length },
     v1,
   };
-  const reached = [control, dir, mcp, attached, standalone, other].every((r) => r.seen.ENDPOINT.length > 0);
+  const reached = [control, dir, mcp, attached, standalone, other, driver, driverService].every((r) => r.seen.ENDPOINT.length > 0);
   const premise = Object.keys(checks)[0];
   const verdict = !checks[premise] ? 'inconclusive: the provider route did not reach the model' : !reached ? 'inconclusive: a start reached no endpoint' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
   const report = {
     check: 'tier 1: what an OpenCode launch can carry, and whether a run attaches to a background service (design note v0.2 §4, §8)',
     at: new Date().toISOString(),
     evidence: evidence(b, oc),
-    runs: { control: shape(control), config_dir: shape(dir), mcp: shape(mcp), attached: shape(attached), standalone: shape(standalone), other: shape(other) },
+    runs: { control: shape(control), config_dir: shape(dir), mcp: shape(mcp), attached: shape(attached), standalone: shape(standalone), other: shape(other), driver: shape(driver), driver_service: shape(driverService) },
     recorded,
     checks,
     verdict,

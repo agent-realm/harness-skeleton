@@ -1,27 +1,55 @@
-// What OpenCode makes of a spec (design note v0.2 §4, §5). This build writes nothing into an
-// OpenCode folder (milestone 7.1): delivery is overlay only, and every item reaches a launch through
-// launch-spec. A launch carries an inline config layer (OPENCODE_CONFIG_CONTENT) and a config
-// directory in its temp dir (OPENCODE_CONFIG_DIR), and passes --standalone, so a background service
-// running in the folder never supplies the config (descriptor, launch.standalone).
+// What OpenCode makes of a spec (design note v0.2 §4, §5). A launch carries an inline config layer
+// (OPENCODE_CONFIG_CONTENT) and a config directory in its temp dir (OPENCODE_CONFIG_DIR), and passes
+// --standalone, so a background service running in the folder never supplies the config
+// (milestone 7.1). Under materialize (7.2) a plan writes into the folder's own config directory,
+// config/opencode/: opencode.json's `model` and `mcp.servers.<id>` keys, one by one, the bound
+// copies of stdio servers into hs-run/, and the skills into its skills/ (descriptor, persist).
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { HsError } from '../../protocol.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks } from '../../process.js';
-import { treeLink } from '../../native.js';
+import { handlers, readDoc, treeLink } from '../../native.js';
+import { persistedProcess } from '../../persist.js';
+import { readLedger, digestOf } from '../../records.js';
+import { digestPath } from '../../spec/layers.js';
 
 const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
-// The items a launch carries, as a plan names them under overlay.
-export function deliverables(resolved, { descriptor }) {
+// A plan: under overlay it names what a launch carries; under materialize it writes what can
+// persist and names the rest (the endpoint, the login and AGENTS.md stay launch only).
+export function deliverables(resolved, { descriptor, mode, folder }) {
   const L = descriptor.launch;
+  const P = descriptor.persist;
+  const materialize = mode === 'materialize';
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
+  const layerDirs = new Map(resolved.layers.map((l) => [l.name, l.local ? path.dirname(l.path) : l.path]));
+  // An opencode.jsonc in the folder outranks the opencode.json hs writes (descriptor, persist).
+  const jsonc = materialize && fs.existsSync(path.join(folder, P.jsonc_file));
+  const jsonKey = (item, key, value, risk, note) => {
+    if (jsonc) {
+      out.refused.push({ item: item.id, code: 'item_unsupported', reason: `${item.id}: ${P.jsonc_reason}` });
+      return false;
+    }
+    out.deliverables.push({ item: item.id, handler: 'json-key', address: { file: P.config_file, key }, address_id: `${P.config_file}#${key}`, value, risk, ...(note ? { note } : {}) });
+    return true;
+  };
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
   for (const [role, item] of Object.entries(roles)) {
     const r = L.roles[role];
     if (r.unsupported) out.skipped.push({ item: item.id, reason: r.unsupported });
-    else out.launch_only.push({ item: item.id, value: item.value, via: `launch-spec: ${r.flag}` });
+    // With an endpoint the model is the launch's own provider's, which exists only at launch.
+    else if (materialize && !endpoint) {
+      try {
+        refuseSpecText(item);
+      } catch (e) {
+        out.refused.push({ item: item.id, code: e.code, reason: e.message });
+        continue;
+      }
+      if (!String(item.value).includes('/')) out.refused.push({ item: item.id, code: 'item_unsupported', reason: `${item.id}: OpenCode names a model as provider/model [OC §5]; a persisted model must name its provider` });
+      else jsonKey(item, P.model_key, item.value, []);
+    } else out.launch_only.push({ item: item.id, value: item.value, via: `launch-spec: ${r.flag}${materialize ? '; with an endpoint, the model names the launch\'s own provider, which never persists' : ''}` });
   }
   if (endpoint) out.launch_only.push({ item: endpoint.id, via: `launch-spec: a provider of its own in ${L.config_content_env}, and the credential reference for the caller to resolve; never written to the folder` });
   if (login) out.launch_only.push({ item: login.id, value: login.value, via: 'launch-spec' });
@@ -30,16 +58,107 @@ export function deliverables(resolved, { descriptor }) {
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) out.refused.push({ item: item.id, code: 'item_unsupported', reason: s.refuse });
-    else if (item.kind === 'mcp') out.launch_only.push({ item: item.id, via: `launch-spec: ${L.mcp.config_key}.${L.mcp.servers_key} in ${L.config_content_env}, under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'})` });
-    else out.not_implemented.push(s.label ?? item.id);
+    else if (item.kind === 'mcp') {
+      if (!materialize) {
+        out.launch_only.push({ item: item.id, via: `launch-spec: ${L.mcp.config_key}.${L.mcp.servers_key} in ${L.config_content_env}, under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'})` });
+        continue;
+      }
+      let p;
+      try {
+        p = persistedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved);
+      } catch (e) {
+        if (!(e instanceof HsError)) throw e;
+        out.refused.push({ item: item.id, code: e.code, reason: e.message });
+        continue;
+      }
+      if (jsonc) {
+        jsonKey(item);
+        continue;
+      }
+      if (p.tree) {
+        out.deliverables.push({
+          item: item.id, handler: 'tree', address: { path: p.tree.address }, address_id: p.tree.address,
+          source: p.tree.source, source_sha256: digestPath(p.tree.source), source_is_dir: true, risk: p.risk, note: p.notes.join('; '),
+        });
+      }
+      jsonKey(item, p.address.key, p.value, p.risk, p.notes.join('; '));
+    } else out.not_implemented.push(s.label ?? item.id);
   }
   for (const f of resolved.files) {
-    if (f.kind === 'skill') out.launch_only.push({ item: f.id, via: `launch-spec: ${L.config_dir_env}/${L.skills.dir}, under a launch receipt (runs-code)` });
-    else out.not_implemented.push(f.id);
+    if (f.kind !== 'skill') {
+      out.not_implemented.push(f.id);
+      continue;
+    }
+    if (!materialize) {
+      out.launch_only.push({ item: f.id, via: `launch-spec: ${L.config_dir_env}/${L.skills.dir}, under a launch receipt (runs-code)` });
+      continue;
+    }
+    const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
+    if (link !== null) {
+      out.refused.push({ item: f.id, code: 'write_refused', reason: `the skill holds a symlink (${link}); hs installs no tree with one` });
+      continue;
+    }
+    // A skill can carry scripts the agent is told to run: runs-code, under the plan's receipt.
+    const address = `${P.skills_dir}/${f.id.slice('skill.'.length)}`;
+    out.deliverables.push({
+      item: f.id, handler: 'tree', address: { path: address }, address_id: address,
+      source: f.path, source_sha256: f.sha256, source_is_dir: fs.statSync(f.path).isDirectory(), risk: ['runs-code'],
+      note: 'OpenCode reads the skills in its global config directory, config/opencode/skills/ [D2:skills]',
+    });
   }
-  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: ${L.config_dir_env}/${L.agents_md}, which replaces the folder's global AGENTS.md` });
+  if (resolved.agents_md.length) out.launch_only.push({ item: 'instructions (AGENTS.md)', via: `launch-spec: ${L.config_dir_env}/${L.agents_md}, which replaces the folder's global AGENTS.md${materialize ? '; not persisted in this build' : ''}` });
   if (resolved.permissions.length) out.not_implemented.push('permissions');
   return out;
+}
+
+// What a plan persists for one MCP server (§7.5, as on Claude Code): opencode.json's
+// mcp.servers.<id>, and the bound copy in hs-run/ of a stdio server that names files in its layer.
+// Refused, with the reason: refs (a bare start would get an empty secret), a working directory (not
+// carried by this build under materialize), a non-direct exposure, {env:} or {file:} text, an SSE
+// server.
+function persistedMcp(item, dir, folder, descriptor, resolved) {
+  const P = descriptor.persist;
+  const M = descriptor.launch.mcp;
+  const v = item.value;
+  const id = item.id.slice('mcp.'.length);
+  refuseSpecText(item);
+  if (!M.id.test(id)) throw new HsError('item_unsupported', `${item.id}: this build names an OpenCode server by its id, letters, digits, _ and - only`, [item.id]);
+  if (v.env_refs || v.header_refs || v.bearer_ref) {
+    throw new HsError('item_unsupported', `${item.id}: a persisted server cannot carry a ref: its {env:HS_REF_…} would be filled only by a launch through hs, so a bare start would get an empty secret; deliver it at launch, or persist a server without refs`, [item.id]);
+  }
+  if (v.cwd !== undefined) throw new HsError('item_unsupported', `${item.id}: a persisted server's working directory is not carried in this build; deliver it at launch`, [item.id]);
+  if (v.exposure !== undefined && v.exposure !== 'direct') throw new HsError('item_unsupported', `${item.id}: exposure ${v.exposure} is not carried in this build`, [item.id]);
+  const key = `${P.mcp_key}/${id}`;
+  if (v.url) {
+    if ((v.type ?? 'http') !== 'http') throw new HsError('item_unsupported', `${item.id}: a ${v.type} server is not measured on OpenCode; this build carries streamable HTTP`, [item.id]);
+    const value = { type: 'remote', url: v.url, ...(v.headers ? { headers: { ...v.headers } } : {}), oauth: false };
+    refuseSubstitution(item.id, value, new Set());
+    return { address: { file: P.config_file, key }, value, tree: null, risk: ['sends-data'], notes: [`sends data to ${v.url}`] };
+  }
+  const p = persistedProcess(item, v, dir, folder, P.root);
+  const value = { type: 'local', command: p.argv, ...(v.env ? { environment: { ...v.env } } : {}) };
+  refuseSubstitution(item.id, value, new Set());
+  const risk = [...new Set(processRisks(item, v, resolved).map((r) => r.risk))];
+  return { address: { file: P.config_file, key }, value, tree: p.tree, risk, notes: p.notes };
+}
+
+// Whether the ledger holds `addr` at `want`, and the folder too.
+function held(folder, addr, want, current) {
+  const entry = readLedger(folder).addresses[addr];
+  return entry !== undefined && Object.values(entry.owners).some((o) => o.installed === want) && current === want;
+}
+
+// Whether a plan installed an MCP server in the folder at exactly what the spec says now.
+function installedMcp(item, dir, folder, descriptor, resolved) {
+  let p;
+  try {
+    p = persistedMcp(item, dir, folder, descriptor, resolved);
+  } catch {
+    return false;
+  }
+  if (!held(folder, `${p.address.file}#${p.address.key}`, digestOf(p.value), handlers['json-key'].current(folder, descriptor, p.address).digest)) return false;
+  if (!p.tree) return true;
+  return held(folder, p.tree.address, digestPath(p.tree.source), handlers.tree.current(folder, descriptor, { path: p.tree.address }).digest);
 }
 
 // How one non-launch item is handled, the same in a plan and at launch: skipped with a reason,
@@ -157,9 +276,34 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   };
   const layerDirs = new Map(resolved.layers.map((l) => [l.name, l.local ? path.dirname(l.path) : l.path]));
   const servers = {};
-  for (const item of resolved.items.filter((i) => i.kind === 'mcp')) {
+  // The folder's own servers: the inline layer deep-merges into a server of the same name there
+  // [D2:config], so the launch would run one neither the folder nor the spec describes. Refused,
+  // unless a plan installed it at this content, when the launch skips it (the plan's receipt covered
+  // it).
+  const P = descriptor.persist;
+  const mcpItems = resolved.items.filter((i) => i.kind === 'mcp');
+  let folderServers = null;
+  const folderServer = (id) => {
+    if (folderServers === null) {
+      folderServers = {};
+      for (const f of [P.config_file, P.jsonc_file]) {
+        const r = readDoc(path.join(folder, f));
+        if (r.blocked) throw new HsError('bad_request', `${f}: ${r.blocked}; whether it defines a server under a spec server's name cannot be told`, mcpItems.map((i) => i.id));
+        const t = r.doc?.mcp?.servers;
+        if (t && typeof t === 'object') for (const k of Object.keys(t)) folderServers[k] = f;
+      }
+    }
+    return Object.hasOwn(folderServers, id) ? folderServers[id] : null;
+  };
+  for (const item of mcpItems) {
     const v = item.value;
     const id = item.id.slice('mcp.'.length);
+    if (installedMcp(item, layerDirs.get(item.layer), folder, descriptor, resolved)) {
+      out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${P.config_file}#${P.mcp_key}/${id}); the plan's receipt covered it` });
+      continue;
+    }
+    const there = M.id.test(id) ? folderServer(id) : null;
+    if (there) throw new HsError('item_unsupported', `${item.id}: the folder's ${there} defines ${M.config_key}.${M.servers_key}.${id}, and the launch's would merge into it key by key; plan and apply it, rename the spec's server, or remove the folder's`, [item.id]);
     if (!M.id.test(id)) throw new HsError('item_unsupported', `${item.id}: this build names an OpenCode server by its id, letters, digits, _ and - only`, [item.id]);
     if (v.exposure !== undefined && v.exposure !== 'direct') out.skipped.push({ item: `${item.id}.exposure`, reason: `exposure ${v.exposure} is not carried in this build` });
     if (v.url) {
@@ -198,6 +342,15 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
       continue;
     }
     const name = f.id.slice('skill.'.length);
+    // A skill a plan installed in the folder at this content is read from there; the plan's receipt
+    // covered it. A copy edited in place to match an edited layer is not what any receipt allowed.
+    const rel = `${P.skills_dir}/${name}`;
+    const installed = path.join(folder, rel);
+    if (held(folder, rel, f.sha256, fs.existsSync(installed) ? digestPath(installed) : null)) {
+      out.skipped.push({ item: f.id, reason: `installed in the folder by a plan, at this content (${rel}); the plan's receipt covered it` });
+      continue;
+    }
+    if (fs.existsSync(installed)) out.unverified.push(`${f.id}: the folder's ${rel} holds a skill of the same name; which of the two OpenCode loads is not measured`);
     const link = fs.statSync(f.path).isDirectory() ? treeLink(f.path) : null;
     if (link !== null) throw new HsError('write_refused', `${f.id} holds a symlink (${link}); hs copies no tree with one`, [f.id]);
     entries.push({ rel: `${L.skills.dir}/${name}`, source: f.path, sha256: f.sha256 });

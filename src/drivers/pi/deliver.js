@@ -106,6 +106,11 @@ export function deliverables(resolved, { descriptor, mode, folder, home, platfor
       out.launch_only.push({ item: item.id, via: `launch-spec: ${R.translation.flag} <temp>/${R.translation.tree_prefix}${item.id.slice('plugin.'.length)}, translated into a pi package, under a launch receipt; not persisted under overlay` });
       return;
     }
+    const clash = pluginClashes(resolved, descriptor).get(item.id);
+    if (clash) {
+      out.refused.push({ item: item.id, code: 'item_unsupported', reason: clash });
+      return;
+    }
     let p;
     try {
       p = persistedPackage(item, resolved.plugins.find((x) => x.id === item.id), folder, descriptor);
@@ -303,6 +308,31 @@ function refuseServerIds(item, ids, resolved, folder, descriptor) {
     if (spec.has(ns(id))) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the tools' names of the spec's ${spec.get(ns(id))} (pi makes a - in a server id _); rename one`, [item.id]);
     if (own.has(ns(id))) throw new HsError('item_unsupported', `${item.id}: its server ${id} has the name of one the folder's ${descriptor.launch.mcp.folder_file} defines (pi makes a - in a server id _ in its tools' names), which pi starts instead`, [item.id]);
   }
+}
+
+// Plugin servers whose ids meet in pi's tool namespace (descriptor, translation.tool_namespace: a -
+// in an id is _ in its tools' names): within one package, two servers named `b-c` and `b_c`; across
+// packages too, though a package name never holds _ [AP §5.3], so two names cannot meet there. The
+// item whose server comes second is refused, by name; a package whose translation is refused for
+// another reason is left to that refusal.
+function pluginClashes(resolved, descriptor) {
+  const ns = descriptor.plugins[AGENT_PLUGINS].translation.tool_namespace;
+  const seen = new Map();
+  const out = new Map();
+  for (const item of resolved.items.filter((i) => i.kind === 'plugin' && i.value?.format === AGENT_PLUGINS)) {
+    let servers;
+    try {
+      servers = translatedPackage(item, resolved.plugins.find((p) => p.id === item.id), descriptor).servers;
+    } catch {
+      continue;
+    }
+    for (const id of servers) {
+      const prior = seen.get(ns(id));
+      if (prior && !out.has(item.id)) out.set(item.id, `${item.id}: its server ${id} has the tools' names of ${prior.item === item.id ? 'its own' : `${prior.item}'s`} server ${prior.id} (pi makes a - in a server id _); rename one of them`);
+      if (!prior) seen.set(ns(id), { item: item.id, id });
+    }
+  }
+  return out;
 }
 
 // pi keeps no lock hs could ask, and this build writes nothing into its folder.
@@ -574,6 +604,11 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
   // from the folder, as a plan-installed skill is. One the folder holds at other content is refused:
   // its member would load that copy beside this one.
   const R = descriptor.plugins[AGENT_PLUGINS];
+  const clashes = pluginClashes(resolved, descriptor);
+  if (clashes.size) {
+    const [id, reason] = [...clashes][0];
+    throw new HsError('item_unsupported', reason, [id]);
+  }
   const pluginRoles = [];
   const plannedPackages = [];
   const installedPlugins = [];

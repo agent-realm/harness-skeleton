@@ -170,6 +170,24 @@ test('pi launch refuses, by name: an sse server, a server named like the spec\'s
   }
 });
 
+test('two servers whose ids meet in pi\'s tool namespace are refused, at launch and in a plan; a package name never holds _, so two packages cannot meet there', () => {
+  const s = box();
+  try {
+    const k = kit(s.root, { layerName: 'twins', servers: { 'b-c': { type: 'stdio', command: 'node' }, b_c: { type: 'stdio', command: 'node' } } });
+    const r = s.call('launch-spec', { layers: [k], headless: true });
+    assert.equal(r.error?.code, 'item_unsupported');
+    assert.match(r.error.message, /plugin\.notes-kit: its server notes-kit__b_c has the tools' names of its own server notes-kit__b-c \(pi makes a - in a server id _\)/);
+    const plan = s.call('plan', { layers: [k], owner: 'builder', mode: 'materialize' });
+    assert.equal(plan.error?.code, 'item_unsupported');
+    assert.match(plan.error.items[0].reason, /has the tools' names of its own server/);
+    // The premise for packages: a name with _ is not a package name [AP §5.3].
+    const p = codes(kit(s.root, { name: 'notes_kit', layerName: 'underscore' }));
+    assert.ok(p.some((x) => x.code === 'plugin_malformed' && /plugin\.json name is not/.test(x.message)));
+  } finally {
+    s.done();
+  }
+});
+
 test('materialize: the tree in hs-run/ and one member of settings.json packages, the user\'s members kept; a launch skips it; remove keeps the data unless --purge-data', () => {
   const s = box();
   try {

@@ -28,6 +28,22 @@ export default Object.freeze({
     note: '1.x (npm opencode-ai) is out of range: its run has no --standalone, and the 2.x config never reaches the model (tier 1, 1.19.5, 2026-11-12); 2.x is the npm package @opencode/cli',
   },
 
+  // Strict isolation (§8): the project walk turned off, skill permissions that deny every skill but
+  // the spec's, and OPENCODE_CONFIG_DIR set to a directory of the launch's own, which in 2.x replaces
+  // the global config directory, so the folder's config/opencode/ is not read either
+  // [G2:packages/cli/src/index.ts, server-process.ts; G2:packages/core/src/config/discovery.ts,
+  // skill.ts, permission.ts; tier 1, isolation-canaries, opencode-persisted, strict-isolation]. The
+  // launch then carries what a plan of this spec installed there itself.
+  isolation: {
+    strict: {
+      env: { OPENCODE_DISABLE_PROJECT_CONFIG: '1' },
+      skill_permission: 'skill',
+      config_dir: { env: 'OPENCODE_CONFIG_DIR', tree: 'hs-config', file: 'README', content: 'harness-skeleton: this strict launch\'s global config directory, kept empty so the folder\'s config/opencode/ is not read.\n' },
+      how: 'OPENCODE_DISABLE_PROJECT_CONFIG=1; skill permissions in the inline layer that deny every skill but the spec\'s; OPENCODE_CONFIG_DIR set to an empty directory of the launch\'s own',
+      folder: 'the folder\'s config/opencode/ (its AGENTS.md, skills and opencode.json) is not read; the launch carries what a plan of this spec installed itself, under a launch receipt',
+    },
+  },
+
   binding: {
     // OpenCode keeps everything in the four XDG roots, each with opencode/ appended
     // [G2:packages/util/src/global-roots.ts]: the data folder holds config/, data/, cache/ and
@@ -41,8 +57,17 @@ export default Object.freeze({
     escapes: [
       // Known limits: a launch cannot close them, and observe --state reports them when present.
       { kind: 'inbound-read', path: '~/.agents/skills', class: 'config', closable: false, when: 'present', known_limit: true,
+        strict: 'under isolation = "strict", skill permissions in the inline layer deny every skill but the spec\'s (tier 1, isolation-canaries)',
         note: 'a "Global compatibility" skill root with no switch in 2.x; its skills reach every launch, whatever the folder',
         source: 'D2:skills; G2:packages/cli/src/server-process.ts (only OPENCODE_DISABLE_CLAUDE_CODE(_SKILLS), which gates .claude); T1' },
+      { kind: 'inbound-read', path: 'AGENTS.md in the working directory and its parents, up to $HOME (or the project root outside it)', class: 'config', closable: false, known_limit: true,
+        strict: 'under isolation = "strict", OPENCODE_DISABLE_PROJECT_CONFIG=1 turns the project walk off (tier 1, isolation-canaries)',
+        note: 'the walk climbs past the project root up to $HOME when the working directory is inside it; the working directory\'s own AGENTS.md comes with it',
+        source: 'G2:packages/core/src/config/plugin/instruction.ts; tier 1, isolation-canaries' },
+      { kind: 'inbound-read', path: '.agents/, .claude/ and .opencode/ in the working directory and its parents', class: 'config', closable: false, known_limit: true,
+        strict: 'under isolation = "strict", OPENCODE_DISABLE_PROJECT_CONFIG=1 turns the project walk off (tier 1, isolation-canaries)',
+        note: 'project config and skill roots, found by the same walk',
+        source: 'G2:packages/core/src/config/discovery.ts; tier 1, isolation-canaries' },
       { kind: 'outbound-write', path: '~/.opencode/', class: 'config', closable: false, when: 'present', known_limit: true,
         note: 'when it exists, OpenCode reads it as a config directory and writes a .gitignore into it, outside the data folder',
         source: 'T1 (~/.opencode/.gitignore written); OC §1' },

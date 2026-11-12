@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LAUNCH_ITEM_KINDS } from '../../launch-items.js';
+import { isolationLaunch, isolationPlan } from '../../isolation.js';
 import { HsError } from '../../protocol.js';
 import { endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks, refuseInterpolation, shellQuote } from '../../process.js';
@@ -34,8 +35,13 @@ function refusedFormat(descriptor, item) {
   return typeof f === 'string' && Object.hasOwn(R, f) ? R[f] : null;
 }
 
-export function deliverables(resolved, { mode, descriptor }) {
+export function deliverables(resolved, { mode, descriptor, home, platform }) {
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
+  // Isolation (§8): first, so a strict plan this driver cannot keep is refused as isolation_unmet.
+  const iso = isolationPlan(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.refused) out.refused.unshift(iso.refused);
+  if (iso.launch_only) out.launch_only.push(iso.launch_only);
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
   for (const [role, item] of Object.entries(roles)) {
     const r = descriptor.launch.roles[role];
@@ -45,7 +51,7 @@ export function deliverables(resolved, { mode, descriptor }) {
   if (endpoint) out.launch_only.push({ item: endpoint.id, via: 'launch-spec: a provider of its own, and the credential reference for the caller to resolve; never written to the folder; refused while the folder holds a stored login' });
   if (login) out.launch_only.push({ item: login.id, value: login.value, via: 'launch-spec' });
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     if (item.kind === 'unknown') out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     else if (item.kind === 'model.catalog') out.skipped.push({ item: item.id, reason: 'model metadata for harnesses that need it; Codex reads its own catalog [CX §5]' });
     else if (item.id === 'state.retention_days') out.skipped.push({ item: item.id, reason: descriptor.state.retention_days.reason });
@@ -194,14 +200,19 @@ export function pluginPlacement(item, descriptor) {
   return { address: `${R.cache.root}/${R.cache.marketplace}/${name}/${R.cache.version_dir}`, key: `${name}@${R.cache.marketplace}` };
 }
 
-export function launchParts(resolved, { headless, descriptor, folder }) {
+export function launchParts(resolved, { headless, descriptor, folder, home, platform }) {
   const L = descriptor.launch;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
+  // Isolation (§8): a strict launch this driver cannot keep is refused before anything else.
+  const iso = isolationLaunch(resolved, descriptor, { home, platform });
+  if (iso.skipped) out.skipped.push(iso.skipped);
+  if (iso.item) out.items.push(iso.item);
+  if (iso.note) out.notes.push(iso.note);
   const flags = [];
   let ephemeral = false;
   for (const item of resolved.items) {
     // MCP servers are carried below, under the launch receipt; plugins below too.
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'isolation' || item.kind === 'mcp' || item.kind === 'hook' || item.kind === 'plugin' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     if (item.kind === 'unknown') {
       out.skipped.push({ item: item.id, reason: 'not a kind this format defines; kept, not delivered' });
     } else if (item.kind === 'model.catalog') {

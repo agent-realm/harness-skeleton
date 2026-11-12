@@ -29,6 +29,21 @@ export default Object.freeze({
     note: '0.x is out of range: no built-in MCP before 0.99, model switches rewrite the global settings before 0.84.3, and its extension events differ [PI §21]; the range widens one minor at a time, each with a tier 1 run',
   },
 
+  // Strict isolation (§8): three switches keep out every skill root, context file and project
+  // resource the spec does not name, while explicit --skill and --append-system-prompt still load
+  // [P15:cli; tier 1, isolation-canaries, strict-isolation]. They keep the folder's own context
+  // files and skills out too. What no switch keeps out without dropping hs's own extension is
+  // refused when the folder holds it [P15:configuration; P15:settings (Resources)].
+  isolation: {
+    strict: {
+      argv: ['--no-skills', '--no-context-files', '--no-approve'],
+      how: '--no-skills, --no-context-files and --no-approve; the spec\'s skills by --skill, its AGENTS.md by --append-system-prompt',
+      folder: 'the folder\'s own context files and skills are kept out too; a skill a plan of this spec installed is passed again with --skill',
+      refuses: { files: ['SYSTEM.md', 'APPEND_SYSTEM.md'], dirs: ['extensions'], settings_keys: ['extensions', 'packages'] },
+      refuses_text: ['SYSTEM.md or APPEND_SYSTEM.md, instructions pi reads from the folder', 'an entry in extensions/, or an extensions or packages list in settings.json: code pi loads from the folder', 'an mcp.json server no plan of this spec installed'],
+    },
+  },
+
   binding: {
     // One root holds settings, logins, MCP servers, instructions, resources and sessions
     // [P15:configuration; PI §1]. Sessions stay in it while PI_CODING_AGENT_SESSION_DIR is unset
@@ -39,16 +54,22 @@ export default Object.freeze({
     escapes: [
       // Known limits: a launch cannot close them, and observe --state reports them.
       { kind: 'inbound-read', path: '~/.agents/skills', class: 'config', closable: false, when: 'present', known_limit: true,
+        strict: 'under isolation = "strict", --no-skills, the spec\'s skills passed with --skill (tier 1, isolation-canaries)',
         note: 'a skill root read from $HOME, not the folder; its skills reach every launch',
         source: 'PI §1, §9; P15:skills; T1' },
       { kind: 'inbound-read', path: 'AGENTS.md and CLAUDE.md in the working directory and every parent', class: 'config', closable: false, known_limit: true,
+        strict: 'under isolation = "strict", --no-context-files, the spec\'s AGENTS.md passed with --append-system-prompt (tier 1, isolation-canaries)',
         note: 'context files load from the working directory up to /, with no trust needed; --no-context-files would also drop the folder\'s own',
         source: 'P15:configuration (Context files); T1' },
       { kind: 'inbound-read', path: '.pi/ in the working directory', class: 'config', closable: false, known_limit: true,
+        strict: 'under isolation = "strict", --no-approve, so no project resource loads, trusted or not (P15:cli)',
         note: 'the project\'s settings, mcp.json, extensions, skills, prompts, themes and system-prompt files load once the project is trusted; a launch leaves the decision to pi (a saved decision in the folder\'s trust.json, else defaultProjectTrust), and observe --state --cwd says whether a trusted project .pi/ is there',
         source: 'P15:security (project trust); P15:dist/core/trust-manager.js; T1 (skipped in JSON mode by default)' },
       { kind: 'inbound-read', path: '~/.pi/agent', class: 'config', closable: true,
         note: 'closed: PI_CODING_AGENT_DIR replaces the default root', source: 'P15:configuration; T1' },
+      { kind: 'outbound-write', path: '.pi/settings.json sessionDir in the working directory', class: 'sessions', closable: false, known_limit: true,
+        note: 'pi reads a project\'s sessionDir before it resolves project trust, so --no-approve does not stop it: a project can move session writes out of the folder',
+        source: 'P15:security (project trust is not a complete startup boundary); P15:configuration' },
       { kind: 'outbound-write', path: 'the folder\'s settings.json sessionDir', class: 'sessions', closable: false,
         note: 'a sessionDir key moves sessions out of the folder; observe --state reports it when set', source: 'P15:settings; P15:configuration; design note v0.2 §8' },
     ],

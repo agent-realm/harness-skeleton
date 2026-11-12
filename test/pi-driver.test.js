@@ -59,7 +59,9 @@ test('describe: the folder is PI_CODING_AGENT_DIR; the known limits, the 1.5 lin
     assert.deepEqual(d.binding.env_set, ['PI_CODING_AGENT_DIR']);
     assert.equal(d.binding.default_folder, '~/.pi/agent');
     for (const v of ['PI_CODING_AGENT_SESSION_DIR', 'PI_PACKAGE_DIR', 'PI_SELF_UPDATE_COMMAND']) assert.ok(d.binding.env_unset.includes(v), v);
-    assert.deepEqual(d.known_limits.map((k) => k.path), ['~/.agents/skills', 'AGENTS.md and CLAUDE.md in the working directory and every parent', '.pi/ in the working directory']);
+    assert.deepEqual(d.known_limits.map((k) => k.path), ['~/.agents/skills', 'AGENTS.md and CLAUDE.md in the working directory and every parent', '.pi/ in the working directory', '.pi/settings.json sessionDir in the working directory']);
+    assert.match(d.known_limits[3].note, /before it resolves project trust, so --no-approve does not stop it/);
+    assert.deepEqual(d.known_limits.map((k) => Boolean(k.strict)), [true, true, true, false], 'strict closes the three inbound limits, not the sessionDir write');
     assert.deepEqual(d.versions.compatible, { min: '1.5.2', below: '1.6.0' });
     assert.match(d.versions.note, /0\.x is out of range/);
     assert.match(d.launch_network.with_endpoint, /PI_OFFLINE/);

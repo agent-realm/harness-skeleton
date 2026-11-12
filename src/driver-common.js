@@ -12,6 +12,7 @@ import { hostId } from './host.js';
 import { inventory } from './inventory.js';
 import { parseVersion, rangeStatus } from './version.js';
 import { makeScratch, scratchEnv, assertScratch } from './scratch-env.js';
+import { describeIsolation } from './isolation.js';
 
 // The binding (§8): one variable naming the data folder (CLAUDE_CONFIG_DIR, CODEX_HOME), or several,
 // each naming a directory inside it (OpenCode's four XDG roots).
@@ -27,7 +28,7 @@ export function bindingEnv(descriptor, folder) {
 
 // What a launch cannot close, by name (§8): the escapes a descriptor marks as known limits.
 export function knownLimits(descriptor) {
-  return escapesHere(descriptor).filter((e) => e.known_limit).map((e) => ({ path: e.path, kind: e.kind, note: e.note, source: e.source }));
+  return escapesHere(descriptor).filter((e) => e.known_limit).map((e) => ({ path: e.path, kind: e.kind, note: e.note, source: e.source, ...(e.strict ? { strict: e.strict } : {}) }));
 }
 
 export function escapesHere(descriptor, platform = process.platform) {
@@ -99,6 +100,8 @@ export function describeHarness(descriptor) {
       escapes: escapesHere(descriptor),
     },
     known_limits: knownLimits(descriptor),
+    // What `isolation = "default"` and `"strict"` do on this harness (§8).
+    isolation: describeIsolation(descriptor),
     // What a launch contacts on the network, where the descriptor says.
     ...(descriptor.launch?.network ? { launch_network: descriptor.launch.network } : {}),
     // Hook behaviours a caller must know, where the descriptor names any (pi's Stop loop).

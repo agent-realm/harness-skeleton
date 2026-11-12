@@ -44,6 +44,10 @@ export default Object.freeze({
 
   versions: { certified: [], compatible: { min: '2.1.289', below: '2.2.0' } },
 
+  // Strict isolation (§8): no switch is measured, so a strict launch or plan is refused, naming each
+  // inbound escape (binding.escapes).
+  isolation: { strict: null, reason: 'this build has measured no switch that keeps Claude Code\'s project memory out (CLAUDE_CODE_DISABLE_CLAUDE_MDS and --bare are not measured)' },
+
   binding: {
     env_set: 'CLAUDE_CONFIG_DIR', // [CC §1, D-env]
     // Ambient variables that redirect the harness from the host shell (§8): the first moves
@@ -61,6 +65,8 @@ export default Object.freeze({
         note: 'managed policy', platforms: ['darwin'], source: 'CC §1 [D-managed]' },
       { kind: 'inbound-read', path: '/etc/claude-code/', class: 'config', closable: false,
         note: 'managed policy', platforms: ['linux'], source: 'CC §1 [D-managed]' },
+      { kind: 'inbound-read', path: 'CLAUDE.md, CLAUDE.local.md, AGENTS.md and .claude/rules in the working directory and every parent', class: 'config', closable: false,
+        note: 'project memory loads from the working directory up; CLAUDE_CODE_DISABLE_CLAUDE_MDS and --bare would drop it, the folder\'s own included, and this build has not measured them', source: 'CC §3 [D-mem]' },
       // The asymmetry [CC §1]: with CLAUDE_CONFIG_DIR unset, .claude.json sits beside the
       // default folder, in $HOME; with it set, inside the folder, where the path rules class it.
       { kind: 'outbound-write', path: '~/.claude.json', siblings: ['~/.claude.json.lock', '~/.claude.json.tmp.*'],

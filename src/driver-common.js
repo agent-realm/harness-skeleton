@@ -71,12 +71,14 @@ export function capabilities(descriptor) {
         versions: r.versions, mechanism: r.mechanism, components: r.components, readiness: r.readiness,
         refuses: [
           ...(r.keeps_literal === false ? ['plugin_placeholder_literal: ${…} text the format keeps literal'] : []),
+          ...(r.expands ? [`plugin_placeholder_literal: $ or a leading ! in ${r.expands.dollar.join(', ')}, and a leading ~ in ${r.expands.tilde.join(', ')}, which ${descriptor.name} would change`] : []),
           ...(r.cwd === 'root' ? ['plugin_cwd_unsupported: a stdio server working directory other than the plugin root'] : []),
           ...(r.acts_on_paths?.length ? [`plugin_path_unsupported: ${r.acts_on_paths.join(', ')} in the package`] : []),
           ...(r.refuses_fields ? [`plugin_field_unsupported: ${Object.keys(r.refuses_fields).join(', ')} in ${r.manifest}, while they hold anything`] : []),
           ...(r.refuses_values ?? []).map((v) => `plugin_field_unsupported: ${v.field} naming ${v.label}`),
         ],
         ...(r.namespace ? { harness_specific: [r.namespace.name] } : {}),
+        ...(r.data ? { data: r.data } : {}),
       }])),
       // Formats the harness reads that this adapter refuses, with the reason.
       ...(descriptor.plugin_formats_refused ? { refused_formats: Object.fromEntries(Object.entries(descriptor.plugin_formats_refused).map(([f, r]) => [f, r.reason])) } : {}) },

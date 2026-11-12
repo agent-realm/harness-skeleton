@@ -23,7 +23,7 @@ working on this repo, and how to install and deploy what it ships.
 - **The scripted model**, `packages/scripted-model/` (`@agent-realm/scripted-model`): a model
   endpoint that answers from a script, on loopback only, for deterministic harness tests. The
   conformance checks script a model through it.
-- **A conformance suite** that proves an adapter against a real harness: twenty-seven tier 1 checks so
+- **A conformance suite** that proves an adapter against a real harness: twenty-eight tier 1 checks so
   far, in `conformance/`.
 
 **Status: v0, building.** The design note is

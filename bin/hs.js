@@ -6,7 +6,7 @@
 //
 // Options: --folder <path> (args.harness_path), --state, --bin <path>, --layer <dir> (repeatable,
 // lowest first; args.layers), --local <local.toml> (args.local), --owner <name>, --mode <mode>,
-// --prune, --adopt, --strict-version, --plan <plan.json>, --receipt <receipt.json>,
+// --prune, --purge-data (remove: delete plugin data too), --adopt, --strict-version, --plan <plan.json>, --receipt <receipt.json>,
 // --item <id> (repeatable; remove), --cwd <dir> (observe --state), --headless (launch-spec),
 // --no-persist-state (overlay plans), --store <file> (sessions.*: a database-file store, a name in
 // the folder or an absolute path), --pretty.
@@ -18,7 +18,7 @@ import { handle } from '../src/hs.js';
 import { PROTOCOL, fail, parseRequest } from '../src/protocol.js';
 
 function usage(message) {
-  process.stderr.write(`hs: ${message}\nusage: hs < request.json | hs <op> --harness <h> [--folder <path>] [--state] [--bin <path>] [--layer <dir>]... [--local <file>]\n          [--owner <name>] [--mode materialize] [--prune] [--adopt] [--strict-version] [--plan <file>] [--receipt <file>] [--item <id>]... [--store <file>] [--pretty]\n`);
+  process.stderr.write(`hs: ${message}\nusage: hs < request.json | hs <op> --harness <h> [--folder <path>] [--state] [--bin <path>] [--layer <dir>]... [--local <file>]\n          [--owner <name>] [--mode materialize] [--prune] [--purge-data] [--adopt] [--strict-version] [--plan <file>] [--receipt <file>] [--item <id>]... [--store <file>] [--pretty]\n`);
   process.exit(2);
 }
 
@@ -56,6 +56,7 @@ function fromFlags(argv) {
     else if (flag === '--owner') args.owner = value();
     else if (flag === '--mode') args.mode = value();
     else if (flag === '--prune') args.prune = true;
+    else if (flag === '--purge-data') args.purge_data = true;
     else if (flag === '--adopt') args.adopt = true;
     else if (flag === '--strict-version') args.strict_version = true;
     else if (flag === '--plan') {

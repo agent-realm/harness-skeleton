@@ -24,6 +24,7 @@ usage error.
 | `--owner <name>` | `args.owner` (`[a-z][a-z0-9-]*`) | `plan`, `remove` |
 | `--mode <mode>` | `args.mode`: `materialize` (default) or `overlay` | `plan` |
 | `--prune` | plan the removal of items the spec no longer has | `plan` |
+| `--purge-data` | also delete the data of each plugin removed (on pi, `hs-run/plugin-data/<name>/`), which `remove` otherwise keeps and names under `plugin_data` | `remove` |
 | `--adopt` | record an unowned item under this owner | `plan` |
 | `--strict-version` | refuse writes outside the certified range | `plan`, `apply` |
 | `--no-persist-state` | leave `[state]` out of an overlay plan | `plan --mode overlay` |

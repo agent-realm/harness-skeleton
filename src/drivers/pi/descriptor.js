@@ -44,6 +44,61 @@ export default Object.freeze({
     },
   },
 
+  // Plugins (§5.7). pi 1.5 has no loader for the Agent Plugins format or the .claude-plugin layout;
+  // its own bundle is the pi package [P15:packages]. An Agent Plugins package is translated into one
+  // (src/drivers/pi/plugins.js): a package.json whose `pi` manifest declares only the package's
+  // skills and one generated extension, with the package copied whole under package/. A manifest
+  // that lists resources turns off a package's conventional directories, so what the package holds
+  // beyond the format's components stays inert [P15:dist/core/package-manager.js
+  // collectPackageResources; tier 1, pi-plugin-surface]. The extension registers the package's MCP
+  // servers and works out the plugin root and data directory from where it sits, so the same files
+  // serve a launch (-e, in the temp dir) and a plan (hs-run/, a member of settings.json `packages`,
+  // which a start loads the same way; tier 1, pi-plugin-surface).
+  plugins: {
+    'agent-plugins': {
+      versions: ['1.0.0'],
+      mechanism: 'bridged',
+      components: ['skills', 'mcp'],
+      // pi passes a server's command and args as written, so ${…} there stays literal; it expands $
+      // and runs a leading ! in env, headers and url, and takes a leading ~ in command, args and cwd
+      // as the home directory (tier 1, pi-launch-surface; P15:mcp).
+      keeps_literal: true,
+      expands: { dollar: ['env', 'headers', 'url'], tilde: ['command', 'args', 'cwd'], source: 'tier 1, pi-launch-surface; P15:mcp' },
+      cwd: 'format',
+      translation: {
+        manifest: 'package.json',
+        extension: 'hs-plugin.js',
+        nest: 'package',
+        tree_prefix: 'plugin.',
+        data_dir: 'plugin-data',
+        // A package's server, registered for the session under the plugin's name, so two packages,
+        // or a package and the spec, never share one [P15:mcp: a server id names its tools].
+        server_id: (plugin, server) => `${plugin}__${server}`,
+        // pi names a server's tools mcp__<id>__<tool> with a - in the id made _ (tier 1,
+        // agent-plugins-pi, 1.5.2), so two ids that differ only there share their tools' names.
+        tool_namespace: (id) => id.replace(/-/g, '_'),
+        unsupported_types: { sse: 'pi supports streamable HTTP, not SSE [P15:mcp]' },
+        exposure: 'direct',
+        flag: '-e',
+      },
+      persist: { packages_key: 'packages' },
+      data: {
+        dir: 'hs-run/plugin-data/<name>',
+        kept_on_remove: 'kept when a plan\'s item is removed, and across updates [AP §9.1]; deleted only by remove with --purge-data',
+        at_launch: 'a launch with no plan behind it gives a directory in its temp dir, which is not kept across launches',
+      },
+      readiness: 'untested',
+      source: 'design note §5.7; P15:packages; P15:dist/core/package-manager.js; tier 1, pi-plugin-surface',
+    },
+  },
+  // Formats pi does not read that this adapter refuses, with the reason (§5.7).
+  plugin_formats_refused: {
+    'claude-plugin': {
+      reason: 'pi 1.5 has no loader for the .claude-plugin layout: its only bundle is the pi package [P15:packages]. A route that carried only its skills would present the item as whole while dropping its hooks, commands, agents and servers. Use the Agent Plugins format, which this adapter translates into a pi package',
+      source: 'P15:packages; P15:extensions',
+    },
+  },
+
   binding: {
     // One root holds settings, logins, MCP servers, instructions, resources and sessions
     // [P15:configuration; PI §1]. Sessions stay in it while PI_CODING_AGENT_SESSION_DIR is unset
@@ -79,7 +134,7 @@ export default Object.freeze({
   // Path classes (§9.1), relative to harness_path, the agent dir [P15:configuration; PI §1, §20].
   paths: [
     { pattern: '.harness-skeleton', class: 'skeleton', source: 'design note v0.2 §9.3' },
-    { pattern: 'hs-run', class: 'config', note: 'harness-skeleton\'s bound copies of the processes a plan persists; owner-only; pi does not read it', source: 'design note v0.2 §7.5' },
+    { pattern: 'hs-run', class: 'config', note: 'harness-skeleton\'s bound copies of the processes a plan persists, the pi packages its plugins are translated into (plugin.<name>/, which settings.json packages names), and their data (plugin-data/<name>/, which remove keeps unless --purge-data); owner-only', source: 'design note v0.2 §5.7, §7.5' },
     { pattern: 'settings.json', class: 'config', source: 'P15:configuration' },
     { pattern: 'keybindings.json', class: 'config', source: 'P15:configuration' },
     { pattern: 'models.json', class: 'config', source: 'P15:configuration' },
@@ -260,9 +315,12 @@ export default Object.freeze({
     root: 'hs-run',
   },
   writable: {
-    json: { 'mcp.json': { keys: [], prefixes: ['mcpServers/'] }, 'settings.json': { keys: ['defaultProvider', 'defaultModel'] } },
+    json: { 'mcp.json': { keys: [], prefixes: ['mcpServers/'] }, 'settings.json': { keys: ['defaultProvider', 'defaultModel'], elements: ['packages'] } },
     trees: ['skills', 'hs-run'],
     private: ['hs-run'],
+    // A plugin's member of settings.json `packages` is the exact string naming its tree; nothing else
+    // in the array is hs's (plugins.agent-plugins).
+    element_owner: (v, { id }) => v === `./hs-run/${id}`,
   },
 
   state: {

@@ -19,7 +19,7 @@ import { digestPath, resolve } from './spec/layers.js';
 import { validate } from './spec/validate.js';
 import { checkAddress, generatedDigest, handlers, isGenerated, treeLink } from './native.js';
 import {
-  acquireLock, digestOf, journal, loadRecord, newApplyId, readJournal, readLedger, recordsDir, storeRecord, sweepStaged, unfinished, writeLedger,
+  acquireLock, digestOf, guard, journal, loadRecord, newApplyId, readJournal, readLedger, recordsDir, storeRecord, sweepStaged, unfinished, writeLedger,
 } from './records.js';
 
 export const PLAN_FORMAT = 'hs-plan/0.2';
@@ -521,10 +521,39 @@ export function remove(driver, args, opts = {}) {
     };
     const planBody = { ...body, digest: planDigest(body) };
     const result = execute(driver, folder, planBody, args.owner, opts);
-    return { ...result, skipped: planBody.operations.filter((op) => op.action === 'skip').map((op) => ({ item: op.item, reason: op.reason })) };
+    return {
+      ...result, skipped: planBody.operations.filter((op) => op.action === 'skip').map((op) => ({ item: op.item, reason: op.reason })),
+      ...pluginData(driver.descriptor, folder, planBody.operations, args.purge_data === true),
+    };
   } finally {
     lock.release();
   }
+}
+
+// A plugin's data (§5.7): where a driver gives a plugin a data directory in the folder (descriptor,
+// plugins[...].data), removing the plugin's tree keeps that directory, since it holds what the
+// plugin's servers wrote, not what a plan installed; `purge_data` deletes it. Either way the result
+// says where it is.
+function pluginData(descriptor, folder, operations, purge) {
+  const D = Object.values(descriptor.plugins ?? {}).find((r) => r.data)?.data;
+  if (!D) return {};
+  const kept = [];
+  const removed = [];
+  for (const op of operations) {
+    if (op.action !== 'remove' || op.handler !== 'tree' || !op.item.startsWith('plugin.')) continue;
+    const rel = D.dir.replace('<name>', op.item.slice('plugin.'.length));
+    const abs = guard(folder, path.join(folder, rel));
+    if (!fs.existsSync(abs)) continue;
+    if (purge) {
+      fs.rmSync(abs, { recursive: true, force: true });
+      removed.push(rel);
+    } else kept.push(rel);
+  }
+  if (!kept.length && !removed.length) return {};
+  return {
+    plugin_data: { kept, removed },
+    notes: [...kept.map((r) => `plugin data kept at ${r}; remove with --purge-data deletes it`), ...removed.map((r) => `plugin data deleted at ${r} (--purge-data)`)],
+  };
 }
 
 // The managed half of observe: every ledger address with its owners and drift.

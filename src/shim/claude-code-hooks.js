@@ -28,7 +28,7 @@ export const CLAUDE_CODE_HOOKS = Object.freeze({
   blocking_events: ['PreToolUse', 'PermissionRequest', 'UserPromptSubmit', 'Stop', 'SubagentStop', 'PreCompact'],
   permission_request_deny: (message) => ({ hookSpecificOutput: { hookEventName: 'PermissionRequest', decision: { behavior: 'deny', message } } }),
   // Claude Code cancels a hook that reaches its timeout and goes on, which on PreToolUse lets
-  // the call through [D-hooks §Timeouts]. So the shim stops the process itself, SIGKILL, at
+  // the call through [D-hooks §Timeouts]. So the shim kills the process's group itself, SIGKILL, at
   // the hook's limit, and decides; the native timeout is set above it. A limit when the spec
   // gives none: 60 s.
   default_limit: 60,

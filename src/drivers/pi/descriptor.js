@@ -3,7 +3,10 @@
 // - `PI §n`: the survey, docs/design/surveys/pi-2026-10-04.md (0.80.2, upstream 1.0.2), where 1.5 kept it;
 // - `P15:<doc>`: the docs shipped in @earendil-works/pi-coding-agent@1.5.2 (docs/<doc>.md), read
 //   2026-11-12; `P15:dist/<file>` its shipped code;
-// - `T1`: the tier 1 check conformance/tier1/pi-launch-surface.mjs on 1.5.2, 2026-11-12.
+// - `T1`: the tier 1 check conformance/tier1/pi-launch-surface.mjs on 1.5.2, 2026-11-12;
+// - `T2`: the tier 1 check conformance/tier1/pi-hooks.mjs on 1.5.2, 2026-11-12.
+
+import { PI_HOOKS } from '../../shim/pi-hooks.js';
 
 export default Object.freeze({
   harness: 'pi',
@@ -167,7 +170,32 @@ export default Object.freeze({
     // context files still load [P15:cli; T1].
     agents_md: { flag: '--append-system-prompt', file: 'hs-agents.md', role: 'instructions' },
     statusline: { supported: false, reason: 'pi has no status line setting; only an extension can draw one [PI §13]' },
-    hooks: { supported: false, reason: 'pi hooks are extension handlers; they come through the launch extension in milestone 8.2' },
+    // Hooks (milestone 8.2): pi has no command hooks, only extension handlers [P15:extensions]. The
+    // launch extension runs hs's hook shim for each spec hook (src/drivers/pi/extension-runtime.js),
+    // on the pi event its spec event rides on [P15:extensions; T2].
+    hooks: PI_HOOKS,
+    bridge: {
+      on: { PreToolUse: 'tool_call', PostToolUse: 'tool_result', UserPromptSubmit: 'input', SessionStart: 'session_start', SessionEnd: 'session_shutdown', Stop: 'agent_before_settle' },
+      // Why the other events have no route, by name (§5.10: refused when required, skipped when
+      // if-supported).
+      events_refused: {
+        PermissionRequest: 'pi has no permission prompts [PI §12; P15:security]',
+        SubagentStart: 'pi has no subagents [PI §14]',
+        SubagentStop: 'pi has no subagents [PI §14]',
+        PreCompact: 'pi\'s session_before_compact can cancel a compaction, but this build has not measured it [P15:extensions]',
+        PostCompact: 'pi\'s session_compact reports a compaction, but this build has not measured it [P15:extensions]',
+      },
+      no_hook: 'pi has no extension event for it',
+      may_allow: 'pi has no permission prompt for an allow to skip [PI §12]; a hook may deny only',
+      context: 'a hook\'s context output is not delivered: this build passes none into the session on pi',
+      fail_closed: 'a PreToolUse or UserPromptSubmit hook fails closed in every way the extension can see: the shim exiting other than 0 or 2, dying by a signal, failing to start, or still running at the hook\'s limit plus the margin (its process group killed)',
+      load: 'an extension that does not load stops pi: it exits 1 and sends no request (tier 1), so hooks never go missing silently; the readiness marker says, besides, that every handler is registered',
+      stop: 'a Stop hook\'s block asks pi for one more run, its reason added as a message for the model; stop_hook_active tells the hook the run it ends was one it asked for',
+      mcp_codemode: 'a hook matching an MCP tool fires when the tool is called directly (exposure direct, measured); whether it fires for a call made from codemode is not measured',
+      marker: 'hs-hooks.loaded',
+      marker_means: 'the launch extension writes this file once every hook handler is registered; until it exists, no hook of this launch is active, so a caller that needs its guards must not take them as active',
+      source: 'P15:extensions; T2',
+    },
     permissions: { supported: false, reason: 'pi has no permission system by design [PI §12; P15:security]' },
   },
 

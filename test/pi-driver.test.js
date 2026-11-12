@@ -241,7 +241,7 @@ test('refused, by carrier: spec text pi would expand or run, a ~ path pi would t
   }
 });
 
-test('refused or skipped by name: a stored login with an endpoint, permissions, hooks and plugins not in this build, a status line by require', () => {
+test('refused or skipped by name: a stored login with an endpoint, a hook event pi has no route for, a status line by require', () => {
   const s = box();
   try {
     // pi writes an empty auth.json, 2 bytes, on every start: told by its size, it holds no login.
@@ -256,8 +256,8 @@ test('refused or skipped by name: a stored login with an endpoint, permissions, 
     fs.symlinkSync(path.join(s.root, 'nowhere'), path.join(s.folder, 'auth.json'));
     assert.equal(launch(s, { layers: [m], local }).error?.code, 'login_present');
     fs.rmSync(path.join(s.folder, 'auth.json'));
-    const hook = layer(s.root, 'h', '[hook.g]\nevent = "PreToolUse"\nrun = { exec = "true" }\n');
-    assert.equal(launch(s, { layers: [hook] }).error?.code, 'not_implemented');
+    const hook = layer(s.root, 'h', '[hook.g]\nevent = "PermissionRequest"\nrun = { exec = "true" }\n');
+    assert.equal(launch(s, { layers: [hook] }).error?.code, 'item_unsupported');
     const sl = layer(s.root, 's', '[statusline]\nrun = { exec = "true" }\n');
     assert.ok(ok(launch(s, { layers: [sl] })).skipped.some((x) => /no status line/.test(x.reason)));
     const slr = layer(s.root, 'sr', '[statusline]\nrun = { exec = "true" }\nrequire = "required"\n');

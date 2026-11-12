@@ -58,9 +58,10 @@ const benchPids = () => {
   }).map(Number);
 };
 
+let proxy = null;
 try {
   const hosts = [];
-  const proxy = http.createServer((req, res) => {
+  proxy = http.createServer((req, res) => {
     req.on('error', () => {});
     res.on('error', () => {});
     try {
@@ -105,7 +106,7 @@ try {
   put(path.join(planned, 'skills', 'kept', 'SKILL.md'), skill('kept', M.kept));
 
   // A folder with canaries of its own, and the planned layer applied into it.
-  const folderFor = (harness, variant) => {
+  const folderFor = (harness, bin, variant) => {
     const folder = path.join(b.work, `${harness}-${variant}`);
     if (harness === 'opencode') {
       for (const r of ['config', 'data', 'cache', 'state']) fs.mkdirSync(path.join(folder, r), { recursive: true });
@@ -117,7 +118,7 @@ try {
       put(path.join(folder, 'skills', 'fskill', 'SKILL.md'), skill('fskill', M.fskill));
       put(path.join(folder, 'settings.json'), { defaultProjectTrust: 'always' });
     }
-    const common = ['--harness', harness, '--folder', folder];
+    const common = ['--harness', harness, '--folder', folder, '--bin', bin];
     const plan = b.hs('plan', [...common, '--layer', planned, '--owner', 'tier1', '--mode', 'materialize']);
     const planFile = path.join(b.work, `plan-${harness}-${variant}.json`);
     put(planFile, plan);
@@ -131,7 +132,7 @@ try {
     const from = hosts.length;
     const variant = strict ? 'strict' : 'default';
     const L = await b.model('ENDPOINT', { markers: Object.values(M), fallback: { text: 'done' } });
-    const folder = folderFor(harness, variant);
+    const folder = folderFor(harness, bin, variant);
     const local = path.join(b.work, `local-${harness}-${variant}.toml`);
     put(local, `[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
     const args = ['--harness', harness, '--folder', folder, '--layer', kits[strict], '--layer', planned, '--local', local, '--bin', bin, '--headless'];
@@ -165,6 +166,7 @@ try {
   runs.pi.strict = await launch('pi', pi, true);
   const left = benchPids();
   proxy.close();
+  proxy = null;
 
   const has = (r, ...ks) => ks.every((k) => r.reached.includes(k));
   const none = (r, ...ks) => ks.every((k) => !r.reached.includes(k));
@@ -195,6 +197,8 @@ try {
   process.stderr.write(`tier 1 strict isolation check failed to run: ${e.message}\n`);
   process.exitCode = 4;
 } finally {
+  // A run that failed midway leaves the proxy listening, which would keep this process alive.
+  if (proxy) proxy.close();
   for (const p of benchPids()) {
     try {
       process.kill(p, 'SIGKILL');

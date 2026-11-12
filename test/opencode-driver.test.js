@@ -42,6 +42,7 @@ test('describe: the four XDG roots bind the folder; the two escapes a launch can
     assert.deepEqual(d.known_limits.map((k) => [k.path, k.kind]), [['~/.agents/skills', 'inbound-read'], ['~/.opencode/', 'outbound-write']]);
     assert.match(d.known_limits[0].note, /no switch in 2\.x/);
     assert.match(d.versions.note, /1\.x .* out of range: its run has no --standalone/);
+    assert.match(d.launch_network.with_endpoint, /no model catalog fetch/);
     assert.ok(d.operations.includes('launch-spec') && d.operations.includes('observe --state'));
   } finally {
     s.done();
@@ -104,6 +105,7 @@ test('launch-spec: the endpoint, the model, MCP servers with refs, a skill and A
     assert.equal(spec.env_set.XDG_DATA_HOME, path.join(s.folder, 'data'));
     assert.equal(spec.env_set.XDG_STATE_HOME, path.join(s.folder, 'state'));
     assert.equal(spec.env_set.OPENCODE_DISABLE_CLAUDE_CODE, '1');
+    assert.equal(spec.env_set.OPENCODE_DISABLE_MODELS_FETCH, '1', 'with an endpoint, no model catalog fetch');
     for (const v of ['OPENCODE_CONFIG', 'OPENCODE_PERMISSION', 'OPENCODE_DB', 'OPENCODE_AUTH_CONTENT', 'OPENAI_API_KEY']) assert.ok(spec.env_unset.includes(v), v);
     // A variable the launch sets is never also unset, so a caller gets one environment whichever
     // list it applies first; the host's own value is replaced by the set.
@@ -149,6 +151,7 @@ test('every launch passes --standalone, headless or not, whatever it carries, an
     }
     const spec = ok(s.call('launch-spec', { layers: [model], headless: false }));
     assert.deepEqual(spec.argv.slice(1), ['--standalone', '-m', 'openai/gpt-x'], 'without an endpoint the model is passed as given');
+    assert.equal(spec.env_set.OPENCODE_DISABLE_MODELS_FETCH, undefined, 'without an endpoint OpenCode needs its catalog');
     assert.ok(spec.env_unset.includes('OPENCODE_CONFIG_DIR') && spec.env_unset.includes('OPENCODE_CONFIG_CONTENT'), 'unset when the launch sets neither');
     assert.ok(spec.unverified.some((u) => /interactive launch is not measured/.test(u)));
   } finally {

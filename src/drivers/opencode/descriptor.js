@@ -5,7 +5,8 @@
 //   2026-11-12;
 // - `D2:<page>`: https://opencode.ai/v2/docs/<page>, read 2026-11-12;
 // - `T1`: the tier 1 check conformance/tier1/opencode-launch-surface.mjs on 2.2.7, 2026-11-12;
-// - `T2`: the tier 1 check conformance/tier1/opencode-persisted.mjs on 2.2.7, 2026-11-12.
+// - `T2`: the tier 1 check conformance/tier1/opencode-persisted.mjs on 2.2.7, 2026-11-12;
+// - `T3`: the tier 1 check conformance/tier1/opencode-bridge.mjs on 2.2.7, 2026-11-12.
 
 export default Object.freeze({
   harness: 'opencode',
@@ -119,6 +120,18 @@ export default Object.freeze({
       cite: 'D2:providers; T1',
     },
     endpoint_unset: ['OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'OPENCODE_API_KEY'],
+    // With an endpoint the launch names its provider and model itself, so OpenCode's model catalog
+    // (models.opencode.ai, asked for on every start [T3]) is not fetched: a launch contacts only what
+    // the spec names. OPENCODE_DISABLE_MODELS_FETCH turns the fetch off [G2:packages/cli/src/
+    // server-process.ts]; measured, with the network blocked, the explicit provider and model still
+    // reach the endpoint and no host is asked for [T1].
+    no_catalog_env: 'OPENCODE_DISABLE_MODELS_FETCH',
+    // What a launch contacts on the network, by host, as describe reports it.
+    network: {
+      with_endpoint: 'the endpoint only: no model catalog fetch (OPENCODE_DISABLE_MODELS_FETCH)',
+      without_endpoint: 'OpenCode\'s model catalog, models.opencode.ai, and the providers the folder\'s config names',
+      source: 'tier 1, opencode-launch-surface and opencode-bridge, 2.2.7, 2026-11-12',
+    },
     // 2.x keeps logins in opencode.db, which also holds the sessions, and imports a 1.x auth.json
     // into it on start [G2:packages/core/src/database/migration/20260805200742_import_legacy_credentials.ts].
     stored_login: {

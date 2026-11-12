@@ -99,6 +99,8 @@ export function describeHarness(descriptor) {
       escapes: escapesHere(descriptor),
     },
     known_limits: knownLimits(descriptor),
+    // What a launch contacts on the network, where the descriptor says.
+    ...(descriptor.launch?.network ? { launch_network: descriptor.launch.network } : {}),
     normalization_allowlist: [],
     path_classes: descriptor.paths.filter((r) => !r.descend),
     capabilities: capabilities(descriptor),

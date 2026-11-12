@@ -252,7 +252,9 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     if (unverified) out.unverified.push(unverified);
     out.env_from_refs[E.key_env] = endpoint.value.credential;
     out.unset.push(...endpointUnset(descriptor, [E.key_env]));
-    out.items.push({ item: endpoint.id, via: `${L.config_content_env}: providers.${E.provider_id} (${E.package}), and ${E.key_env} from the credential reference, which the caller resolves; the other key variables unset` });
+    // The launch names its provider and model: no model catalog fetch (descriptor, no_catalog_env).
+    out.env[L.no_catalog_env] = '1';
+    out.items.push({ item: endpoint.id, via: `${L.config_content_env}: providers.${E.provider_id} (${E.package}), and ${E.key_env} from the credential reference, which the caller resolves; the other key variables unset; ${L.no_catalog_env}, so the launch fetches no model catalog` });
   }
   if (login) out.items.push({ item: login.id, value: login.value, via: endpoint ? 'the endpoint is the only login' : 'the folder\'s own login store' });
 

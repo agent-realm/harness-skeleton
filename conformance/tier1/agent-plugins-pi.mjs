@@ -143,7 +143,7 @@ try {
   const lr = b.hsCall('launch-spec', [...common, '--layer', badKit, '--headless']);
   runs.refused = { validate: v.ok ? (v.result.problems ?? []).filter((x) => x.severity === 'error').map((x) => x.code) : v.error.code, launch: lr.ok ? null : lr.error.code };
 
-  const plan = b.hs('plan', [...common, '--layer', kit, '--owner', 'tier1', '--mode', 'materialize']);
+  const plan = b.hs('plan', [...common, '--layer', kit, '--local', local, '--owner', 'tier1', '--mode', 'materialize']);
   const planFile = path.join(b.work, 'plan.json');
   put(planFile, plan);
   const receiptFile = path.join(b.work, 'receipt-plan.json');
@@ -157,7 +157,7 @@ try {
   runs.removed = await run('removed', plain);
   const dataDir = path.join(folder, 'hs-run', 'plugin-data', NAME);
   const dataKept = fs.existsSync(dataDir) && removed.plugin_data?.kept?.length === 1;
-  const plan2 = b.hs('plan', [...common, '--layer', kit, '--owner', 'tier1', '--mode', 'materialize']);
+  const plan2 = b.hs('plan', [...common, '--layer', kit, '--local', local, '--owner', 'tier1', '--mode', 'materialize']);
   put(planFile, plan2);
   put(receiptFile, { format: 'hs-receipt/0.2', plan_digest: plan2.digest, allows: plan2.operations.filter((o) => o.risk.length).map((o) => o.id), by: 'tier1-bench', at: new Date().toISOString() });
   b.hs('apply', [...common, '--plan', planFile, '--receipt', receiptFile]);

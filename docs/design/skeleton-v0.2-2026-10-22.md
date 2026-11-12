@@ -693,7 +693,19 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
     - the envelope's `session_id` and `cwd` come from pi's session manager and working directory, and an MCP tool keeps its class, `mcp:<server>`, since pi names it `mcp__<server>__<tool>`;
     - refused: `may_allow` (pi has no permission prompt) and the `fetch` class (pi has no web tool); a hook's `context` is not delivered;
     - once every handler is registered, the extension writes a marker into the launch's temp dir, which `launch-spec` names under `readiness`. An extension that does not load stops pi altogether (exit 1, no request, measured), so hooks never go missing silently.
-  - `materialize` comes in milestone 8.3.
+
+  **Under `materialize` on pi** (milestone 8.3), a plan writes into the folder's own files, the agent dir, which a bare start reads (measured, section 10):
+  - `mcp.json`'s `mcpServers.<id>`, one key at a time, with the user's own servers kept: `{command, args, env, exposure}` for a stdio server, bound by copy into `hs-run/mcp.<id>/` as on Claude Code, and `{url, headers, exposure}` for a remote one. The exposure is `direct` unless the spec gives another;
+  - each skill as a tree, `skills/<name>`;
+  - for a model given as `provider/model` with no endpoint, `settings.json`'s `defaultProvider` and `defaultModel`, with the user's own keys kept;
+  - refused, with the reason:
+    - a server with refs, whose `${HS_REF_<ref>}` a bare start would leave empty;
+    - a server's working directory, not carried in this build;
+    - a model with no provider;
+    - the same spec text a launch refuses (`$` or a leading `!` where pi expands or runs it, a leading `~` in a command or argument);
+    - an SSE server;
+  - the endpoint, the login, `AGENTS.md` and hooks stay launch only. With an endpoint the model is the launch's own provider's, so it stays launch only too;
+  - a launch skips a server or skill a plan installed at this content. A start rewrites none of the files hs writes; it adds `auth.json`, `models-store.json` and `sessions/` (measured).
 
   When the spec's endpoints offer no wire the harness speaks, the request is refused as `gateway_required`, naming the wire. Model roles are carried as follows:
   - Claude Code: `--model`, and `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`, `CLAUDE_CODE_EFFORT_LEVEL` [CC §5, §19];
@@ -1131,6 +1143,15 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - Recorded: pi gives the headless prompt the source `interactive`.
 
   *Run 2026-11-12 on a bench: pass on pi 1.5.2 (eleven checks).*
+- **What a bare pi start reads from the folder** (tier 1, `conformance/tier1/pi-persisted.mjs`, milestone 8.3): the folder's own `mcp.json`, `skills/`, `settings.json` and `AGENTS.md`, with no hs launch at all. The model is a provider in the folder's `models.json` on the scripted endpoint, a stand-in for the provider a user's folder has, since hs never persists an endpoint. Judged:
+  - the folder's `settings.json` (`defaultProvider`, `defaultModel`) picks the model a bare start reaches;
+  - a stdio server in the folder's `mcp.json` with exposure `direct` starts, and its tool is offered;
+  - a skill in `skills/` and the folder's `AGENTS.md` reach a request;
+  - hs's own route: the plan writes `mcp.json`'s `mcpServers.probe`, its copy in `hs-run/`, the skill, and `settings.json`'s `defaultProvider` and `defaultModel`, and `hs apply` refuses a receipt that allows nothing. A bare start then reaches the model the settings name, runs the server from its copy and offers its tool, and loads the skill; `hs launch-spec` for the same layer skips what the plan installed. After `hs remove`, a bare start offers no tool of the server, does not start it, and loads no skill;
+  - no host is asked for.
+  - Recorded: a start rewrites none of `mcp.json`, `settings.json` and `models.json`, and adds `auth.json`, `models-store.json` and `sessions/`. With no exposure, an `mcp.json` server starts but only `codemode` is offered.
+
+  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (eight checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1260,6 +1281,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | pi, milestone 8.3: `materialize` writes the folder's own `mcp.json` servers key by key (stdio servers bound by copy into `hs-run/`), `skills/`, and `settings.json`'s `defaultProvider` and `defaultModel`; the endpoint, the login, `AGENTS.md` and hooks stay launch only; a launch skips what a plan installed (sections 7.5, 10) |
 | 2026-11-12 | pi, milestone 8.2: hooks through the launch extension. `PreToolUse` and `UserPromptSubmit` block and fail closed on every shim failure; a `Stop` block asks for one more run; `PostToolUse`, `SessionStart` and `SessionEnd` notify. The readiness marker comes from the start, and an extension that does not load stops pi (sections 5.6, 7.5, 10) |
 | 2026-11-12 | pi, milestone 8.1: the launch writes nothing into the folder; one generated extension registers the endpoint's provider and the MCP servers, its configuration JSON of one whole object; skills by `--skill`, `AGENTS.md` as a system-prompt append. Spec text with `$` or a leading `!` is refused in every carrier pi expands or runs, a leading `~` in a server's command, arguments or cwd too, and a server named like the folder's. pi's empty `auth.json` (2 bytes) is told from a login by its size alone (sections 7.5, 8, 10) |
 | 2026-11-12 | pi: the driver targets the 1.5 line (1.5.2 up to 1.6), widened one minor at a time with a tier 1 run each; 0.x is out of range. A launch writes nothing into the folder: one extension hs generates carries the endpoint's provider and the MCP servers (and later the hooks). Spec text pi could interpolate or execute (`$`, `${…}`, a leading `!`) is refused in every carrier before launch. Project trust is left to pi and named as a known limit (section 10) |

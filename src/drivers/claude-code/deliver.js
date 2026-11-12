@@ -482,11 +482,15 @@ function persistedHook(item, dir, folder, descriptor, { version, owner, gate = t
 
 // Whether a plan installed a hook in the folder at exactly what the spec says now: the group, its
 // bound copy (if any) and the shim's copy, as the ledger recorded them. Returns the node the
-// folder's group runs under, or null when it is not installed.
+// folder's group runs under and whether its shim copy is another hs's, or null when it is not
+// installed.
 // The group is computed for each owner the ledger records at that address (the recovery comment
 // names the plan's owner), with the node the folder's group names: hs running under another node
 // is drift for plan to show, not a reason to carry the hook again at launch and run it twice. The
-// version gate was the plan's to apply.
+// same holds for the shim's copy: one a plan installed, from this hs or an earlier one, is the
+// folder's, and a newer hs's shim is drift for plan. A copy changed since its plan, or gone, is not
+// what any receipt allowed, and the folder's group runs it: `shim_changed`, which the launch
+// refuses. The version gate was the plan's to apply.
 function installedHook(item, dir, folder, descriptor) {
   const ledger = readLedger(folder);
   const HK = descriptor.launch.hooks;
@@ -502,7 +506,12 @@ function installedHook(item, dir, folder, descriptor) {
     } catch {
       return null;
     }
-    if (heldAt(ledger, folder, descriptor, p)) return node;
+    const held = heldAt(ledger, folder, descriptor, p);
+    if (held === 'shim') return { node, shim_changed: true };
+    if (held) {
+      const shim = handlers.tree.current(folder, descriptor, { path: descriptor.launch.hooks.persist.shim_tree }).digest;
+      return { node, other_shim: shim !== digestPath(SHIM_DIR) };
+    }
   }
   return null;
 }
@@ -534,7 +543,9 @@ function heldAt(ledger, folder, descriptor, p) {
   };
   if (!held(`${p.address.file}#${p.address.key}[${p.address.id}]`, digestOf(p.value), handlers['json-element'].current(folder, descriptor, p.address).digest)) return false;
   const P = descriptor.launch.hooks.persist;
-  if (!held(P.shim_tree, digestPath(SHIM_DIR), handlers.tree.current(folder, descriptor, { path: P.shim_tree }).digest)) return false;
+  // The shim's copy, as some plan installed it ('shim' when it changed since, or is gone).
+  const shim = handlers.tree.current(folder, descriptor, { path: P.shim_tree }).digest;
+  if (shim === null || !held(P.shim_tree, shim, shim)) return 'shim';
   if (!p.tree) return true;
   return held(p.tree.address, digestPath(p.tree.source), handlers.tree.current(folder, descriptor, { path: p.tree.address }).digest);
 }
@@ -747,11 +758,17 @@ export function launchParts(resolved, { headless, descriptor, folder, platform, 
     const dir = layerDirs.get(hk.layer);
     // A plan put it in the folder at this content: the folder's settings run it, and the plan's
     // receipt covered it. Carrying it again would run it twice.
-    const node = installedHook(hk, dir, folder, descriptor);
-    if (node) {
+    const installed = installedHook(hk, dir, folder, descriptor);
+    // The folder's group is hs's, but the shim it runs changed since its plan: carrying the hook
+    // again would run it twice, one of them through a shim no receipt allowed.
+    if (installed?.shim_changed) throw new HsError('item_unsupported', `${hk.id}: the folder's copy of hs's hook shim (${HK.persist.shim_tree}) changed since the plan that installed it, or is gone, and the folder's persisted hooks run it; plan and apply again, or remove them (hs remove)`, [hk.id]);
+    if (installed) {
+      const { node } = installed;
       out.skipped.push({ item: hk.id, reason: 'installed in the folder by a plan, at this content (settings.json hooks, its bound copy and the shim\'s copy); the plan\'s receipt covered it' });
       // The folder's group runs under the node it names; with that node gone it cannot start.
       if (!fs.existsSync(node)) out.notes.push(`${hk.id}: the folder's persisted hook runs under the node at ${node}, which is missing, so ${HK.gating_events.includes(v.event) ? 'every matching action is blocked' : 'it does not run'} until a plan is applied again (hs plan, then hs apply)`);
+      // An earlier hs's shim copy, as its plan installed it: the hook runs once, under that copy.
+      if (installed.other_shim) out.notes.push(`${hk.id}: the folder's copy of hs's hook shim (${HK.persist.shim_tree}) is from another hs, as a plan installed it; the folder's persisted hooks run under that copy until a plan is applied again (hs plan, then hs apply)`);
       continue;
     }
     // The shim stops the process at its limit and decides; Claude Code's own timeout sits above.

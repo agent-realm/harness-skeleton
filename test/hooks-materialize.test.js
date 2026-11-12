@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { setElement, setKey } from '../src/json-edit.js';
 import { handlers } from '../src/native.js';
-import { digestOf } from '../src/records.js';
+import { digestOf, readLedger, writeLedger } from '../src/records.js';
 import ccDriver from '../src/drivers/claude-code/index.js';
 import { layer } from './fixtures.js';
 import { ok, receiptFor, sandbox } from './sandbox.js';
@@ -302,5 +302,37 @@ test('review: a file that is not valid UTF-8 is never rewritten; a folder path w
     assert.match(JSON.stringify(res.error), /hook\.g.*line break or a control character/);
   } finally {
     t.done();
+  }
+});
+
+test('the shim copy: one an earlier hs\'s plan installed still counts, so the hook runs once, with a note; one changed since its plan is refused', () => {
+  const s = sandbox();
+  try {
+    const team = guardLayer(s);
+    const plan = ok(s.call('plan', { layers: [team], owner: 'builder' }));
+    ok(s.call('apply', { plan, receipt: receiptFor(plan) }));
+    const shimTree = D.launch.hooks.persist.shim_tree;
+    const core = path.join(s.folder, shimTree, 'core.js');
+    // An earlier hs installed another shim: its copy differs from this hs's, and its ledger says so.
+    fs.appendFileSync(core, '// an earlier hs\n');
+    const ledger = readLedger(s.folder);
+    for (const o of Object.values(ledger.addresses[shimTree].owners)) o.installed = handlers.tree.current(s.folder, D, { path: shimTree }).digest;
+    writeLedger(s.folder, ledger);
+    const spec = ok(s.call('launch-spec', { layers: [team] }));
+    assert.ok(spec.skipped.some((x) => x.item === 'hook.g' && /installed in the folder by a plan/.test(x.reason)), 'installed: not carried a second time');
+    assert.equal(JSON.stringify(spec.files ?? []).includes('PreToolUse'), false, 'not in --settings');
+    assert.ok(spec.notes.some((n) => /hook\.g: the folder's copy of hs's hook shim \(hs-run\/hook-shim\) is from another hs, as a plan installed it/.test(n)));
+    // A plan shows the drift: the copy is brought to this hs's shim.
+    assert.deepEqual(ok(s.call('plan', { layers: [team], owner: 'builder' })).operations.map((o) => [o.action, o.address_id]), [['update', shimTree]]);
+    // Changed since its plan: the folder's group runs a shim no receipt allowed. Refused, not carried again.
+    fs.appendFileSync(core, '// edited in place\n');
+    const r = s.call('launch-spec', { layers: [team] });
+    assert.equal(r.error?.code, 'item_unsupported');
+    assert.match(r.error.message, /hook\.g: the folder's copy of hs's hook shim \(hs-run\/hook-shim\) changed since the plan that installed it, or is gone/);
+    // Gone: the same.
+    fs.rmSync(path.join(s.folder, shimTree), { recursive: true });
+    assert.equal(s.call('launch-spec', { layers: [team] }).error?.code, 'item_unsupported');
+  } finally {
+    s.done();
   }
 });

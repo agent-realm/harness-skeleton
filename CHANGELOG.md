@@ -20,15 +20,16 @@ The first public cut.
     plan installs; on Codex, installed into the plugin cache by a plan and enabled by each launch);
     on Claude Code also packages in its own format, `claude-plugin`, delivered whole the same two
     ways (refused on Codex, with the reason);
-  - on OpenCode 2.x, launch only: `describe` with its known limits, `detect`, `observe --state`, and
+  - on OpenCode 2.x: `describe` with its known limits, `detect`, `observe --state`, and
     `launch-spec` with `--standalone` on every launch, for the endpoint, the primary model, MCP
-    servers, skills and `AGENTS.md`;
+    servers, skills and `AGENTS.md`; under `materialize`, the primary model, MCP servers and
+    skills into the folder's own `config/opencode/`;
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
   - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
-- **Conformance:** eighteen tier 1 checks against Claude Code 2.1.307, Codex 0.160.0 and OpenCode 2.2.7, run on
+- **Conformance:** nineteen tier 1 checks against Claude Code 2.1.307, Codex 0.160.0 and OpenCode 2.2.7, run on
   disposable benches. The six plugin checks also ran against Claude Code 2.1.321 or
   Codex 0.167.0.
 - **Documentation:** a tutorial, a concepts page with five diagrams, guides, a reference, and

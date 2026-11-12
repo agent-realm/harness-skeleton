@@ -4,7 +4,8 @@
 // - `G2:<path>`: OpenCode's source at tag v2.2.7, https://github.com/anomalyco/opencode, read
 //   2026-11-12;
 // - `D2:<page>`: https://opencode.ai/v2/docs/<page>, read 2026-11-12;
-// - `T1`: the tier 1 check conformance/tier1/opencode-launch-surface.mjs on 2.2.7, 2026-11-12.
+// - `T1`: the tier 1 check conformance/tier1/opencode-launch-surface.mjs on 2.2.7, 2026-11-12;
+// - `T2`: the tier 1 check conformance/tier1/opencode-persisted.mjs on 2.2.7, 2026-11-12.
 
 export default Object.freeze({
   harness: 'opencode',
@@ -12,8 +13,8 @@ export default Object.freeze({
   binary: 'opencode',
   version_args: ['--version'],
 
-  // Launch only: a plan names what a launch carries and writes nothing (milestone 7.1).
-  delivery_modes: ['overlay'],
+  // Launch (milestone 7.1), and into the folder's own config directory (7.2).
+  delivery_modes: ['materialize', 'overlay'],
 
   // The 2.x line, from the release measured [T1]. 1.x is out of range: its `run` has no
   // --standalone, and a launch with the 2.x config never reaches the model [T1, 1.19.5]; 2.x
@@ -61,6 +62,7 @@ export default Object.freeze({
   // Names written by a run [T1] and the survey's 1.x layout where 2.x kept it [OC §1, §20].
   paths: [
     { pattern: '.harness-skeleton', class: 'skeleton', source: 'design note v0.2 §9.3' },
+    { pattern: 'hs-run', class: 'config', note: 'the bound copies of the processes a plan persists', source: 'design note v0.2 §7.5' },
     { pattern: 'config', descend: true },
     { pattern: 'config/opencode', class: 'config', source: 'OC §1; T1' },
     { pattern: 'data', descend: true },
@@ -142,6 +144,28 @@ export default Object.freeze({
     agents_md: 'AGENTS.md',
     statusline: { supported: false, reason: 'OpenCode has no configurable status line [OC §13]' },
     hooks: { supported: false, reason: 'OpenCode has no shell-command hooks; its hooks are plugin functions, which a bridge plugin would carry (design note §8), not in this build [OC §11]' },
+  },
+
+  // Under materialize (milestone 7.2): the folder's own config directory, config/opencode/, which
+  // a start reads under the launch's inline layer: its opencode.json, its skills/ (T2: tier 1,
+  // conformance/tier1/opencode-persisted.mjs on 2.2.7, 2026-11-12). A start leaves opencode.json as
+  // written and adds nothing beside it [T2]. An opencode.jsonc there outranks opencode.json for a
+  // key both hold [T2; OC §2], so a plan refuses to write while one is there. A running background
+  // service picks up a change without a restart [T2], so a plan needs no quiet folder. The endpoint
+  // and the login never persist (§5.2), nor AGENTS.md in this build: launch only.
+  persist: {
+    config_file: 'config/opencode/opencode.json',
+    jsonc_file: 'config/opencode/opencode.jsonc',
+    skills_dir: 'config/opencode/skills',
+    mcp_key: 'mcp/servers',
+    model_key: 'model',
+    root: 'hs-run',
+    jsonc_reason: 'the folder\'s config/opencode/opencode.jsonc outranks opencode.json, which hs writes, for any key both hold (tier 1, opencode-persisted, 2.2.7); move its settings into opencode.json, or deliver at launch',
+  },
+  writable: {
+    json: { 'config/opencode/opencode.json': { keys: ['model'], prefixes: ['mcp/servers/'] } },
+    trees: ['config/opencode/skills', 'hs-run'],
+    private: ['hs-run'],
   },
 
   state: {

@@ -204,7 +204,7 @@ test('launch-spec refusals: a stored login, an x-api-key endpoint, {env:} or {fi
   }
 });
 
-test('plan: under overlay it names what a launch carries; materialize is not in this build', () => {
+test('plan: under overlay it names what a launch carries', () => {
   const s = box();
   try {
     const team = layer(s.root, 'team', '[model.roles]\nprimary = "m"\nsmall = "s"\n\n[mcp.db]\nexec = "/bin/true"\n', { 'skills/notes/SKILL.md': skillMd('notes'), 'AGENTS.md': 'Rules.\n' });
@@ -213,7 +213,6 @@ test('plan: under overlay it names what a launch carries; materialize is not in 
     const only = plan.launch_only.map((x) => x.item).sort();
     assert.deepEqual(only, ['instructions (AGENTS.md)', 'mcp.db', 'model.roles.primary', 'skill.notes']);
     assert.ok(plan.skipped.some((x) => x.item === 'model.roles.small'));
-    assert.equal(s.call('plan', { layers: [team], owner: 'builder', mode: 'materialize' }).error.code, 'not_implemented');
   } finally {
     s.done();
   }

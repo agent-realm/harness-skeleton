@@ -1,0 +1,472 @@
+{
+  "check": "tier 1: what a pi launch can carry with nothing written into the folder (design note v0.2 §4, §5, §7.5, §8)",
+  "at": "2026-11-12T12:57:10.282Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "67cf1e1"
+  },
+  "runs": {
+    "control": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "append",
+        "cwdAgents",
+        "folderAgents",
+        "skill"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-56-44-499Z_01a1cfd4-fcd2-72d3-9824-79a27ed934a4.jsonl"
+      ],
+      "connects": {
+        "dns": 0,
+        "other": 0
+      }
+    },
+    "online": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-56-45-850Z_01a1cfd5-0219-73dd-8cca-ab3ba4360176.jsonl"
+      ],
+      "connects": {
+        "dns": 0,
+        "other": 0
+      }
+    },
+    "proxy_control": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [
+        "hs-bench-provider.invalid"
+      ],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-56-47-004Z_01a1cfd5-069a-759e-8f51-de69c2b04b4d.jsonl"
+      ]
+    },
+    "mcp_direct": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents",
+        "mcpTool"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-01-949Z_01a1cfd5-40fc-7474-aca6-4a65fb0b497e.jsonl"
+      ],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": true
+      }
+    },
+    "mcp_default": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-03-052Z_01a1cfd5-454a-7202-9132-01a8039bb911.jsonl"
+      ],
+      "probe": {
+        "started": true,
+        "args_expanded": true,
+        "data_expanded": true,
+        "env_names": [],
+        "root_matches": false,
+        "data_exists": false,
+        "data_writable": false,
+        "data_matches": false,
+        "cwd_is_root": false,
+        "literal_kept": null,
+        "literal_is_other": null,
+        "other_forwarded": true
+      }
+    },
+    "mcp_folder": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "mcp.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-04-041Z_01a1cfd5-4928-71ce-af77-6f422434e555.jsonl"
+      ],
+      "started": {
+        "extension": false,
+        "folder_file": true
+      }
+    },
+    "carrier_key": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-05-022Z_01a1cfd5-4cfd-7378-aa03-e96a75531a7d.jsonl"
+      ]
+    },
+    "carrier_bang": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-05-818Z_01a1cfd5-5019-724d-8fb2-7297ea283d46.jsonl"
+      ],
+      "probe": null
+    },
+    "carrier_remote": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-06-755Z_01a1cfd5-53c2-706d-ae93-b3eeeb273a8b.jsonl"
+      ]
+    },
+    "carrier_var": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 1,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "cwdAgents",
+        "folderAgents",
+        "other"
+      ],
+      "tools": [
+        "bash",
+        "codemode",
+        "edit",
+        "mcp__probe__ping",
+        "read",
+        "write"
+      ],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "mcp-auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-07-777Z_01a1cfd5-57c0-75e5-83b1-0b6bbca44d7c.jsonl"
+      ]
+    },
+    "broken": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 0,
+      "credential": [],
+      "markers": [],
+      "tools": [],
+      "tool_results": 0,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--"
+      ]
+    },
+    "hooks": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "agentsSkills",
+        "ancestor",
+        "block",
+        "cwdAgents",
+        "folderAgents",
+        "thrown"
+      ],
+      "tools": [
+        "bash",
+        "edit",
+        "read",
+        "write"
+      ],
+      "tool_results": 6,
+      "hosts": [],
+      "folder": [
+        "AGENTS.md",
+        "auth.json",
+        "models-store.json",
+        "sessions",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--",
+        "sessions/--tmp-hs-bench-zTCL-npmtmp-hs-tier1-pi-launch-G385n2-proj-work--/2026-11-12T12-57-09-640Z_01a1cfd5-5f07-749d-b287-98c23cc29d38.jsonl"
+      ],
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "thrown": false
+      }
+    }
+  },
+  "recorded": {
+    "home_written": [],
+    "cwd_agents_reaches": true,
+    "online_hosts": [],
+    "mcp_default_tools": [
+      "bash",
+      "codemode",
+      "edit",
+      "read",
+      "write"
+    ],
+    "mcp_default_started": true,
+    "mcp_folder_started": {
+      "extension": false,
+      "folder_file": true
+    },
+    "carriers": {
+      "executed": {
+        "apikey": true,
+        "header": true,
+        "args": false,
+        "env": true,
+        "mcp-header": true
+      },
+      "expanded": {
+        "provider_header": true,
+        "mcp_env": true,
+        "mcp_env_kept_literal": false,
+        "mcp_args": false,
+        "mcp_args_kept_literal": true,
+        "mcp_remote_header": true
+      },
+      "reached": {
+        "carrier_key": false,
+        "carrier_bang": false,
+        "carrier_remote": true,
+        "carrier_var": true
+      },
+      "remote_requests": 1
+    },
+    "online_connects": {
+      "dns": 0,
+      "other": 0
+    },
+    "strace": true,
+    "broken": {
+      "exit": 1,
+      "requests": 0
+    },
+    "hooks": {
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "thrown": false
+      },
+      "block_reason_reached": true,
+      "throw_reason_reached": true,
+      "exit": 0
+    }
+  },
+  "checks": {
+    "control: the extension's provider reaches the model with the dummy key, read from \"$HS_BENCH_PI_KEY\" (premise)": true,
+    "control: the --skill and the --append-system-prompt file reach a request": true,
+    "control: PI_CODING_AGENT_DIR binds the folder: its AGENTS.md reaches a request, the default root's does not, and the session lands in its sessions/": true,
+    "control: with PI_OFFLINE, PI_SKIP_VERSION_CHECK and PI_TELEMETRY=0, no host is asked for": true,
+    "known limits: ~/.agents/skills and an ancestor AGENTS.md reach a request; the trust-gated project .pi/ does not, in JSON mode": true,
+    "online: with the offline switches off, the explicit provider still reaches the model": true,
+    "mcp_direct: a server the extension registers starts, its ${HS_REF_…} env value expanded, and its tool is offered as mcp__probe__ping": true,
+    "proxy_control: a provider on an outside host is asked for through the proxy, so the proxy sees pi's requests (premise)": true,
+    "control: under strace, pi connects to nothing but loopback with the offline switches on (DNS apart, none either)": true,
+    "carriers: pi runs a leading !command in the provider's apiKey, a provider header, an MCP env value and a remote MCP header": true,
+    "carriers: pi expands ${VAR} in a provider header and an MCP env value": true,
+    "no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

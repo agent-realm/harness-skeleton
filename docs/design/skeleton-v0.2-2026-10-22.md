@@ -219,6 +219,7 @@ require = "required"
 - **Decisions**: exit 0 continues; exit 2 blocks, with stderr as the reason; or stdout JSON `{"decision": "allow" | "deny", "reason", "context"}`. The shim translates to the native protocol: Claude Code and Codex natively, OpenCode by throwing in `tool.execute.before`, pi by `{block: true}` from `tool_call` [OC §11, PI §11].
 - **Inert items**: a delivered item the harness will not run (an untrusted Codex hook, a hook whose content changed after trust, an untrusted project) is reported by `observe` and `launch-spec` with readiness `inert`. It is never presented as active.
 - **Codex hook trust**: a delivered hook has readiness `needs-trust` until the user approves it in Codex's `/hooks`, or a receipt names it and the Codex driver for that version is certified to write `trusted_hash` correctly. Launching with `--dangerously-bypass-hook-trust` is never used: it would also run repository hooks nobody reviewed [CX §11]. Since milestone 6a.8 a launch carries its own trust: `-c hooks.state` names each launch hook's `trusted_hash` for that launch only, under the launch receipt, and nothing is written into `config.toml` (section 7.5). The hash is certified on Codex 0.160.0 by a tier 1 check.
+- **OpenCode** has no command hooks: its hooks are plugin functions. Since milestone 7.3 a launch carries hs's bridge plugin, which runs the shim (section 7.5). Only `PreToolUse` and `PostToolUse` have a route there. Every other event is refused when required and skipped when `if-supported` (section 5.10), with the reason.
 
 ### 5.7 Skills, agents, commands, plugins, instructions
 
@@ -639,17 +640,30 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
   - **`--standalone`, on every launch**, interactive (`opencode --standalone`) or headless (`opencode run --standalone --format json`). A run uses the folder's background service when one is up, and then runs on that service's config, not the launch's ("A one-off run uses the background service when it is already up", `packages/cli/src/commands/handlers/run.ts` at tag v2.2.7; measured, section 10). The service's registration is under `XDG_STATE_HOME`, so another folder's service is never found.
   - **An inline config layer**, `OPENCODE_CONFIG_CONTENT`. It holds the endpoint as a provider of its own, `providers.hs` (`package` `@opencode/ai/providers/openai-compatible`, `settings.baseURL`, and `env` naming the variable the caller fills with the key), and the MCP servers under `mcp.servers`. OpenCode substitutes `{env:VAR}` and `{file:path}` in its config text before parsing it, keys included (`packages/core/src/config/variable.ts`). So a ref reaches a server as `{env:HS_REF_<ref>}`, and such text in any string or key the spec provides is refused as `interpolation_refused` before the launch puts in its own placeholders (section 5.3).
   - **A config directory**, `OPENCODE_CONFIG_DIR`, in the launch's temp dir: the skills under `skills/`, and `AGENTS.md`, concatenated in layer order with each part headed `# <layer>` (section 5.1). That `AGENTS.md` replaces the folder's global one.
+  - **Hooks** (milestone 7.3): hs's bridge plugin, `plugins/hs-hooks.js` in the config directory, generated per launch. It is a plain module with no import but Node's own, so OpenCode installs nothing to load it (measured, section 10). For each hook it runs hs's hook shim, with the plugin event and the session's directory as the native payload, on the plugin hook the event rides on:
+    - `PreToolUse` on `tool.execute.before`, the one plugin hook whose rejection refuses anything. A throw there rejects the call before it runs, and its message reaches the model (source v2.2.7, `packages/core/src/plugin/hooks.ts`; measured). The shim's exit 0 continues, and its exit 2 blocks with its reason. Anything else fails closed: another exit, a signal, a shim that cannot start, or a shim still running at the hook's limit plus a margin. That shim's process group is killed and the call blocked at once, so a descendant holding its pipes does not hold the call (measured).
+    - `PostToolUse` on `tool.execute.after`, which cannot refuse: the bridge never rejects there.
+    - Refused, with the reason:
+      - `UserPromptSubmit`: `session.prompt` can rewrite a prompt but not refuse it;
+      - `Stop`: its nearest hook is experimental;
+      - `PreCompact`: compaction can be replaced, not refused;
+      - `PermissionRequest`: `permission.evaluate` runs for every rule evaluation and carries no tool call;
+      - the rest: no plugin hook carries them;
+      - `may_allow`;
+      - an `mcp:` match: an MCP tool is `<server>_<tool>`, so server `a` would also match server `a_b`'s tools.
+    - A hook's `context` output is not delivered, and an MCP tool's envelope has `tool.class` null.
+    - The one fail-open case: a plugin that does not load is skipped, and OpenCode starts without it (measured).
   - `-m hs/<model>` for the primary role. OpenCode 2.x has no small or subagent model key, and its model variants are the provider's own names, so those roles are skipped and named.
   - `OPENCODE_DISABLE_CLAUDE_CODE=1`, which closes the `.claude` skill roots.
   - With an endpoint, `OPENCODE_DISABLE_MODELS_FETCH=1`: the launch names its provider and model itself, so OpenCode's model catalog, `models.opencode.ai`, which it asks for on every start, is not fetched, and a launch contacts only what the spec names. Measured with the network blocked: the provider and model still reach the endpoint, and no host is asked for (section 10). `describe` reports what a launch contacts (`launch_network`).
 
-  An endpoint launch is refused while the folder holds a 1.x `data/opencode/auth.json`, which 2.x imports into `opencode.db` on start. 2.x keeps its logins in `opencode.db`, which also holds the sessions; hs never opens it, and names that under `unverified`. Hooks (a bridge plugin, section 8), permissions, agents, commands and plugins are not in this build; the status line and the `[state]` items have no OpenCode slot and are skipped or refused (section 5.10). A launch refuses a spec server named like one the folder's own config defines, since its inline layer would merge into that server key by key (as on Codex).
+  An endpoint launch is refused while the folder holds a 1.x `data/opencode/auth.json`, which 2.x imports into `opencode.db` on start. 2.x keeps its logins in `opencode.db`, which also holds the sessions; hs never opens it, and names that under `unverified`. Permissions, agents, commands and plugins are not in this build; the status line and the `[state]` items have no OpenCode slot and are skipped or refused (section 5.10). A launch refuses a spec server named like one the folder's own config defines, since its inline layer would merge into that server key by key (as on Codex).
 
   **Under `materialize` on OpenCode** (milestone 7.2), a plan writes into the folder's own config directory, `config/opencode/`, which a start reads under the launch's inline layer (measured, section 10):
   - `opencode.json`'s `model` and `mcp.servers.<id>`, one key at a time, with the user's own keys kept. A start leaves the file as written. A stdio server is bound by copy into `hs-run/mcp.<id>/`, as on Claude Code (milestone 6a.12), and a remote one persists by its text;
   - each skill as a tree, `config/opencode/skills/<name>`;
   - refused, with the reason: an `opencode.jsonc` in the folder, which outranks `opencode.json` for a key both hold (measured); a server with refs (a bare start would get an empty secret); a server's working directory; a model with no provider, and a model when an endpoint makes it the launch's own provider;
-  - the endpoint, the login and `AGENTS.md` stay launch only;
+  - the endpoint, the login, `AGENTS.md` and hooks stay launch only;
   - a launch skips what a plan installed at this content. A running background service picks up a change without a restart (measured), so a plan needs no quiet folder.
 
   When the spec's endpoints offer no wire the harness speaks, the request is refused as `gateway_required`, naming the wire. Model roles are carried as follows:
@@ -824,7 +838,7 @@ Since milestone 5 (`build-v0-2026-10-22.md`):
 - **Typed escapes**: `inbound-read` (host paths the harness reads), `outbound-write` (host paths it writes), `child-env` (binding variables its tools inherit), `credential-namespace` (stores shared across data folders, such as Codex's MCP OAuth keyring entries [CX §7] or Anthropic Console profiles [CC §7]). Every escape that holds written data carries its path class (section 9), so a consumer knows where state outside the folder sits.
 - **Ambient environment**: every launch spec unsets the variables that would redirect the harness from the host shell. OpenCode's `OPENCODE_CONFIG*` family is the sharpest case [OC §1]. pi's `PI_CODING_AGENT_SESSION_DIR` is unset too, so sessions stay in the folder [PI §16].
 - **pi's session dir.** A `sessionDir` key in the folder's own `settings.json` is reported by `observe` as an `outbound-write` escape of class `sessions`. In a folder the tool owns (`materialize`), the managed settings leave it unset; in the user's own folder (`reconcile`), it is reported, never changed. Sessions written there still belong to the harness store of the bound folder (sessions-model §1).
-- **Closing what can be closed**: the OpenCode bridge plugin restores the host's XDG values for shell tools through its `shell.env` hook and passes them to stdio MCP servers; OpenCode launches set `OPENCODE_DISABLE_CLAUDE_CODE` and `OPENCODE_DISABLE_EXTERNAL_SKILLS` [OC §1, §11]. Where a restore is not possible, `GIT_CONFIG_GLOBAL` pointing at the user's real git config keeps the agent's git working under relocated XDG roots.
+- **Closing what can be closed**: on OpenCode 2.x a plugin's `shell.create.before` hook can set a tool shell's `env` (section 10), so a plugin could restore the host's XDG values for shell tools. hs's bridge plugin (milestone 7.3) carries hooks only; the restore is a later item. OpenCode 2.x launches set `OPENCODE_DISABLE_CLAUDE_CODE`. 2.x has no switch for `~/.agents/skills`, a known limit (below). Where a restore is not possible, `GIT_CONFIG_GLOBAL` pointing at the user's real git config keeps the agent's git working under relocated XDG roots.
 - **Isolation as a requirement**: a spec may say `isolation = "strict"`; any non-closable inbound escape then refuses the plan, and the user sees exactly which path.
 - **Known limits**: escapes a launch cannot close are named in `describe` (`known_limits`), and `observe --state` reports each one whose path exists on the machine. On OpenCode 2.x (milestone 7.1):
   - `~/.agents/skills`: a "Global compatibility" skill root with no switch; its skills reach every launch, measured (section 10);
@@ -1017,7 +1031,18 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - `ctx.location.directory` names the run's directory, and so does the plugin's own working directory.
   - With Code Mode off, an MCP server `probe`'s tool `ping` is offered and reaches the hook as `probe_ping`. With Code Mode on (the default), only `execute` is offered.
 
-  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks).*
+  Since milestone 7.3, hs's own launch, with the network blocked: `hs launch-spec` for a spec with an endpoint, a `PreToolUse` guard on the shell tool (2 s limit) and a `PostToolUse` logger, run through hs's bridge plugin. The guard blocks one command and stalls on another. Judged:
+  - the launch is refused without a receipt (each hook `runs-code`, the guard `blocks`), and the bridge plugin is in the config directory;
+  - the allowed command runs, and the other two never do. The guard's reason and the shim's fail-closed reason reach the model;
+  - the stalled guard does not hang the session, which goes on to its answer;
+  - the guard's envelope is hs's for each shell call: `PreToolUse`, class `shell`, the session id, the run's directory. The logger sees the call that ran;
+  - nothing is installed into the config directory, and no host is asked for.
+
+  Also recorded:
+  - a plugin that does not parse is skipped: OpenCode starts without it, and a plugin beside it still loads;
+  - the native payload's fields are the event's, with `directory` added.
+
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks), and with hs's own launch (sixteen checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1147,6 +1172,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | OpenCode hooks (milestone 7.3): hs's bridge plugin in the launch's config directory runs the hook shim. `PreToolUse` rides `tool.execute.before`, the one plugin hook that can refuse, and fails closed on every shim failure; `PostToolUse` rides `execute.after`. The other events, `may_allow` and `mcp:` matches are refused by name (sections 5.6, 7.5, 10) |
 | 2026-11-12 | OpenCode: a launch with an endpoint sets `OPENCODE_DISABLE_MODELS_FETCH`, so it fetches no model catalog and contacts only what the spec names; `describe` reports it (sections 7.5, 10) |
 | 2026-11-12 | OpenCode under `materialize`: a plan writes the folder's own `config/opencode/` (`opencode.json` key by key, bound copies in `hs-run/`, skills), refuses while an `opencode.jsonc` there outranks `opencode.json`, and keeps the endpoint, the login and `AGENTS.md` launch only (section 7.5) |
 | 2026-11-12 | OpenCode: the driver targets the 2.x line (2.2.7 up to 2.3); 1.x is out of range. Every launch passes `--standalone`, so a background service in the folder never supplies the config. Escapes a launch cannot close are named known limits in `describe` and reported by `observe --state` when present. `env_unset` never names a variable `env_set` sets (sections 7.5, 8) |

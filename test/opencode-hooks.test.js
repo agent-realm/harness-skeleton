@@ -90,7 +90,7 @@ test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin in the conf
     assert.match(spec.launch_items.find((i) => i.item === 'hook.log').via, /tool\.execute\.after.*cannot block on OpenCode/);
     assert.match(spec.skipped.find((x) => x.item === 'hook.prompt').reason, /UserPromptSubmit: .*session\.prompt.* not refuse/);
     assert.ok(spec.notes.some((n) => /fails closed/.test(n)) && spec.notes.some((n) => /context output is not delivered/.test(n)) && spec.notes.some((n) => /tool\.class null/.test(n)));
-    assert.ok(spec.unverified.some((u) => /bridge plugin fails to load/.test(u)));
+    assert.ok(spec.notes.some((n) => /bridge plugin fails to load, OpenCode starts without it/.test(n)), 'the one fail-open case, measured, is named');
     // Under a plan, hooks stay launch only.
     const plan = ok(s.call('plan', { layers: [team], owner: 'builder', mode: 'materialize' }));
     assert.match(plan.launch_only.find((x) => x.item === 'hook.guard').via, /hooks bridge plugin.*not persisted in this build/);

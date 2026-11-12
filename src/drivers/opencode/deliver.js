@@ -396,8 +396,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const bridgeFiles = [];
   if (bridged.length) {
     bridgeFiles.push({ rel: B.file, content: bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, hooks: bridged }) });
-    out.notes.push(B.fail_closed, B.context, B.mcp_class);
-    out.unverified.push(B.load);
+    out.notes.push(B.fail_closed, B.load, B.context, B.mcp_class);
   }
 
   // Skills and instructions: a config directory in the launch's temp dir (descriptor, launch.skills,

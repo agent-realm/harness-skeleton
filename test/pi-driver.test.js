@@ -63,6 +63,9 @@ test('describe: the folder is PI_CODING_AGENT_DIR; the known limits, the 1.5 lin
     assert.deepEqual(d.versions.compatible, { min: '1.5.2', below: '1.6.0' });
     assert.match(d.versions.note, /0\.x is out of range/);
     assert.match(d.launch_network.with_endpoint, /PI_OFFLINE/);
+    // The 2-byte empty-store rule is named, so a pi that changes that file shows as a refusal.
+    assert.deepEqual([d.login_store.files, d.login_store.empty_bytes], [['auth.json'], 2]);
+    assert.match(d.login_store.rule, /any other size, or a link, counts as a login/);
   } finally {
     s.done();
   }

@@ -136,7 +136,10 @@ export default Object.freeze({
     // folder holds one, so it can never reach the endpoint. pi writes an empty store there on every
     // start, 2 bytes, mode 600 [T1, by its size and mode only]: a file of exactly that size holds no
     // login, told from its metadata; any other size counts as one. The file is never opened.
-    stored_login: { files: ['auth.json'], empty_bytes: 2, cite: 'P15:configuration; PI §7; T1' },
+    stored_login: {
+      files: ['auth.json'], empty_bytes: 2, cite: 'P15:configuration; PI §7; T1',
+      empty_rule: 'an endpoint launch is refused while the folder holds a login in auth.json; a regular auth.json of exactly 2 bytes is the empty store pi writes on every start (measured on 1.5.2, by size and mode only) and counts as no login; any other size, or a link, counts as a login, so a pi that changes that file is refused, never let through. The file is never opened',
+    },
     // MCP servers: pi.registerMcpServer(name, config), the shape of an mcpServers entry, for the
     // session only [P15:mcp]. Measured: a server with exposure "direct" starts and its tool is offered
     // as mcp__<server>__<tool>; with no exposure only codemode is offered, so an exposure is always

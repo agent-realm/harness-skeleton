@@ -52,9 +52,17 @@ whether the guard fails closed:
   the action, on every harness.
 - **The shim itself cannot start** (node gone, its copy missing):
   - a hook persisted on Claude Code 2.1.295 or later blocks, through `onFailure: "block"`;
-  - at launch on Claude Code, and on Codex, the action goes through.
+  - at launch on Claude Code, and on Codex, the action goes through;
+  - on OpenCode, hs's bridge plugin runs the shim and blocks the action. It also blocks when the
+    shim exits otherwise or is still running past the limit.
 
-  `launch-spec` lists this under `unverified`, so it is never taken for a guarantee.
+  On Claude Code and Codex, `launch-spec` lists this under `unverified`, so it is never taken for a
+  guarantee. On OpenCode the one case left open is the bridge plugin itself failing to load: OpenCode
+  then starts without it, and no hook runs (measured; `launch-spec` names it in its notes).
+
+On OpenCode only `PreToolUse` and `PostToolUse` have a route. The other events are refused when
+required and skipped when `if-supported`. `may_allow` and `mcp:` matches are refused, and a hook's
+`context` is not delivered.
 
 **The status line:**
 

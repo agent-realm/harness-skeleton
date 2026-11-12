@@ -34,6 +34,16 @@
 //            whether the plugin's own working directory, name the run's directory.
 //   mcp      a local MCP server with Code Mode off, and with it on (the default), for the name a
 //            hook's `tool` carries for an MCP tool (recorded).
+//   broken   a plugin that does not parse, alone and beside the throw plugin (recorded): whether
+//            OpenCode starts without it, and whether the other plugin still loads.
+//   driver   hs's own launch (milestone 7.3): `hs launch-spec --harness opencode` for a spec with an
+//            endpoint, a PreToolUse guard on the shell tool (2 s limit) and a PostToolUse logger, run
+//            through hs's bridge plugin with the network blocked. The guard's process records its
+//            envelope by name, blocks the command holding DENYME (exit 2, a reason) and stalls on the
+//            one holding SLOWME. Expected: the allowed command runs, the other two never do, the
+//            guard's reason and the shim's fail-closed reason reach the model, the session goes on
+//            to its answer, the logger sees the allowed call, nothing is installed, no host is asked
+//            for, and no process is left.
 // Judged: what the 7.3 bridge relies on. Recorded: everything else. Names, booleans and durations
 // only. The credential is a dummy.
 
@@ -42,11 +52,11 @@ import http from 'node:http';
 import net from 'node:net';
 import path from 'node:path';
 import { serverSource } from '../lib/agent-plugins.mjs';
-import { DUMMY, bench, evidence, guard } from '../lib/bench.mjs';
+import { DUMMY, REF_VAR, bench, evidence, guard } from '../lib/bench.mjs';
 
 const oc = guard('opencode-bridge.mjs', '--opencode');
 const PROMPT = 'tier 1 OpenCode bridge check';
-const M = { deny: 'hs-tier1-ocb-deny-6e1f', thrown: 'hs-tier1-ocb-thrown-5a2c', slow: 'hs-tier1-ocb-slow-91d0', mcp: 'hs-tier1-ocb-mcp-27be' };
+const M = { deny: 'hs-tier1-ocb-deny-6e1f', thrown: 'hs-tier1-ocb-thrown-5a2c', slow: 'hs-tier1-ocb-slow-91d0', mcp: 'hs-tier1-ocb-mcp-27be', guard: 'hs-tier1-ocb-guard-c3d8', failClosed: 'ran past its limit and was stopped; failing closed' };
 const SLOW_LIMIT_MS = 2000;
 const b = bench('hs-tier1-opencode-bridge-');
 
@@ -229,7 +239,8 @@ try {
     fs.mkdirSync(dir, { recursive: true });
     if (kind === 'plain') put(path.join(dir, 'plugins', 'hs-bench.js'), `${pluginBody(probe)}\nexport default def;\n`);
     if (kind === 'sdk') put(path.join(dir, 'plugins', 'hs-bench.js'), `import { Plugin } from '@opencode/plugin';\n${pluginBody(probe)}\nexport default Plugin.define(def);\n`);
-    if (kind === 'throw') put(path.join(dir, 'plugins', 'hs-bench.js'), throwBody(probe, cwd));
+    if (kind === 'throw' || kind === 'broken_beside') put(path.join(dir, 'plugins', 'hs-bench.js'), throwBody(probe, cwd));
+    if (kind === 'broken' || kind === 'broken_beside') put(path.join(dir, 'plugins', 'hs-broken.js'), 'export default { id: "hs-broken", setup( {\n');
     const before = names(dir);
     const content = JSON.stringify({ providers: { bench: { name: 'Bench', env: ['HS_BENCH_OC_KEY'], package: '@opencode/ai/providers/openai-compatible', settings: { baseURL: `${L.url}/v1` }, models: { 'bench-primary': { name: 'Bench primary' } } } }, model: 'bench/bench-primary', ...extra });
     const env = {
@@ -296,6 +307,72 @@ try {
   };
   runs.mcp_direct_blocked = await mcpRun('mcp-direct', false);
   runs.mcp_codemode_blocked = await mcpRun('mcp-codemode', undefined);
+  runs.broken_blocked = await run('broken', 'broken', true, { stepsFor: throwSteps });
+  runs.broken_beside_blocked = await run('broken-beside', 'broken_beside', true, { stepsFor: throwSteps });
+
+  // driver: hs's own launch-spec, and the launch it describes, run as a caller runs it: its argv and
+  // env_set, the endpoint's reference resolved here to the dummy key, env_unset removed.
+  const kit = path.join(b.work, 'kit');
+  const hookLog = path.join(b.work, 'hook-envelopes.jsonl');
+  put(path.join(kit, 'guard.mjs'), `import fs from 'node:fs';
+const raw = fs.readFileSync(0, 'utf8');
+const e = JSON.parse(raw);
+const cmd = String(e.hs?.tool?.input?.command ?? '');
+fs.appendFileSync(process.env.HS_HOOK_LOG, JSON.stringify({
+  event: e.hs?.event ?? null, class: e.hs?.tool?.class ?? null, name: e.hs?.tool?.name ?? null,
+  session: typeof e.hs?.session_id === 'string' && e.hs.session_id.startsWith('ses'), cwd_is_run: e.hs?.cwd === ${JSON.stringify(cwd)},
+  command: cmd.includes('DENYME') ? 'deny' : cmd.includes('SLOWME') ? 'slow' : cmd ? 'allow' : null,
+  native: Object.keys(e.native ?? {}).sort(),
+}) + '\\n');
+if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('DENYME')) { process.stderr.write(${JSON.stringify(M.guard)}); process.exit(2); }
+if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout(() => {}, 60000);
+`);
+  const runLine = (role) => `run = { exec = ${JSON.stringify(process.execPath)}, args = ["guard.mjs"], env = { HS_HOOK_LOG = ${JSON.stringify(hookLog)}, HS_HOOK_ROLE = "${role}" } }`;
+  put(path.join(kit, 'spec.toml'), [
+    '[spec]', 'name = "kit"', 'version = "1.0.0"', 'format = "0.2"', '',
+    '[model.roles]', 'primary = "bench-primary"', '',
+    '[hook.guard]', 'event = "PreToolUse"', 'match = { tool = ["shell"] }', runLine('guard'), 'timeout = 2', '',
+    '[hook.log]', 'event = "PostToolUse"', runLine('log'), '',
+  ].join('\n'));
+  const driverRun = async () => {
+    blocked = true;
+    const from = hosts.length;
+    const folder = folderFor('driver');
+    const ran = path.join(b.work, 'ran-driver');
+    const L = await b.model('ENDPOINT', { markers: Object.values(M), steps: throwSteps(ran), fallback: { text: 'done' } });
+    const local = path.join(b.work, 'local.toml');
+    put(local, `[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
+    const args = ['--harness', 'opencode', '--folder', folder, '--layer', kit, '--local', local, '--bin', oc, '--headless'];
+    const refused = b.hsCall('launch-spec', args);
+    const items = refused.ok ? [] : refused.error.items ?? [];
+    const receipt = path.join(b.work, 'receipt-driver.json');
+    put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
+    const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
+    const env = { ...spec.env_set, HTTPS_PROXY: proxyUrl, HTTP_PROXY: proxyUrl, https_proxy: proxyUrl, http_proxy: proxyUrl, NO_PROXY: '127.0.0.1,localhost', no_proxy: '127.0.0.1,localhost' };
+    for (const [v, ref] of Object.entries(spec.env_from_refs)) {
+      if (ref !== `env:${REF_VAR}`) throw new Error(`unexpected reference for ${v}`);
+      env[v] = DUMMY;
+    }
+    for (const v of spec.env_unset) env[v] = undefined;
+    const dir = spec.env_set.OPENCODE_CONFIG_DIR;
+    const before = names(dir);
+    const t0 = Date.now();
+    const r = await b.launch([L], [oc, ...spec.argv.slice(1), PROMPT], env, cwd);
+    const ms = Date.now() - t0;
+    const added = names(dir).filter((n) => !before.includes(n));
+    fs.rmSync(spec.temp_dir, { recursive: true, force: true });
+    const log = fs.existsSync(hookLog) ? fs.readFileSync(hookLog, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
+    return {
+      refused: refused.ok ? null : refused.error.code, bridge: before.includes('plugins/hs-hooks.js'), risks: (items[0]?.risks ?? []).map((x) => [x.item, x.risk, x.blocks ?? null]),
+      exit: r.exit, timed_out: r.timed_out, requests: r.seen.ENDPOINT.length, ms,
+      markers_reached: Object.entries(M).filter(([, m]) => r.seen.ENDPOINT.some((q) => q.markers.includes(m))).map(([k]) => k).sort(),
+      credential_dummy: r.seen.ENDPOINT.length > 0 && r.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
+      allowed_ran: fs.existsSync(`${ran}.allowed`), denied_ran: fs.existsSync(`${ran}.DENYME`), slow_ran: fs.existsSync(`${ran}.SLOWME`),
+      hook_log: log, config_dir_added: added,
+      hosts: [...new Set(hosts.slice(from).map((h) => `${h.via}:${h.host}${h.refused ? ' (refused)' : ''}`))].sort(),
+    };
+  };
+  runs.driver_blocked = await driverRun();
   const left = benchPids();
   proxy.close();
 
@@ -304,6 +381,9 @@ try {
   const tl = T.lines;
   const spawned = tl.find((l) => l.async_spawn)?.async_spawn ?? null;
   const slow = tl.find((l) => l.slow)?.slow ?? null;
+  const D = runs.driver_blocked;
+  const pre = D.hook_log.filter((l) => l.event === 'PreToolUse');
+  const post = D.hook_log.filter((l) => l.event === 'PostToolUse');
   const onlyCatalog = (x) => x.hosts.every((h) => /^connect:models\.opencode\.ai( \(refused\))?$/.test(h));
   const checks = {
     'none_open: with no plugin, a run reaches the model (premise)': runs.none_open.requests > 0,
@@ -316,6 +396,11 @@ try {
     'throw: a throw in tool.execute.before from a plain .js plugin blocks the call (its command never runs) and its message reaches the model; the allowed call runs': tl.some((l) => l.threw === 'deny') && !T.denied_ran && T.allowed_ran && T.markers_reached.includes('thrown'),
     'throw: a hook that awaits an async child_process.spawn gets the exit code, stdout and stderr': spawned !== null && spawned.code === 3 && spawned.stdout && spawned.stderr && spawned.error === null,
     'throw: a hook whose process runs past its limit is stopped there, its throw ends the call, and the session goes on to its answer (no hang)': slow !== null && slow.timed_out && slow.ms < SLOW_LIMIT_MS + 3000 && !T.slow_ran && T.markers_reached.includes('slow') && T.exit === 0 && !T.timed_out && T.requests >= 4,
+    'driver: hs launch-spec refuses without a receipt (each hook runs code; the guard blocks, the logger does not), and writes its bridge plugin into the config directory': D.refused === 'receipt_required' && D.bridge && JSON.stringify(D.risks) === JSON.stringify([['hook.guard', 'runs-code', true], ['hook.log', 'runs-code', false]]),
+    'driver: through hs\'s bridge, the guard lets the allowed command run, blocks the one it denies with its reason reaching the model, and fails closed on the one it stalls on, with the shim\'s reason reaching the model; neither runs': D.allowed_ran && !D.denied_ran && !D.slow_ran && D.markers_reached.includes('guard') && D.markers_reached.includes('failClosed'),
+    'driver: the stalled guard does not hang the session: it goes on to its answer, with the endpoint\'s dummy key': D.exit === 0 && !D.timed_out && D.requests >= 4 && D.credential_dummy && D.ms < 60000,
+    'driver: the guard\'s envelope is hs\'s (PreToolUse, class shell, the session id, the run\'s directory) for each shell call; the logger sees the call that ran': pre.length === 3 && pre.every((l) => l.class === 'shell' && l.name === 'shell' && l.session && l.cwd_is_run) && JSON.stringify(pre.map((l) => l.command)) === JSON.stringify(['allow', 'deny', 'slow']) && post.length === 1 && post[0].command === 'allow',
+    'driver: nothing is installed into the config directory, and no host is asked for': D.config_dir_added.length === 0 && D.hosts.length === 0,
     'no process with the bench\'s environment is left': left.length === 0,
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
@@ -329,6 +414,11 @@ try {
       throw_plugin_cwd_is_run_cwd: tl.find((l) => 'plugin_cwd_is_run_cwd' in l)?.plugin_cwd_is_run_cwd ?? null,
       throw_slow: slow,
       throw_after: tl.filter((l) => l.fired === 'tool.execute.after').map((l) => l.status),
+      broken: Object.fromEntries(['broken_blocked', 'broken_beside_blocked'].map((k) => [k, {
+        exit: runs[k].exit, requests: runs[k].requests, other_plugin_loaded: runs[k].plugin.loaded,
+        allowed_ran: runs[k].allowed_ran, denied_ran: runs[k].denied_ran,
+      }])),
+      driver_native_fields: D.hook_log[0]?.native ?? null,
       mcp: Object.fromEntries(['mcp_direct_blocked', 'mcp_codemode_blocked'].map((k) => [k, {
         server_started: runs[k].server_started,
         offered: runs[k].tools_offered.filter((t) => /probe|ping|execute/.test(t)),

@@ -37,6 +37,26 @@ export default Object.freeze({
   // key on every `.`, with no quoting, and deep-merges the override layer into the config's tables,
   // so the user's other plugin entries stay (codex-rs/config/src/overrides.rs and merge.rs, tag
   // rust-v0.160.0, read 2026-11-10); measured, a quoted dotted key does not load.
+  // Plugin formats Codex reads, but which this adapter refuses, with the reason (§5.7, "No silent
+  // degrade"). Claude Code's own layout: Codex finds .claude-plugin/plugin.json among its manifest
+  // paths and reads it as its legacy manifest (utils/plugins/src/plugin_namespace.rs,
+  // core-plugins/src/manifest.rs). From a package placed in its cache, as a driver places one, only
+  // the skills load (tier 1, conformance/tier1/claude-plugin-codex-cache.mjs, 0.160.0 and 0.167.0,
+  // 2026-11-12):
+  // - a stdio server never starts: the legacy MCP parser expands no ${CLAUDE_PLUGIN_ROOT}, and runs a
+  //   relative command from the session's directory, "relative helper commands therefore use the
+  //   session's local process cwd" (codex-mcp/src/plugin_config.rs);
+  // - commands are turned into skills only when `codex plugin add` installs the plugin, into
+  //   .codex-plugin/migrated-command-skills/ (utils/plugins/src/lib.rs; core-plugins/src/loader.rs);
+  // - its hooks register, with CLAUDE_PLUGIN_ROOT in their environment (hooks/src/engine/
+  //   discovery.rs), and run only once trusted, which hs does not do for a package (§5.6).
+  // All at tag rust-v0.160.0, read 2026-11-12.
+  plugin_formats_refused: {
+    'claude-plugin': {
+      reason: 'Codex loads only the skills of a package in this layout placed in its cache: its stdio servers do not start (no ${CLAUDE_PLUGIN_ROOT} expansion, and a relative command runs from the session\'s directory), its commands become skills only through `codex plugin add`, and its hooks run only once trusted, which hs does not do for a package. Use the Agent Plugins format, which Codex reads natively',
+      source: 'rust-v0.160.0 (codex-mcp/src/plugin_config.rs, utils/plugins/src/lib.rs, core-plugins/src/loader.rs, hooks/src/engine/discovery.rs); tier 1, 0.160.0 and 0.167.0, 2026-11-12',
+    },
+  },
   plugins: {
     'agent-plugins': {
       versions: ['1.0.0'],

@@ -59,7 +59,9 @@ export function capabilities(descriptor) {
           ...(r.refuses_values ?? []).map((v) => `plugin_field_unsupported: ${v.field} naming ${v.label}`),
         ],
         ...(r.namespace ? { harness_specific: [r.namespace.name] } : {}),
-      }])) },
+      }])),
+      // Formats the harness reads that this adapter refuses, with the reason.
+      ...(descriptor.plugin_formats_refused ? { refused_formats: Object.fromEntries(Object.entries(descriptor.plugin_formats_refused).map(([f, r]) => [f, r.reason])) } : {}) },
       // What a route cannot keep is refused by validate, never dropped from a package it accepts.
       dropped: [],
       evidence: null,

@@ -5,7 +5,10 @@
 //   HS_BENCH=1 node conformance/tier1/claude-plugin-codex-cache.mjs --codex <path> [--hs-rev <sha>] [--keep]
 //
 // What Codex loads from a package in Claude Code's own format, claude-plugin, placed in its plugin
-// cache: the route a Codex driver would take, as it does for Agent Plugins (6a.15). Codex finds
+// cache: the route a Codex driver would take, as it does for Agent Plugins (6a.15). hs refuses the
+// format on Codex (milestone 6a.18) because only the skills load; the checks below marked as
+// premises are that refusal's, so a Codex that starts loading more fails this check, and the
+// refusal is looked at again. Codex finds
 // .claude-plugin/plugin.json among its manifest paths and reads it as its legacy manifest, with
 // skills/, hooks/hooks.json, .mcp.json and .app.json as the defaults, and commands migrated into
 // skills (codex-rs/utils/plugins/src/plugin_namespace.rs, core-plugins/src/manifest.rs, loader.rs,
@@ -20,11 +23,12 @@
 //             config.toml, as a user installs it. Expected: the skill reaches a request (the positive
 //             control). Recorded: every other component.
 //   cache     the cache directory alone, enabled by `-c plugins={...}`, with hook trust bypassed so
-//             that a registered hook shows. Recorded: skill, command, server (started, and whether
-//             ${CLAUDE_PLUGIN_ROOT} reached it expanded), hook.
-//   trusted   the same without the bypass, as hs launches. Recorded: whether the hook runs.
+//             that a registered hook shows. Expected: the skill loads; the stdio server, given with
+//             ${CLAUDE_PLUGIN_ROOT} as Claude Code documents it, does not start; the command does not
+//             reach a request (premises); the hook runs.
+//   trusted   the same without the bypass, as hs launches. Expected: the hook does not run (premise).
 //   relative  a package whose .mcp.json gives the server as `./bin/hs-probe ./server.mjs`, with no
-//             placeholder. Recorded: whether the server starts, and in which directory.
+//             placeholder. Expected: the server does not start either (premise).
 //   bare      no manifest. Recorded: whether Codex loads the package, and under which name.
 // Names and booleans only. The credential is a dummy; HOME and XDG are scratch.
 
@@ -130,6 +134,11 @@ try {
   const checks = {
     'without a plugin no marker reaches a request, no hook runs, no server starts (premise)': control.seen.ENDPOINT.length > 0 && !markers.some((m) => has(control, m)) && control.probe === null && control.hook === false,
     'byhand: marketplace add, the cache directory and the [plugins] table load the package\'s skill (positive control)': byhandAdd === 0 && has(byhand, M.skill),
+    'cache: enabled by -c plugins, the skill loads from the cache': has(cached, M.skill),
+    'cache: the stdio server, given with ${CLAUDE_PLUGIN_ROOT}, does not start (premise of the refusal)': cached.probe === null && !has(cached, M.tool),
+    'relative: the stdio server given relative to the plugin root does not start (premise of the refusal)': relative.probe === null && !has(relative, M.tool),
+    'cache: the command does not reach a request, as Codex migrates commands only at install (premise of the refusal)': !has(cached, M.command) && !has(cached, 'hs-bench-hello'),
+    'trusted: as hs launches, the package\'s hook does not run, while with hook trust bypassed it does (premise of the refusal)': trusted.hook === false && cached.hook === true,
   };
   const recorded = { byhand: parts(byhand), cache: parts(cached), trusted: parts(trusted), relative: parts(relative, REL), bare: parts(bare, BARE) };
   const reached = [control, byhand, cached, trusted, relative, bare].every((r) => r.seen.ENDPOINT.length > 0);

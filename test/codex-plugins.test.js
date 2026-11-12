@@ -75,7 +75,7 @@ test('Codex launch-spec: an installed package is enabled by one inline -c table;
   }
 });
 
-test('Codex launch-spec: a package not installed, or edited since, is refused; overlay refuses it; a native format is not delivered', () => {
+test('Codex launch-spec: a package not installed, or edited since, is refused; overlay refuses it; claude-plugin is refused with the reason', () => {
   const s = box();
   try {
     const refused = s.call('launch-spec', { layers: [s.kit] });
@@ -88,9 +88,16 @@ test('Codex launch-spec: a package not installed, or edited since, is refused; o
     const overlay = s.call('plan', { layers: [s.kit], owner: 'builder', mode: 'overlay' });
     assert.match(overlay.error.message, /plugin\.notes-kit \(item_unsupported\)/, 'under overlay nothing is written, so the plan is refused by item');
     const native = layer(s.root, 'native', '[plugin.cc]\nsource = "p"\nformat = "claude-plugin"\n', { 'p/.claude-plugin/plugin.json': '{"name":"cc"}' });
+    // Codex reads the layout, but loads only its skills from the cache: refused by name, with why.
     const n = s.call('plan', { layers: [native], owner: 'builder', mode: 'materialize' });
-    assert.equal(n.error.code, 'not_implemented');
-    assert.match(n.error.message, /plugin\.cc \(format claude-plugin\)/);
+    assert.equal(n.error.code, 'item_unsupported');
+    assert.match(n.error.items[0].reason, /plugin\.cc: Codex loads only the skills of a package in this layout.*Use the Agent Plugins format/);
+    const l = s.call('launch-spec', { layers: [native] });
+    assert.equal(l.error.code, 'item_unsupported');
+    assert.match(l.error.message, /its stdio servers do not start/);
+    // A format Codex does not read at all stays not_implemented.
+    const other = layer(s.root, 'other', '[plugin.oc]\nsource = "p"\nformat = "opencode-plugin"\n', { 'p/index.js': 'export {}\n' });
+    assert.equal(s.call('plan', { layers: [other], owner: 'builder', mode: 'materialize' }).error.code, 'not_implemented');
   } finally {
     s.done();
   }
@@ -128,6 +135,8 @@ test('describe on Codex: the plugins capability, native', () => {
     assert.equal(cap.mechanism, 'native');
     assert.deepEqual(cap.facets.formats['agent-plugins'].refuses, ['plugin_path_unsupported: .codex-plugin in the package']);
     assert.deepEqual(cap.facets.formats['agent-plugins'].harness_specific, ['com.openai']);
+    assert.deepEqual(Object.keys(cap.facets.refused_formats), ['claude-plugin']);
+    assert.match(cap.facets.refused_formats['claude-plugin'], /only the skills/);
   } finally {
     s.done();
   }

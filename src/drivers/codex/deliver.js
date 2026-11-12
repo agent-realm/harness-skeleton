@@ -26,6 +26,14 @@ const NO_TOML_WRITE = 'Codex config.toml is not written in this build, so the va
 // What a plan delivers on Codex. Under `overlay` nothing is written. Under `materialize` only skills
 // are, as trees under skills/ (milestone 6a.10), and Agent Plugins packages, as trees in the plugin
 // cache (6a.15); every other item is what it is under overlay, since config.toml is never written.
+// A plugin format Codex reads but this adapter refuses, with the reason (descriptor,
+// plugin_formats_refused), or null.
+function refusedFormat(descriptor, item) {
+  const f = item.value?.format;
+  const R = descriptor.plugin_formats_refused ?? {};
+  return typeof f === 'string' && Object.hasOwn(R, f) ? R[f] : null;
+}
+
 export function deliverables(resolved, { mode, descriptor }) {
   const out = { deliverables: [], not_implemented: [], refused: [], keep: [], skipped: [], launch_only: [], reduces_capture: [], overridden_by_managed: [] };
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
@@ -64,7 +72,9 @@ export function deliverables(resolved, { mode, descriptor }) {
   // Under overlay nothing is written, and Codex loads a plugin only from that cache: refused.
   function plugin(item) {
     if (item.value?.format !== AGENT_PLUGINS) {
-      out.not_implemented.push(`${item.id} (format ${item.value?.format})`);
+      const refused = refusedFormat(descriptor, item);
+      if (refused) out.refused.push({ item: item.id, code: 'item_unsupported', reason: `${item.id}: ${refused.reason}` });
+      else out.not_implemented.push(`${item.id} (format ${item.value?.format})`);
       return;
     }
     const R = descriptor.plugins[AGENT_PLUGINS];
@@ -427,6 +437,8 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const absent = [];
   for (const item of resolved.items.filter((i) => i.kind === 'plugin')) {
     if (item.value.format !== AGENT_PLUGINS) {
+      const refused = refusedFormat(descriptor, item);
+      if (refused) throw new HsError('item_unsupported', `${item.id}: ${refused.reason}`, [item.id]);
       out.not_implemented.push(`${item.id} (format ${item.value.format})`);
       continue;
     }

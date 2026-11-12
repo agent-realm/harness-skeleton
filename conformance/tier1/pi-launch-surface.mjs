@@ -22,26 +22,33 @@
 //                mode. Recorded: what pi writes under HOME, and whether a cwd AGENTS.md reaches.
 //   online       the same with the offline switches off: the hosts pi asks for (recorded), and that the
 //                explicit provider still reaches the model.
+//   The control and online runs also run under `strace -e trace=connect` (when the bench has it): the
+//   count of connections to anything but loopback, DNS apart, so traffic that would bypass the proxy
+//   is seen too. Counts only, never an address.
+//   proxy_control  a provider on an outside host: it is asked for through the proxy, so the proxy
+//                does see pi's requests (the premise for "no host is asked for").
 //   mcp_direct   the extension registers a stdio MCP server with exposure "direct" and a ${HS_REF_…}
 //                value in its env. Expected: it starts, the value expanded, and its tool is offered as
 //                mcp__probe__ping.
 //   mcp_default  the same with no exposure: the tools a request is offered (recorded).
 //   mcp_folder   the folder's mcp.json defines a server named like the extension's: which one starts
 //                (recorded; the docs say the file's wins).
-//   carriers     where pi interpolates or executes text: a leading `!command` and a ${VAR} in the
-//                provider's apiKey and headers, in an MCP server's env and args, and in a remote MCP
-//                server's headers. Each `!command` touches a file of its own, so a run shows which ran;
-//                the apiKey's runs on its own (carrier_key), since a key that resolves to nothing may
-//                stop pi before the headers are resolved.
-//                Judged: pi runs a leading `!command` in the apiKey, a provider header and an MCP env
-//                value, and expands ${VAR} in a provider header and an MCP env value: the premises for
-//                refusing such spec text. Recorded: the rest.
+//   carriers     where pi interpolates or executes text, one carrier set per run so that one failure
+//                does not hide another: a leading `!command` in the provider's apiKey (carrier_key), in a
+//                provider header, an MCP server's env and args (carrier_bang), in a remote MCP server's
+//                headers (carrier_remote); a ${VAR} in a provider header, an MCP server's env and args,
+//                and a remote MCP server's headers (carrier_var). Each `!command` touches a file of its
+//                own, so a run shows which ran. Judged: pi runs a leading `!command` in the apiKey, a
+//                provider header, an MCP env value and a remote MCP header, and expands ${VAR} in a
+//                provider header and an MCP env value: the premises for refusing such spec text.
+//                Recorded: the rest, and whether each run still reached the model.
 //   broken       an -e extension that does not parse, beside the provider's (recorded): whether pi
 //                starts, and reaches the model.
 //   hooks        the extension's tool_call handler blocks one bash command and throws for another
 //                (recorded, ahead of hooks): neither runs, and whether their reasons reach the model.
 // Names, booleans and counts only. The credential is a dummy.
 
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import http from 'node:http';
 import net from 'node:net';
@@ -84,6 +91,48 @@ const benchPids = () => {
   }).map(Number);
 };
 const probe = (file) => (fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null);
+
+// A stdio MCP server that records, as booleans, which form of OTHER's value reached its arguments
+// and its HS_LITERAL variable, and answers initialize and tools/list.
+const carrierServer = `import fs from 'node:fs';
+const args = process.argv.slice(2);
+fs.writeFileSync(process.env.HS_PROBE_OUT, JSON.stringify({
+  started: true,
+  arg_is_other: args.includes(${JSON.stringify(OTHER_VALUE)}), arg_kept_literal: args.includes('\${${OTHER}}'),
+  env_is_other: process.env.HS_LITERAL === ${JSON.stringify(OTHER_VALUE)}, env_kept_literal: process.env.HS_LITERAL === '\${${OTHER}}',
+}));
+let buf = '';
+const send = (m) => process.stdout.write(JSON.stringify(m) + '\\n');
+process.stdin.on('data', (d) => {
+  buf += d;
+  let i;
+  while ((i = buf.indexOf('\\n')) >= 0) {
+    const line = buf.slice(0, i); buf = buf.slice(i + 1);
+    if (!line.trim()) continue;
+    const m = JSON.parse(line);
+    if (m.method === 'initialize') send({ jsonrpc: '2.0', id: m.id, result: { protocolVersion: m.params?.protocolVersion ?? '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'hs-bench', version: '1.0.0' } } });
+    else if (m.method === 'tools/list') send({ jsonrpc: '2.0', id: m.id, result: { tools: [{ name: 'ping', description: 'A bench tool.', inputSchema: { type: 'object', properties: {} } }] } });
+    else if (m.id !== undefined) send({ jsonrpc: '2.0', id: m.id, result: {} });
+  }
+});
+`;
+
+// Connections to anything but loopback, from an strace -e trace=connect log: DNS apart, counts only.
+const connects = (file) => {
+  if (!fs.existsSync(file)) return null;
+  let dns = 0;
+  let other = 0;
+  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
+    const m = /connect\(\d+, \{sa_family=AF_INET6?, sin6?_port=htons\((\d+)\), (?:sin_addr=inet_addr\("([^"]+)"\)|sin6_flowinfo=[^,]+, inet_pton\(AF_INET6, "([^"]+)")/.exec(line);
+    if (!m) continue;
+    const addr = m[2] ?? m[3];
+    if (/^127\./.test(addr) || addr === '::1' || /^::ffff:127\./.test(addr)) continue;
+    if (m[1] === '53') dns++;
+    else other++;
+  }
+  return { dns, other };
+};
+const STRACE = spawnSync('strace', ['-V'], { encoding: 'utf8' }).status === 0;
 
 // The extension a driver would generate: a provider, MCP servers, and (for the hooks run) a
 // tool_call handler. Its configuration is JSON in the source.
@@ -151,14 +200,15 @@ try {
     return f;
   };
   const stamp = (_body, record) => { record.at = Date.now(); };
-  const run = async (variant, { ext = {}, extra = [], env = {}, offline = true, steps, folderFiles = {}, extraExtensions = [] } = {}) => {
+  const run = async (variant, { ext = {}, extra = [], env = {}, offline = true, steps, folderFiles = {}, extraExtensions = [], trace = false, url } = {}) => {
     const from = hosts.length;
     const L = await b.model('ENDPOINT', { markers: Object.values(M), ...(steps ? { steps } : {}), fallback: { text: 'done' }, inspect: stamp });
     const folder = folderFor(variant);
     for (const [rel, content] of Object.entries(folderFiles)) put(path.join(folder, rel), content);
     const extFile = path.join(b.work, `ext-${variant}`, 'hs-launch.js');
-    put(extFile, extension({ url: L.url, ...ext }));
-    const argv = [pi, '--mode', 'json', '--provider', 'hs', '--model', 'bench-primary', '-e', extFile, ...extraExtensions.flatMap((e) => ['-e', e]), ...extra, PROMPT];
+    put(extFile, extension({ url: url ?? L.url, ...ext }));
+    const traceFile = path.join(b.work, `trace-${variant}.log`);
+    const argv = [...(trace && STRACE ? ['strace', '-f', '-qq', '-e', 'trace=connect', '-o', traceFile] : []), pi, '--mode', 'json', '--provider', 'hs', '--model', 'bench-primary', '-e', extFile, ...extraExtensions.flatMap((e) => ['-e', e]), ...extra, PROMPT];
     const r = await b.launch([L], argv, { PI_CODING_AGENT_DIR: folder, [KEY_VAR]: DUMMY, [OTHER]: OTHER_VALUE, ...viaProxy, ...(offline ? OFFLINE : {}), ...env }, cwd);
     const seen = r.seen.ENDPOINT;
     return {
@@ -169,13 +219,15 @@ try {
       tool_results: seen.flatMap((q) => q.tool_results ?? []).length,
       hosts: [...new Set(hosts.slice(from))].sort(),
       folder: names(folder, 3).filter((n) => !n.startsWith('ext-')),
+      ...(trace ? { connects: STRACE ? connects(traceFile) : 'no strace on this bench' } : {}),
     };
   };
 
   const runs = {};
-  runs.control = await run('control', { extra: ['--skill', path.join(kit, 'skills', 'notes'), '--append-system-prompt', path.join(kit, 'APPEND.md')] });
+  runs.control = await run('control', { trace: true, extra: ['--skill', path.join(kit, 'skills', 'notes'), '--append-system-prompt', path.join(kit, 'APPEND.md')] });
   const homeAfter = names(home, 6);
-  runs.online = await run('online', { offline: false });
+  runs.online = await run('online', { offline: false, trace: true });
+  runs.proxy_control = await run('proxy-control', { url: 'https://hs-bench-provider.invalid' });
 
   // MCP through the extension.
   const server = path.join(b.work, 'mcp-server.mjs');
@@ -194,29 +246,41 @@ try {
   });
   runs.mcp_folder.started = { extension: fs.existsSync(out('folder-ext')), folder_file: fs.existsSync(out('folder-file')) };
 
-  // Where pi interpolates or executes text. Each !command touches its own file.
+  // Where pi interpolates or executes text, one carrier set per run. Each !command touches its own file.
   const bang = (n) => path.join(b.work, `bang-${n}`);
-  const remote = await b.listener('MCPHTTP', { markers: [OTHER_VALUE] });
-  // The apiKey on its own: a key that resolves to nothing may stop pi before any header is resolved.
+  const cserver = path.join(b.work, 'carrier-server.mjs');
+  put(cserver, carrierServer);
+  const VAR = `\${${OTHER}}`;
   runs.carrier_key = await run('carrier-key', { ext: { apiKey: `!touch ${bang('apikey')}` } });
-  runs.carriers = await run('carriers', {
+  runs.carrier_bang = await run('carrier-bang', {
     ext: {
-      headers: { 'X-HS-Bang': `!touch ${bang('header')}`, 'X-HS-Var': `\${${OTHER}}` },
+      headers: { 'X-HS-Bang': `!touch ${bang('header')}` },
+      mcp: { probe: { command: process.execPath, args: [cserver, `!touch ${bang('args')}`], env: { HS_PROBE_OUT: out('carrier-bang'), HS_BANG: `!touch ${bang('env')}` }, exposure: 'direct' } },
+    },
+  });
+  runs.carrier_bang.probe = probe(out('carrier-bang'));
+  const remote = await b.listener('MCPHTTP', { markers: [OTHER_VALUE] });
+  runs.carrier_remote = await run('carrier-remote', { ext: { mcp: { remote: { url: `${remote.url}/mcp`, headers: { 'X-HS-Bang': `!touch ${bang('mcp-header')}` } } } } });
+  runs.carrier_var = await run('carrier-var', {
+    ext: {
+      headers: { 'X-HS-Var': VAR },
       mcp: {
-        probe: { command: process.execPath, args: [server, `\${${OTHER}}`, `!touch ${bang('args')}`], env: { HS_PROBE_OUT: out('carriers'), HS_LITERAL: `\${${OTHER}}`, HS_BANG: `!touch ${bang('env')}` }, exposure: 'direct' },
-        remote: { url: `${remote.url}/mcp`, headers: { 'X-HS-Bang': `!touch ${bang('mcp-header')}`, 'X-HS-Var': `\${${OTHER}}` } },
+        probe: { command: process.execPath, args: [cserver, VAR], env: { HS_PROBE_OUT: out('carrier-var'), HS_LITERAL: VAR }, exposure: 'direct' },
+        remote: { url: `${remote.url}/mcp`, headers: { 'X-HS-Var': VAR } },
       },
     },
   });
-  const cp = probe(out('carriers'));
-  runs.carriers.executed = Object.fromEntries(['apikey', 'header', 'args', 'env', 'mcp-header'].map((n) => [n, fs.existsSync(bang(n))]));
-  runs.carriers.expanded = {
-    provider_header: runs.carriers.markers.includes('other'),
-    mcp_env: cp ? cp.literal_is_other : null,
-    mcp_env_kept_literal: cp ? cp.literal_kept : null,
-    mcp_args: cp ? cp.args_expanded : null,
-    mcp_remote_header: remote.log.some((q) => q.markers.includes(OTHER_VALUE)),
-    mcp_remote_reached: remote.log.length > 0,
+  const cv = probe(out('carrier-var'));
+  const carriers = {
+    executed: Object.fromEntries(['apikey', 'header', 'args', 'env', 'mcp-header'].map((n) => [n, fs.existsSync(bang(n))])),
+    expanded: {
+      provider_header: runs.carrier_var.markers.includes('other'),
+      mcp_env: cv ? cv.env_is_other : null, mcp_env_kept_literal: cv ? cv.env_kept_literal : null,
+      mcp_args: cv ? cv.arg_is_other : null, mcp_args_kept_literal: cv ? cv.arg_kept_literal : null,
+      mcp_remote_header: remote.log.some((q) => q.markers.includes(OTHER_VALUE)),
+    },
+    reached: Object.fromEntries(['carrier_key', 'carrier_bang', 'carrier_remote', 'carrier_var'].map((k) => [k, runs[k].requests > 0])),
+    remote_requests: remote.log.length,
   };
 
   // An extension that does not parse, beside the provider's.
@@ -250,8 +314,10 @@ try {
     'known limits: ~/.agents/skills and an ancestor AGENTS.md reach a request; the trust-gated project .pi/ does not, in JSON mode': has(C, 'agentsSkills') && has(C, 'ancestor') && !has(C, 'projectPi'),
     'online: with the offline switches off, the explicit provider still reaches the model': runs.online.requests > 0,
     'mcp_direct: a server the extension registers starts, its ${HS_REF_…} env value expanded, and its tool is offered as mcp__probe__ping': runs.mcp_direct.probe?.started === true && runs.mcp_direct.probe?.data_expanded === true && runs.mcp_direct.tools.includes('mcp__probe__ping'),
-    'carriers: pi runs a leading !command in the provider\'s apiKey, a provider header and an MCP env value': runs.carriers.executed.apikey && runs.carriers.executed.header && runs.carriers.executed.env,
-    'carriers: pi expands ${VAR} in a provider header and an MCP env value': runs.carriers.expanded.provider_header && runs.carriers.expanded.mcp_env === true,
+    'proxy_control: a provider on an outside host is asked for through the proxy, so the proxy sees pi\'s requests (premise)': runs.proxy_control.hosts.includes('hs-bench-provider.invalid'),
+    'control: under strace, pi connects to nothing but loopback with the offline switches on (DNS apart, none either)': !STRACE || (C.connects !== null && C.connects.other === 0 && C.connects.dns === 0),
+    'carriers: pi runs a leading !command in the provider\'s apiKey, a provider header, an MCP env value and a remote MCP header': carriers.executed.apikey && carriers.executed.header && carriers.executed.env && carriers.executed['mcp-header'],
+    'carriers: pi expands ${VAR} in a provider header and an MCP env value': carriers.expanded.provider_header && carriers.expanded.mcp_env === true,
     'no process with the bench\'s environment is left': left.length === 0,
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
@@ -267,7 +333,9 @@ try {
       mcp_default_tools: runs.mcp_default.tools,
       mcp_default_started: runs.mcp_default.probe?.started ?? false,
       mcp_folder_started: runs.mcp_folder.started,
-      carriers: { executed: runs.carriers.executed, expanded: runs.carriers.expanded },
+      carriers,
+      online_connects: runs.online.connects ?? null,
+      strace: STRACE,
       broken: { exit: runs.broken.exit, requests: runs.broken.requests },
       hooks: { ran: runs.hooks.ran, block_reason_reached: has(runs.hooks, 'block'), throw_reason_reached: has(runs.hooks, 'thrown'), exit: runs.hooks.exit },
     },

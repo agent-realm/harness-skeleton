@@ -1054,6 +1054,31 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - the native payload's fields are the event's, with `directory` added.
 
   *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks), with hs's own launch (sixteen checks), and with the readiness runs (nineteen checks).*
+- **A pi launch, ahead of a pi driver** (tier 1, `conformance/tier1/pi-launch-surface.mjs`): what a pi launch can carry with nothing written into the folder. pi 1.5.x keeps one root, `PI_CODING_AGENT_DIR`, and loads an extension passed with `-e` before startup continues (the 1.5.2 package docs: `configuration`, `extensions`, `custom-provider`, `mcp`, read 2026-11-12).
+  - **How it runs:**
+    - each run builds the launch by hand, as a driver would: an extension registering provider `hs` (`apiKey: "$HS_BENCH_PI_KEY"`) and MCP servers, `--provider hs --model bench-primary`, the folder as the root;
+    - each run has a scratch HOME, and pi's network goes through a local proxy that records host names and refuses them;
+    - the control and online runs also run under `strace -e trace=connect`, counting connections to anything but loopback.
+  - **Judged:**
+    - the provider reaches the model with the dummy key, read from the variable;
+    - a `--skill` and an `--append-system-prompt` file reach a request;
+    - the folder binds: its `AGENTS.md` reaches a request, the default root's does not, and the session lands in its `sessions/`;
+    - with `PI_OFFLINE`, `PI_SKIP_VERSION_CHECK` and `PI_TELEMETRY=0`, no host is asked for, and pi connects to nothing but loopback, DNS included;
+    - the known limits: `~/.agents/skills` and an ancestor `AGENTS.md` reach a request, while the trust-gated project `.pi/` does not in JSON mode;
+    - with the offline switches off, the explicit provider still reaches the model;
+    - a provider on an outside host is asked for through the proxy, so the proxy sees pi's requests;
+    - an MCP server the extension registers with exposure `direct` starts, its `${HS_REF_…}` env value expanded, and its tool is offered as `mcp__probe__ping`;
+    - pi runs a leading `!command` in a provider's `apiKey`, a provider header, an MCP server's env value and a remote MCP server's header, and expands `${VAR}` in a provider header and an MCP env value. These are the premises for refusing such spec text.
+  - **Also recorded:**
+    - pi writes nothing under HOME, and a working-directory `AGENTS.md` reaches a request;
+    - with the offline switches off, pi 1.5.2 in JSON mode still asks for no host and connects to nothing but loopback;
+    - with no exposure, an MCP server starts but only `codemode` is offered;
+    - a server in the folder's `mcp.json` named like the extension's starts, and the extension's does not;
+    - MCP `args` keep both `!command` and `${VAR}` literal, and a remote MCP header expands `${VAR}`;
+    - an `-e` extension that does not parse stops pi: exit 1, no request;
+    - a `tool_call` handler that blocks, or throws, keeps its bash command from running, and both reasons reach the model.
+
+  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (twelve checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1183,6 +1208,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | pi: the driver targets the 1.5 line (1.5.2 up to 1.6), widened one minor at a time with a tier 1 run each; 0.x is out of range. A launch writes nothing into the folder: one extension hs generates carries the endpoint's provider and the MCP servers (and later the hooks). Spec text pi could interpolate or execute (`$`, `${…}`, a leading `!`) is refused in every carrier before launch. Project trust is left to pi and named as a known limit (section 10) |
 | 2026-11-12 | OpenCode: the hooks bridge writes a readiness marker into the launch's temp dir once its hooks are registered, and `launch-spec` names it (`readiness`), so a bridge OpenCode skips is visible, not silent. A tool call that names no tool fails closed under a guard with a matcher (sections 7.5, 10) |
 | 2026-11-12 | The hook shim runs a hook's process in a process group of its own, and kills the whole group at the limit: before, only the direct process was killed, and a command a shell forked outlived the decision (section 7.5) |
 | 2026-11-12 | A persisted Claude Code hook's shim copy counts as its plan installed it, even from an earlier hs: a newer shim is drift for `plan`, and a copy changed since its plan is refused at launch. Before, any change to the shim made a launch carry each persisted hook a second time (section 7.5) |

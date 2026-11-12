@@ -90,7 +90,7 @@ test('validate: the name, a malformed manifest, and the manifest fields a claude
   }
 });
 
-test('validate on Codex: no route for claude-plugin, so nothing is checked, and plan and launch-spec do not deliver it', () => {
+test('validate on Codex: no route for claude-plugin, so nothing is checked, and plan and launch-spec refuse it with the reason', () => {
   const s = sandbox();
   try {
     const nat = natLayer(s.root, { manifest: { dependencies: ['x'] } });
@@ -102,9 +102,9 @@ test('validate on Codex: no route for claude-plugin, so nothing is checked, and 
     const call = (op, args) => handle({ protocol: PROTOCOL, request_id: op, op, args: { harness: 'codex', harness_path: folder, bin, ...args } }, { host: linuxHost, home: s.home, state: { managedRoot: null, mdmPlists: [] } });
     const clean = natLayer(s.root, { name: 'other-kit' });
     const plan = call('plan', { layers: [clean], owner: 'builder', mode: 'materialize' });
-    assert.equal(plan.error.code, 'not_implemented');
-    assert.match(plan.error.message, /plugin\.other-kit \(format claude-plugin\)/);
-    assert.equal(call('launch-spec', { layers: [clean] }).error.code, 'not_implemented');
+    assert.equal(plan.error.code, 'item_unsupported');
+    assert.match(plan.error.message, /plugin\.other-kit \(item_unsupported\)/);
+    assert.equal(call('launch-spec', { layers: [clean] }).error.code, 'item_unsupported');
   } finally {
     s.done();
   }

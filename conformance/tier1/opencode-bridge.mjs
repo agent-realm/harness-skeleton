@@ -27,8 +27,10 @@
 //            execute.before may fail: a Tool.Error rejects the call before it runs"
 //            (packages/core/src/plugin/hooks.ts), and the promise API turns any rejection there into a
 //            Tool.Error with its message (packages/plugin/src/promise/adapter.ts, toolHook). A third
-//            command's hook runs a process past a 2 s limit, stops it and throws, so the run shows a
-//            stalled hook does not hang the session. Recorded: which of ctx's location fields, and
+//            command's hook runs a process past a 2 s limit, in its own process group with a
+//            descendant holding its pipes, kills the group there and throws at once, so the run shows
+//            a stalled hook does not hang the session and leaves no process behind. (Waiting for the
+//            pipes to close instead held the hook for the descendant's full 30 s.) Recorded: which of ctx's location fields, and
 //            whether the plugin's own working directory, name the run's directory.
 //   mcp      a local MCP server with Code Mode off, and with it on (the default), for the name a
 //            hook's `tool` carries for an MCP tool (recorded).
@@ -123,16 +125,21 @@ const OUT = ${JSON.stringify(probe)};
 const CWD = ${JSON.stringify(cwd)};
 const log = (o) => { try { fs.appendFileSync(OUT, JSON.stringify(o) + '\\n'); } catch {} };
 const keys = (o) => (o && typeof o === 'object' ? Object.keys(o).sort() : []);
+// At its limit the process's whole group is killed and the hook decides at once: a descendant that
+// holds the pipes open must not keep the hook waiting.
 const run = (argv, limit) => new Promise((resolve) => {
   const t0 = Date.now();
-  let out = '', err = '', done = false, timedOut = false, child;
+  let out = '', err = '', done = false, child;
   const end = (r) => { if (!done) { done = true; clearTimeout(timer); resolve({ ...r, ms: Date.now() - t0 }); } };
-  const timer = setTimeout(() => { timedOut = true; try { child?.kill('SIGKILL'); } catch {} }, limit);
-  try { child = cp.spawn(argv[0], argv.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] }); } catch (e) { return end({ error: String(e?.code ?? 'error') }); }
+  const timer = setTimeout(() => {
+    try { process.kill(-child.pid, 'SIGKILL'); } catch {}
+    end({ timedOut: true, signal: 'SIGKILL' });
+  }, limit);
+  try { child = cp.spawn(argv[0], argv.slice(1), { stdio: ['pipe', 'pipe', 'pipe'], detached: true }); } catch (e) { return end({ error: String(e?.code ?? 'error') }); }
   child.stdout.on('data', (d) => { out += d; });
   child.stderr.on('data', (d) => { err += d; });
   child.on('error', (e) => end({ error: String(e?.code ?? 'error') }));
-  child.on('close', (code, signal) => end({ code, signal, out, err, timedOut }));
+  child.on('close', (code, signal) => end({ code, signal, out, err, timedOut: false }));
   child.stdin.on('error', () => {});
   child.stdin.end('{}');
 });
@@ -151,7 +158,8 @@ export default {
       log({ fired: 'tool.execute.before', fields: keys(event), tool: typeof event?.tool === 'string' ? event.tool : null });
       if (cmd.includes('DENYME')) { log({ threw: 'deny' }); throw new Error(${JSON.stringify(M.thrown)}); }
       if (cmd.includes('SLOWME')) {
-        const r = await run(['/bin/sh', '-c', 'sleep 30'], ${SLOW_LIMIT_MS});
+        // A shell that forks its command, so a descendant holds the pipes past the shell's death.
+        const r = await run(['/bin/sh', '-c', 'sleep 30; :'], ${SLOW_LIMIT_MS});
         log({ slow: { timed_out: r.timedOut === true, signal: r.signal ?? null, ms: r.ms } });
         throw new Error(${JSON.stringify(M.slow)});
       }

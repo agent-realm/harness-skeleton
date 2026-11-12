@@ -1,0 +1,87 @@
+{
+  "check": "tier 1: pi's session directory under hs's launch, and the group hs computes for a working directory (design note v0.2 §8)",
+  "at": "2026-11-12T14:59:17.456Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "ddf53af"
+  },
+  "runs": {
+    "plain-name": {
+      "requests": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "pi_groups": 1,
+      "computed_matches_pi": true,
+      "bound_cwd_is_real": true,
+      "premise_moved": true,
+      "project_kept_in_group": true,
+      "project_elsewhere": 0,
+      "continued_newest": true
+    },
+    "spaces": {
+      "requests": [
+        1,
+        1,
+        1
+      ],
+      "pi_groups": 1,
+      "computed_matches_pi": true,
+      "bound_cwd_is_real": true,
+      "project_kept_in_group": true,
+      "project_elsewhere": 0,
+      "continued_newest": true
+    },
+    "colon": {
+      "requests": [
+        1,
+        1,
+        1
+      ],
+      "pi_groups": 1,
+      "computed_matches_pi": true,
+      "bound_cwd_is_real": true,
+      "project_kept_in_group": true,
+      "project_elsewhere": 0,
+      "continued_newest": true
+    },
+    "unicode": {
+      "requests": [
+        1,
+        1,
+        1
+      ],
+      "pi_groups": 1,
+      "computed_matches_pi": true,
+      "bound_cwd_is_real": true,
+      "project_kept_in_group": true,
+      "project_elsewhere": 0,
+      "continued_newest": true
+    },
+    "symlink": {
+      "requests": [
+        1,
+        1,
+        1
+      ],
+      "pi_groups": 1,
+      "computed_matches_pi": true,
+      "bound_cwd_is_real": true,
+      "project_kept_in_group": true,
+      "project_elsewhere": 0,
+      "continued_newest": true
+    }
+  },
+  "checks": {
+    "premise: a project .pi/settings.json sessionDir moves a session hs launches without --cwd out of the folder": true,
+    "each working directory gets one group from pi, and hs's computed --session-dir is exactly it: spaces, a colon, unicode and a symlink included": true,
+    "with the project's sessionDir present, hs's launch with --cwd writes the session into that group, and none elsewhere": true,
+    "a later plain start with --continue takes up the session hs's launch wrote, as pi's own": true,
+    "every launch reached the model": true
+  },
+  "verdict": "pass"
+}

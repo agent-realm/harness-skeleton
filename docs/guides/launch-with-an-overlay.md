@@ -56,6 +56,10 @@ them and the receipt no longer fits.
 An item the plan already installed in the folder, at this content, is skipped, so it never runs
 twice.
 
+**pi's sessions.** Give `launch-spec` the directory pi will run in, `--cwd <dir>`. The launch
+then passes pi's own session directory for it, so a project's `.pi/settings.json` cannot move the
+session out of the folder. Run pi in that directory: the result's `cwd` says which one.
+
 **Endpoints.** With `[endpoints.<wire>]` in `local.toml`, the launch points the harness at that
 endpoint, carries its credential by reference, and unsets every other credential variable. A
 folder that holds a stored login is refused as `login_present`, since the login could reach the

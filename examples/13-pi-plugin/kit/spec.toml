@@ -1,0 +1,9 @@
+[spec]
+name = "kit"
+version = "1.0.0"
+format = "0.2"
+
+# An Agent Plugins package, kept in this layer and bound by its digest.
+[plugin."notes-kit"]
+source = "plugins/notes-kit"
+format = "agent-plugins"

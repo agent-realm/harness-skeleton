@@ -24,6 +24,8 @@ One line per page.
 - [deliver-to-a-folder.md](guides/deliver-to-a-folder.md): plan, approve, apply, remove and recover in a folder a tool owns.
 - [processes.md](guides/processes.md): MCP servers, hooks, status lines and skills: what each needs and how it is bound.
 - [read-sessions.md](guides/read-sessions.md): list a folder's sessions and read their transcripts.
+- [opencode.md](guides/opencode.md): OpenCode 2.x: the data folder, a launch, a folder a tool owns, hooks, strict isolation and the known limits.
+- [pi.md](guides/pi.md): pi 1.5: the data folder, a launch and the session's directory, a folder a tool owns, hooks, plugins, strict isolation and the known limits.
 - [run-a-conformance-check.md](guides/run-a-conformance-check.md): prove an adapter against a real harness on a disposable bench.
 - [add-a-session-adapter.md](guides/add-a-session-adapter.md): where a reader for a new harness goes, and what it must pass.
 
@@ -35,7 +37,7 @@ One line per page.
 
 ## Design
 
-- [skeleton-v0.2-2026-10-22.md](design/skeleton-v0.2-2026-10-22.md): **the current design**: the data folder and `harness_path`; spec layers, delivery modes, plans and receipts; state and capture; sessions through the session contracts; the conformance profiles; the Claude Code and Codex mapping.
+- [skeleton-v0.2-2026-10-22.md](design/skeleton-v0.2-2026-10-22.md): **the current design**: the data folder and `harness_path`; spec layers, delivery modes, plans and receipts; state and capture; sessions through the session contracts; the conformance profiles; the mapping for Claude Code, Codex, OpenCode and pi.
 - [build-v0-2026-10-22.md](design/build-v0-2026-10-22.md): **the build plan** for `hs`, the reference adapter: its rules, and its milestones with their status.
 - [reference-harness-2026-10-23.md](design/reference-harness-2026-10-23.md): a reference harness that produces every feature the session contracts describe, on purpose, against a scripted model.
 - [surveys/](design/surveys/): one cited survey per harness (Claude Code 2.1.289, Codex 0.160.0, OpenCode 1.18.18, pi 0.80.2), the sources the design note cites.

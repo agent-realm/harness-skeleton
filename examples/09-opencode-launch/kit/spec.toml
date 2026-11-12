@@ -1,0 +1,7 @@
+[spec]
+name = "kit"
+version = "1.0.0"
+format = "0.2"
+
+[model.roles]
+primary = "gateway-model"

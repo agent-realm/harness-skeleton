@@ -1,0 +1,8 @@
+# A layer that only asks for strict isolation. `isolation` is a top-level key, so it comes before
+# the first table.
+isolation = "strict"
+
+[spec]
+name = "strict"
+version = "1.0.0"
+format = "0.2"

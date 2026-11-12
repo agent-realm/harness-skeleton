@@ -1,0 +1,14 @@
+[spec]
+name = "kit"
+version = "1.0.0"
+format = "0.2"
+
+# Persisted as settings.json's defaultProvider and defaultModel, so a bare start uses it.
+[model.roles]
+primary = "anthropic/claude-sonnet-5-5"
+
+# A stdio server in this layer, persisted by copy into the folder's hs-run/.
+[mcp.notes]
+exec = "node"
+args = ["servers/notes.mjs"]
+self_contained = true

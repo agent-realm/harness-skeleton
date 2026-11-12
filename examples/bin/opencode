@@ -1,0 +1,7 @@
+#!/bin/sh
+# A stand-in for OpenCode, so the examples never start a real harness: it answers --version and
+# nothing else. Point --bin at a real opencode only on a disposable machine.
+case "$1" in
+  --version) echo "opencode v2.2.7" ;;
+  *) echo "the examples' stand-in for opencode: it answers --version only" >&2; exit 1 ;;
+esac

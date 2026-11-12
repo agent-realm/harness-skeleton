@@ -1,0 +1,8 @@
+# This machine's endpoint: a gateway on the OpenAI Chat wire, its key named by reference only.
+[endpoints.openai-chat]
+base_url = "https://gateway.example/v1"
+credential = "env:GATEWAY_KEY"
+auth = "bearer"
+
+[login]
+mode = "endpoint"

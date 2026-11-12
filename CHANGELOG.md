@@ -24,12 +24,15 @@ The first public cut.
     `launch-spec` with `--standalone` on every launch, for the endpoint, the primary model, MCP
     servers, skills and `AGENTS.md`; under `materialize`, the primary model, MCP servers and
     skills into the folder's own `config/opencode/`;
+  - `isolation = "strict"`: only the instructions and skills a spec names reach the agent. It is
+    kept by switch on OpenCode 2.x and pi 1.5, and refused on Claude Code and Codex as
+    `isolation_unmet`, naming each path;
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
   - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
-- **Conformance:** twenty-four tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
+- **Conformance:** twenty-five tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
   disposable benches. The six plugin checks also ran against Claude Code 2.1.321 or
   Codex 0.167.0.
 - **Documentation:** a tutorial, a concepts page with five diagrams, guides, a reference, and

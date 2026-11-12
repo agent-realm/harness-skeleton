@@ -59,9 +59,10 @@ const benchPids = () => {
   }).map(Number);
 };
 
+let proxy = null;
 try {
   const hosts = [];
-  const proxy = http.createServer((req, res) => {
+  proxy = http.createServer((req, res) => {
     req.on('error', () => {});
     res.on('error', () => {});
     try {
@@ -140,6 +141,7 @@ try {
   runs.pi.both = await launch('pi', pi, 'both', { argv: ['--no-skills', '--no-context-files'] });
   const left = benchPids();
   proxy.close();
+  proxy = null;
 
   const has = (r, ...ks) => ks.every((k) => r.reached.includes(k));
   const none = (r, ...ks) => ks.every((k) => !r.reached.includes(k));
@@ -176,6 +178,8 @@ try {
   process.stderr.write(`tier 1 isolation canaries check failed to run: ${e.message}\n`);
   process.exitCode = 4;
 } finally {
+  // A run that failed midway leaves the proxy listening, which would keep this process alive.
+  if (proxy) proxy.close();
   for (const p of benchPids()) {
     try {
       process.kill(p, 'SIGKILL');

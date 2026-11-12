@@ -49,7 +49,7 @@ absolute paths only; the flags make them absolute.
 
 | Op | Does | Writes |
 |---|---|---|
-| `describe` | protocol versions, operations, the harness descriptor (binding, path classes, version ranges), the known limits (escapes a launch cannot close), what a launch contacts on the network (`launch_network`, where the descriptor says), how an empty login store the harness writes is told from a login (`login_store`, on pi), hook behaviours a caller must know (`hook_behaviours`, on pi: a Stop hook that always blocks keeps the run going), the session adapter's own description | nothing |
+| `describe` | protocol versions, operations, the harness descriptor (binding, path classes, version ranges), the known limits (escapes a launch cannot close, with the switch a strict launch closes each by), what `isolation = "strict"` does (`isolation`), what a launch contacts on the network (`launch_network`, where the descriptor says), how an empty login store the harness writes is told from a login (`login_store`, on pi), hook behaviours a caller must know (`hook_behaviours`, on pi: a Stop hook that always blocks keeps the run going), the session adapter's own description | nothing |
 | `detect` | whether the harness is present, its version, its range | nothing |
 | `validate` | the resolved spec against the standard and the harness: items and their layers, digests, problems | nothing |
 | `observe` | with `--state`: the state inventory and the values in effect; without: drift in a delivered folder | nothing |

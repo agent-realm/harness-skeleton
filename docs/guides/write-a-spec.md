@@ -69,4 +69,22 @@ node bin/hs.js validate --harness claude-code --layer ./org --layer ./team --loc
 It never returns a value. A value in `local.toml` that is not a reference fails as
 `ref_not_reference` and is not echoed: it may be a pasted secret.
 
+**Strict isolation.** To have only what the spec names reach the agent, put
+`isolation = "strict"` at the top of a layer's `spec.toml`, before the first table:
+
+```toml
+isolation = "strict"
+
+[spec]
+name = "team"
+```
+
+With strict, the project's own instructions do not reach the agent either: no `AGENTS.md` from
+the working directory or its parents, and none from the data folder. If the agent should follow the
+project's instructions, name them in the spec, in the layer's `AGENTS.md`. Each harness's
+`describe` says what strict does there (`isolation`):
+- OpenCode and pi keep the rest out by switch;
+- Claude Code and Codex refuse a strict launch as `isolation_unmet`, naming each path they would
+  still read.
+
 See [example 08](../../examples/08-full-spec/) for two layers with every kind of item.

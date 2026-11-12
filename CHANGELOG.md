@@ -18,13 +18,15 @@ The first public cut.
     servers, hooks through a shim, the status line, skills, and Agent Plugins packages
     (translated on Claude Code, one `--plugin-dir` each at launch, or a directory marketplace a
     plan installs; on Codex, installed into the plugin cache by a plan and enabled by each launch);
+    on Claude Code also packages in its own format, `claude-plugin`, delivered whole the same two
+    ways;
   - `sessions.list`, `sessions.read` and `sessions.derive` through the session adapters.
 - **Packages:**
   - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
-- **Conformance:** fifteen tier 1 checks against Claude Code 2.1.307 and Codex 0.160.0, run on
-  disposable benches. The four Agent Plugins checks also ran against Claude Code 2.1.321 or
+- **Conformance:** sixteen tier 1 checks against Claude Code 2.1.307 and Codex 0.160.0, run on
+  disposable benches. The five plugin checks also ran against Claude Code 2.1.321 or
   Codex 0.167.0.
 - **Documentation:** a tutorial, a concepts page with five diagrams, guides, a reference, and
   eight runnable examples.

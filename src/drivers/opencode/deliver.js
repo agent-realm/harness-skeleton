@@ -8,6 +8,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { HsError } from '../../protocol.js';
+import { hookMatcher } from '../../hooks.js';
+import { SHIM, bridgeSource } from './bridge.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks } from '../../process.js';
 import { handlers, readDoc, treeLink } from '../../native.js';
@@ -82,6 +84,8 @@ export function deliverables(resolved, { descriptor, mode, folder }) {
         });
       }
       jsonKey(item, p.address.key, p.value, p.risk, p.notes.join('; '));
+    } else if (item.kind === 'hook') {
+      out.launch_only.push({ item: item.id, via: `launch-spec: the hooks bridge plugin in ${L.config_dir_env}/${L.bridge.file} (tool.${L.bridge.on[item.value.event]}), through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
     } else out.not_implemented.push(s.label ?? item.id);
   }
   for (const f of resolved.files) {
@@ -173,9 +177,26 @@ function sorted(item, descriptor) {
     if (item.value?.require === 'required') return { refuse: `statusline is required, and ${L.statusline.reason}` };
     return { skip: L.statusline.reason };
   }
-  if (item.kind === 'hook') return { label: `${item.id} (${L.hooks.reason})` };
+  if (item.kind === 'hook') return hookRoute(item, descriptor);
   if (item.kind === 'plugin') return { label: `${item.id} (format ${item.value?.format})` };
   return {};
+}
+
+// A hook's route (§5.6, §5.10): the plugin hook it rides on, or why it has none, skipped when
+// if-supported and refused when required (the default for hooks). A hook that rides refuses what
+// the bridge cannot carry: an allow, and an MCP server match (descriptor, launch.bridge).
+function hookRoute(item, descriptor) {
+  const B = descriptor.launch.bridge;
+  const v = item.value;
+  const on = B.on[v.event];
+  if (!on) {
+    const reason = `${v.event}: ${B.events_refused[v.event] ?? B.no_hook}`;
+    return v.require === 'if-supported' ? { skip: reason } : { refuse: `${item.id}: ${reason}` };
+  }
+  if (v.may_allow === true) return { refuse: `${item.id}: may_allow: ${B.may_allow}` };
+  const mcp = (v.match?.tool ?? []).find((c) => c.startsWith('mcp:'));
+  if (mcp) return { refuse: `${item.id}: tool class ${mcp}: ${B.mcp_match}` };
+  return { on };
 }
 
 // OpenCode keeps no lock hs could ask, and this build writes nothing into its folder.
@@ -217,7 +238,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const config = {};
   const flags = [];
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
@@ -266,13 +287,17 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const own = new Set();
   const unsetting = new Set([...descriptor.binding.env_unset, ...out.unset, E.key_env, ...Object.keys(L.always_env)]);
   const vars = new Map();
-  const derived = (ref, id) => {
+  // The variable a ref reaches OpenCode's environment in, which the caller fills (env_from_refs).
+  const refVar = (ref, id) => {
     const name = M.ref_prefix + ref.toUpperCase().replace(/[^A-Z0-9]/g, '_');
     if (unsetting.has(name)) throw new HsError('bad_request', `${id}: ${name} is a variable this launch unsets or uses itself`, [id]);
     if (vars.has(name) && vars.get(name) !== ref) throw new HsError('bad_request', `refs ${vars.get(name)} and ${ref} both need the variable ${name}; rename one`, [ref]);
     vars.set(name, ref);
     out.env_from_refs[name] = bindings.get(ref);
-    const placeholder = `{env:${name}}`;
+    return name;
+  };
+  const derived = (ref, id) => {
+    const placeholder = `{env:${refVar(ref, id)}}`;
     own.add(placeholder);
     return placeholder;
   };
@@ -335,6 +360,46 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     out.unverified.push(M.unverified);
   }
 
+  // Hooks (§5.6): hs's bridge plugin in the config directory's plugins/, which runs hs's hook shim
+  // for each hook on the plugin hook its event rides on (descriptor, launch.bridge). The process's
+  // layer paths are absolute; env and env_refs reach it through the shim, a ref by its variable in
+  // OpenCode's environment, which the plugin's spawn inherits. Each hook runs code.
+  const HK = L.hooks;
+  const B = L.bridge;
+  const bridged = [];
+  for (const hk of resolved.items.filter((i) => i.kind === 'hook')) {
+    const r = hookRoute(hk, descriptor);
+    if (r.skip) {
+      out.skipped.push({ item: hk.id, reason: r.skip });
+      continue;
+    }
+    if (r.refuse) throw new HsError('item_unsupported', r.refuse, [hk.id]);
+    const v = hk.value;
+    const run = v.run;
+    const dir = layerDirs.get(hk.layer);
+    const limit = v.timeout ?? HK.default_limit;
+    const args = ['--timeout', String(limit)];
+    if (run.cwd !== undefined) args.push('--cwd', layerPath(run.cwd, dir, hk.id));
+    for (const [k, x] of Object.entries(run.env ?? {})) args.push('--env', `${k}=${x}`);
+    for (const [k, ref] of Object.entries(run.env_refs ?? {})) {
+      if (!ENV_NAME.test(k)) throw new HsError('item_unsupported', `${hk.id}: env_refs name ${JSON.stringify(k)} is not a variable name`, [hk.id]);
+      args.push('--env-ref', `${k}=${refVar(ref, hk.id)}`);
+    }
+    const proc = run.shell !== undefined ? ['/bin/sh', '-c', run.shell] : [layerPath(run.exec, dir, hk.id), ...(run.args ?? []).map((a) => layerPath(a, dir, hk.id))];
+    const matcher = hookMatcher(HK, v);
+    bridged.push({ id: hk.id, event: v.event, on: r.on, matcher, args: [...args, '--', ...proc], limit_ms: limit * 1000 });
+    const blocks = HK.blocking_events.includes(v.event);
+    const [codeRisk, ...more] = processRisks(hk, run, resolved);
+    out.risks.push({ ...codeRisk, blocks }, ...more);
+    out.items.push({ item: hk.id, via: `${L.config_dir_env}/${B.file} (tool.${r.on}${matcher !== null ? `, ${matcher}` : ''}), through hs's hook shim${blocks ? '' : `; ${v.event} cannot block on OpenCode, so a deny there changes nothing`}` });
+  }
+  const bridgeFiles = [];
+  if (bridged.length) {
+    bridgeFiles.push({ rel: B.file, content: bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, hooks: bridged }) });
+    out.notes.push(B.fail_closed, B.context, B.mcp_class);
+    out.unverified.push(B.load);
+  }
+
   // Skills and instructions: a config directory in the launch's temp dir (descriptor, launch.skills,
   // launch.agents_md). A skill may carry scripts the agent is told to run, so it is runs-code.
   const entries = [];
@@ -363,6 +428,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const files = resolved.agents_md.length
     ? [{ rel: L.agents_md, content: resolved.agents_md.map((a) => `# ${a.layer}\n\n${a.text.replace(/\n*$/, '\n')}`).join('\n') }]
     : [];
+  files.push(...bridgeFiles);
   if (files.length) out.items.push({ item: 'instructions (AGENTS.md)', via: `${L.config_dir_env}/${L.agents_md}, which replaces the folder's global AGENTS.md` });
   if (entries.length || files.length) {
     out.trees.push({ name: 'config-dir', role: 'config_dir', files, entries });

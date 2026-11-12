@@ -8,6 +8,8 @@
 // - `T2`: the tier 1 check conformance/tier1/opencode-persisted.mjs on 2.2.7, 2026-11-12;
 // - `T3`: the tier 1 check conformance/tier1/opencode-bridge.mjs on 2.2.7, 2026-11-12.
 
+import { OPENCODE_HOOKS } from '../../shim/opencode-hooks.js';
+
 export default Object.freeze({
   harness: 'opencode',
   name: 'OpenCode',
@@ -156,7 +158,32 @@ export default Object.freeze({
     skills: { dir: 'skills' },
     agents_md: 'AGENTS.md',
     statusline: { supported: false, reason: 'OpenCode has no configurable status line [OC §13]' },
-    hooks: { supported: false, reason: 'OpenCode has no shell-command hooks; its hooks are plugin functions, which a bridge plugin would carry (design note §8), not in this build [OC §11]' },
+    // Hooks (milestone 7.3): OpenCode 2.x has no command hooks, only plugin functions [D2:plugins].
+    // hs's bridge plugin, written into the launch's config directory, runs hs's hook shim for each
+    // spec hook (src/shim/opencode-bridge.js). Only the two tool hooks carry a spec event; only
+    // execute.before can refuse [G2:packages/core/src/plugin/hooks.ts; T3].
+    hooks: OPENCODE_HOOKS,
+    bridge: {
+      file: 'plugins/hs-hooks.js',
+      id: 'hs-hooks',
+      on: { PreToolUse: 'execute.before', PostToolUse: 'execute.after' },
+      // Why the other events have no route, by name (§5.10: refused when required, skipped when
+      // if-supported) [G2:packages/plugin/src/effect/session.ts SessionHooks, packages/core/src/plugin/hooks.ts].
+      events_refused: {
+        UserPromptSubmit: 'OpenCode 2.x\'s session.prompt hook can rewrite a prompt but not refuse it (only tool execute.before may fail), so a guard here would not block',
+        Stop: 'OpenCode 2.x\'s nearest hook, session experimental.idle, is experimental and cannot refuse',
+        PreCompact: 'OpenCode 2.x\'s session.compaction hook can replace a compaction but not refuse it',
+        PermissionRequest: 'OpenCode 2.x\'s permission.evaluate runs for every rule evaluation, not only a prompt, and carries an action and resources, not a tool call; not mapped in this build',
+      },
+      no_hook: 'OpenCode 2.x has no plugin hook for this event; it reaches a plugin only through the event stream, which cannot answer',
+      may_allow: 'an allow on OpenCode would go through permission.evaluate, which this build does not carry; a hook may deny only',
+      mcp_match: 'OpenCode names an MCP tool <server>_<tool>, every character outside [A-Za-z0-9_-] made _, so a server match cannot be exact: server a would also match server a_b\'s tools [G2:packages/core/src/tool/runtime.ts effectiveName; T3]',
+      context: 'a hook\'s context output is not delivered: no OpenCode plugin hook takes it',
+      mcp_class: 'an MCP tool reaches a hook as <server>_<tool>, which hs cannot tell from another tool\'s name, so its envelope has tool.class null and no tool.input.mcp [T3]',
+      fail_closed: 'a PreToolUse hook fails closed in every way the bridge can see: the shim exiting other than 0 or 2, dying by a signal, failing to start, or still running at the hook\'s limit plus the margin (its process group killed)',
+      load: 'if the bridge plugin fails to load, OpenCode starts without it and no hook runs',
+      source: 'G2:packages/core/src/plugin/hooks.ts, packages/plugin/src/promise/adapter.ts, packages/core/src/tool.ts; T3',
+    },
   },
 
   // Under materialize (milestone 7.2): the folder's own config directory, config/opencode/, which

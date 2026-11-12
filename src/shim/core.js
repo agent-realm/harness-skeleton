@@ -33,27 +33,33 @@ function patchPaths(H, text) {
 }
 
 export function shimFor(H) {
-  const mcp = new RegExp(`^${H.mcp_prefix}(.+?)__(.+)$`);
+  // Where the native payload keeps each field: Claude Code's and Codex's names, unless the table
+  // names its own (OpenCode's bridge hands over the plugin event, `sessionID`, `tool`, `input`).
+  const F = { session_id: 'session_id', cwd: 'cwd', tool_name: 'tool_name', tool_input: 'tool_input', ...(H.fields ?? {}) };
+  // An MCP tool's name, where the harness gives it a form of its own. A table with no prefix (OpenCode)
+  // has none, so there an MCP tool has no class.
+  const mcp = typeof H.mcp_prefix === 'string' ? new RegExp(`^${H.mcp_prefix}(.+?)__(.+)$`) : null;
 
   // The tool class of a native tool name, by the hook table; an MCP tool is mcp:<server>.
   function toolClass(name) {
     if (typeof name !== 'string') return null;
     for (const [cls, names] of Object.entries(H.classes)) if (names.includes(name)) return cls;
-    const m = mcp.exec(name);
+    const m = mcp?.exec(name);
     return m ? `mcp:${m[1]}` : null;
   }
 
   // The envelope's `hs` part from a native payload (§5.6).
   function envelope(event, native) {
-    const hs = { event, session_id: native.session_id ?? null, cwd: native.cwd ?? null };
+    const hs = { event, session_id: native[F.session_id] ?? null, cwd: native[F.cwd] ?? null };
     if (H.tool_events.includes(event)) {
-      const input = native.tool_input ?? {};
-      const name = native.tool_name ?? null;
-      const m = typeof name === 'string' ? mcp.exec(name) : null;
-      // A patch tool carries its patch in `command`: its paths are the patch's, and it is no shell
-      // command.
+      const raw = native[F.tool_input];
+      const input = raw !== null && typeof raw === 'object' ? raw : {};
+      const name = native[F.tool_name] ?? null;
+      const m = typeof name === 'string' && mcp ? mcp.exec(name) : null;
+      // A patch tool carries its patch in one field (`command` unless the table names another): its
+      // paths are the patch's, and it is no shell command.
       const patch = (H.patch_tools ?? []).includes(name);
-      const paths = patch ? patchPaths(H, input.command) : [input.file_path, input.notebook_path, input.path].filter((p) => typeof p === 'string');
+      const paths = patch ? patchPaths(H, input[H.patch_field ?? 'command']) : [input.file_path, input.notebook_path, input.path].filter((p) => typeof p === 'string');
       hs.tool = {
         class: toolClass(name), name,
         input: {

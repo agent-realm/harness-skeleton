@@ -127,9 +127,10 @@ export default Object.freeze({
     // MCP servers: `mcp.servers.<name>` (2.x no longer puts names directly under `mcp`); local
     // {type, command (an array), environment, cwd}, remote {type, url, headers, oauth} [D2:mcp-servers].
     // Measured: a local server in the inline layer starts, and its tool reaches the model [T1].
-    // Config strings take {env:VAR} and {file:path} anywhere [D2:config]: a ref reaches a server as
-    // {env:HS_REF_<ref>}, which the caller fills from the reference, and any other {env:…} or {file:…}
-    // in what the launch hands OpenCode is refused, as ${…} is on Claude Code (§5.3).
+    // OpenCode substitutes {env:VAR} and {file:path} in the config text before parsing it, keys
+    // included [D2:config; G2:packages/core/src/config/variable.ts]: a ref reaches a server as
+    // {env:HS_REF_<ref>}, which the caller fills from the reference, and {env:…} or {file:…} in any
+    // string or key the spec provides is refused, as ${…} is on Claude Code (§5.3).
     mcp: {
       config_key: 'mcp', servers_key: 'servers', ref_prefix: 'HS_REF_', transports: ['http'],
       id: /^[A-Za-z0-9_-]+$/,

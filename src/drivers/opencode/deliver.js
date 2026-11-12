@@ -64,19 +64,32 @@ export function liveCheck() {
   return null;
 }
 
-// Config strings take {env:VAR} and {file:path} anywhere (descriptor, launch.mcp): what the launch
-// hands OpenCode holds none but the placeholders it made itself, or OpenCode could read a variable or
-// a file the receipt never named (§5.3).
+// OpenCode substitutes {env:VAR} and {file:path} in the config text before it parses it, keys
+// included (descriptor, launch.mcp). So no string or key the spec provides may hold either, checked
+// before the launch puts in placeholders of its own: a spec value that spelled one of them would be
+// filled from a reference the receipt shows going elsewhere (§5.3). The final config is then walked,
+// keys and values, with only the launch's own placeholders allowed.
+const SUBSTITUTION = /\{(env|file):/;
+const refused = (id) => new HsError('interpolation_refused', `${id}: holds {env:…} or {file:…}, which OpenCode substitutes in its config text, keys included, so it could read what the receipt did not bind`, [id]);
+function walkStrings(v, fn) {
+  if (typeof v === 'string') fn(v);
+  else if (Array.isArray(v)) v.forEach((x) => walkStrings(x, fn));
+  else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) {
+    fn(k);
+    walkStrings(x, fn);
+  }
+}
+function refuseSpecText(item) {
+  walkStrings(item.value, (s) => {
+    if (SUBSTITUTION.test(s)) throw refused(item.id);
+  });
+}
 function refuseSubstitution(id, value, own) {
-  const walk = (v) => {
-    if (typeof v === 'string') {
-      let s = v;
-      for (const o of own) s = s.split(o).join('');
-      if (/\{(env|file):/.test(s)) throw new HsError('interpolation_refused', `${id}: what the launch would hand OpenCode holds {env:…} or {file:…}, which OpenCode substitutes in config strings, so it could read what the receipt did not bind`, [id]);
-    } else if (Array.isArray(v)) v.forEach(walk);
-    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
-  };
-  walk(value);
+  walkStrings(value, (str) => {
+    let s = str;
+    for (const o of own) s = s.split(o).join('');
+    if (SUBSTITUTION.test(s)) throw refused(id);
+  });
 }
 
 export function launchParts(resolved, { headless, descriptor, folder }) {
@@ -95,6 +108,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   // Model roles and the endpoint (§5.2). With an endpoint the model is the provider's own,
   // `<provider>/<model>`; without one it is passed as given, OpenCode's `provider/model` form.
   const { roles, endpoint, login } = launchItems(resolved, descriptor);
+  for (const item of [...Object.values(roles), ...(endpoint ? [endpoint] : []), ...resolved.items.filter((i) => i.kind === 'mcp')]) refuseSpecText(item);
   const E = L.endpoint;
   const models = [];
   for (const [role, item] of Object.entries(roles)) {

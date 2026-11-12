@@ -177,6 +177,24 @@ test('launch-spec refusals: a stored login, an x-api-key endpoint, {env:} or {fi
       const refusedCode = r.error.code === 'receipt_required' ? s.call('launch-spec', { layers: [l], receipt: allow(r) }).error.code : r.error.code;
       assert.equal(refusedCode, 'interpolation_refused', name);
     }
+    // No string or key the spec provides may hold {env:…} or {file:…}, checked before the launch puts
+    // in placeholders of its own: OpenCode substitutes them in its config text, keys included.
+    const twoRefs = '[refs.DB_PASSWORD]\ndescription = "db"\n\n[mcp.a]\nexec = "/bin/true"\nenv_refs = { PASS = "DB_PASSWORD" }\n\n';
+    const refsLocal = write(s.root, 'refs.toml', '[refs]\nDB_PASSWORD = "keychain:example/db"\n');
+    for (const [name, toml, opts] of [
+      ['placeholder-in-url', `${twoRefs}[mcp.b]\nurl = "https://x.example/{env:HS_REF_DB_PASSWORD}"\n`, { local: refsLocal }],
+      ['placeholder-in-env', `${twoRefs}[mcp.b]\nexec = "/bin/true"\nenv = { LEAK = "{env:HS_REF_DB_PASSWORD}" }\n`, { local: refsLocal }],
+      ['file-in-header-name', '[mcp.b]\nurl = "https://x.example/mcp"\nheaders = { "{file:/etc/hosts}" = "x" }\n', {}],
+      ['file-in-env-key', '[mcp.b]\nexec = "/bin/true"\nenv = { "{file:/etc/hosts}" = "x" }\n', {}],
+      ['env-in-model', '[model.roles]\nprimary = "{env:HOME}"\n', {}],
+    ]) {
+      const l = layer(s.root, name, toml);
+      const r = s.call('launch-spec', { layers: [l], ...opts });
+      assert.equal(r.error?.code, 'interpolation_refused', name);
+      assert.doesNotMatch(r.error.message, /hosts|HS_REF_DB_PASSWORD|HOME/, `${name}: no value quoted`);
+    }
+    const base = write(s.root, 'base.toml', ENDPOINT.replace('https://gateway.example/v1', 'https://gateway.example/{file:/etc/hosts}'));
+    assert.equal(s.call('launch-spec', { layers: [roles], local: base }).error.code, 'interpolation_refused', 'the endpoint URL');
     const sse = layer(s.root, 'sse', '[mcp.s]\nurl = "https://x.example/sse"\ntype = "sse"\n');
     assert.equal(s.call('launch-spec', { layers: [sse] }).error.code, 'item_unsupported');
     const sl = layer(s.root, 'sl', '[statusline]\nrequire = "required"\n[statusline.run]\nexec = "/bin/true"\n');

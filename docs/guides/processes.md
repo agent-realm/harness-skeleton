@@ -70,6 +70,11 @@ On OpenCode only `PreToolUse` and `PostToolUse` have a route. The other events a
 required and skipped when `if-supported`. `may_allow` and `mcp:` matches are refused, and a hook's
 `context` is not delivered.
 
+On pi, `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd` and `Stop` have
+a route. A `Stop` block asks pi for one more run, with the reason as a message for the model.
+`may_allow` and the `fetch` class are refused, the other events are refused or skipped as above, and a
+hook's `context` is not delivered.
+
 **The status line:**
 
 ```toml

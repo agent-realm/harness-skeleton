@@ -174,6 +174,10 @@ export default Object.freeze({
     // launch extension runs hs's hook shim for each spec hook (src/drivers/pi/extension-runtime.js),
     // on the pi event its spec event rides on [P15:extensions; T2].
     hooks: PI_HOOKS,
+    // Hook behaviours describe names, so they are documented, not a surprise.
+    behaviours: {
+      Stop: 'a Stop hook that always blocks keeps the run going: each block asks pi for one more run. The hook ends the loop itself through stop_hook_active, which is true when the run it ends was one it asked for, as on Claude Code; hs sets no cap',
+    },
     bridge: {
       on: { PreToolUse: 'tool_call', PostToolUse: 'tool_result', UserPromptSubmit: 'input', SessionStart: 'session_start', SessionEnd: 'session_shutdown', Stop: 'agent_before_settle' },
       // Why the other events have no route, by name (§5.10: refused when required, skipped when

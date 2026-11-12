@@ -15,12 +15,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { serverSource } from './agent-plugins.mjs';
 
-export function writeNativePackage(dir, { name, marks, tool, probeOut, hookProbe, noManifest = false }) {
+// `manifest` adds fields to plugin.json (`defaultEnabled: false`, say).
+export function writeNativePackage(dir, { name, marks, tool, probeOut, hookProbe, noManifest = false, manifest = {} }) {
   const put = (rel, content, mode) => {
     fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
     fs.writeFileSync(path.join(dir, rel), typeof content === 'string' ? content : JSON.stringify(content, null, 2) + '\n', mode ? { mode } : undefined);
   };
-  if (!noManifest) put('.claude-plugin/plugin.json', { name, version: '1.0.0', description: 'A tier 1 bench plugin in Claude Code\'s own format.' });
+  if (!noManifest) put('.claude-plugin/plugin.json', { name, version: '1.0.0', description: 'A tier 1 bench plugin in Claude Code\'s own format.', ...manifest });
   put('skills/notes/SKILL.md', `---\nname: notes\ndescription: Take bench notes. ${marks.skill}\n---\nWrite the notes.\n`);
   put('commands/hs-bench-hello.md', `---\ndescription: A bench command. ${marks.command}\n---\nSay hello.\n`);
   put('hooks/hooks.json', { hooks: { SessionStart: [{ hooks: [{ type: 'command', command: `touch '${hookProbe}'` }] }] } });

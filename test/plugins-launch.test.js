@@ -205,6 +205,7 @@ test('launch-spec on Claude Code: refused without a receipt; with one, the trans
     const spec = ok(s.call('launch-spec', { layers: [kit], receipt: { format: 'hs-receipt/0.2', launch_digest, allows: ['plugin.notes-kit'] } }));
     const tree = spec.files.find((f) => f.role === 'plugin.notes-kit');
     assert.deepEqual(spec.argv.slice(1, 3), ['--plugin-dir', tree.path]);
+    assert.ok(!spec.files.some((f) => f.role === 'settings'), 'a plugin that starts on needs no overlay');
     assert.equal(path.basename(tree.path), 'notes-kit');
     // At the translated plugin's root: the manifest, .mcp.json, a copy of skills/, and the package.
     assert.deepEqual(fs.readdirSync(tree.path).sort(), ['.claude-plugin', '.mcp.json', 'package', 'skills']);
@@ -334,7 +335,7 @@ test('materialize on Claude Code: a launch skips a plugin a plan installed at th
     assert.ok(spec.skipped.some((x) => x.item === 'plugin.notes-kit' && /installed in the folder by a plan, at this content/.test(x.reason)));
     write(kit, 'plugins/notes-kit/skills/notes/extra.md', 'more');
     const edited = s.call('launch-spec', { layers: [kit] });
-    assert.equal(edited.error.code, 'item_unsupported', 'the folder loads the installed copy: carrying the edited one too would load two plugins of one name');
+    assert.equal(edited.error.code, 'item_unsupported', 'the folder loads the installed copy: carrying the edited one would replace it for the session, silently');
     assert.match(edited.error.message, /holds this plugin at other content \(hs-run\/plugin\.notes-kit\).*Plan and apply again, or remove it first/);
     const again = ok(s.call('plan', { layers: [kit], owner: 'builder', mode: 'materialize' }));
     assert.deepEqual(again.operations.filter((o) => o.item === 'plugin.notes-kit').map((o) => [o.address_id, o.action]), [['hs-run/plugin.notes-kit', 'update']]);

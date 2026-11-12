@@ -5,13 +5,16 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { HsError } from '../../protocol.js';
+import { hookMatcher } from '../../hooks.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
 import { layerPath, processRisks } from '../../process.js';
 import { readDoc, treeLink } from '../../native.js';
 import { extensionSource } from './extension.js';
 
 const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const SHIM = fileURLToPath(new URL('../../shim/pi.js', import.meta.url));
 
 // A plan under overlay names what a launch carries.
 export function deliverables(resolved, { descriptor }) {
@@ -31,6 +34,7 @@ export function deliverables(resolved, { descriptor }) {
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) out.refused.push({ item: item.id, code: 'item_unsupported', reason: s.refuse });
     else if (item.kind === 'mcp') out.launch_only.push({ item: item.id, via: `launch-spec: registered by the launch extension (${L.extension.flag}), under a launch receipt (${item.value?.url ? 'sends-data' : 'runs-code'})` });
+    else if (item.kind === 'hook') out.launch_only.push({ item: item.id, via: `launch-spec: the launch extension (${L.extension.flag}) runs it on pi's ${L.bridge.on[item.value.event]}, through hs's hook shim, under a launch receipt (runs-code)` });
     else out.not_implemented.push(s.label ?? item.id);
   }
   for (const f of resolved.files) {
@@ -53,9 +57,27 @@ function sorted(item, descriptor) {
     if (item.value?.require === 'required') return { refuse: `statusline is required, and ${L.statusline.reason}` };
     return { skip: L.statusline.reason };
   }
-  if (item.kind === 'hook') return { label: `${item.id} (${L.hooks.reason})` };
+  if (item.kind === 'hook') return hookRoute(item, descriptor);
   if (item.kind === 'plugin') return { label: `${item.id} (format ${item.value?.format})` };
   return {};
+}
+
+// A hook's route (§5.6, §5.10): the pi event it rides on, or why it has none, skipped when
+// if-supported and refused when required (the default for hooks). A hook that rides refuses what
+// the extension cannot carry: an allow, and a tool class pi has no tool for.
+function hookRoute(item, descriptor) {
+  const B = descriptor.launch.bridge;
+  const HK = descriptor.launch.hooks;
+  const v = item.value;
+  const on = B.on[v.event];
+  if (!on) {
+    const reason = `${v.event}: ${B.events_refused[v.event] ?? B.no_hook}`;
+    return v.require === 'if-supported' ? { skip: reason } : { refuse: `${item.id}: ${reason}` };
+  }
+  if (v.may_allow === true) return { refuse: `${item.id}: may_allow: ${B.may_allow}` };
+  const cls = (v.match?.tool ?? []).find((c) => HK.unsupported_classes[c]);
+  if (cls) return { refuse: `${item.id}: tool class ${cls}: ${HK.unsupported_classes[cls]}` };
+  return { on };
 }
 
 // pi keeps no lock hs could ask, and this build writes nothing into its folder.
@@ -90,7 +112,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const I = L.interpolation;
   const out = { items: [], skipped: [], not_implemented: [], files: [], trees: [], risks: [], env: {}, env_from_refs: {}, unset: [], notes: [], unverified: [] };
   for (const item of resolved.items) {
-    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
+    if (item.kind === 'refs' || item.kind === 'binding' || item.kind === 'mcp' || item.kind === 'hook' || LAUNCH_ITEM_KINDS.has(item.kind)) continue;
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
@@ -146,13 +168,17 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   const bindings = new Map(resolved.items.filter((i) => i.kind === 'binding').map((b) => [b.id.slice('binding.'.length), b.value]));
   const unsetting = new Set([...descriptor.binding.env_unset, ...out.unset, E.key_env, ...Object.keys(L.endpoint_env)]);
   const vars = new Map();
-  const derived = (ref, id) => {
+  // The variable a ref reaches pi's environment in, which the caller fills (env_from_refs).
+  const refVar = (ref, id) => {
     const name = M.ref_prefix + ref.toUpperCase().replace(/[^A-Z0-9]/g, '_');
     if (unsetting.has(name)) throw new HsError('bad_request', `${id}: ${name} is a variable this launch unsets or uses itself`, [id]);
     if (vars.has(name) && vars.get(name) !== ref) throw new HsError('bad_request', `refs ${vars.get(name)} and ${ref} both need the variable ${name}; rename one`, [ref]);
     vars.set(name, ref);
     out.env_from_refs[name] = bindings.get(ref);
-    const placeholder = `\${${name}}`;
+    return name;
+  };
+  const derived = (ref, id) => {
+    const placeholder = `\${${refVar(ref, id)}}`;
     own.add(placeholder);
     return placeholder;
   };
@@ -218,12 +244,55 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   }
   if (servers.length) out.unverified.push(M.unverified);
 
+  // Hooks (§5.6): the launch extension runs hs's hook shim for each hook on the pi event its event
+  // rides on (descriptor, launch.bridge). The process's layer paths are absolute; env and env_refs
+  // reach it through the shim, a ref by its variable in pi's environment, which the extension's
+  // spawn inherits. Each hook runs code.
+  const HK = L.hooks;
+  const B = L.bridge;
+  const hooks = [];
+  for (const hk of resolved.items.filter((i) => i.kind === 'hook')) {
+    const r = hookRoute(hk, descriptor);
+    if (r.skip) {
+      out.skipped.push({ item: hk.id, reason: r.skip });
+      continue;
+    }
+    if (r.refuse) throw new HsError('item_unsupported', r.refuse, [hk.id]);
+    const v = hk.value;
+    const run = v.run;
+    const dir = layerDirs.get(hk.layer);
+    const limit = v.timeout ?? HK.default_limit;
+    const args = ['--timeout', String(limit)];
+    if (run.cwd !== undefined) args.push('--cwd', layerPath(run.cwd, dir, hk.id));
+    for (const [k, x] of Object.entries(run.env ?? {})) args.push('--env', `${k}=${x}`);
+    for (const [k, ref] of Object.entries(run.env_refs ?? {})) {
+      if (!ENV_NAME.test(k)) throw new HsError('item_unsupported', `${hk.id}: env_refs name ${JSON.stringify(k)} is not a variable name`, [hk.id]);
+      args.push('--env-ref', `${k}=${refVar(ref, hk.id)}`);
+    }
+    const proc = run.shell !== undefined ? ['/bin/sh', '-c', run.shell] : [layerPath(run.exec, dir, hk.id), ...(run.args ?? []).map((a) => layerPath(a, dir, hk.id))];
+    const matcher = hookMatcher(HK, v);
+    hooks.push({ id: hk.id, event: v.event, matcher, args: [...args, '--', ...proc], limit_ms: limit * 1000 });
+    const blocks = HK.blocking_events.includes(v.event);
+    const [codeRisk, ...more] = processRisks(hk, run, resolved);
+    out.risks.push({ ...codeRisk, blocks }, ...more);
+    out.items.push({ item: hk.id, via: `the launch extension, on pi's ${r.on}${matcher !== null ? ` (${matcher})` : ''}, through hs's hook shim${blocks ? '' : `; ${v.event} cannot block on pi, so a deny there changes nothing`}` });
+    if ((v.match?.tool ?? []).some((c) => c.startsWith('mcp:'))) out.unverified.push(`${hk.id}: ${B.mcp_codemode}`);
+  }
+  if (hooks.length) {
+    out.notes.push(B.fail_closed, B.load, B.context, ...(hooks.some((h) => h.event === 'Stop') ? [B.stop] : []));
+    out.readiness = [{ what: 'hooks', rel: B.marker, means: B.marker_means }];
+  }
+
   // The launch extension, when there is anything to register. Its configuration is walked once
   // more: every string with a $ is one of the launch's own, and none starts with !. A server's
   // command and arguments are left out of the walk: pi passes them as written (tier 1), so a shell
   // string's own $1 stays the shell's; their leading ~ was refused above.
-  if (provider || servers.length) {
-    const config = { provider, mcp: servers };
+  const extension = provider || servers.length || hooks.length;
+  if (extension) {
+    const config = {
+      provider, mcp: servers,
+      hooks: hooks.length ? { node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, marker: `./${B.marker}`, list: hooks } : null,
+    };
     walk({ provider, mcp: servers.map(([n, { command, args, ...rest }]) => [n, rest]) }, (s) => {
       if ((s.includes('$') && !own.has(s)) || s.trimStart().startsWith('!')) throw new HsError('interpolation_refused', `the launch: a value would reach pi holding $ or a leading !; ${I.reason}`, []);
     });
@@ -261,7 +330,7 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
     ...(headless ? L.headless.argv : L.interactive.argv),
     ...(provider ? [E.provider_flag, E.provider_id] : []),
     ...flags,
-    ...(provider || servers.length ? [L.extension.flag, paths[L.extension.role]] : []),
+    ...(extension ? [L.extension.flag, paths[L.extension.role]] : []),
     ...skills.flatMap((n) => [L.skills.flag, path.join(paths[L.skills.tree], n)]),
     ...(resolved.agents_md.length ? [L.agents_md.flag, paths[L.agents_md.role]] : []),
   ];

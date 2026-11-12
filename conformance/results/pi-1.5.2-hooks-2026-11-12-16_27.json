@@ -1,0 +1,418 @@
+{
+  "check": "tier 1: hooks on pi through hs's launch extension (design note v0.2 §5.6, §7.5)",
+  "at": "2026-11-12T13:27:03.880Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "a0436d5"
+  },
+  "runs": {
+    "main": {
+      "refused": "receipt_required",
+      "risks": [
+        [
+          "mcp.probe",
+          "runs-code",
+          null
+        ],
+        [
+          "hook.after",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.end",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.guard",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.mcp",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.prompt",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.start",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.stop",
+          "runs-code",
+          true
+        ]
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "requests": 6,
+      "ms": 4508,
+      "credential": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "failClosed",
+        "guard",
+        "mcp",
+        "stop"
+      ],
+      "stop_reason_at": 5,
+      "readiness_in_temp_dir": true,
+      "marker": {
+        "hooks": 7,
+        "before_first_request": true
+      },
+      "hooks": [
+        {
+          "role": "log",
+          "event": "SessionStart",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": "startup",
+          "stop_hook_active": null,
+          "before_first_request": true
+        },
+        {
+          "role": "prompt",
+          "event": "UserPromptSubmit",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": "plain",
+          "source": "interactive",
+          "stop_hook_active": null,
+          "before_first_request": true
+        },
+        {
+          "role": "guard",
+          "event": "PreToolUse",
+          "class": "shell",
+          "name": "bash",
+          "session": true,
+          "cwd_is_run": true,
+          "command": "allow",
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "log",
+          "event": "PostToolUse",
+          "class": "shell",
+          "name": "bash",
+          "session": true,
+          "cwd_is_run": true,
+          "command": "allow",
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "guard",
+          "event": "PreToolUse",
+          "class": "shell",
+          "name": "bash",
+          "session": true,
+          "cwd_is_run": true,
+          "command": "deny",
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "guard",
+          "event": "PreToolUse",
+          "class": "shell",
+          "name": "bash",
+          "session": true,
+          "cwd_is_run": true,
+          "command": "slow",
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "log",
+          "event": "PreToolUse",
+          "class": "mcp:probe",
+          "name": "mcp__probe__ping",
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "log",
+          "event": "PostToolUse",
+          "class": "mcp:probe",
+          "name": "mcp__probe__ping",
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        },
+        {
+          "role": "stop",
+          "event": "Stop",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": false,
+          "before_first_request": false
+        },
+        {
+          "role": "stop",
+          "event": "Stop",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": true,
+          "before_first_request": false
+        },
+        {
+          "role": "log",
+          "event": "SessionEnd",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": false
+        }
+      ],
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "slow": false
+      },
+      "hosts": [],
+      "folder": [
+        "auth.json",
+        "models-store.json"
+      ]
+    },
+    "blocked": {
+      "refused": "receipt_required",
+      "risks": [
+        [
+          "mcp.probe",
+          "runs-code",
+          null
+        ],
+        [
+          "hook.after",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.end",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.guard",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.mcp",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.prompt",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.start",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.stop",
+          "runs-code",
+          true
+        ]
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "requests": 0,
+      "ms": 1324,
+      "credential": [],
+      "markers": [],
+      "stop_reason_at": -1,
+      "readiness_in_temp_dir": true,
+      "marker": {
+        "hooks": 7,
+        "before_first_request": true
+      },
+      "hooks": [
+        {
+          "role": "log",
+          "event": "SessionStart",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": "startup",
+          "stop_hook_active": null,
+          "before_first_request": true
+        },
+        {
+          "role": "prompt",
+          "event": "UserPromptSubmit",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": "blocked",
+          "source": "interactive",
+          "stop_hook_active": null,
+          "before_first_request": true
+        },
+        {
+          "role": "log",
+          "event": "SessionEnd",
+          "class": null,
+          "name": null,
+          "session": true,
+          "cwd_is_run": true,
+          "command": null,
+          "prompt": null,
+          "source": null,
+          "stop_hook_active": null,
+          "before_first_request": true
+        }
+      ],
+      "ran": {
+        "allowed": false,
+        "denied": false,
+        "slow": false
+      },
+      "hosts": [],
+      "folder": [
+        "auth.json",
+        "models-store.json"
+      ]
+    },
+    "broken": {
+      "refused": "receipt_required",
+      "risks": [
+        [
+          "mcp.probe",
+          "runs-code",
+          null
+        ],
+        [
+          "hook.after",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.end",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.guard",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.mcp",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.prompt",
+          "runs-code",
+          true
+        ],
+        [
+          "hook.start",
+          "runs-code",
+          false
+        ],
+        [
+          "hook.stop",
+          "runs-code",
+          true
+        ]
+      ],
+      "exit": 1,
+      "timed_out": false,
+      "requests": 0,
+      "ms": 652,
+      "credential": [],
+      "markers": [],
+      "stop_reason_at": -1,
+      "readiness_in_temp_dir": true,
+      "marker": null,
+      "hooks": [],
+      "ran": {
+        "allowed": false,
+        "denied": false,
+        "slow": false
+      },
+      "hosts": [],
+      "folder": [
+        "auth.json",
+        "models-store.json"
+      ]
+    }
+  },
+  "checks": {
+    "main: hs launch-spec refuses without a receipt, each hook runs-code and only the gates block": true,
+    "main: the readiness marker, named by launch-spec in its temp dir, is written with every hook registered before the first model request": true,
+    "main: the guard lets the allowed command run, blocks the denied one with its reason reaching the model, and fails closed on the stalled one with the shim's reason reaching the model; neither runs": true,
+    "main: the guard's envelope is hs's for each bash call (PreToolUse, class shell, a session id, the run's directory)": true,
+    "main: an MCP tool reaches its hook as mcp__probe__ping, class mcp:probe, and PostToolUse sees the calls that ran": true,
+    "main: UserPromptSubmit sees the prompt; SessionStart (startup) comes before the first model request; SessionEnd fires": true,
+    "main: the Stop hook's block asks for one more run, its reason reaching a later request; the next Stop says stop_hook_active, and the run ends": true,
+    "main: no host is asked for, the session goes on to its end without hanging, and the folder holds only what pi writes": true,
+    "blocked: a prompt the UserPromptSubmit hook refuses reaches no model": true,
+    "broken: hs's launch extension made unparsable stops pi (exit 1, no request), and no marker is written": true,
+    "no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

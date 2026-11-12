@@ -220,6 +220,7 @@ require = "required"
 - **Inert items**: a delivered item the harness will not run (an untrusted Codex hook, a hook whose content changed after trust, an untrusted project) is reported by `observe` and `launch-spec` with readiness `inert`. It is never presented as active.
 - **Codex hook trust**: a delivered hook has readiness `needs-trust` until the user approves it in Codex's `/hooks`, or a receipt names it and the Codex driver for that version is certified to write `trusted_hash` correctly. Launching with `--dangerously-bypass-hook-trust` is never used: it would also run repository hooks nobody reviewed [CX §11]. Since milestone 6a.8 a launch carries its own trust: `-c hooks.state` names each launch hook's `trusted_hash` for that launch only, under the launch receipt, and nothing is written into `config.toml` (section 7.5). The hash is certified on Codex 0.160.0 by a tier 1 check.
 - **OpenCode** has no command hooks: its hooks are plugin functions. Since milestone 7.3 a launch carries hs's bridge plugin, which runs the shim (section 7.5). Only `PreToolUse` and `PostToolUse` have a route there. Every other event is refused when required and skipped when `if-supported` (section 5.10), with the reason.
+- **pi** has no command hooks either: its hooks are extension handlers. Since milestone 8.2 the launch extension runs the shim (section 7.5) for `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd` and `Stop`. `PermissionRequest` and the subagent events have no route (pi has neither), and the compaction events are not measured. Each is refused when required and skipped when `if-supported`, with the reason.
 
 ### 5.7 Skills, agents, commands, plugins, instructions
 
@@ -685,7 +686,14 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
     - a server named like one in the folder's `mcp.json`, which pi starts instead of the launch's (measured);
     - an SSE server (pi supports streamable HTTP), permissions (pi has none), and a required status line;
     - an endpoint launch while the folder holds a login. pi writes an empty `auth.json` on every start, 2 bytes, mode 600 (measured, by its size and mode only), so a regular file of exactly that size holds no login, told from its metadata. Any other size, or a link, counts as one, and the file is never opened.
-  - Hooks come in milestone 8.2, and `materialize` in 8.3.
+  - **Hooks** (milestone 8.2): the same extension runs hs's hook shim for each hook, on the pi event its spec event rides on (measured, section 10):
+    - `PreToolUse` on `tool_call`, which blocks by returning `{block: true, reason}`; `UserPromptSubmit` on `input`, which blocks by returning `{action: "handled"}`, so the agent is skipped and no model request is made. Both fail closed as the OpenCode bridge does: the shim's exit 0 continues and its exit 2 blocks with its reason. Anything else blocks: another exit, a signal, a shim that cannot start, or one still running at the hook's limit plus a margin, its process group killed. A tool call that names no tool fails closed under a guard with a matcher;
+    - `Stop` on `agent_before_settle`: the shim's exit 2 asks pi for one more run, the reason added as a message for the model, as a Stop block does on Claude Code. The next Stop's envelope says `stop_hook_active`. Anything else lets the agent stop;
+    - `PostToolUse` on `tool_result`, `SessionStart` on `session_start` (startup, resume and new as the spec's startup, resume and clear; reload and fork have no spec source), `SessionEnd` on `session_shutdown`: notification only;
+    - the envelope's `session_id` and `cwd` come from pi's session manager and working directory, and an MCP tool keeps its class, `mcp:<server>`, since pi names it `mcp__<server>__<tool>`;
+    - refused: `may_allow` (pi has no permission prompt) and the `fetch` class (pi has no web tool); a hook's `context` is not delivered;
+    - once every handler is registered, the extension writes a marker into the launch's temp dir, which `launch-spec` names under `readiness`. An extension that does not load stops pi altogether (exit 1, no request, measured), so hooks never go missing silently.
+  - `materialize` comes in milestone 8.3.
 
   When the spec's endpoints offer no wire the harness speaks, the request is refused as `gateway_required`, naming the wire. Model roles are carried as follows:
   - Claude Code: `--model`, and `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`, `CLAUDE_CODE_EFFORT_LEVEL` [CC §5, §19];
@@ -1109,6 +1117,20 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - a second launch in the same folder is not refused, and reaches the model.
 
   *Run 2026-11-12 on a bench: pass on pi 1.5.2 (twelve checks); again with hs's own launch (eighteen checks).*
+- **Hooks on pi through the launch extension** (tier 1, `conformance/tier1/pi-hooks.mjs`, milestone 8.2): `hs launch-spec --harness pi` for a spec with an endpoint, a stdio MCP server and one hook on every event the extension carries, run as a caller runs it, with the network refused and a scratch HOME. Each hook's process records its envelope by name, with the time. The guard blocks one bash command and stalls on another (2 s limit), and the Stop hook blocks once. Judged:
+  - the launch is refused without a receipt; each hook is `runs-code`, and only the gates and Stop block;
+  - the readiness marker, named by `launch-spec` in its temp dir, is written with every hook registered before the first model request;
+  - the guard lets the allowed command run, blocks the denied one with its reason reaching the model, and fails closed on the stalled one with the shim's reason reaching the model. Neither runs;
+  - the guard's envelope is hs's for each bash call: `PreToolUse`, class `shell`, a session id, the run's directory;
+  - an MCP tool reaches its hook as `mcp__probe__ping`, class `mcp:probe`, and `PostToolUse` sees the calls that ran;
+  - `UserPromptSubmit` sees the prompt, `SessionStart` (startup) comes before the first model request, and `SessionEnd` fires;
+  - the Stop hook's block asks for one more run, and its reason reaches a later request. The next Stop says `stop_hook_active`, and the run ends;
+  - no host is asked for, the session goes on to its end without hanging (4.5 s), and the folder holds only what pi writes;
+  - a prompt the `UserPromptSubmit` hook refuses reaches no model;
+  - hs's launch extension made unparsable stops pi (exit 1, no request), and no marker is written.
+  - Recorded: pi gives the headless prompt the source `interactive`.
+
+  *Run 2026-11-12 on a bench: pass on pi 1.5.2 (eleven checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1238,6 +1260,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | pi, milestone 8.2: hooks through the launch extension. `PreToolUse` and `UserPromptSubmit` block and fail closed on every shim failure; a `Stop` block asks for one more run; `PostToolUse`, `SessionStart` and `SessionEnd` notify. The readiness marker comes from the start, and an extension that does not load stops pi (sections 5.6, 7.5, 10) |
 | 2026-11-12 | pi, milestone 8.1: the launch writes nothing into the folder; one generated extension registers the endpoint's provider and the MCP servers, its configuration JSON of one whole object; skills by `--skill`, `AGENTS.md` as a system-prompt append. Spec text with `$` or a leading `!` is refused in every carrier pi expands or runs, a leading `~` in a server's command, arguments or cwd too, and a server named like the folder's. pi's empty `auth.json` (2 bytes) is told from a login by its size alone (sections 7.5, 8, 10) |
 | 2026-11-12 | pi: the driver targets the 1.5 line (1.5.2 up to 1.6), widened one minor at a time with a tier 1 run each; 0.x is out of range. A launch writes nothing into the folder: one extension hs generates carries the endpoint's provider and the MCP servers (and later the hooks). Spec text pi could interpolate or execute (`$`, `${…}`, a leading `!`) is refused in every carrier before launch. Project trust is left to pi and named as a known limit (section 10) |
 | 2026-11-12 | OpenCode: the hooks bridge writes a readiness marker into the launch's temp dir once its hooks are registered, and `launch-spec` names it (`readiness`), so a bridge OpenCode skips is visible, not silent. A tool call that names no tool fails closed under a guard with a matcher (sections 7.5, 10) |

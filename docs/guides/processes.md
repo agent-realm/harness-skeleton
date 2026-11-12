@@ -62,11 +62,18 @@ whether the guard fails closed:
   guarantee. On OpenCode the one case left open is the bridge plugin itself failing to load:
   OpenCode then starts without it, and no hook runs (measured). The bridge writes a marker once its
   hooks are registered, before the session's first model request. `launch-spec` names it under
-  `readiness`; check it before you take the guards as active.
+  `readiness`; check it before you take the guards as active. On pi, hs's launch extension runs the
+  shim and blocks the same way, and an extension that does not load stops pi altogether, so a guard
+  is never silently missing there.
 
 On OpenCode only `PreToolUse` and `PostToolUse` have a route. The other events are refused when
 required and skipped when `if-supported`. `may_allow` and `mcp:` matches are refused, and a hook's
 `context` is not delivered.
+
+On pi, `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd` and `Stop` have
+a route. A `Stop` block asks pi for one more run, with the reason as a message for the model.
+`may_allow` and the `fetch` class are refused, the other events are refused or skipped as above, and a
+hook's `context` is not delivered.
 
 **The status line:**
 

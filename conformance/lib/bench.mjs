@@ -166,8 +166,8 @@ export function bench(prefix) {
   // script a run `load`s ({ steps, fallback }, the package's format); with none loaded, every
   // request gets 400. `inspect(body)` is the check's own look at a request, for what the harness
   // sent back (a tool's output, say); the check keeps names only.
-  async function model(name, { known = { [DUMMY]: 'bench-dummy' }, markers = [], inspect } = {}) {
-    const m = await scriptedModel({ markers, credentials: known, inspect });
+  async function model(name, { known = { [DUMMY]: 'bench-dummy' }, markers = [], inspect, steps, fallback } = {}) {
+    const m = await scriptedModel({ markers, credentials: known, inspect, ...(steps ? { steps } : {}), ...(fallback ? { fallback } : {}) });
     models.push(m);
     return { name, log: m.seen, url: m.url, load: m.load };
   }

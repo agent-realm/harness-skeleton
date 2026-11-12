@@ -148,3 +148,28 @@ test('remove: the keys, the copy and the skill go; the user\'s own keys stay', (
     s.done();
   }
 });
+
+// A persisted {env:…} or {file:…} would be read by every bare OpenCode start, with no receipt in the
+// way: the plan refuses it, quoting no value, and nothing lands in opencode.json.
+test('materialize refuses {env:} and {file:} in what it would persist, quoting no value; nothing is written', () => {
+  const s = box();
+  try {
+    const before = '{\n  "share": "disabled"\n}\n';
+    fs.writeFileSync(path.join(cfg(s), 'opencode.json'), before);
+    for (const [name, toml] of [
+      ['file-in-env-value', '[mcp.a]\nexec = "/bin/true"\nenv = { X = "{file:/etc/hosts}" }\n'],
+      ['file-in-env-key', '[mcp.a]\nexec = "/bin/true"\nenv = { "{file:/etc/hosts}" = "x" }\n'],
+      ['file-in-header-name', '[mcp.a]\nurl = "https://x.example/mcp"\nheaders = { "{file:/etc/hosts}" = "x" }\n'],
+      ['env-in-model', '[model.roles]\nprimary = "openai/{env:HOME}"\n'],
+    ]) {
+      const l = layer(s.root, name, toml);
+      const r = s.call('plan', { layers: [l], owner: 'builder', mode: 'materialize' });
+      assert.equal(r.error?.code, 'interpolation_refused', name);
+      assert.doesNotMatch(JSON.stringify(r.error), /hosts|HOME/, `${name}: no value quoted`);
+      assert.equal(fs.readFileSync(path.join(cfg(s), 'opencode.json'), 'utf8'), before, `${name}: opencode.json untouched`);
+    }
+    assert.ok(!fs.existsSync(path.join(s.folder, 'hs-run')), 'no copy made');
+  } finally {
+    s.done();
+  }
+});

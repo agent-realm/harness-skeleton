@@ -28,7 +28,11 @@ ssh $BENCH "rm -rf $B"
 ```
 
 The Codex checks take `--codex <path>` (`npm install @openai/codex@<version>`) instead of
-`--claude`.
+`--claude`. The OpenCode check takes `--opencode <path>`: OpenCode 2 is the npm package
+`@opencode/cli`, and the path is its platform binary, such as
+`node_modules/@opencode/cli-linux-x64/bin/opencode`. Its install runs that binary, so give the install a
+scratch `TMPDIR` too. `--opencode1 <path>` adds the 1.x line (`opencode-ai`, binary
+`node_modules/opencode-linux-x64/bin/opencode`), recorded only.
 
 **The report** records the harness version, Node, the OS, the hs commit (`--hs-rev`, since the
 bench copy has no `.git`) and each check's result. Name it by its run's time in UTC, the report's

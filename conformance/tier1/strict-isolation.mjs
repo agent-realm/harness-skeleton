@@ -13,9 +13,10 @@
 //              never adds back
 //   fagents    an AGENTS.md of the data folder's own (OpenCode: config/opencode/; pi: the agent dir)
 //   fskill     a skill of the data folder's own that no plan installed
-//   dotpi      pi only: a .pi/APPEND_SYSTEM.md in the working directory, with the folder's
+//   dotpi      pi only: an extension in the working directory's .pi/extensions/, with the folder's
 //              settings.json trusting every project (defaultProjectTrust "always"), so a launch that
-//              does not refuse trust loads it
+//              does not refuse trust loads it; it writes a file when pi loads it. Recorded beside it:
+//              whether a .pi/APPEND_SYSTEM.md marker reaches a request (dotpi_append)
 // and the carriers strict must keep: the spec's skill and AGENTS.md, and a skill a plan of the spec
 // installed into the folder first (`kept`). Each harness gets two launches of hs's own
 // `launch-spec`, run as a caller runs it: the same spec without `isolation` (the premise: the
@@ -37,7 +38,7 @@ const PROMPT = 'tier 1 strict isolation check';
 const M = {
   skill: 'hs-tier1-str-skill-4f1a', agents: 'hs-tier1-str-agents-a9c2', kept: 'hs-tier1-str-kept-37d0',
   global: 'hs-tier1-str-global-e5b8', ancestor: 'hs-tier1-str-ancestor-0c6d', project: 'hs-tier1-str-project-9a17', cwd: 'hs-tier1-str-cwd-62fe',
-  fagents: 'hs-tier1-str-fagents-d4a3', fskill: 'hs-tier1-str-fskill-18bc', dotpi: 'hs-tier1-str-dotpi-7e05',
+  fagents: 'hs-tier1-str-fagents-d4a3', fskill: 'hs-tier1-str-fskill-18bc', dotpi_append: 'hs-tier1-str-dotpi-7e05',
 };
 const CARRIERS = ['skill', 'agents', 'kept'];
 const b = bench('hs-tier1-strict-');
@@ -89,7 +90,9 @@ try {
   put(path.join(proj, 'AGENTS.md'), `Ancestor. ${M.ancestor}\n`);
   put(path.join(proj, '.agents', 'skills', 'canary-project', 'SKILL.md'), skill('canary-project', M.project));
   put(path.join(cwd, 'AGENTS.md'), `Working directory. ${M.cwd}\n`);
-  put(path.join(cwd, '.pi', 'APPEND_SYSTEM.md'), `Project system prompt. ${M.dotpi}\n`);
+  put(path.join(cwd, '.pi', 'APPEND_SYSTEM.md'), `Project system prompt. ${M.dotpi_append}\n`);
+  const CANARY_OUT = 'HS_TIER1_STRICT_CANARY_OUT';
+  put(path.join(cwd, '.pi', 'extensions', 'canary.js'), `import { writeFileSync } from 'node:fs';\nexport default function () {\n  if (process.env.${CANARY_OUT}) writeFileSync(process.env.${CANARY_OUT}, 'loaded');\n}\n`);
 
   // The spec, with and without strict: a skill and an AGENTS.md; and a layer a plan installs.
   const kitToml = (strict) => [...(strict ? ['isolation = "strict"', ''] : []), '[spec]', `name = "kit${strict ? '-strict' : ''}"`, 'version = "1.0.0"', 'format = "0.2"', '', '[model.roles]', 'primary = "bench-primary"', ''].join('\n');
@@ -141,7 +144,8 @@ try {
     const receipt = path.join(b.work, `receipt-${harness}-${variant}.json`);
     put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
     const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
-    const env = { ...spec.env_set, ...viaProxy };
+    const extOut = path.join(b.work, `dotpi-${harness}-${variant}.loaded`);
+    const env = { ...spec.env_set, ...viaProxy, [CANARY_OUT]: extOut };
     for (const [v, ref] of Object.entries(spec.env_from_refs)) {
       if (ref !== `env:${REF_VAR}`) throw new Error(`unexpected reference for ${v}`);
       env[v] = DUMMY;
@@ -154,7 +158,7 @@ try {
       exit: r.exit, timed_out: r.timed_out, requests: seen.length,
       isolation_item: spec.launch_items.find((i) => i.item === 'isolation')?.value ?? null,
       kept: spec.launch_items.some((i) => i.item === 'skill.kept') ? 'carried' : spec.skipped.some((x) => x.item === 'skill.kept') ? 'skipped' : null,
-      reached: Object.entries(M).filter(([, m]) => seen.some((q) => q.markers.includes(m))).map(([k]) => k).sort(),
+      reached: [...Object.entries(M).filter(([, m]) => seen.some((q) => q.markers.includes(m))).map(([k]) => k), ...(fs.existsSync(extOut) ? ['dotpi'] : [])].sort(),
       hosts: [...new Set(hosts.slice(from))].sort(),
     };
   };
@@ -176,8 +180,8 @@ try {
   const checks = {
     'opencode default: the carriers reach, and so do the global skill, the ancestor AGENTS.md, the project skill, the working directory\'s AGENTS.md, and the folder\'s own AGENTS.md and skill (the premise)': has(O.default, ...CARRIERS, ...canaries('opencode')),
     'opencode strict: the spec\'s skill and AGENTS.md and the planned skill (carried by the launch itself) reach; no canary does': has(O.strict, ...CARRIERS) && none(O.strict, ...canaries('opencode')) && O.strict.kept === 'carried' && O.strict.isolation_item === 'strict',
-    'pi default: the carriers reach, and so do the global skill, the ancestor and working directory AGENTS.md, the folder\'s own AGENTS.md and skill, and the trusted project\'s .pi/APPEND_SYSTEM.md (the premise)': has(P.default, ...CARRIERS, 'global', 'ancestor', 'cwd', 'fagents', 'fskill', 'dotpi'),
-    'pi strict: the spec\'s skill and AGENTS.md and the planned skill (named again with --skill) reach; no canary does, the trusted .pi/ included': has(P.strict, ...CARRIERS) && none(P.strict, ...canaries('pi')) && P.strict.kept === 'carried' && P.strict.isolation_item === 'strict',
+    'pi default: the carriers reach, and so do the global skill, the ancestor and working directory AGENTS.md, the folder\'s own AGENTS.md and skill, and the trusted project\'s .pi/extensions/ extension loads (the premise)': has(P.default, ...CARRIERS, 'global', 'ancestor', 'cwd', 'fagents', 'fskill', 'dotpi'),
+    'pi strict: the spec\'s skill and AGENTS.md and the planned skill (named again with --skill) reach; no canary does, and the trusted project\'s extension does not load': has(P.strict, ...CARRIERS) && none(P.strict, ...canaries('pi')) && P.strict.kept === 'carried' && P.strict.isolation_item === 'strict',
     'no host is asked for, and no process with the bench\'s environment is left': [...Object.values(O), ...Object.values(P)].every((r) => r.hosts.length === 0) && left.length === 0,
   };
   const premise = O.default.requests > 0 && P.default.requests > 0;
@@ -187,7 +191,7 @@ try {
     at: new Date().toISOString(),
     evidence: { opencode: evidence(b, oc), pi: evidence(b, pi) },
     runs,
-    recorded: { pi_default_project_skill: P.default.reached.includes('project') },
+    recorded: { dotpi_append: { default: P.default.reached.includes('dotpi_append'), strict: P.strict.reached.includes('dotpi_append') } },
     checks,
     verdict,
   };

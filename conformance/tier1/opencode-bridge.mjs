@@ -12,7 +12,8 @@
 // OpenCode "installs missing packages in the background" (/v2/docs/plugins). Each run has a data folder
 // of its own, a scratch HOME, and OpenCode's network through a local proxy that records the host names
 // it is asked for (CONNECT and plain), forwarding them (open) or refusing them (blocked); the model on
-// loopback stays off the proxy. The model is scripted: it asks for one shell command the plugin allows
+// loopback stays off the proxy. The model is scripted: it asks the `shell` tool (2.x's name; 1.x
+// called it bash) for one command the plugin allows
 // and then one it denies, then answers. The plugin goes in OPENCODE_CONFIG_DIR/plugins/ and writes what
 // it sees to a probe file, by name: the domains its ctx has, the hooks that fired, the fields of their
 // events, the tool names, the event types, and whether it could run a process and read its exit code.
@@ -137,8 +138,8 @@ try {
   const cwd = path.join(b.work, 'work');
   fs.mkdirSync(cwd);
   const steps = () => [
-    { when: { tool: 'bash' }, reply: { tool_calls: [{ id: 'call_ok', name: 'bash', args: { command: 'echo hs-allowed', description: 'echo' } }] } },
-    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'bash', args: { command: 'echo DENYME', description: 'echo' } }] } },
+    { when: { tool: 'shell' }, reply: { tool_calls: [{ id: 'call_ok', name: 'shell', args: { command: 'echo hs-allowed', description: 'echo' } }] } },
+    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'shell', args: { command: 'echo DENYME', description: 'echo' } }] } },
     { when: { after_tool: 'call_deny' }, reply: { text: 'done' } },
   ];
   const folderFor = (variant) => {

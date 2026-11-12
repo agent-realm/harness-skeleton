@@ -9,16 +9,20 @@
 //                               permissionDecision allow; otherwise, continue
 //   stdout {"context": "…"}     hookSpecificOutput.additionalContext, on the events that take it
 // A process that cannot be run blocks (exit 2). On a gating event, a process that exits with any
-// other code, dies by a signal, or runs past --timeout (stopped by the shim, SIGKILL) blocks too:
-// a guard that crashes or stalls fails closed. A block's reason is never empty: an empty stderr on
-// exit 2 lets the call through on some harnesses [CX §11].
+// other code, dies by a signal, or runs past --timeout blocks too: a guard that crashes or stalls
+// fails closed. A block's reason is never empty: an empty stderr on exit 2 lets the call through on
+// some harnesses [CX §11].
+// The process runs in a process group of its own. At --timeout the shim kills that whole group,
+// SIGKILL, and decides at once: a process the hook started (a shell's forked command, say) never
+// outlives the decision, and never holds it by keeping the pipes open. A hook that exits on its
+// own within its limit is not touched; what it leaves running in the background is its own.
 //
 //   node src/shim/<harness>.js <Event> [--may-allow] [--timeout <s>] [--cwd <dir>] [--env K=V]... [--env-ref K=VAR]... -- <exec> [args...]
 //
 // `--env-ref K=VAR` gives the process K from the shim's own variable VAR, which the caller filled
 // from a reference at launch (§5.3), so no value or `${…}` is ever in the command line.
 
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -150,7 +154,63 @@ export function parseArgs(argv) {
   return opts;
 }
 
-function run(H) {
+const MAX_OUTPUT = 16 * 1024 * 1024;
+
+// Runs the hook's process in a group of its own: {status, signal, stdout, stderr} once it closes,
+// {error} if it cannot be run or its output passes MAX_OUTPUT, {timedOut} at the limit, the group
+// killed in the last two cases.
+export function runProcess(argv, { input, cwd, env, limit }) {
+  return new Promise((resolve) => {
+    let child = null;
+    let stdout = '';
+    let stderr = '';
+    let done = false;
+    let timer = null;
+    const killGroup = () => {
+      try {
+        process.kill(-child.pid, 'SIGKILL');
+      } catch {
+        // already gone
+      }
+    };
+    const end = (r) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve({ stdout, stderr, ...r });
+    };
+    try {
+      child = spawn(argv[0], argv.slice(1), { cwd, env, stdio: ['pipe', 'pipe', 'pipe'], detached: true });
+    } catch (e) {
+      end({ error: e });
+      return;
+    }
+    if (limit) {
+      timer = setTimeout(() => {
+        killGroup();
+        end({ status: null, signal: 'SIGKILL', timedOut: true });
+      }, limit);
+    }
+    const take = (which) => (d) => {
+      if (which === 'out') stdout += d;
+      else stderr += d;
+      if (stdout.length + stderr.length > MAX_OUTPUT) {
+        killGroup();
+        end({ error: Object.assign(new Error('output past its limit'), { code: 'ENOBUFS' }) });
+      }
+    };
+    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
+    child.stdout.on('data', take('out'));
+    child.stderr.on('data', take('err'));
+    child.on('error', (e) => end({ error: e }));
+    child.on('close', (status, signal) => end({ status, signal }));
+    child.stdin.on('error', () => {});
+    child.stdin.end(input);
+  });
+}
+
+async function run(H) {
   const { envelope, block, translate } = shimFor(H);
   let opts;
   let native = {};
@@ -167,14 +227,10 @@ function run(H) {
   const env = { ...process.env, ...opts.env };
   for (const [k, v] of Object.entries(opts.envRefs)) env[k] = process.env[v] ?? '';
   const limit = Number.isFinite(opts.timeout) && opts.timeout > 0 ? opts.timeout * 1000 : undefined;
-  const res = spawnSync(opts.command[0], opts.command.slice(1), {
-    input: JSON.stringify(envelope(opts.event, native)), cwd: opts.cwd, env, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024,
-    timeout: limit, killSignal: 'SIGKILL',
-  });
-  const timedOut = res.error?.code === 'ETIMEDOUT';
+  const res = await runProcess(opts.command, { input: JSON.stringify(envelope(opts.event, native)), cwd: opts.cwd, env, limit });
   let t;
-  if (res.error && !timedOut) t = block(opts.event, `hs hook shim: the hook's process could not be run (${res.error.code ?? res.error.message}); failing closed`);
-  else t = translate(opts.event, { ...res, timedOut }, { mayAllow: opts.mayAllow });
+  if (res.error) t = block(opts.event, `hs hook shim: the hook's process could not be run (${res.error.code ?? res.error.message}); failing closed`);
+  else t = translate(opts.event, res, { mayAllow: opts.mayAllow });
   if (t.stdout) process.stdout.write(t.stdout);
   if (t.stderr) process.stderr.write(t.stderr);
   process.exit(t.code);

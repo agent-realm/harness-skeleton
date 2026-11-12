@@ -37,7 +37,7 @@ bearer_ref = "DOCS_TOKEN"        # a remote server also carries sends-data, with
 event   = "PreToolUse"           # also SessionStart, UserPromptSubmit, PostToolUse, Stop, …
 match   = { tool = ["shell"] }   # tool classes: shell, edit, read, fetch, mcp:<server>
 run     = { exec = "hooks/guard.sh" }
-timeout = 10                     # seconds; hs's shim stops the process at this limit and decides
+timeout = 10                     # seconds; hs's shim stops the hook, and all it started, at this limit and decides
 ```
 
 A hook runs through hs's hook shim. The shim hands it one JSON envelope on stdin (`hs`, the

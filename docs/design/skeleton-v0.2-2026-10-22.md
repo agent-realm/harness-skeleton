@@ -998,6 +998,14 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
     - a running background service picks up an `AGENTS.md` change without a restart.
 
   *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (seven checks).*
+- **An OpenCode plugin, ahead of a hooks bridge** (tier 1, `conformance/tier1/opencode-bridge.mjs`): what a local plugin can do in OpenCode 2.x, and whether loading one fetches anything. 2.x plugins are `Plugin.define({ id, setup })` from `@opencode/plugin`, with hooks registered per domain in `setup` (https://opencode.ai/v2/docs/build/plugins/server, read 2026-11-12). Each run has a folder of its own, and OpenCode's network goes through a local proxy that records host names, forwarding them (open) or refusing them (blocked). The model asks the `shell` tool (2.x's name; 1.x called it `bash`) for one command a plugin allows and one it denies, each leaving a file. The runs are no plugin, a plain `.js` plugin with no import, and one through `@opencode/plugin`, each open and blocked. Judged:
+  - a local plugin of either kind loads with the network open and blocked, installs nothing, and writes nothing into the config directory;
+  - with or without a plugin, OpenCode asks for no host but its model catalog, `models.opencode.ai`, and no package registry;
+  - `ctx.tool.hook("execute.before")` fires for the shell tool, and a process run from the hook with the runtime's `child_process` returns its exit code;
+  - `ctx.permission.hook("evaluate")` setting `effect` to `deny` blocks the call, so its command never runs, and the reason reaches the model; the allowed call runs. With no plugin, both run.
+  - Recorded only: the fields of each hook's event (`tool.execute.before`: `agent`, `id`, `input`, `messageID`, `sessionID`, `tool`; `permission.evaluate`: `action`, `agent`, `effect`, `metadata`, `resources`, `sessionID`, `source`; `shell.create.before`: `command`, `cwd`, `env`, `shell`, `timeout`), and that `session.prompt` and `tool.execute.after` fire.
+
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.

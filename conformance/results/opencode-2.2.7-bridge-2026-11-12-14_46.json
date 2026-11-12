@@ -1,0 +1,803 @@
+{
+  "check": "tier 1: what a local plugin can do in OpenCode 2.x, and whether loading one fetches anything (design note v0.2 §5.6, §8)",
+  "at": "2026-11-12T11:46:18.972Z",
+  "evidence": {
+    "harness": "opencode v2.2.7",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "2fcb9c8"
+  },
+  "runs": {
+    "none_open": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": false,
+      "allowed_ran": true,
+      "denied_ran": true,
+      "plugin": {
+        "loaded": false,
+        "ctx": null,
+        "registered": [],
+        "fired": [],
+        "fields": {},
+        "tools_seen": [],
+        "spawn_status": null,
+        "denied_in_hook": false,
+        "subscribe": null,
+        "events": []
+      },
+      "hosts": [
+        "connect:models.opencode.ai"
+      ],
+      "config_dir_added": []
+    },
+    "plain_open": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": true,
+      "allowed_ran": true,
+      "denied_ran": false,
+      "plugin": {
+        "loaded": true,
+        "ctx": [
+          "agent",
+          "aisdk",
+          "app",
+          "command",
+          "credential",
+          "event",
+          "experimental",
+          "generate",
+          "integration",
+          "location",
+          "mcp",
+          "model",
+          "options",
+          "permission",
+          "plugin",
+          "provider",
+          "reference",
+          "rpc",
+          "session",
+          "shell",
+          "skill",
+          "storage",
+          "tool",
+          "vcs",
+          "websearch",
+          "worktree"
+        ],
+        "registered": [
+          [
+            "tool.execute.before",
+            true,
+            null
+          ],
+          [
+            "tool.execute.after",
+            true,
+            null
+          ],
+          [
+            "permission.evaluate",
+            true,
+            null
+          ],
+          [
+            "session.prompt",
+            true,
+            null
+          ],
+          [
+            "shell.create.before",
+            true,
+            null
+          ]
+        ],
+        "fired": [
+          "permission.evaluate",
+          "session.prompt",
+          "shell.create.before",
+          "tool.execute.after",
+          "tool.execute.before"
+        ],
+        "fields": {
+          "permission.evaluate": [
+            "action",
+            "agent",
+            "effect",
+            "metadata",
+            "resources",
+            "sessionID",
+            "source"
+          ],
+          "session.prompt": [
+            "delivery",
+            "messageID",
+            "metadata",
+            "prompt",
+            "sessionID"
+          ],
+          "shell.create.before": [
+            "command",
+            "cwd",
+            "env",
+            "shell",
+            "timeout"
+          ],
+          "tool.execute.after": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "result",
+            "sessionID",
+            "status",
+            "tool"
+          ],
+          "tool.execute.before": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "sessionID",
+            "tool"
+          ]
+        },
+        "tools_seen": [
+          "shell"
+        ],
+        "spawn_status": 3,
+        "denied_in_hook": true,
+        "subscribe": true,
+        "events": [
+          "agent.updated",
+          "command.updated",
+          "integration.updated",
+          "location.shutdown",
+          "model.updated",
+          "plugin.updated",
+          "provider.updated",
+          "reference.updated",
+          "session.execution.started",
+          "session.execution.succeeded",
+          "session.inbox.delivered",
+          "session.inbox.enqueued",
+          "session.instructions.updated",
+          "session.renamed",
+          "session.step.ended",
+          "session.step.started",
+          "session.step.streamed",
+          "session.text.delta",
+          "session.text.ended",
+          "session.text.started",
+          "session.tool.called",
+          "session.tool.failed",
+          "session.tool.input.ended",
+          "session.tool.input.started",
+          "session.tool.progress",
+          "session.tool.success",
+          "session.usage.updated",
+          "shell.created",
+          "shell.exited",
+          "skill.updated",
+          "websearch.updated"
+        ]
+      },
+      "hosts": [
+        "connect:models.opencode.ai"
+      ],
+      "config_dir_added": []
+    },
+    "sdk_open": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": true,
+      "allowed_ran": true,
+      "denied_ran": false,
+      "plugin": {
+        "loaded": true,
+        "ctx": [
+          "agent",
+          "aisdk",
+          "app",
+          "command",
+          "credential",
+          "event",
+          "experimental",
+          "generate",
+          "integration",
+          "location",
+          "mcp",
+          "model",
+          "options",
+          "permission",
+          "plugin",
+          "provider",
+          "reference",
+          "rpc",
+          "session",
+          "shell",
+          "skill",
+          "storage",
+          "tool",
+          "vcs",
+          "websearch",
+          "worktree"
+        ],
+        "registered": [
+          [
+            "tool.execute.before",
+            true,
+            null
+          ],
+          [
+            "tool.execute.after",
+            true,
+            null
+          ],
+          [
+            "permission.evaluate",
+            true,
+            null
+          ],
+          [
+            "session.prompt",
+            true,
+            null
+          ],
+          [
+            "shell.create.before",
+            true,
+            null
+          ]
+        ],
+        "fired": [
+          "permission.evaluate",
+          "session.prompt",
+          "shell.create.before",
+          "tool.execute.after",
+          "tool.execute.before"
+        ],
+        "fields": {
+          "permission.evaluate": [
+            "action",
+            "agent",
+            "effect",
+            "metadata",
+            "resources",
+            "sessionID",
+            "source"
+          ],
+          "session.prompt": [
+            "delivery",
+            "messageID",
+            "metadata",
+            "prompt",
+            "sessionID"
+          ],
+          "shell.create.before": [
+            "command",
+            "cwd",
+            "env",
+            "shell",
+            "timeout"
+          ],
+          "tool.execute.after": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "result",
+            "sessionID",
+            "status",
+            "tool"
+          ],
+          "tool.execute.before": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "sessionID",
+            "tool"
+          ]
+        },
+        "tools_seen": [
+          "shell"
+        ],
+        "spawn_status": 3,
+        "denied_in_hook": true,
+        "subscribe": true,
+        "events": [
+          "agent.updated",
+          "command.updated",
+          "integration.updated",
+          "location.shutdown",
+          "model.updated",
+          "plugin.updated",
+          "provider.updated",
+          "reference.updated",
+          "session.execution.started",
+          "session.execution.succeeded",
+          "session.inbox.delivered",
+          "session.inbox.enqueued",
+          "session.instructions.updated",
+          "session.renamed",
+          "session.step.ended",
+          "session.step.started",
+          "session.step.streamed",
+          "session.text.delta",
+          "session.text.ended",
+          "session.text.started",
+          "session.tool.called",
+          "session.tool.failed",
+          "session.tool.input.ended",
+          "session.tool.input.started",
+          "session.tool.progress",
+          "session.tool.success",
+          "session.usage.updated",
+          "shell.created",
+          "shell.exited",
+          "skill.updated",
+          "websearch.updated"
+        ]
+      },
+      "hosts": [
+        "connect:models.opencode.ai"
+      ],
+      "config_dir_added": []
+    },
+    "none_blocked": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": false,
+      "allowed_ran": true,
+      "denied_ran": true,
+      "plugin": {
+        "loaded": false,
+        "ctx": null,
+        "registered": [],
+        "fired": [],
+        "fields": {},
+        "tools_seen": [],
+        "spawn_status": null,
+        "denied_in_hook": false,
+        "subscribe": null,
+        "events": []
+      },
+      "hosts": [
+        "connect:models.opencode.ai (refused)"
+      ],
+      "config_dir_added": []
+    },
+    "plain_blocked": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": true,
+      "allowed_ran": true,
+      "denied_ran": false,
+      "plugin": {
+        "loaded": true,
+        "ctx": [
+          "agent",
+          "aisdk",
+          "app",
+          "command",
+          "credential",
+          "event",
+          "experimental",
+          "generate",
+          "integration",
+          "location",
+          "mcp",
+          "model",
+          "options",
+          "permission",
+          "plugin",
+          "provider",
+          "reference",
+          "rpc",
+          "session",
+          "shell",
+          "skill",
+          "storage",
+          "tool",
+          "vcs",
+          "websearch",
+          "worktree"
+        ],
+        "registered": [
+          [
+            "tool.execute.before",
+            true,
+            null
+          ],
+          [
+            "tool.execute.after",
+            true,
+            null
+          ],
+          [
+            "permission.evaluate",
+            true,
+            null
+          ],
+          [
+            "session.prompt",
+            true,
+            null
+          ],
+          [
+            "shell.create.before",
+            true,
+            null
+          ]
+        ],
+        "fired": [
+          "permission.evaluate",
+          "session.prompt",
+          "shell.create.before",
+          "tool.execute.after",
+          "tool.execute.before"
+        ],
+        "fields": {
+          "permission.evaluate": [
+            "action",
+            "agent",
+            "effect",
+            "metadata",
+            "resources",
+            "sessionID",
+            "source"
+          ],
+          "session.prompt": [
+            "delivery",
+            "messageID",
+            "metadata",
+            "prompt",
+            "sessionID"
+          ],
+          "shell.create.before": [
+            "command",
+            "cwd",
+            "env",
+            "shell",
+            "timeout"
+          ],
+          "tool.execute.after": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "result",
+            "sessionID",
+            "status",
+            "tool"
+          ],
+          "tool.execute.before": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "sessionID",
+            "tool"
+          ]
+        },
+        "tools_seen": [
+          "shell"
+        ],
+        "spawn_status": 3,
+        "denied_in_hook": true,
+        "subscribe": true,
+        "events": [
+          "agent.updated",
+          "command.updated",
+          "integration.updated",
+          "location.shutdown",
+          "model.updated",
+          "plugin.updated",
+          "provider.updated",
+          "reference.updated",
+          "session.execution.started",
+          "session.execution.succeeded",
+          "session.inbox.delivered",
+          "session.inbox.enqueued",
+          "session.instructions.updated",
+          "session.renamed",
+          "session.step.ended",
+          "session.step.started",
+          "session.step.streamed",
+          "session.text.delta",
+          "session.text.ended",
+          "session.text.started",
+          "session.tool.called",
+          "session.tool.failed",
+          "session.tool.input.ended",
+          "session.tool.input.started",
+          "session.tool.progress",
+          "session.tool.success",
+          "session.usage.updated",
+          "shell.created",
+          "shell.exited",
+          "skill.updated",
+          "websearch.updated"
+        ]
+      },
+      "hosts": [
+        "connect:models.opencode.ai (refused)"
+      ],
+      "config_dir_added": []
+    },
+    "sdk_blocked": {
+      "exit": 0,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 4,
+      "tools_offered": [
+        "edit",
+        "execute",
+        "glob",
+        "grep",
+        "question",
+        "read",
+        "shell",
+        "skill",
+        "subagent",
+        "webfetch",
+        "websearch",
+        "write"
+      ],
+      "tool_results": 3,
+      "deny_reason_reached_model": true,
+      "allowed_ran": true,
+      "denied_ran": false,
+      "plugin": {
+        "loaded": true,
+        "ctx": [
+          "agent",
+          "aisdk",
+          "app",
+          "command",
+          "credential",
+          "event",
+          "experimental",
+          "generate",
+          "integration",
+          "location",
+          "mcp",
+          "model",
+          "options",
+          "permission",
+          "plugin",
+          "provider",
+          "reference",
+          "rpc",
+          "session",
+          "shell",
+          "skill",
+          "storage",
+          "tool",
+          "vcs",
+          "websearch",
+          "worktree"
+        ],
+        "registered": [
+          [
+            "tool.execute.before",
+            true,
+            null
+          ],
+          [
+            "tool.execute.after",
+            true,
+            null
+          ],
+          [
+            "permission.evaluate",
+            true,
+            null
+          ],
+          [
+            "session.prompt",
+            true,
+            null
+          ],
+          [
+            "shell.create.before",
+            true,
+            null
+          ]
+        ],
+        "fired": [
+          "permission.evaluate",
+          "session.prompt",
+          "shell.create.before",
+          "tool.execute.after",
+          "tool.execute.before"
+        ],
+        "fields": {
+          "permission.evaluate": [
+            "action",
+            "agent",
+            "effect",
+            "metadata",
+            "resources",
+            "sessionID",
+            "source"
+          ],
+          "session.prompt": [
+            "delivery",
+            "messageID",
+            "metadata",
+            "prompt",
+            "sessionID"
+          ],
+          "shell.create.before": [
+            "command",
+            "cwd",
+            "env",
+            "shell",
+            "timeout"
+          ],
+          "tool.execute.after": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "result",
+            "sessionID",
+            "status",
+            "tool"
+          ],
+          "tool.execute.before": [
+            "agent",
+            "id",
+            "input",
+            "messageID",
+            "sessionID",
+            "tool"
+          ]
+        },
+        "tools_seen": [
+          "shell"
+        ],
+        "spawn_status": 3,
+        "denied_in_hook": true,
+        "subscribe": true,
+        "events": [
+          "agent.updated",
+          "command.updated",
+          "integration.updated",
+          "location.shutdown",
+          "model.updated",
+          "plugin.updated",
+          "provider.updated",
+          "reference.updated",
+          "session.execution.started",
+          "session.execution.succeeded",
+          "session.inbox.delivered",
+          "session.inbox.enqueued",
+          "session.instructions.updated",
+          "session.renamed",
+          "session.step.ended",
+          "session.step.started",
+          "session.step.streamed",
+          "session.text.delta",
+          "session.text.ended",
+          "session.text.started",
+          "session.tool.called",
+          "session.tool.failed",
+          "session.tool.input.ended",
+          "session.tool.input.started",
+          "session.tool.progress",
+          "session.tool.success",
+          "session.usage.updated",
+          "shell.created",
+          "shell.exited",
+          "skill.updated",
+          "websearch.updated"
+        ]
+      },
+      "hosts": [
+        "connect:models.opencode.ai (refused)"
+      ],
+      "config_dir_added": []
+    }
+  },
+  "checks": {
+    "none_open: with no plugin, a run reaches the model (premise)": true,
+    "none: with no plugin, both shell commands run (premise)": true,
+    "a local plugin, plain .js or through @opencode/plugin, loads with the network open and blocked, installs nothing and writes nothing into the config directory": true,
+    "with or without a plugin OpenCode asks for no host but its model catalog (models.opencode.ai): no package registry": true,
+    "tool.execute.before fires for the shell tool, and a process run from the hook gives its exit code": true,
+    "permission.evaluate with effect deny blocks the call (its command never runs) and its reason reaches the model; the allowed call runs": true,
+    "none_blocked: with the network blocked and no plugin, a run still reaches the model on loopback (premise)": true,
+    "no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

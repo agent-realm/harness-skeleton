@@ -83,9 +83,14 @@ export default Object.freeze({
   ],
 
   // What a launch carries (§4, §7.1 launch-spec). There is no settings flag: an inline config layer
-  // (OPENCODE_CONFIG_CONTENT) and an extra config directory (OPENCODE_CONFIG_DIR), above the user
-  // and project config and below the system and managed layers [D2:config; G2:packages/core/src/
-  // config.ts; G2:packages/cli/src/server-process.ts; T1].
+  // (OPENCODE_CONFIG_CONTENT), above the user and project config and below the system and managed
+  // layers [D2:config; G2:packages/core/src/config.ts; G2:packages/cli/src/server-process.ts; T1].
+  // The launch's own files (its skills, AGENTS.md and hooks bridge) sit in its temp dir and are
+  // named in that layer by absolute path. A launch never sets OPENCODE_CONFIG_DIR: in 2.x it does not
+  // add a config directory but replaces the global one, so the folder's config/opencode/ (its
+  // AGENTS.md, skills and opencode.json, what a plan installed included) would not be read at all
+  // [G2:packages/cli/src/index.ts Global.layerWith; G2:packages/core/src/config/discovery.ts;
+  // tier 1, opencode-persisted, mixed].
   launch: {
     // A run uses the folder's background service when one is up, and runs on that service's
     // config, not the launch's [G2:packages/cli/src/commands/handlers/run.ts; T1]; --standalone
@@ -99,7 +104,6 @@ export default Object.freeze({
       source: 'OC §17; T1',
     },
     config_content_env: 'OPENCODE_CONFIG_CONTENT',
-    config_dir_env: 'OPENCODE_CONFIG_DIR',
     // Set on every launch: closes the .claude skill roots [G2:packages/cli/src/server-process.ts].
     always_env: { OPENCODE_DISABLE_CLAUDE_CODE: '1' },
     cwd: [],
@@ -153,18 +157,26 @@ export default Object.freeze({
       id: /^[A-Za-z0-9_-]+$/,
       unverified: 'a server of the same name in the system or managed config, or MDM, outranks the launch\'s [D2:config]; hs does not read those layers',
     },
-    // Skills and AGENTS.md go into a config directory in the launch's temp dir: its skills/ are
-    // discovered, and its AGENTS.md replaces the global one [OC §3; T1].
-    skills: { dir: 'skills' },
-    agents_md: 'AGENTS.md',
+    // Skills and AGENTS.md, by path in the inline layer: `skills` names a root whose */SKILL.md are
+    // scanned, `instructions` a file of ambient instructions. Each config document adds its own to
+    // the others', so the folder's skills and AGENTS.md still load beside them
+    // [G2:packages/schema/src/config.ts; G2:packages/core/src/config/plugin/skill.ts, skill-scan.ts,
+    // instruction.ts; tier 1, opencode-persisted, mixed].
+    skills: { config_key: 'skills', tree: 'skills' },
+    agents_md: { config_key: 'instructions', file: 'hs-agents.md', role: 'instructions' },
     statusline: { supported: false, reason: 'OpenCode has no configurable status line [OC §13]' },
     // Hooks (milestone 7.3): OpenCode 2.x has no command hooks, only plugin functions [D2:plugins].
-    // hs's bridge plugin, written into the launch's config directory, runs hs's hook shim for each
-    // spec hook (src/shim/opencode-bridge.js). Only the two tool hooks carry a spec event; only
-    // execute.before can refuse [G2:packages/core/src/plugin/hooks.ts; T3].
+    // hs's bridge plugin, a directory in the launch's temp dir named in the inline layer's `plugins`,
+    // runs hs's hook shim for each spec hook (src/shim/opencode-bridge.js). A configured plugin path
+    // must be a directory; one with no package.json loads its server.js
+    // [G2:packages/core/src/config/plugin/source.ts; G2:packages/plugin/src/host.ts; tier 1,
+    // opencode-persisted, mixed]. Only the two tool hooks carry a spec event; only execute.before can
+    // refuse [G2:packages/core/src/plugin/hooks.ts; T3].
     hooks: OPENCODE_HOOKS,
     bridge: {
-      file: 'plugins/hs-hooks.js',
+      dir: 'hs-hooks',
+      entry: 'server.js',
+      config_key: 'plugins',
       id: 'hs-hooks',
       on: { PreToolUse: 'execute.before', PostToolUse: 'execute.after' },
       // Why the other events have no route, by name (§5.10: refused when required, skipped when
@@ -182,8 +194,8 @@ export default Object.freeze({
       mcp_class: 'an MCP tool reaches a hook as <server>_<tool>, which hs cannot tell from another tool\'s name, so its envelope has tool.class null and no tool.input.mcp [T3]',
       fail_closed: 'a PreToolUse hook fails closed in every way the bridge can see: the shim exiting other than 0 or 2, dying by a signal, failing to start, or still running at the hook\'s limit plus the margin (its process group killed)',
       load: 'if the bridge plugin fails to load, OpenCode starts without it and no hook runs: measured with a plugin that does not parse, which OpenCode skips while the others load [T3]. The bridge writes its readiness marker only once its hooks are registered, so a missing marker tells a caller its guards are not active',
-      // The readiness marker, in the launch's temp dir: the config directory is one tree there, so
-      // the plugin reaches it one level above the config directory.
+      // The readiness marker, in the launch's temp dir beside the plugin directory, which the plugin
+      // reaches one level up from its entry.
       marker: 'hs-hooks.loaded',
       marker_means: 'the hooks bridge writes this file once its hooks are registered; until it exists, no hook of this launch is active, so a caller that needs its guards must not take them as active',
       source: 'G2:packages/core/src/plugin/hooks.ts, packages/plugin/src/promise/adapter.ts, packages/core/src/tool.ts; T3',

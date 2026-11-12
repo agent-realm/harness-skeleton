@@ -70,9 +70,13 @@ test('materialize then launch: what a plan installed at this content is skipped;
     ok(s.call('apply', { plan, receipt: receiptFor(plan) }));
     const spec = ok(s.call('launch-spec', { layers: [t], headless: true }));
     for (const id of ['mcp.db', 'mcp.docs', 'skill.notes']) assert.ok(spec.skipped.some((x) => x.item === id && /installed in the folder by a plan, at this content/.test(x.reason)), id);
-    assert.equal(spec.env_set.OPENCODE_CONFIG_CONTENT, undefined, 'nothing left for the inline layer');
+    // Only the spec's AGENTS.md is left for the inline layer, named by path. No config directory is
+    // set, since one would replace the folder's config/opencode/ and with it what the plan installed
+    // and this launch skips (tier 1, opencode-persisted, mixed).
+    assert.deepEqual(Object.keys(JSON.parse(spec.env_set.OPENCODE_CONFIG_CONTENT)), ['instructions']);
+    assert.ok(!('OPENCODE_CONFIG_DIR' in spec.env_set) && spec.env_unset.includes('OPENCODE_CONFIG_DIR'));
     assert.ok(spec.argv.includes('--standalone'));
-    // The edited skill reaches the launch through its config directory, beside the folder's copy.
+    // The edited skill reaches the launch from its temp dir, beside the folder's copy.
     write(t, 'skills/notes/extra.md', 'more');
     const edited = s.call('launch-spec', { layers: [t], headless: true });
     assert.equal(edited.error.code, 'receipt_required');

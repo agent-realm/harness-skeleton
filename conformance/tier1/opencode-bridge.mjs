@@ -14,7 +14,7 @@
 // it is asked for (CONNECT and plain), forwarding them (open) or refusing them (blocked); the model on
 // loopback stays off the proxy. The model is scripted: it asks the `shell` tool (2.x's name; 1.x
 // called it bash) for one command the plugin allows
-// and then one it denies, then answers. The plugin goes in OPENCODE_CONFIG_DIR/plugins/ and writes what
+// and then one it denies, then answers. The probe plugin goes in OPENCODE_CONFIG_DIR/plugins/ and writes what
 // it sees to a probe file, by name: the domains its ctx has, the hooks that fired, the fields of their
 // events, the tool names, the event types, and whether it could run a process and read its exit code.
 // Runs, each with the network open and then blocked:
@@ -368,8 +368,10 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
       env[v] = DUMMY;
     }
     for (const v of spec.env_unset) env[v] = undefined;
-    const dir = spec.env_set.OPENCODE_CONFIG_DIR;
-    if (breakBridge) fs.writeFileSync(path.join(dir, 'plugins', 'hs-hooks.js'), 'export default { id: "hs-hooks", setup( {\n');
+    // hs's bridge: a plugin directory of its own in the temp dir, named in the inline layer.
+    const dir = spec.files.find((f) => f.role === 'hooks_plugin')?.path ?? null;
+    const named = dir !== null && JSON.parse(spec.env_set.OPENCODE_CONFIG_CONTENT ?? '{}').plugins?.includes(dir) === true && !('OPENCODE_CONFIG_DIR' in spec.env_set);
+    if (breakBridge) fs.writeFileSync(path.join(dir, 'server.js'), 'export default { id: "hs-hooks", setup( {\n');
     const before = names(dir);
     const t0 = Date.now();
     const r = await b.launch([L], [oc, ...spec.argv.slice(1), PROMPT], env, cwd);
@@ -382,7 +384,7 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
     fs.rmSync(spec.temp_dir, { recursive: true, force: true });
     const log = fs.existsSync(hookLog) ? fs.readFileSync(hookLog, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
     return {
-      refused: refused.ok ? null : refused.error.code, bridge: before.includes('plugins/hs-hooks.js'), risks: (items[0]?.risks ?? []).map((x) => [x.item, x.risk, x.blocks ?? null]),
+      refused: refused.ok ? null : refused.error.code, bridge: before.includes('server.js') && named, risks: (items[0]?.risks ?? []).map((x) => [x.item, x.risk, x.blocks ?? null]),
       exit: r.exit, timed_out: r.timed_out, requests: r.seen.ENDPOINT.length, ms,
       markers_reached: Object.entries(M).filter(([, m]) => r.seen.ENDPOINT.some((q) => q.markers.includes(m))).map(([k]) => k).sort(),
       credential_dummy: r.seen.ENDPOINT.length > 0 && r.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
@@ -422,11 +424,11 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
     'throw: a throw in tool.execute.before from a plain .js plugin blocks the call (its command never runs) and its message reaches the model; the allowed call runs': tl.some((l) => l.threw === 'deny') && !T.denied_ran && T.allowed_ran && T.markers_reached.includes('thrown'),
     'throw: a hook that awaits an async child_process.spawn gets the exit code, stdout and stderr': spawned !== null && spawned.code === 3 && spawned.stdout && spawned.stderr && spawned.error === null,
     'throw: a hook whose process runs past its limit is stopped there, its throw ends the call, and the session goes on to its answer (no hang)': slow !== null && slow.timed_out && slow.ms < SLOW_LIMIT_MS + 3000 && !T.slow_ran && T.markers_reached.includes('slow') && T.exit === 0 && !T.timed_out && T.requests >= 4,
-    'driver: hs launch-spec refuses without a receipt (each hook runs code; the guard blocks, the logger does not), and writes its bridge plugin into the config directory': D.refused === 'receipt_required' && D.bridge && JSON.stringify(D.risks) === JSON.stringify([['hook.guard', 'runs-code', true], ['hook.log', 'runs-code', false]]),
+    'driver: hs launch-spec refuses without a receipt (each hook runs code; the guard blocks, the logger does not), and writes its bridge plugin as a directory its inline layer names, with no OPENCODE_CONFIG_DIR': D.refused === 'receipt_required' && D.bridge && JSON.stringify(D.risks) === JSON.stringify([['hook.guard', 'runs-code', true], ['hook.log', 'runs-code', false]]),
     'driver: through hs\'s bridge, the guard lets the allowed command run, blocks the one it denies with its reason reaching the model, and fails closed on the one it stalls on, with the shim\'s reason reaching the model; neither runs': D.allowed_ran && !D.denied_ran && !D.slow_ran && D.markers_reached.includes('guard') && D.markers_reached.includes('failClosed'),
     'driver: the stalled guard does not hang the session: it goes on to its answer, with the endpoint\'s dummy key': D.exit === 0 && !D.timed_out && D.requests >= 4 && D.credential_dummy && D.ms < 60000,
     'driver: the guard\'s envelope is hs\'s (PreToolUse, class shell, the session id, the run\'s directory) for each shell call; the logger sees the call that ran': pre.length === 3 && pre.every((l) => l.class === 'shell' && l.name === 'shell' && l.session && l.cwd_is_run) && JSON.stringify(pre.map((l) => l.command)) === JSON.stringify(['allow', 'deny', 'slow']) && post.length === 1 && post[0].command === 'allow',
-    'driver: nothing is installed into the config directory, and no host is asked for': D.config_dir_added.length === 0 && D.hosts.length === 0,
+    'driver: nothing is installed into the plugin directory, and no host is asked for': D.config_dir_added.length === 0 && D.hosts.length === 0,
     'driver: launch-spec names the bridge\'s readiness marker in its temp dir, and the bridge writes it, its hooks registered, before the session\'s first model request': D.readiness_in_temp_dir === true && D.marker !== null && D.marker.plugin === 'hs-hooks' && D.marker.hooks === 2 && D.marker.before_first_request,
     'driver_broken: a bridge plugin that does not load writes no readiness marker, so a caller sees its guards are not active (the session runs unguarded: the denied command runs)': DB.readiness_in_temp_dir === true && DB.marker === null && DB.requests > 0 && DB.denied_ran,
     'slow_setup: OpenCode finishes a plugin\'s setup, held 3 s, before the session\'s first model request, and its guard blocks the denied call': S.plugin.loaded && sDone !== null && sDone < S.first_request_at && !S.denied_ran && S.allowed_ran,

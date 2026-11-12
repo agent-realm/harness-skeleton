@@ -225,6 +225,8 @@ try {
       tool_results: seen.flatMap((q) => q.tool_results ?? []).length,
       hosts: [...new Set(hosts.slice(from))].sort(),
       folder: names(folder, 3).filter((n) => !n.startsWith('ext-')),
+      // What pi writes as its login store on a start: its size and mode, never its bytes.
+      auth_store: fs.existsSync(path.join(folder, 'auth.json')) ? { bytes: fs.statSync(path.join(folder, 'auth.json')).size, mode: (fs.statSync(path.join(folder, 'auth.json')).mode & 0o777).toString(8) } : null,
       ...(trace ? { connects: STRACE ? connects(traceFile) : 'no strace on this bench' } : {}),
     };
   };
@@ -321,10 +323,11 @@ try {
   ].join('\n'));
   put(path.join(driverKit, 'skills', 'notes', 'SKILL.md'), skill('notes', M.skill));
   put(path.join(driverKit, 'AGENTS.md'), `Kit instructions. ${M.append}\n`);
+  const driverFolder = path.join(b.work, 'pi-driver');
   const driverRun = async () => {
     const from = hosts.length;
     const L = await b.model('ENDPOINT', { markers: Object.values(M), fallback: { text: 'done' }, inspect: stamp });
-    const folder = path.join(b.work, 'pi-driver');
+    const folder = driverFolder;
     fs.mkdirSync(folder, { recursive: true });
     const local = path.join(b.work, 'local-driver.toml');
     put(local, `[refs]\nPROBE_DIR = "env:HS_BENCH_PROBE_DIR"\n\n[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
@@ -355,6 +358,8 @@ try {
     };
   };
   runs.driver = await driverRun();
+  // A second launch in the same folder: what pi wrote on the first start is no login.
+  runs.driver_again = await driverRun();
 
   const left = benchPids();
   proxy.close();
@@ -373,7 +378,9 @@ try {
     'control: under strace, pi connects to nothing but loopback with the offline switches on (DNS apart, none either)': !STRACE || (C.connects !== null && C.connects.other === 0 && C.connects.dns === 0),
     'carriers: pi runs a leading !command in the provider\'s apiKey, a provider header, an MCP env value and a remote MCP header': carriers.executed.apikey && carriers.executed.header && carriers.executed.env && carriers.executed['mcp-header'],
     'carriers: pi expands ${VAR} in a provider header and an MCP env value': carriers.expanded.provider_header && carriers.expanded.mcp_env === true,
-    'driver: hs launch-spec refuses without a receipt, and the launch it describes writes nothing into the folder but pi\'s sessions': runs.driver.refused === 'receipt_required' && runs.driver.folder.length > 0 && runs.driver.folder.every((n) => n === 'sessions' || n.startsWith('sessions/')),
+    'pi writes an empty login store on every start: auth.json, 2 bytes, mode 600 (the premise for telling it from a login by its size)': [C, runs.online, runs.broken].every((r) => r.auth_store?.bytes === 2 && r.auth_store?.mode === '600'),
+    'driver: hs launch-spec refuses without a receipt, and the launch it describes leaves in the folder only what pi itself writes on a start (sessions/, its empty auth.json and models-store.json)': runs.driver.refused === 'receipt_required' && runs.driver.folder.length > 0 && runs.driver.folder.filter((n) => !n.startsWith('sessions')).sort().join() === C.folder.filter((n) => !n.startsWith('sessions') && n !== 'AGENTS.md').sort().join(),
+    'driver: a second launch in the same folder is not refused: pi\'s empty store is no login, and the model is reached again': runs.driver_again.refused === 'receipt_required' && runs.driver_again.requests > 0,
     'driver: the spec\'s model reaches the endpoint with the dummy key, and no host is asked for': runs.driver.requests > 0 && runs.driver.credential.length === 1 && runs.driver.credential[0] === 'bearer:bench-dummy' && runs.driver.hosts.length === 0,
     'driver: the skill and AGENTS.md reach a request': runs.driver.markers.includes('skill') && runs.driver.markers.includes('append'),
     'driver: the MCP server starts with its ref expanded, and its tool is offered as mcp__probe__ping': runs.driver.probe?.started === true && runs.driver.probe?.data_expanded === true && runs.driver.tools.includes('mcp__probe__ping'),

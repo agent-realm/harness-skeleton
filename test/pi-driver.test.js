@@ -241,10 +241,17 @@ test('refused, by carrier: spec text pi would expand or run, a ~ path pi would t
 test('refused or skipped by name: a stored login with an endpoint, permissions, hooks and plugins not in this build, a status line by require', () => {
   const s = box();
   try {
+    // pi writes an empty auth.json, 2 bytes, on every start: told by its size, it holds no login.
     write(s.folder, 'auth.json', '{}');
     const m = layer(s.root, 'm', '[model.roles]\nprimary = "m"\n');
-    const r = launch(s, { layers: [m], local: write(s.root, 'l.toml', ENDPOINT()) });
-    assert.equal(r.error?.code, 'login_present');
+    const local = write(s.root, 'l.toml', ENDPOINT());
+    assert.ok(launch(s, { layers: [m], local }).ok, 'the empty store pi writes is no login');
+    // Any other size counts as a login, and a link does too: the file is never opened.
+    write(s.folder, 'auth.json', '{"x":1}');
+    assert.equal(launch(s, { layers: [m], local }).error?.code, 'login_present');
+    fs.rmSync(path.join(s.folder, 'auth.json'));
+    fs.symlinkSync(path.join(s.root, 'nowhere'), path.join(s.folder, 'auth.json'));
+    assert.equal(launch(s, { layers: [m], local }).error?.code, 'login_present');
     fs.rmSync(path.join(s.folder, 'auth.json'));
     const hook = layer(s.root, 'h', '[hook.g]\nevent = "PreToolUse"\nrun = { exec = "true" }\n');
     assert.equal(launch(s, { layers: [hook] }).error?.code, 'not_implemented');

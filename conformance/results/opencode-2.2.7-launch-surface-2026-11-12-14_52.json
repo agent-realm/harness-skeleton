@@ -1,0 +1,348 @@
+{
+  "check": "tier 1: what an OpenCode launch can carry, and whether a run attaches to a background service (design note v0.2 §4, §8)",
+  "at": "2026-11-12T11:51:45.285Z",
+  "evidence": {
+    "harness": "opencode v2.2.7",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "4baf4b6"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agentsdir-5a3d"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": false
+    },
+    "config_dir": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agents-3f1a",
+        "hs-tier1-oc-agentsdir-5a3d",
+        "hs-tier1-oc-skill-6d4e"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": false
+    },
+    "mcp": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agentsdir-5a3d",
+        "hs-tier1-oc-tool-1c7b"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": true
+    },
+    "attached": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-service"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agentsdir-5a3d"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": false
+    },
+    "standalone": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agentsdir-5a3d"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": false
+    },
+    "other": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agentsdir-5a3d"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": false
+    },
+    "driver": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agents-3f1a",
+        "hs-tier1-oc-agentsdir-5a3d",
+        "hs-tier1-oc-skill-6d4e",
+        "hs-tier1-oc-tool-1c7b"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": true
+    },
+    "driver_service": {
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "wires": [
+        "chat"
+      ],
+      "models": [
+        "bench-primary"
+      ],
+      "credentials": [
+        "bearer:bench-dummy"
+      ],
+      "markers": [
+        "hs-tier1-oc-agents-3f1a",
+        "hs-tier1-oc-agentsdir-5a3d",
+        "hs-tier1-oc-skill-6d4e",
+        "hs-tier1-oc-tool-1c7b"
+      ],
+      "canaries": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "server_started": true
+    }
+  },
+  "recorded": {
+    "catalog": {
+      "on": {
+        "hosts": [
+          "models.opencode.ai"
+        ],
+        "reached": true,
+        "models": [
+          "bench-primary"
+        ]
+      },
+      "off": {
+        "hosts": []
+      }
+    },
+    "global_agents_md_with_config_dir": false,
+    "mcp_tool_marker": true,
+    "canaries": {
+      "control": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "config_dir": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      },
+      "mcp": {
+        "claude_md": false,
+        "agents_skills": true,
+        "dot_opencode_skills": false,
+        "ancestor_agents_md": false
+      }
+    },
+    "writes": {
+      "folder_after_control": [
+        "cache",
+        "cache/opencode",
+        "cache/opencode/bin",
+        "config",
+        "config/opencode",
+        "data",
+        "data/opencode",
+        "data/opencode/log",
+        "data/opencode/opencode.db",
+        "data/opencode/repos",
+        "data/opencode/shell",
+        "state",
+        "state/opencode"
+      ],
+      "config_dir_added": [],
+      "home_added": [
+        ".opencode/.gitignore"
+      ],
+      "service_state": [
+        "opencode",
+        "opencode/service.json"
+      ]
+    },
+    "service": {
+      "start": {
+        "exit": 0,
+        "printed": true
+      },
+      "stop": {
+        "exit": 0,
+        "printed": false
+      },
+      "processes_while_running": 1,
+      "left_after_stop": 0
+    },
+    "v1": {
+      "version": "1.19.5",
+      "run_offers_standalone": false,
+      "launch_with_2x_config": {
+        "exit": 1,
+        "signal": null,
+        "timed_out": false,
+        "descendants_left": false,
+        "requests": 0,
+        "wires": [],
+        "models": [],
+        "credentials": [],
+        "markers": [],
+        "canaries": {
+          "claude_md": false,
+          "agents_skills": false,
+          "dot_opencode_skills": false,
+          "ancestor_agents_md": false
+        },
+        "server_started": false
+      }
+    }
+  },
+  "checks": {
+    "catalog_off: with OPENCODE_DISABLE_MODELS_FETCH and the network blocked, the explicit provider and model reach the endpoint, and no host is asked for": true,
+    "driver: hs's launch with an endpoint sets OPENCODE_DISABLE_MODELS_FETCH and asks for no host, the network blocked": true,
+    "canaries: with OPENCODE_DISABLE_CLAUDE_CODE, ~/.claude/CLAUDE.md does not reach a request": true,
+    "canaries: ~/.opencode/skills does not reach a request": true,
+    "canaries: ~/.agents/skills reaches every run (no switch in 2.x; the driver names it a known limit, and a release that adds a switch fails here)": true,
+    "driver: hs launch-spec refuses without a receipt, and passes --standalone": true,
+    "driver: the spec's model reaches the endpoint with the dummy key": true,
+    "driver: the skill and AGENTS.md reach a request": true,
+    "driver: the MCP server starts, its ref substituted from {env:…}": true,
+    "driver_service: with the folder's service up on its own config, hs's launch still runs on the spec's": true,
+    "driver_service: after `service stop` no process with the bench's environment is left": true,
+    "control: the provider and model through OPENCODE_CONFIG_CONTENT reach the model, with the dummy key (premise)": true,
+    "config_dir: OPENCODE_CONFIG_DIR's AGENTS.md and skill reach a request": true,
+    "mcp: a local server in OPENCODE_CONFIG_CONTENT starts": true,
+    "service: started in the folder with its own config": true,
+    "service: a run without --standalone attaches to the folder's service and runs on its config, not the launch's (premise for --standalone)": true,
+    "service: with --standalone the run uses the launch's config": true,
+    "service: a run in another folder never reaches this folder's service": true,
+    "service: after `service stop` no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

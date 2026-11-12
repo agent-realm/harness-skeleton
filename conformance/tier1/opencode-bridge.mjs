@@ -137,9 +137,10 @@ try {
 
   const cwd = path.join(b.work, 'work');
   fs.mkdirSync(cwd);
-  const steps = () => [
-    { when: { tool: 'shell' }, reply: { tool_calls: [{ id: 'call_ok', name: 'shell', args: { command: 'echo hs-allowed', description: 'echo' } }] } },
-    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'shell', args: { command: 'echo DENYME', description: 'echo' } }] } },
+  // Each command leaves a file, so a run shows which of them ran.
+  const steps = (ran) => [
+    { when: { tool: 'shell' }, reply: { tool_calls: [{ id: 'call_ok', name: 'shell', args: { command: `touch ${ran}.allowed`, description: 'touch' } }] } },
+    { when: { after_tool: 'call_ok' }, reply: { tool_calls: [{ id: 'call_deny', name: 'shell', args: { command: `touch ${ran}.denied # DENYME`, description: 'touch' } }] } },
     { when: { after_tool: 'call_deny' }, reply: { text: 'done' } },
   ];
   const folderFor = (variant) => {
@@ -150,7 +151,8 @@ try {
   const run = async (variant, kind, netBlocked) => {
     blocked = netBlocked;
     const from = hosts.length;
-    const L = await b.model('ENDPOINT', { markers: [M.deny], steps: steps(), fallback: { text: 'done' } });
+    const ran = path.join(b.work, `ran-${variant}-${netBlocked ? 'blocked' : 'open'}`);
+    const L = await b.model('ENDPOINT', { markers: [M.deny], steps: steps(ran), fallback: { text: 'done' } });
     const folder = folderFor(`${variant}-${netBlocked ? 'blocked' : 'open'}`);
     const dir = path.join(b.work, `config-dir-${variant}-${netBlocked ? 'blocked' : 'open'}`);
     const probe = path.join(b.work, `probe-${variant}-${netBlocked ? 'blocked' : 'open'}.jsonl`);
@@ -172,6 +174,8 @@ try {
       tools_offered: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.tools ?? []))].filter((t) => typeof t === 'string').sort(),
       tool_results: r.seen.ENDPOINT.flatMap((q) => q.tool_results ?? []).length,
       deny_reason_reached_model: r.seen.ENDPOINT.some((q) => q.markers.includes(M.deny)),
+      allowed_ran: fs.existsSync(`${ran}.allowed`),
+      denied_ran: fs.existsSync(`${ran}.denied`),
       plugin: {
         loaded: lines.some((l) => l.setup), ctx: lines.find((l) => l.setup)?.ctx ?? null,
         registered: lines.filter((l) => l.hook).map((l) => [l.hook, l.registered, l.reason ?? null]),
@@ -195,8 +199,15 @@ try {
   const left = benchPids();
   proxy.close();
 
+  const plugins = ['plain_open', 'sdk_open', 'plain_blocked', 'sdk_blocked'].map((k) => runs[k]);
+  const onlyCatalog = (x) => x.hosts.every((h) => /^connect:models\.opencode\.ai( \(refused\))?$/.test(h));
   const checks = {
     'none_open: with no plugin, a run reaches the model (premise)': runs.none_open.requests > 0,
+    'none: with no plugin, both shell commands run (premise)': runs.none_open.allowed_ran && runs.none_open.denied_ran,
+    'a local plugin, plain .js or through @opencode/plugin, loads with the network open and blocked, installs nothing and writes nothing into the config directory': plugins.every((x) => x.plugin.loaded && x.config_dir_added.length === 0),
+    'with or without a plugin OpenCode asks for no host but its model catalog (models.opencode.ai): no package registry': Object.values(runs).every(onlyCatalog),
+    'tool.execute.before fires for the shell tool, and a process run from the hook gives its exit code': plugins.every((x) => x.plugin.fired.includes('tool.execute.before') && x.plugin.tools_seen.includes('shell') && x.plugin.spawn_status === 3),
+    'permission.evaluate with effect deny blocks the call (its command never runs) and its reason reaches the model; the allowed call runs': plugins.every((x) => x.plugin.denied_in_hook && !x.denied_ran && x.allowed_ran && x.deny_reason_reached_model),
     'none_blocked: with the network blocked and no plugin, a run still reaches the model on loopback (premise)': runs.none_blocked.requests > 0,
     'no process with the bench\'s environment is left': left.length === 0,
   };

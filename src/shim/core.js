@@ -16,6 +16,10 @@
 // SIGKILL, and decides at once: a process the hook started (a shell's forked command, say) never
 // outlives the decision, and never holds it by keeping the pipes open. A hook that exits on its
 // own within its limit is not touched; what it leaves running in the background is its own.
+// Its own group is also its own session (no controlling terminal), so a harness that cancels the
+// hook by signalling the shim (SIGTERM, SIGINT, SIGHUP) no longer reaches it: the shim kills the
+// group then, and blocks. Anything that throws on the way blocks too, never exit 1, which some
+// harnesses read as a non-blocking error.
 //
 //   node src/shim/<harness>.js <Event> [--may-allow] [--timeout <s>] [--cwd <dir>] [--env K=V]... [--env-ref K=VAR]... -- <exec> [args...]
 //
@@ -159,7 +163,8 @@ const MAX_OUTPUT = 16 * 1024 * 1024;
 // Runs the hook's process in a group of its own: {status, signal, stdout, stderr} once it closes,
 // {error} if it cannot be run or its output passes MAX_OUTPUT, {timedOut} at the limit, the group
 // killed in the last two cases.
-export function runProcess(argv, { input, cwd, env, limit }) {
+// `onStart(killGroup)` is called once the process runs, for a caller that must stop it early.
+export function runProcess(argv, { input, cwd, env, limit, onStart }) {
   return new Promise((resolve) => {
     let child = null;
     let stdout = '';
@@ -185,6 +190,7 @@ export function runProcess(argv, { input, cwd, env, limit }) {
       end({ error: e });
       return;
     }
+    onStart?.(killGroup);
     if (limit) {
       timer = setTimeout(() => {
         killGroup();
@@ -210,6 +216,13 @@ export function runProcess(argv, { input, cwd, env, limit }) {
   });
 }
 
+// Writes a native result and exits with its code.
+function finish(t) {
+  if (t.stdout) process.stdout.write(t.stdout);
+  if (t.stderr) process.stderr.write(t.stderr);
+  process.exit(t.code);
+}
+
 async function run(H) {
   const { envelope, block, translate } = shimFor(H);
   let opts;
@@ -219,24 +232,29 @@ async function run(H) {
     const raw = fs.readFileSync(0, 'utf8');
     native = raw.trim() ? JSON.parse(raw) : {};
   } catch (e) {
-    const t = block(opts?.event ?? process.argv[2], `hs hook shim: ${e.message}`);
-    if (t.stdout) process.stdout.write(t.stdout);
-    if (t.stderr) process.stderr.write(t.stderr);
-    process.exit(t.code);
+    finish(block(opts?.event ?? process.argv[2], `hs hook shim: ${e.message}`));
+  }
+  // A harness that cancels the hook signals the shim: the hook's group goes with it, and the
+  // event is blocked.
+  let stop = null;
+  for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
+    process.on(sig, () => {
+      stop?.();
+      finish(block(opts.event, `hs hook shim: the hook was cancelled (${sig}) and its processes stopped; failing closed`));
+    });
   }
   const env = { ...process.env, ...opts.env };
   for (const [k, v] of Object.entries(opts.envRefs)) env[k] = process.env[v] ?? '';
   const limit = Number.isFinite(opts.timeout) && opts.timeout > 0 ? opts.timeout * 1000 : undefined;
-  const res = await runProcess(opts.command, { input: JSON.stringify(envelope(opts.event, native)), cwd: opts.cwd, env, limit });
-  let t;
-  if (res.error) t = block(opts.event, `hs hook shim: the hook's process could not be run (${res.error.code ?? res.error.message}); failing closed`);
-  else t = translate(opts.event, res, { mayAllow: opts.mayAllow });
-  if (t.stdout) process.stdout.write(t.stdout);
-  if (t.stderr) process.stderr.write(t.stderr);
-  process.exit(t.code);
+  const res = await runProcess(opts.command, { input: JSON.stringify(envelope(opts.event, native)), cwd: opts.cwd, env, limit, onStart: (kill) => { stop = kill; } });
+  if (res.error) finish(block(opts.event, `hs hook shim: the hook's process could not be run (${res.error.code ?? res.error.message}); failing closed`));
+  finish(translate(opts.event, res, { mayAllow: opts.mayAllow }));
 }
 
-// Run as the hook command when the driver's shim file is the script node was given.
+// Run as the hook command when the driver's shim file is the script node was given. Whatever throws
+// on the way is a block for the event, with a reason, never Node's exit 1.
 export function mainIf(H, url) {
-  if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(url))) run(H);
+  if (!process.argv[1] || fs.realpathSync(process.argv[1]) !== fs.realpathSync(fileURLToPath(url))) return;
+  const { block } = shimFor(H);
+  run(H).catch((e) => finish(block(process.argv[2], `hs hook shim: ${e?.message ?? String(e)}; failing closed`)));
 }

@@ -40,8 +40,10 @@ run     = { exec = "hooks/guard.sh" }
 timeout = 10                     # seconds; hs's shim stops the hook, and all it started, at this limit and decides
 ```
 
-A hook runs through hs's hook shim. The shim hands it one JSON envelope on stdin (`hs`, the
-portable part, and `native`, the harness's own payload) and translates its decision:
+A hook runs through hs's hook shim, in a process group and session of its own, so it has no
+controlling terminal (`/dev/tty` is not there). At its `timeout`, or when the harness cancels it,
+the shim stops the whole group. The shim hands it one JSON envelope on stdin (`hs`, the portable
+part, and `native`, the harness's own payload) and translates its decision:
 - exit 0 continues;
 - exit 2 blocks, with stderr as the reason;
 - `{"decision": "allow" | "deny", "reason"}` on stdout decides explicitly.

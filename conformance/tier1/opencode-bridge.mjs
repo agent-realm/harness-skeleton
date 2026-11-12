@@ -43,7 +43,14 @@
 //            one holding SLOWME. Expected: the allowed command runs, the other two never do, the
 //            guard's reason and the shim's fail-closed reason reach the model, the session goes on
 //            to its answer, the logger sees the allowed call, nothing is installed, no host is asked
-//            for, and no process is left.
+//            for, and no process is left. The bridge's readiness marker, named by launch-spec, is
+//            written before the session's first model request.
+//   driver_broken  the same launch with hs's bridge plugin made unparsable after launch-spec wrote
+//            it. Expected: no readiness marker, so a caller sees its guards are not active (the
+//            denied command then runs: nothing guards it).
+//   slow_setup  the throw plugin with its setup() held 3 s before it registers its hooks: whether
+//            OpenCode finishes a plugin's setup before the session's first model request, so a
+//            guard is active from the first tool call.
 // Judged: what the 7.3 bridge relies on. Recorded: everything else. Names, booleans and durations
 // only. The credential is a dummy.
 
@@ -128,7 +135,7 @@ const def = {
 
 // The throw plugin: tool.execute.before as the bridge would write it. An async spawn, never spawnSync;
 // a throw for the command holding DENYME; for SLOWME, a process stopped at its limit, then a throw.
-const throwBody = (probe, cwd) => `
+const throwBody = (probe, cwd, { setupDelayMs = 0 } = {}) => `
 const fs = await import('node:fs');
 const cp = await import('node:child_process');
 const OUT = ${JSON.stringify(probe)};
@@ -157,13 +164,14 @@ export default {
   id: 'hs-bench-throw',
   async setup(ctx) {
     log({ setup: true, ctx: keys(ctx) });
+    if (${setupDelayMs} > 0) await new Promise((r) => setTimeout(r, ${setupDelayMs}));
     for (const d of ['location', 'worktree', 'options', 'app']) {
       const o = ctx?.[d];
       const own = o && typeof o === 'object' ? Object.keys(o) : [];
       log({ domain: d, keys: own.sort(), cwd_fields: own.filter((k) => o[k] === CWD) });
     }
     log({ plugin_cwd_is_run_cwd: process.cwd() === CWD });
-    ctx.tool.hook('execute.before', async (event) => {
+    await ctx.tool.hook('execute.before', async (event) => {
       const cmd = String(event?.input?.command ?? '');
       log({ fired: 'tool.execute.before', fields: keys(event), tool: typeof event?.tool === 'string' ? event.tool : null });
       if (cmd.includes('DENYME')) { log({ threw: 'deny' }); throw new Error(${JSON.stringify(M.thrown)}); }
@@ -176,7 +184,8 @@ export default {
       const r = await run(['/bin/sh', '-c', 'cat >/dev/null; printf hs-out; printf hs-err >&2; exit 3'], 10000);
       log({ async_spawn: { code: r.code ?? null, stdout: r.out === 'hs-out', stderr: r.err === 'hs-err', error: r.error ?? null } });
     });
-    ctx.tool.hook('execute.after', async (event) => log({ fired: 'tool.execute.after', tool: typeof event?.tool === 'string' ? event.tool : null, status: event?.status ?? null }));
+    await ctx.tool.hook('execute.after', async (event) => log({ fired: 'tool.execute.after', tool: typeof event?.tool === 'string' ? event.tool : null, status: event?.status ?? null }));
+    log({ setup_done_at: Date.now() });
   },
 };
 `;
@@ -228,11 +237,13 @@ try {
     for (const r of ['config', 'data', 'cache', 'state']) fs.mkdirSync(path.join(f, r), { recursive: true });
     return f;
   };
+  // Each request's arrival time, for what happened before the first one.
+  const stamp = (_body, record) => { record.at = Date.now(); };
   const run = async (variant, kind, netBlocked, { stepsFor = steps, extra = {} } = {}) => {
     blocked = netBlocked;
     const from = hosts.length;
     const ran = path.join(b.work, `ran-${variant}-${netBlocked ? 'blocked' : 'open'}`);
-    const L = await b.model('ENDPOINT', { markers: Object.values(M), steps: stepsFor(ran), fallback: { text: 'done' } });
+    const L = await b.model('ENDPOINT', { markers: Object.values(M), steps: stepsFor(ran), fallback: { text: 'done' }, inspect: stamp });
     const folder = folderFor(`${variant}-${netBlocked ? 'blocked' : 'open'}`);
     const dir = path.join(b.work, `config-dir-${variant}-${netBlocked ? 'blocked' : 'open'}`);
     const probe = path.join(b.work, `probe-${variant}-${netBlocked ? 'blocked' : 'open'}.jsonl`);
@@ -240,6 +251,7 @@ try {
     if (kind === 'plain') put(path.join(dir, 'plugins', 'hs-bench.js'), `${pluginBody(probe)}\nexport default def;\n`);
     if (kind === 'sdk') put(path.join(dir, 'plugins', 'hs-bench.js'), `import { Plugin } from '@opencode/plugin';\n${pluginBody(probe)}\nexport default Plugin.define(def);\n`);
     if (kind === 'throw' || kind === 'broken_beside') put(path.join(dir, 'plugins', 'hs-bench.js'), throwBody(probe, cwd));
+    if (kind === 'slow_setup') put(path.join(dir, 'plugins', 'hs-bench.js'), throwBody(probe, cwd, { setupDelayMs: 3000 }));
     if (kind === 'broken' || kind === 'broken_beside') put(path.join(dir, 'plugins', 'hs-broken.js'), 'export default { id: "hs-broken", setup( {\n');
     const before = names(dir);
     const content = JSON.stringify({ providers: { bench: { name: 'Bench', env: ['HS_BENCH_OC_KEY'], package: '@opencode/ai/providers/openai-compatible', settings: { baseURL: `${L.url}/v1` }, models: { 'bench-primary': { name: 'Bench primary' } } } }, model: 'bench/bench-primary', ...extra });
@@ -255,6 +267,7 @@ try {
     const fired = [...new Set(lines.filter((l) => l.fired).map((l) => l.fired))].sort();
     return {
       exit: r.exit, timed_out: r.timed_out, descendants_left: r.descendants_left, requests: r.seen.ENDPOINT.length, ms,
+      first_request_at: Math.min(...r.seen.ENDPOINT.map((q) => q.at ?? Infinity)),
       markers_reached: Object.entries(M).filter(([, m]) => r.seen.ENDPOINT.some((q) => q.markers.includes(m))).map(([k]) => k).sort(),
       tools_offered: [...new Set(r.seen.ENDPOINT.flatMap((q) => q.tools ?? []))].filter((t) => typeof t === 'string').sort(),
       tool_results: r.seen.ENDPOINT.flatMap((q) => q.tool_results ?? []).length,
@@ -334,18 +347,19 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
     '[hook.guard]', 'event = "PreToolUse"', 'match = { tool = ["shell"] }', runLine('guard'), 'timeout = 2', '',
     '[hook.log]', 'event = "PostToolUse"', runLine('log'), '',
   ].join('\n'));
-  const driverRun = async () => {
+  const driverRun = async (variant, { breakBridge = false } = {}) => {
     blocked = true;
     const from = hosts.length;
-    const folder = folderFor('driver');
-    const ran = path.join(b.work, 'ran-driver');
-    const L = await b.model('ENDPOINT', { markers: Object.values(M), steps: throwSteps(ran), fallback: { text: 'done' } });
+    const folder = folderFor(variant);
+    const ran = path.join(b.work, `ran-${variant}`);
+    fs.rmSync(hookLog, { force: true });
+    const L = await b.model('ENDPOINT', { markers: Object.values(M), steps: throwSteps(ran), fallback: { text: 'done' }, inspect: stamp });
     const local = path.join(b.work, 'local.toml');
     put(local, `[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
     const args = ['--harness', 'opencode', '--folder', folder, '--layer', kit, '--local', local, '--bin', oc, '--headless'];
     const refused = b.hsCall('launch-spec', args);
     const items = refused.ok ? [] : refused.error.items ?? [];
-    const receipt = path.join(b.work, 'receipt-driver.json');
+    const receipt = path.join(b.work, `receipt-${variant}.json`);
     put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((r) => r.item))], by: 'tier1-bench', at: new Date().toISOString() });
     const spec = b.hs('launch-spec', [...args, '--receipt', receipt]);
     const env = { ...spec.env_set, HTTPS_PROXY: proxyUrl, HTTP_PROXY: proxyUrl, https_proxy: proxyUrl, http_proxy: proxyUrl, NO_PROXY: '127.0.0.1,localhost', no_proxy: '127.0.0.1,localhost' };
@@ -355,11 +369,16 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
     }
     for (const v of spec.env_unset) env[v] = undefined;
     const dir = spec.env_set.OPENCODE_CONFIG_DIR;
+    if (breakBridge) fs.writeFileSync(path.join(dir, 'plugins', 'hs-hooks.js'), 'export default { id: "hs-hooks", setup( {\n');
     const before = names(dir);
     const t0 = Date.now();
     const r = await b.launch([L], [oc, ...spec.argv.slice(1), PROMPT], env, cwd);
     const ms = Date.now() - t0;
     const added = names(dir).filter((n) => !before.includes(n));
+    // The readiness launch-spec names: whether the bridge wrote it, and when, against the first request.
+    const ready = (spec.readiness ?? []).find((x) => x.what === 'hooks');
+    const marker = ready && fs.existsSync(ready.path) ? JSON.parse(fs.readFileSync(ready.path, 'utf8')) : null;
+    const firstAt = Math.min(...r.seen.ENDPOINT.map((q) => q.at ?? Infinity));
     fs.rmSync(spec.temp_dir, { recursive: true, force: true });
     const log = fs.existsSync(hookLog) ? fs.readFileSync(hookLog, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
     return {
@@ -369,10 +388,14 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
       credential_dummy: r.seen.ENDPOINT.length > 0 && r.seen.ENDPOINT.every((q) => q.credential === 'bearer:bench-dummy'),
       allowed_ran: fs.existsSync(`${ran}.allowed`), denied_ran: fs.existsSync(`${ran}.DENYME`), slow_ran: fs.existsSync(`${ran}.SLOWME`),
       hook_log: log, config_dir_added: added,
+      readiness_in_temp_dir: ready ? path.dirname(ready.path) === spec.temp_dir : null,
+      marker: marker ? { plugin: marker.plugin, hooks: marker.hooks, before_first_request: typeof marker.at === 'number' && marker.at < firstAt } : null,
       hosts: [...new Set(hosts.slice(from).map((h) => `${h.via}:${h.host}${h.refused ? ' (refused)' : ''}`))].sort(),
     };
   };
-  runs.driver_blocked = await driverRun();
+  runs.driver_blocked = await driverRun('driver');
+  runs.driver_broken_blocked = await driverRun('driver-broken', { breakBridge: true });
+  runs.slow_setup_blocked = await run('slow-setup', 'slow_setup', true, { stepsFor: throwSteps });
   const left = benchPids();
   proxy.close();
 
@@ -382,6 +405,9 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
   const spawned = tl.find((l) => l.async_spawn)?.async_spawn ?? null;
   const slow = tl.find((l) => l.slow)?.slow ?? null;
   const D = runs.driver_blocked;
+  const DB = runs.driver_broken_blocked;
+  const S = runs.slow_setup_blocked;
+  const sDone = S.lines.find((l) => l.setup_done_at)?.setup_done_at ?? null;
   const pre = D.hook_log.filter((l) => l.event === 'PreToolUse');
   const post = D.hook_log.filter((l) => l.event === 'PostToolUse');
   const onlyCatalog = (x) => x.hosts.every((h) => /^connect:models\.opencode\.ai( \(refused\))?$/.test(h));
@@ -401,6 +427,9 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
     'driver: the stalled guard does not hang the session: it goes on to its answer, with the endpoint\'s dummy key': D.exit === 0 && !D.timed_out && D.requests >= 4 && D.credential_dummy && D.ms < 60000,
     'driver: the guard\'s envelope is hs\'s (PreToolUse, class shell, the session id, the run\'s directory) for each shell call; the logger sees the call that ran': pre.length === 3 && pre.every((l) => l.class === 'shell' && l.name === 'shell' && l.session && l.cwd_is_run) && JSON.stringify(pre.map((l) => l.command)) === JSON.stringify(['allow', 'deny', 'slow']) && post.length === 1 && post[0].command === 'allow',
     'driver: nothing is installed into the config directory, and no host is asked for': D.config_dir_added.length === 0 && D.hosts.length === 0,
+    'driver: launch-spec names the bridge\'s readiness marker in its temp dir, and the bridge writes it, its hooks registered, before the session\'s first model request': D.readiness_in_temp_dir === true && D.marker !== null && D.marker.plugin === 'hs-hooks' && D.marker.hooks === 2 && D.marker.before_first_request,
+    'driver_broken: a bridge plugin that does not load writes no readiness marker, so a caller sees its guards are not active (the session runs unguarded: the denied command runs)': DB.readiness_in_temp_dir === true && DB.marker === null && DB.requests > 0 && DB.denied_ran,
+    'slow_setup: OpenCode finishes a plugin\'s setup, held 3 s, before the session\'s first model request, and its guard blocks the denied call': S.plugin.loaded && sDone !== null && sDone < S.first_request_at && !S.denied_ran && S.allowed_ran,
     'no process with the bench\'s environment is left': left.length === 0,
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';
@@ -419,6 +448,7 @@ if (process.env.HS_HOOK_ROLE === 'guard' && cmd.includes('SLOWME')) setTimeout((
         allowed_ran: runs[k].allowed_ran, denied_ran: runs[k].denied_ran,
       }])),
       driver_native_fields: D.hook_log[0]?.native ?? null,
+      slow_setup: { setup_ms_before_first_request: sDone !== null && Number.isFinite(S.first_request_at) ? S.first_request_at - sDone : null, exit: S.exit, ms: S.ms },
       mcp: Object.fromEntries(['mcp_direct_blocked', 'mcp_codemode_blocked'].map((k) => [k, {
         server_started: runs[k].server_started,
         offered: runs[k].tools_offered.filter((t) => /probe|ping|execute/.test(t)),

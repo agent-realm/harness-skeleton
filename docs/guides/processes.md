@@ -59,8 +59,10 @@ whether the guard fails closed:
     shim exits otherwise or is still running past the limit.
 
   On Claude Code and Codex, `launch-spec` lists this under `unverified`, so it is never taken for a
-  guarantee. On OpenCode the one case left open is the bridge plugin itself failing to load: OpenCode
-  then starts without it, and no hook runs (measured; `launch-spec` names it in its notes).
+  guarantee. On OpenCode the one case left open is the bridge plugin itself failing to load:
+  OpenCode then starts without it, and no hook runs (measured). The bridge writes a marker once its
+  hooks are registered, before the session's first model request. `launch-spec` names it under
+  `readiness`; check it before you take the guards as active.
 
 On OpenCode only `PreToolUse` and `PostToolUse` have a route. The other events are refused when
 required and skipped when `if-supported`. `may_allow` and `mcp:` matches are refused, and a hook's

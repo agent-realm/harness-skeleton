@@ -18,8 +18,16 @@
 //
 // The shim runs in a process group of its own (detached), so the group kill reaches it and what it
 // started, never OpenCode.
+//
+// Once its hooks are registered, setup() writes a marker file into the launch's temp dir
+// (CONFIG.marker, relative to this file), which launch-spec names under `readiness`: a bridge that
+// OpenCode skips writes none, so a caller can tell guards that never loaded from guards that did.
+// A tool call that names no tool fails closed when a guard has a matcher, since the matcher cannot
+// be tested.
 
 import { spawn } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const CONFIG = /* hs:config */ null;
 
@@ -79,8 +87,10 @@ export default {
     const matching = (on, event) => hooks.filter((h) => h.on === on && (h.re === null || (typeof event?.tool === 'string' && h.re.test(event.tool))));
     const payload = (event) => JSON.stringify({ ...event, directory });
 
+    const guarded = hooks.some((h) => h.on === 'execute.before' && h.re !== null);
     if (hooks.some((h) => h.on === 'execute.before')) {
       await ctx.tool.hook('execute.before', async (event) => {
+        if (guarded && typeof event?.tool !== 'string') throw new Error('hs hooks bridge: the tool call names no tool, so a guard\'s matcher cannot be tested; failing closed');
         for (const h of matching('execute.before', event)) {
           let body;
           try {
@@ -105,6 +115,13 @@ export default {
           }
         }
       });
+    }
+    // Every hook is registered: say so. A marker that cannot be written is a bridge not known to
+    // have loaded, which is what a caller then sees.
+    if (typeof CONFIG.marker === 'string') try {
+      writeFileSync(fileURLToPath(new URL(CONFIG.marker, import.meta.url)), JSON.stringify({ plugin: CONFIG.id, hooks: CONFIG.hooks.length, pid: process.pid, at: Date.now() }) + '\n', { flag: 'wx', mode: 0o600 });
+    } catch {
+      // no marker
     }
   },
 };

@@ -395,7 +395,11 @@ export function launchParts(resolved, { headless, descriptor, folder }) {
   }
   const bridgeFiles = [];
   if (bridged.length) {
-    bridgeFiles.push({ rel: B.file, content: bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, hooks: bridged }) });
+    // The marker sits in the launch's temp dir, which holds the config directory as one tree: one
+    // `../` per segment of the plugin's path reaches it from the plugin file.
+    const marker = '../'.repeat(B.file.split('/').length) + B.marker;
+    bridgeFiles.push({ rel: B.file, content: bridgeSource({ id: B.id, node: process.execPath, shim: SHIM, margin_ms: HK.timeout_margin * 1000, marker, hooks: bridged }) });
+    out.readiness = [{ what: 'hooks', rel: B.marker, means: B.marker_means }];
     out.notes.push(B.fail_closed, B.load, B.context, B.mcp_class);
   }
 

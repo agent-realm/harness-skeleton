@@ -652,7 +652,11 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
       - `may_allow`;
       - an `mcp:` match: an MCP tool is `<server>_<tool>`, so server `a` would also match server `a_b`'s tools.
     - A hook's `context` output is not delivered, and an MCP tool's envelope has `tool.class` null.
-    - The one fail-open case: a plugin that does not load is skipped, and OpenCode starts without it (measured).
+    - The one case OpenCode leaves open is a plugin that does not load: OpenCode skips it and starts without it (measured). A launch makes that visible:
+      - once every hook is registered, the bridge writes a marker into the launch's temp dir, `hs-hooks.loaded`, which `launch-spec` names under `readiness`;
+      - until the marker exists, no hook of the launch is active, and a caller that needs its guards must not take them as active;
+      - OpenCode finishes a plugin's setup before the session's first model request, even a setup held 3 s, so the marker is there before any tool call (measured, section 10).
+    - A tool call whose event names no tool fails closed when a `PreToolUse` hook has a matcher, which cannot be tested then.
   - `-m hs/<model>` for the primary role. OpenCode 2.x has no small or subagent model key, and its model variants are the provider's own names, so those roles are skipped and named.
   - `OPENCODE_DISABLE_CLAUDE_CODE=1`, which closes the `.claude` skill roots.
   - With an endpoint, `OPENCODE_DISABLE_MODELS_FETCH=1`: the launch names its provider and model itself, so OpenCode's model catalog, `models.opencode.ai`, which it asks for on every start, is not fetched, and a launch contacts only what the spec names. Measured with the network blocked: the provider and model still reach the endpoint, and no host is asked for (section 10). `describe` reports what a launch contacts (`launch_network`).
@@ -1040,13 +1044,16 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - the allowed command runs, and the other two never do. The guard's reason and the shim's fail-closed reason reach the model;
   - the stalled guard does not hang the session, which goes on to its answer;
   - the guard's envelope is hs's for each shell call: `PreToolUse`, class `shell`, the session id, the run's directory. The logger sees the call that ran;
-  - nothing is installed into the config directory, and no host is asked for.
+  - nothing is installed into the config directory, and no host is asked for;
+  - `launch-spec` names the bridge's readiness marker in its temp dir, and the bridge writes it, its hooks registered, before the session's first model request;
+  - with hs's bridge made unparsable after `launch-spec` wrote it, no marker is written, and the session runs unguarded;
+  - OpenCode finishes a plugin's setup, held 3 s on purpose, before the session's first model request (by 0.2 s), and that plugin's guard blocks the denied call.
 
   Also recorded:
   - a plugin that does not parse is skipped: OpenCode starts without it, and a plugin beside it still loads;
   - the native payload's fields are the event's, with `directory` added.
 
-  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks), and with hs's own launch (sixteen checks).*
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again with the `throw` run (eleven checks), with hs's own launch (sixteen checks), and with the readiness runs (nineteen checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1176,6 +1183,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | OpenCode: the hooks bridge writes a readiness marker into the launch's temp dir once its hooks are registered, and `launch-spec` names it (`readiness`), so a bridge OpenCode skips is visible, not silent. A tool call that names no tool fails closed under a guard with a matcher (sections 7.5, 10) |
 | 2026-11-12 | The hook shim runs a hook's process in a process group of its own, and kills the whole group at the limit: before, only the direct process was killed, and a command a shell forked outlived the decision (section 7.5) |
 | 2026-11-12 | A persisted Claude Code hook's shim copy counts as its plan installed it, even from an earlier hs: a newer shim is drift for `plan`, and a copy changed since its plan is refused at launch. Before, any change to the shim made a launch carry each persisted hook a second time (section 7.5) |
 | 2026-11-12 | OpenCode hooks (milestone 7.3): hs's bridge plugin in the launch's config directory runs the hook shim. `PreToolUse` rides `tool.execute.before`, the one plugin hook that can refuse, and fails closed on every shim failure; `PostToolUse` rides `execute.after`. The other events, `may_allow` and `mcp:` matches are refused by name (sections 5.6, 7.5, 10) |

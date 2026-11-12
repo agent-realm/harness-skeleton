@@ -16,7 +16,13 @@ node bin/hs.js launch-spec --harness claude-code --folder ./claude-data \
 - **overlay files** in a temp directory, which the notes tell you to remove after the launch;
 - **`env_from_refs`**: each variable a secret goes into, with its reference. You resolve each
   reference into its variable when you start the process, for example with a wrapper that reads
-  `env:NAME` or your keychain. `hs` never resolves or prints a value.
+  `env:NAME` or your keychain. `hs` never resolves or prints a value;
+- **`readiness`**, when the launch carries something whose loading only the harness can tell.
+  - On OpenCode with hooks, it names a file the hooks bridge writes into the temp directory once
+    its hooks are registered.
+  - OpenCode starts without a plugin that does not load, so until the file exists, take none of
+    the launch's guards as active.
+  - The file appears before the session's first model request.
 
 **Receipts.** An item that runs code (a skill, a hook, an MCP server, a status line) or sends data
 (a remote MCP server) needs the user's approval for this exact launch. Without one,
@@ -39,6 +45,10 @@ them and the receipt no longer fits.
   the launch's own hooks for this launch only. Codex has no skill root a launch can add, so a
   skill on Codex is refused at launch; deliver it into the folder instead
   ([deliver to a folder](deliver-to-a-folder.md)).
+- **OpenCode:** `--standalone` on every launch.
+  - `OPENCODE_CONFIG_CONTENT` carries the endpoint's provider and MCP servers.
+  - `OPENCODE_CONFIG_DIR` holds the skills, `AGENTS.md` and the hooks bridge plugin.
+  - The four XDG roots point at the folder.
 
 An item the plan already installed in the folder, at this content, is skipped, so it never runs
 twice.

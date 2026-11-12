@@ -57,7 +57,7 @@ absolute paths only; the flags make them absolute.
 | `apply` | a plan under a receipt, journaled | config paths and `.harness-skeleton/` |
 | `recover` | finishes an interrupted apply from its journal | config paths and `.harness-skeleton/` |
 | `remove` | one owner's items, where still as installed | config paths and `.harness-skeleton/` |
-| `launch-spec` | argv, environment (`env_set`, and `env_unset`, which never names a variable `env_set` sets), overlay files and references for a launch | a temp directory, never the folder |
+| `launch-spec` | argv, environment (`env_set`, and `env_unset`, which never names a variable `env_set` sets), overlay files and references for a launch, and `readiness`: files the harness writes into the temp dir once something is in effect (the OpenCode hooks bridge's marker), which a caller checks before taking it as active | a temp directory, never the folder |
 | `sessions.list` | the store's sessions, with keys and sources | nothing |
 | `sessions.read` | raw units of one source from a position | nothing |
 | `sessions.derive` | records from units; pure | nothing |

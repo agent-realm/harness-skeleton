@@ -179,6 +179,9 @@ export function launchSpec(driver, args, opts = {}) {
     ...(headless ? { headless: { result: descriptor.launch.headless.result, source: descriptor.launch.headless.source } } : {}),
     launch_items: parts.items,
     skipped: parts.skipped,
+    // Files the harness writes into the temp dir once something is in effect (a hooks bridge, say):
+    // until one exists, what it stands for is not active.
+    ...(parts.readiness?.length && tempDir ? { readiness: parts.readiness.map(({ rel, ...r }) => ({ ...r, path: path.join(tempDir, rel) })) } : {}),
     // What hs could not check and the caller must know, such as a login store hs never queries.
     unverified: parts.unverified ?? [],
     notes: [

@@ -71,7 +71,10 @@ required and skipped when `if-supported`. `may_allow` and `mcp:` matches are ref
 `context` is not delivered.
 
 On pi, `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd` and `Stop` have
-a route. A `Stop` block asks pi for one more run, with the reason as a message for the model.
+a route. A `Stop` block asks pi for one more run, with the reason as a message for the model. A
+Stop hook that always blocks keeps the run going, as on Claude Code: hs sets no cap. A Stop hook
+should exit 0 when its envelope's `native.stop_hook_active` is true, unless it really needs another
+run.
 `may_allow` and the `fetch` class are refused, the other events are refused or skipped as above, and a
 hook's `context` is not delivered.
 

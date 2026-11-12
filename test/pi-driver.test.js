@@ -66,6 +66,8 @@ test('describe: the folder is PI_CODING_AGENT_DIR; the known limits, the 1.5 lin
     // The 2-byte empty-store rule is named, so a pi that changes that file shows as a refusal.
     assert.deepEqual([d.login_store.files, d.login_store.empty_bytes], [['auth.json'], 2]);
     assert.match(d.login_store.rule, /any other size, or a link, counts as a login/);
+    // A Stop hook that always blocks keeps the run going: named, with the way out.
+    assert.match(d.hook_behaviours.Stop, /always blocks keeps the run going.*stop_hook_active.*no cap/);
   } finally {
     s.done();
   }

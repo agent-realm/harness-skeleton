@@ -101,6 +101,8 @@ export function describeHarness(descriptor) {
     known_limits: knownLimits(descriptor),
     // What a launch contacts on the network, where the descriptor says.
     ...(descriptor.launch?.network ? { launch_network: descriptor.launch.network } : {}),
+    // Hook behaviours a caller must know, where the descriptor names any (pi's Stop loop).
+    ...(descriptor.launch?.behaviours ? { hook_behaviours: descriptor.launch.behaviours } : {}),
     // How a login store the harness writes empty is told from a login, where it writes one (pi).
     ...(descriptor.launch?.stored_login?.empty_bytes !== undefined ? { login_store: { files: descriptor.launch.stored_login.files, empty_bytes: descriptor.launch.stored_login.empty_bytes, rule: descriptor.launch.stored_login.empty_rule } } : {}),
     normalization_allowlist: [],

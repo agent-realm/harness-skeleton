@@ -185,7 +185,7 @@ try {
   const extra = path.join(b.work, 'extra');
   put(path.join(extra, 'AGENTS.md'), `Spec instructions. ${M.mixAgents}\n`);
   put(path.join(extra, 'skills', 'extra', 'SKILL.md'), `---\nname: extra\ndescription: ${M.mixSkill}\n---\nA bench skill.\n`);
-  put(path.join(extra, 'spec.toml'), ['[spec]', 'name = "extra"', 'version = "1.0.0"', 'format = "0.2"', '', '[hook.log]', 'event = "PostToolUse"', 'run = { exec = "/bin/true" }', ''].join('\n'));
+  put(path.join(extra, 'spec.toml'), ['[spec]', 'name = "extra"', 'version = "1.0.0"', 'format = "0.2"', '', '[model.roles]', 'primary = "bench-primary"', '', '[hook.log]', 'event = "PostToolUse"', 'run = { exec = "/bin/true" }', ''].join('\n'));
   const mixArgs = [...common, '--layer', kit, '--layer', extra, '--local', local, '--headless'];
   const mixRefused = b.hsCall('launch-spec', mixArgs);
   const mixItems = mixRefused.ok ? [] : mixRefused.error.items ?? [];
@@ -217,7 +217,7 @@ try {
     'mixed: with the launch carrying an AGENTS.md, a skill and a hook of its own, the plan\'s skill and server, the folder\'s AGENTS.md, and the launch\'s AGENTS.md and skill all reach, the bridge is ready, and no OPENCODE_CONFIG_DIR is set':
       !mixRefused.ok && mixRefused.error.code === 'receipt_required'
       && ['mcp.probe', 'skill.notes'].every((id) => mixSpec.skipped.some((x) => x.item === id))
-      && !('OPENCODE_CONFIG_DIR' in mixSpec.env_set) && mixSpec.env_unset.includes('OPENCODE_CONFIG_DIR')
+      && !('OPENCODE_CONFIG_DIR' in mixSpec.env_set) && mixSpec.env_unset.includes('OPENCODE_CONFIG_DIR') && mixed.seen.ENDPOINT.length > 0
       && has(mixed, M.skill) && mixed.probe?.started === true && has(mixed, M.tool)
       && has(mixed, M.mixFolder) && has(mixed, M.mixAgents) && has(mixed, M.mixSkill) && mixMarker,
   };

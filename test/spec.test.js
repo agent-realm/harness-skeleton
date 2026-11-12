@@ -216,6 +216,24 @@ test('validate: AGENTS.md without @imports or block comments, outside fences and
   }
 });
 
+test('validate: a top-level key written after [spec] is in [spec], and is an error, not a silent default', () => {
+  const root = tmpdir();
+  try {
+    const misplaced = path.join(root, 'misplaced');
+    write(misplaced, 'spec.toml', '[spec]\nname = "m"\nversion = "1.0.0"\nformat = "0.2"\nisolation = "strict"\n');
+    const r = validate([misplaced]);
+    assert.equal(r.valid, false);
+    const p = r.problems.find((x) => x.code === 'spec_key_misplaced');
+    assert.equal(p.item, 'isolation');
+    assert.match(p.message, /isolation is inside \[spec\]; it is a top-level key, so it goes before the first table/);
+    const placed = path.join(root, 'placed');
+    write(placed, 'spec.toml', 'isolation = "strict"\n\n[spec]\nname = "p"\nversion = "1.0.0"\nformat = "0.2"\n');
+    assert.ok(!validate([placed]).problems.some((x) => x.code === 'spec_key_misplaced'));
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('validate: header, format, duplicate names, bad TOML without excerpts, unknown kinds', () => {
   const root = tmpdir();
   try {

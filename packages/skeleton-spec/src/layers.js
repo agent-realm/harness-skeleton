@@ -90,6 +90,11 @@ export function readLayer(file, { local = false } = {}) {
     }
     name = typeof header?.name === 'string' ? header.name : null;
     version = typeof header?.version === 'string' ? header.version : null;
+    // A top-level key written after [spec] lands in it, and would be read as nothing at all: a
+    // spec asking for `isolation = "strict"` would get the default without a word.
+    for (const k of Object.keys(header ?? {}).filter((k) => Object.hasOwn(KINDS, k))) {
+      problems.push({ code: 'spec_key_misplaced', severity: 'error', file, item: k, message: `${file}: ${k} is inside [spec]; it is a top-level key, so it goes before the first table` });
+    }
   }
 
   const entries = [];

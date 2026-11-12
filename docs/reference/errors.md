@@ -36,6 +36,7 @@ An error response is `{"ok": false, "error": {"code", "message", "items", "retry
 
 Problem codes inside `spec_invalid`:
 - **layers:** `layer_unreadable`, `spec_header_missing`, `format_unsupported`,
+  `spec_key_misplaced` (a top-level key such as `isolation` written after `[spec]`, so inside it),
   `layer_name_duplicate`;
 - **items:** `item_malformed`, `skill_malformed`, `skill_name_mismatch`, `skill_name_reserved`;
 - **plugins:** `plugin_malformed` (the package breaks the Agent Plugins format, or a

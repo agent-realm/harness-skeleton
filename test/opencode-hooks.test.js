@@ -54,11 +54,16 @@ function fakeCtx(directory) {
   const hooks = {};
   return { hooks, ctx: { location: { directory }, tool: { hook: async (name, fn) => { hooks[name] = fn; } } } };
 }
+// The plugin, written where a launch puts it: <temp dir>/config-dir/plugins/, so its readiness
+// marker lands in <temp dir>.
 let loaded = 0;
 async function load(source, dir) {
-  const f = path.join(dir, `hs-hooks-${loaded++}.mjs`);
+  const temp = path.join(dir, `launch-${loaded++}`);
+  const f = path.join(temp, 'config-dir', 'plugins', 'hs-hooks.mjs');
+  fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, source);
-  return (await import(pathToFileURL(f).href)).default;
+  const plugin = (await import(pathToFileURL(f).href)).default;
+  return Object.assign(plugin, { marker: path.join(temp, 'hs-hooks.loaded') });
 }
 const event = (tool, input) => ({ tool, sessionID: 'ses_test', agent: 'build', messageID: 'msg_1', id: 'call_1', input });
 const alive = (pid) => {
@@ -90,7 +95,11 @@ test('launch-spec: PreToolUse and PostToolUse ride the bridge plugin in the conf
     assert.match(spec.launch_items.find((i) => i.item === 'hook.log').via, /tool\.execute\.after.*cannot block on OpenCode/);
     assert.match(spec.skipped.find((x) => x.item === 'hook.prompt').reason, /UserPromptSubmit: .*session\.prompt.* not refuse/);
     assert.ok(spec.notes.some((n) => /fails closed/.test(n)) && spec.notes.some((n) => /context output is not delivered/.test(n)) && spec.notes.some((n) => /tool\.class null/.test(n)));
-    assert.ok(spec.notes.some((n) => /bridge plugin fails to load, OpenCode starts without it/.test(n)), 'the one fail-open case, measured, is named');
+    assert.ok(spec.notes.some((n) => /bridge plugin fails to load, OpenCode starts without it.*a missing marker tells a caller its guards are not active/.test(n)), 'the one fail-open case, measured, is named');
+    // What a caller checks before it takes the guards as active.
+    assert.deepEqual(spec.readiness.map((r) => [r.what, r.path]), [['hooks', path.join(spec.temp_dir, 'hs-hooks.loaded')]]);
+    assert.match(spec.readiness[0].means, /until it exists, no hook of this launch is active/);
+    assert.equal(path.dirname(spec.files.find((f) => f.role === 'config_dir').path), spec.temp_dir, 'the config directory is one tree in the temp dir, as the marker\'s relative path assumes');
     // Under a plan, hooks stay launch only.
     const plan = ok(s.call('plan', { layers: [team], owner: 'builder', mode: 'materialize' }));
     assert.match(plan.launch_only.find((x) => x.item === 'hook.guard').via, /hooks bridge plugin.*not persisted in this build/);
@@ -133,8 +142,14 @@ test('the bridge: PreToolUse continues or blocks by the hook, with the envelope 
     assert.equal(plugin.id, 'hs-hooks');
     const work = path.join(s.root, 'work');
     const { ctx, hooks } = fakeCtx(work);
+    assert.equal(fs.existsSync(plugin.marker), false);
     await plugin.setup(ctx);
     assert.deepEqual(Object.keys(hooks).sort(), ['execute.after', 'execute.before']);
+    // Its hooks registered, the bridge says so in the launch's temp dir.
+    const m = JSON.parse(fs.readFileSync(plugin.marker, 'utf8'));
+    assert.deepEqual([m.plugin, m.hooks, m.pid], ['hs-hooks', 2, process.pid]);
+    // A tool call that names no tool fails closed: the guard's matcher cannot be tested.
+    await assert.rejects(hooks['execute.before'](event(undefined, { command: 'ls' })), /the tool call names no tool, so a guard's matcher cannot be tested; failing closed/);
     await hooks['execute.before'](event('shell', { command: 'ls -la', workdir: '.' }));
     const [env] = fs.readFileSync(out, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
     assert.deepEqual(env.hs, { event: 'PreToolUse', session_id: 'ses_test', cwd: work, tool: { class: 'shell', name: 'shell', input: { command: 'ls -la' } } });
@@ -161,7 +176,7 @@ test('the bridge fails closed on PreToolUse for every shim failure, and never re
   try {
     const hook = (over = {}) => ({ id: 'hook.guard', event: 'PreToolUse', on: 'execute.before', matcher: null, args: ['--timeout', '5', '--', '/usr/bin/true'], limit_ms: 5000, ...over });
     const bridge = async (cfg, hooks) => {
-      const plugin = await load(bridgeSource({ id: 'hs-hooks', node: process.execPath, shim: SHIM, margin_ms: 5000, hooks, ...cfg }), s.root);
+      const plugin = await load(bridgeSource({ id: 'hs-hooks', node: process.execPath, shim: SHIM, margin_ms: 5000, marker: '../../hs-hooks.loaded', hooks, ...cfg }), s.root);
       const { ctx, hooks: h } = fakeCtx(s.root);
       await plugin.setup(ctx);
       return h;
@@ -183,6 +198,12 @@ test('the bridge fails closed on PreToolUse for every shim failure, and never re
     assert.deepEqual(pids.map(alive), [false, false], 'the shim and what it started are gone');
     // The hook's own process stalling: the shim stops it at the hook's limit and blocks.
     await assert.rejects((await bridge({}, [hook({ args: ['--timeout', '1', '--', '/bin/sleep', '30'], limit_ms: 1000 })]))['execute.before'](event('shell', {})), /ran past its limit and was stopped; failing closed/);
+    // With no matcher, a call that names no tool still runs the hook, whose shim decides.
+    await (await bridge({}, [hook()]))['execute.before'](event(undefined, {}));
+    // A registration that fails leaves no marker: the bridge is not known to have loaded.
+    const failing = await load(bridgeSource({ id: 'hs-hooks', node: process.execPath, shim: SHIM, margin_ms: 5000, marker: '../../hs-hooks.loaded', hooks: [hook()] }), s.root);
+    await assert.rejects(failing.setup({ location: { directory: s.root }, tool: { hook: async () => { throw new Error('no such hook'); } } }));
+    assert.equal(fs.existsSync(failing.marker), false);
     // PostToolUse cannot refuse: the same failures resolve.
     const post = (over) => hook({ event: 'PostToolUse', on: 'execute.after', ...over });
     await (await bridge({ node: path.join(s.root, 'no-node') }, [post()]))['execute.after']({ ...event('shell', {}), status: 'completed', result: {} });

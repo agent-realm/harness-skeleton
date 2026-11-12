@@ -181,7 +181,11 @@ export default Object.freeze({
       context: 'a hook\'s context output is not delivered: no OpenCode plugin hook takes it',
       mcp_class: 'an MCP tool reaches a hook as <server>_<tool>, which hs cannot tell from another tool\'s name, so its envelope has tool.class null and no tool.input.mcp [T3]',
       fail_closed: 'a PreToolUse hook fails closed in every way the bridge can see: the shim exiting other than 0 or 2, dying by a signal, failing to start, or still running at the hook\'s limit plus the margin (its process group killed)',
-      load: 'if the bridge plugin fails to load, OpenCode starts without it and no hook runs: measured with a plugin that does not parse, which OpenCode skips while the others load [T3]',
+      load: 'if the bridge plugin fails to load, OpenCode starts without it and no hook runs: measured with a plugin that does not parse, which OpenCode skips while the others load [T3]. The bridge writes its readiness marker only once its hooks are registered, so a missing marker tells a caller its guards are not active',
+      // The readiness marker, in the launch's temp dir: the config directory is one tree there, so
+      // the plugin reaches it one level above the config directory.
+      marker: 'hs-hooks.loaded',
+      marker_means: 'the hooks bridge writes this file once its hooks are registered; until it exists, no hook of this launch is active, so a caller that needs its guards must not take them as active',
       source: 'G2:packages/core/src/plugin/hooks.ts, packages/plugin/src/promise/adapter.ts, packages/core/src/tool.ts; T3',
     },
   },

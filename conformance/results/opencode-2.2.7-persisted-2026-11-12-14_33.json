@@ -1,0 +1,139 @@
+{
+  "check": "tier 1: what a data folder's own config directory gives an OpenCode start, and how OpenCode treats it (design note v0.2 §7.4, §7.5)",
+  "at": "2026-11-12T11:33:19.476Z",
+  "evidence": {
+    "harness": "opencode v2.2.7",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "3c42a4c"
+  },
+  "runs": {
+    "control": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [],
+      "server_started": false
+    },
+    "byhand": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [
+        "hs-tier1-ocp-agents-7c1e",
+        "hs-tier1-ocp-skill-3a9d",
+        "hs-tier1-ocp-tool-9e3b"
+      ],
+      "server_started": true
+    },
+    "jsonc": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [
+        "hs-tier1-ocp-jsonc-2d6f"
+      ],
+      "server_started": true
+    },
+    "attached_before": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [
+        "hs-tier1-ocp-agents-7c1e"
+      ],
+      "server_started": false
+    },
+    "attached_after": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [
+        "hs-tier1-ocp-agents2-5f02"
+      ],
+      "server_started": false
+    },
+    "driver": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [
+        "hs-tier1-ocp-skill-3a9d",
+        "hs-tier1-ocp-tool-9e3b"
+      ],
+      "server_started": true
+    },
+    "removed": {
+      "exit": 1,
+      "timed_out": false,
+      "descendants_left": false,
+      "requests": 2,
+      "models": [
+        "bench-primary"
+      ],
+      "markers": [],
+      "server_started": false
+    }
+  },
+  "recorded": {
+    "writes": {
+      "rewritten": false,
+      "keys_before": [
+        "mcp"
+      ],
+      "keys_after": [
+        "mcp"
+      ],
+      "added": []
+    },
+    "jsonc": {
+      "json_tool": false,
+      "jsonc_tool": true
+    },
+    "service_reload": {
+      "attached_before": {
+        "old": true,
+        "requests": 2
+      },
+      "attached_after": {
+        "old": false,
+        "new": true,
+        "requests": 2
+      }
+    }
+  },
+  "checks": {
+    "driver: the plan writes mcp.servers.probe, its copy in hs-run and the skill, and apply refuses a receipt that allows nothing": true,
+    "driver: a start through hs's launch loads the skill and runs the server from its copy": true,
+    "driver: hs launch-spec for the same layer skips both": true,
+    "removed: after hs remove a start has neither": true,
+    "control: hs's launch for a plain layer reaches the model, with no marker (premise)": true,
+    "byhand: the folder's config/opencode/ gives a start its skill, AGENTS.md and MCP server, under hs's inline layer (positive control)": true,
+    "service_reload: the service starts, and after `service stop` no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

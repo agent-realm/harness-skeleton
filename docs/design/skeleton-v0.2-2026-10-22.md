@@ -642,7 +642,14 @@ Added with the v0 build (`build-v0-2026-10-22.md`, milestone 4).
   - `-m hs/<model>` for the primary role. OpenCode 2.x has no small or subagent model key, and its model variants are the provider's own names, so those roles are skipped and named.
   - `OPENCODE_DISABLE_CLAUDE_CODE=1`, which closes the `.claude` skill roots.
 
-  An endpoint launch is refused while the folder holds a 1.x `data/opencode/auth.json`, which 2.x imports into `opencode.db` on start. 2.x keeps its logins in `opencode.db`, which also holds the sessions; hs never opens it, and names that under `unverified`. Hooks (a bridge plugin, section 8), permissions, agents, commands and plugins are not in this build; the status line and the `[state]` items have no OpenCode slot and are skipped or refused (section 5.10). Nothing is written into the folder: a plan under `overlay` names what a launch carries.
+  An endpoint launch is refused while the folder holds a 1.x `data/opencode/auth.json`, which 2.x imports into `opencode.db` on start. 2.x keeps its logins in `opencode.db`, which also holds the sessions; hs never opens it, and names that under `unverified`. Hooks (a bridge plugin, section 8), permissions, agents, commands and plugins are not in this build; the status line and the `[state]` items have no OpenCode slot and are skipped or refused (section 5.10). A launch refuses a spec server named like one the folder's own config defines, since its inline layer would merge into that server key by key (as on Codex).
+
+  **Under `materialize` on OpenCode** (milestone 7.2), a plan writes into the folder's own config directory, `config/opencode/`, which a start reads under the launch's inline layer (measured, section 10):
+  - `opencode.json`'s `model` and `mcp.servers.<id>`, one key at a time, with the user's own keys kept. A start leaves the file as written. A stdio server is bound by copy into `hs-run/mcp.<id>/`, as on Claude Code (milestone 6a.12), and a remote one persists by its text;
+  - each skill as a tree, `config/opencode/skills/<name>`;
+  - refused, with the reason: an `opencode.jsonc` in the folder, which outranks `opencode.json` for a key both hold (measured); a server with refs (a bare start would get an empty secret); a server's working directory; a model with no provider, and a model when an endpoint makes it the launch's own provider;
+  - the endpoint, the login and `AGENTS.md` stay launch only;
+  - a launch skips what a plan installed at this content. A running background service picks up a change without a restart (measured), so a plan needs no quiet folder.
 
   When the spec's endpoints offer no wire the harness speaks, the request is refused as `gateway_required`, naming the wire. Model roles are carried as follows:
   - Claude Code: `--model`, and `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`, `CLAUDE_CODE_EFFORT_LEVEL` [CC §5, §19];
@@ -980,6 +987,17 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - Judged since 7.1: `~/.claude/CLAUDE.md` and `~/.opencode/skills` do not reach a request, and `~/.agents/skills` does. The driver names that one a known limit, and a release that adds a switch fails the check.
 
   *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (eight checks); again at milestone 7.1 (seventeen checks).* Of the canaries, `~/.agents/skills` reaches every run: 2.x lists it as a "Global compatibility" skill root, with no switch (its server reads only `OPENCODE_DISABLE_CLAUDE_CODE(_SKILLS)`, which gates `.claude`, `packages/cli/src/server-process.ts`). `~/.claude/CLAUDE.md`, `~/.opencode/skills` and an `AGENTS.md` above the working directory do not. OpenCode writes nothing into `OPENCODE_CONFIG_DIR`, and writes `~/.opencode/.gitignore` into HOME when `~/.opencode/` exists. 1.19.5 has no `--standalone`, and the 2.x config never reaches the model.
+- **OpenCode, persisted** (tier 1, `conformance/tier1/opencode-persisted.mjs`): what a data folder's own config directory gives an OpenCode start launched by hs for a plain layer (the endpoint never persists), and how OpenCode treats that directory. Runs:
+  - `control`: an empty folder, no marker.
+  - `byhand`: `config/opencode/` holding an MCP server in `opencode.json`, a skill and an `AGENTS.md`. All three reach the start, under hs's inline layer (the positive control).
+  - `driver` (milestone 7.2): hs's plan under `materialize`, refused by `apply` with a receipt that allows nothing, applied with one. The start loads the skill and runs the server from its copy in `hs-run/`, and `launch-spec` skips both.
+  - `removed`: after `hs remove`, neither loads.
+  - Recorded only:
+    - a start leaves `opencode.json` as written and adds nothing beside it;
+    - with `opencode.json` and `opencode.jsonc` both defining a server, `opencode.jsonc`'s loads;
+    - a running background service picks up an `AGENTS.md` change without a restart.
+
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 (seven checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.
@@ -1109,6 +1127,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-12 | OpenCode under `materialize`: a plan writes the folder's own `config/opencode/` (`opencode.json` key by key, bound copies in `hs-run/`, skills), refuses while an `opencode.jsonc` there outranks `opencode.json`, and keeps the endpoint, the login and `AGENTS.md` launch only (section 7.5) |
 | 2026-11-12 | OpenCode: the driver targets the 2.x line (2.2.7 up to 2.3); 1.x is out of range. Every launch passes `--standalone`, so a background service in the folder never supplies the config. Escapes a launch cannot close are named known limits in `describe` and reported by `observe --state` when present. `env_unset` never names a variable `env_set` sets (sections 7.5, 8) |
 | 2026-11-12 | plugins on Codex: `claude-plugin` is refused as `item_unsupported`, with the measured reason (only the skills of a package in the cache load), rather than delivered as a skills-only route that would present the item as whole (section 5.7) |
 | 2026-11-12 | plugins on Claude Code: a launch turns on, by its session id `<name>@inline` in the `--settings` overlay, a plugin it carries that would start off (a manifest's `defaultEnabled: false`, or a name the folder's `settings.json` turns off), and only such a plugin (section 5.7) |

@@ -151,7 +151,9 @@ On Codex:
 On OpenCode (2.x, launch only):
 - **at launch:** the primary model, the endpoint and the login mode, MCP servers, skills and
   `AGENTS.md`, every launch with `--standalone`;
-- **under `materialize`:** nothing yet.
+- **under `materialize`:** the primary model (with no endpoint), MCP servers without refs, and skills,
+  into the folder's `config/opencode/`; refused while an `opencode.jsonc` there outranks
+  `opencode.json`.
 
 The other kinds (`AGENTS.md`, permissions, agents, commands, `env`, `runtime`) validate, and a
 plan or a launch refuses them as `not_implemented`, by name, rather than leave them out silently.

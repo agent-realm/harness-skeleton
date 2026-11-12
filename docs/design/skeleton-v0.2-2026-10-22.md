@@ -1152,6 +1152,20 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - Recorded: a start rewrites none of `mcp.json`, `settings.json` and `models.json`, and adds `auth.json`, `models-store.json` and `sessions/`. With no exposure, an `mcp.json` server starts but only `codemode` is offered.
 
   *Run 2026-11-12 on a bench: pass on pi 1.5.2 (eight checks).*
+- **The isolation known limits, and switches that close them** (tier 1, `conformance/tier1/isolation-canaries.mjs`, OpenCode and pi, question 7): material the spec never named that reaches a launched agent anyway.
+  - **Canaries** in a scratch HOME, with the working directory two levels below it: a skill in `~/.agents/skills`, an `AGENTS.md` in a parent of the working directory, a skill in that parent's `.agents/skills`, and the working directory's own `AGENTS.md`.
+  - **Carriers** that a switch must not break: the spec's skill and its `AGENTS.md`. Each launch is hs's own `launch-spec` for that spec, then the same launch with a candidate switch added.
+  - **Judged:**
+    - on both harnesses with no switch, the carriers and the canaries reach a request: the leaks are there;
+    - on OpenCode, skill permissions in the inline layer (`skill` denied for every id and allowed for the spec's; 2.x lists only skills its rules do not deny, the last match winning: source v2.2.7 `packages/core/src/skill.ts`, `permission.ts`) keep the global and the project skill out, and the spec's skill reaches;
+    - on OpenCode, `OPENCODE_DISABLE_PROJECT_CONFIG=1`, which turns the project walk off (`packages/cli/src/server-process.ts`, `packages/core/src/config/discovery.ts`), keeps the ancestor `AGENTS.md` and the project skill out, and the spec's `AGENTS.md` and skill reach;
+    - on pi, `--no-skills` keeps the global skill out, and the spec's skill, passed with `--skill`, reaches; `--no-context-files` keeps the ancestor `AGENTS.md` out, and the spec's `AGENTS.md`, a system-prompt append, reaches;
+    - with both switches on either harness, only the spec's skill and `AGENTS.md` reach, of the markers; no host is asked for.
+  - **Recorded:**
+    - the switch that keeps the ancestors out drops the working directory's own `AGENTS.md` too, on both;
+    - pi's project `.agents/skills` does not reach in JSON mode with or without a switch (trust-gated).
+
+  *Run 2026-11-12 on a bench: pass on OpenCode 2.2.7 and pi 1.5.2 (nine checks).*
 - **Agent Plugins from the Codex cache** (tier 1, `conformance/tier1/agent-plugins-codex-cache.mjs`): the route a Codex driver takes without writing `config.toml`. Runs, each in a data folder of its own, with these expectations:
   - `control`: no plugin, so no marker.
   - `byhand`: `codex plugin marketplace add`, the cache directory and an enabled `[plugins]` table, the positive control. It loads.

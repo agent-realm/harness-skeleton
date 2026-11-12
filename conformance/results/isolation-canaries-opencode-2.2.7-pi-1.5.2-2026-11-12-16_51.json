@@ -1,0 +1,147 @@
+{
+  "check": "tier 1: the isolation known limits on OpenCode and pi, and the switches that close them (design note v0.2 §8, question 7)",
+  "at": "2026-11-12T13:50:46.291Z",
+  "evidence": {
+    "opencode": {
+      "harness": "opencode v2.2.7",
+      "node": "v24.18.0",
+      "os": "Linux 6.8.0-147-generic x64",
+      "hs_commit": "69d803e"
+    },
+    "pi": {
+      "harness": "1.5.2",
+      "node": "v24.18.0",
+      "os": "Linux 6.8.0-147-generic x64",
+      "hs_commit": "69d803e"
+    }
+  },
+  "runs": {
+    "opencode": {
+      "base": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 2,
+        "reached": [
+          "agents",
+          "ancestor",
+          "cwd",
+          "global",
+          "project",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "skills_denied": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 2,
+        "reached": [
+          "agents",
+          "ancestor",
+          "cwd",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "project_off": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 2,
+        "reached": [
+          "agents",
+          "global",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "both": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 2,
+        "reached": [
+          "agents",
+          "skill"
+        ],
+        "hosts": []
+      }
+    },
+    "pi": {
+      "base": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 1,
+        "reached": [
+          "agents",
+          "ancestor",
+          "cwd",
+          "global",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "no_skills": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 1,
+        "reached": [
+          "agents",
+          "ancestor",
+          "cwd",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "no_context": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 1,
+        "reached": [
+          "agents",
+          "global",
+          "skill"
+        ],
+        "hosts": []
+      },
+      "both": {
+        "exit": 0,
+        "timed_out": false,
+        "requests": 1,
+        "reached": [
+          "agents",
+          "skill"
+        ],
+        "hosts": []
+      }
+    }
+  },
+  "recorded": {
+    "cwd_agents": {
+      "opencode.base": true,
+      "opencode.skills_denied": true,
+      "opencode.project_off": false,
+      "opencode.both": false,
+      "pi.base": true,
+      "pi.no_skills": true,
+      "pi.no_context": false,
+      "pi.both": false
+    },
+    "pi_project_skill": {
+      "base": false,
+      "no_skills": false,
+      "no_context": false,
+      "both": false
+    }
+  },
+  "checks": {
+    "opencode base: the spec's skill and AGENTS.md reach a request, and so do the global skill, the ancestor AGENTS.md and the project skill (the premise: the leaks are there)": true,
+    "opencode skills_denied: skill permissions denying every id but the spec's keep the global and the project skill out, and the spec's skill reaches": true,
+    "opencode project_off: OPENCODE_DISABLE_PROJECT_CONFIG keeps the ancestor AGENTS.md and the project skill out, and the spec's AGENTS.md and skill reach": true,
+    "opencode both: only the spec's skill and AGENTS.md reach, of the markers": true,
+    "pi base: the spec's skill and AGENTS.md reach a request, and so do the global skill and the ancestor AGENTS.md (the premise)": true,
+    "pi no_skills: --no-skills keeps the global skill out, and the spec's skill, passed with --skill, reaches": true,
+    "pi no_context: --no-context-files keeps the ancestor AGENTS.md out, and the spec's AGENTS.md, a system-prompt append, reaches": true,
+    "pi both: only the spec's skill and AGENTS.md reach, of the markers": true,
+    "no host is asked for, and no process with the bench's environment is left": true
+  },
+  "verdict": "pass"
+}

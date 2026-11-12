@@ -29,7 +29,7 @@ The first public cut.
   - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
-- **Conformance:** twenty-three tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
+- **Conformance:** twenty-four tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
   disposable benches. The six plugin checks also ran against Claude Code 2.1.321 or
   Codex 0.167.0.
 - **Documentation:** a tutorial, a concepts page with five diagrams, guides, a reference, and

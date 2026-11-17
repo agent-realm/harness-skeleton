@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isolationLaunch, isolationPlan } from '../../isolation.js';
+import { isolationLaunch, isolationPlan, strictIsolation } from '../../isolation.js';
 import { HsError } from '../../protocol.js';
 import { hookMatcher } from '../../hooks.js';
 import { LAUNCH_ITEM_KINDS, endpointUnset, launchItems, refuseStoredLogin } from '../../launch-items.js';
@@ -16,7 +16,7 @@ import { persistedProcess } from '../../persist.js';
 import { digestOf, readLedger } from '../../records.js';
 import { digestPath } from '../../spec/layers.js';
 import { extensionSource } from './extension.js';
-import { heldElsewhere, installedPackage, persistedPackage, translatedPackage } from './plugins.js';
+import { heldElsewhere, installedNative, installedPackage, nativeHeldElsewhere, nativePackage, persistedNative, persistedPackage, translatedPackage } from './plugins.js';
 import { AGENT_PLUGINS } from '../../spec/agent-plugins.js';
 
 // pi would expand $ or run a leading ! in a path a plugin's server gets in its env (descriptor,
@@ -95,6 +95,7 @@ export function deliverables(resolved, { descriptor, mode, folder, home, platfor
       jsonKey(item, P.mcp_file, p.address.key, p.value, p.risk, p.notes.join('; '));
     } else if (item.kind === 'hook') out.launch_only.push({ item: item.id, via: `launch-spec: the launch extension (${L.extension.flag}) runs it on pi's ${L.bridge.on[item.value.event]}, through hs's hook shim, under a launch receipt (runs-code)${materialize ? '; not persisted in this build' : ''}` });
     else if (item.kind === 'plugin' && item.value?.format === AGENT_PLUGINS) plugin(item);
+    else if (item.kind === 'plugin' && item.value?.format === descriptor.pi_package.format) native(item);
     else out.not_implemented.push(s.label ?? item.id);
   }
   // An Agent Plugins package (§5.7), translated into a pi package: at launch with -e; under
@@ -128,6 +129,36 @@ export function deliverables(resolved, { descriptor, mode, folder, home, platfor
     });
     const e = p.element;
     out.deliverables.push({ item: item.id, handler: 'json-element', address: { file: e.file, key: e.key, id: e.id }, address_id: `${e.file}#${e.key}[${e.id}]`, value: e.value, risk, note: `a member of ${e.file} ${e.key}, which a start loads the package from (tier 1, pi-plugin-surface)` });
+  }
+
+  // A pi package (descriptor, pi_package), as it is: at launch with -e; under materialize a copy
+  // in hs-run/ and its member of settings.json `packages`. One with extensions is refused beside a
+  // blocking hook, and under strict isolation.
+  function native(item) {
+    const N = descriptor.pi_package;
+    let p;
+    try {
+      p = persistedNative(item, resolved.plugins.find((x) => x.id === item.id), descriptor);
+      refuseNativeBeside(item, p, resolved, descriptor);
+    } catch (e) {
+      refusedBy(item, e);
+      return;
+    }
+    if (p.extensions && strictIsolation(resolved)) {
+      out.refused.unshift({ item: item.id, code: 'isolation_unmet', reason: `isolation = "strict": ${item.id}: ${N.code}, which strict cannot keep to the spec` });
+      return;
+    }
+    if (!materialize) {
+      out.launch_only.push({ item: item.id, via: `launch-spec: ${N.flag} <temp>/${p.tree.name}, ${p.via}, under a launch receipt (runs-code); not persisted under overlay` });
+      return;
+    }
+    out.deliverables.push({
+      item: item.id, handler: 'tree', address: { path: p.address }, address_id: p.address,
+      source: resolved.plugins.find((x) => x.id === item.id).path, source_sha256: p.risks[0].sha256, source_is_dir: true, risk: ['runs-code'],
+      note: `${p.via}; ${N.reach}`,
+    });
+    const e = p.element;
+    out.deliverables.push({ item: item.id, handler: 'json-element', address: { file: e.file, key: e.key, id: e.id }, address_id: `${e.file}#${e.key}[${e.id}]`, value: e.value, risk: ['runs-code'], note: `a member of ${e.file} ${e.key}, which a start loads the package from` });
   }
 
   for (const f of resolved.files) {
@@ -229,7 +260,7 @@ function sorted(item, descriptor) {
   if (item.kind === 'plugin') {
     const refused = descriptor.plugin_formats_refused?.[item.value?.format];
     if (refused) return { refuse: `${item.id}: format ${item.value.format}: ${refused.reason}` };
-    return item.value?.format === AGENT_PLUGINS ? {} : { label: `${item.id} (format ${item.value?.format})` };
+    return item.value?.format === AGENT_PLUGINS || item.value?.format === descriptor.pi_package.format ? {} : { label: `${item.id} (format ${item.value?.format})` };
   }
   return {};
 }
@@ -291,6 +322,17 @@ function refuseFolderExtras(folder, descriptor, planned, plannedPackages = []) {
   }
   if (found.length) {
     throw new HsError('isolation_unmet', `isolation = "strict": the folder holds ${found.join('; ')}, which pi would load and no switch keeps out without dropping hs's own extension; remove them from the folder, or launch without strict isolation`, found);
+  }
+}
+
+// A pi package with extensions beside a blocking hook (descriptor, launch.hooks.blocking_events):
+// the package's extensions act in pi's process where no guard sees them (descriptor, pi_package.code),
+// so the guard would not hold. Refused, naming both.
+function refuseNativeBeside(item, p, resolved, descriptor) {
+  if (!p.extensions) return;
+  const blocking = resolved.items.filter((i) => i.kind === 'hook' && descriptor.launch.hooks.blocking_events.includes(i.value?.event) && !hookRoute(i, descriptor).skip);
+  if (blocking.length) {
+    throw new HsError('item_unsupported', `${item.id}: ${descriptor.pi_package.code}; so the blocking hook${blocking.length > 1 ? 's' : ''} ${blocking.map((h) => `${h.id} (${h.value.event})`).join(', ')} would not hold beside it. Deliver the package without blocking hooks, or the hooks without the package`, [item.id, ...blocking.map((h) => h.id)]);
   }
 }
 
@@ -377,7 +419,7 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
     const s = sorted(item, descriptor);
     if (s.skip) out.skipped.push({ item: item.id, reason: s.skip });
     else if (s.refuse) throw new HsError('item_unsupported', s.refuse, [item.id]);
-    else if (item.kind === 'plugin' && item.value?.format === AGENT_PLUGINS) continue; // below
+    else if (item.kind === 'plugin' && (item.value?.format === AGENT_PLUGINS || item.value?.format === descriptor.pi_package.format)) continue; // below
     else out.not_implemented.push(s.label ?? item.id);
   }
   if (resolved.permissions.length) throw new HsError('item_unsupported', `permissions: ${L.permissions.reason}`, ['permissions']);
@@ -635,6 +677,34 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
     if (t.stdio) pluginData = true;
   }
   if (pluginData) out.unverified.push(`PLUGIN_DATA: ${R.data.at_launch}; a plan keeps it in ${R.data.dir} [AP §9.1]`);
+
+  // pi packages as they are (descriptor, pi_package): refused beside a blocking hook and under
+  // strict when they have extensions; one a plan installed at this content is the folder's member,
+  // named again under strict; one the folder holds at other content is refused.
+  const N = descriptor.pi_package;
+  const nativeRoles = [];
+  for (const item of resolved.items.filter((i) => i.kind === 'plugin' && i.value?.format === N.format)) {
+    const bound = resolved.plugins.find((p) => p.id === item.id);
+    const t = nativePackage(item, bound, descriptor);
+    refuseNativeBeside(item, t, resolved, descriptor);
+    if (t.extensions && strict) throw new HsError('isolation_unmet', `isolation = "strict": ${item.id}: ${N.code}, which strict cannot keep to the spec`, [item.id]);
+    if (installedNative(item, bound, folder, descriptor)) {
+      const p = persistedNative(item, bound, descriptor);
+      plannedPackages.push(p.element.value);
+      if (strict) {
+        installedPlugins.push(path.join(folder, p.address));
+        out.items.push({ item: item.id, via: `${N.flag} <folder>/${p.address}: installed by a plan at this content, and named again under strict isolation; the plan's receipt covered it` });
+      } else out.skipped.push({ item: item.id, reason: `installed in the folder by a plan, at this content (${p.address} and its member of ${p.element.file} ${p.element.key}); the plan's receipt covered it` });
+      continue;
+    }
+    const held = nativeHeldElsewhere(item, bound, folder, descriptor);
+    if (held) throw new HsError('item_unsupported', `${item.id}: the folder holds this package at other content (${held}), which a start loads beside this one; plan and apply again, or remove it first`, [item.id]);
+    out.trees.push(t.tree);
+    out.risks.push(...t.risks);
+    out.items.push({ item: item.id, via: `${N.flag} <temp>/${t.tree.name}: ${t.via}` });
+    nativeRoles.push(t.tree.role);
+    if (t.extensions && resolved.items.some((i) => i.kind === 'hook')) out.notes.push(`${item.id}: ${N.code}; the notifying hooks of this launch see only what reaches them`);
+  }
   if (pluginRoles.length) {
     out.checkRoot = (root) => {
       if (unsafePlace(root)) throw new HsError('item_unsupported', `the temp root ${root} holds $ or a leading !, which pi would expand or run in a plugin server's env; point TMPDIR elsewhere`, pluginRoles);
@@ -679,6 +749,7 @@ export function launchParts(resolved, { headless, descriptor, folder, home, plat
     ...(extension ? [L.extension.flag, paths[L.extension.role]] : []),
     ...installedSkills.flatMap((p) => [L.skills.flag, p]),
     ...pluginRoles.flatMap((r) => [R.translation.flag, paths[r]]),
+    ...nativeRoles.flatMap((r) => [N.flag, paths[r]]),
     ...installedPlugins.flatMap((p) => [R.translation.flag, p]),
     ...skills.flatMap((n) => [L.skills.flag, path.join(paths[L.skills.tree], n)]),
     ...(resolved.agents_md.length ? [L.agents_md.flag, paths[L.agents_md.role]] : []),

@@ -26,6 +26,19 @@
 //               bundle (recorded)
 //   bundled     a package whose extension imports a dependency bundled in its node_modules
 //               (recorded)
+//   silent      a package whose extension writes a file when it loads and another on
+//               before_agent_start, with no tool call, loaded before hs's extension so hs's guard
+//               runs last: the files are written and the guard sees nothing
+// Then hs's own route for the format (milestone 8.5), each launch hs's launch-spec run as a caller
+// runs it, with no tool call scripted:
+//   driver      a spec with a pi package (an extension that writes a file when it loads, importing a
+//               dependency bundled in its node_modules; a skill) and a PostToolUse hook: it loads
+//   refused     the same package beside a PreToolUse guard, and under strict isolation: refused by
+//               launch-spec, naming the package (and the hook)
+//   strict_ok   a skills-only package under strict isolation: its skill reaches the model
+//   planned     after plan and apply, a start through hs's launch for a plain layer: it loads from
+//               the folder's settings.json packages; hs's launch for the package skips it
+//   removed     after remove, a start: it does not load
 // Names and booleans only.
 
 import fs from 'node:fs';
@@ -131,6 +144,11 @@ export default function (pi) {
     }
     return dir;
   };
+  // A package that acts with no tool call at all.
+  const silentOut = (n) => path.join(b.work, `silent-${n}.written`);
+  const silent = path.join(b.work, 'pkg-silent');
+  put(path.join(silent, 'package.json'), { name: 'hs-bench-silent', version: '1.0.0', pi: { extensions: ['./ext.js'], skills: [], prompts: [], themes: [] } });
+  put(path.join(silent, 'ext.js'), `import { writeFileSync } from 'node:fs';\nexport default function (pi) {\n  writeFileSync(${JSON.stringify(silentOut('load'))}, 'x');\n  pi.on('before_agent_start', async () => { writeFileSync(${JSON.stringify(silentOut('turn'))}, 'x'); });\n}\n`);
   const missing = depPkg(path.join(b.work, 'pkg-missing'), 'missing', false);
   const bundled = depPkg(path.join(b.work, 'pkg-bundled'), 'bundled', true);
 
@@ -178,6 +196,7 @@ export default function (pi) {
       echo_result: seen.some((q) => q.markers.includes(M.echo) && (q.tool_results ?? []).length > 0),
       key: fs.existsSync(keySeen) ? JSON.parse(fs.readFileSync(keySeen, 'utf8')) : null,
       dep: { missing: fs.existsSync(depOut('missing')), bundled: fs.existsSync(depOut('bundled')) },
+      silent: { at_load: fs.existsSync(silentOut('load')), before_agent_start: fs.existsSync(silentOut('turn')) },
       folder_added: names(folder).filter((n) => !before.includes(n) && !n.startsWith('sessions')),
       hosts: [...new Set(hosts.slice(from))].sort(),
     };
@@ -189,6 +208,74 @@ export default function (pi) {
   runs.noskills = await run('noskills', { extra: ['--no-skills'] });
   runs.deps = await run('deps', { packages: [missing], script: false });
   runs.bundled = await run('bundled', { packages: [bundled], script: false });
+  runs.silent = await run('silent', { place: 'before', packages: [silent], script: false });
+
+  // hs's own route. A run with hs's launch for `layer` in `folder`, no package added by hand.
+  const loadedOut = path.join(b.work, 'route.loaded');
+  const routeRun = async (variant, layer, folder) => {
+    const from = hosts.length;
+    fs.rmSync(loadedOut, { force: true });
+    const L = await b.model('ENDPOINT', { markers: Object.values(M), fallback: { text: 'done' } });
+    put(local, `[endpoints.openai-chat]\nbase_url = "${L.url}/v1"\ncredential = "env:${REF_VAR}"\nauth = "bearer"\n\n[login]\nmode = "endpoint"\n`);
+    const args = ['--harness', 'pi', '--folder', folder, '--layer', layer, '--local', local, '--bin', pi, '--headless'];
+    const refused = b.hsCall('launch-spec', args);
+    if (!refused.ok && refused.error.code !== 'receipt_required') return { refused: refused.error.code, items: refused.error.items ?? [], hosts: [] };
+    const items = refused.ok ? [] : refused.error.items ?? [];
+    const receipt = path.join(b.work, `receipt-${variant}.json`);
+    put(receipt, { format: 'hs-receipt/0.2', launch_digest: items[0]?.launch_digest ?? null, allows: [...new Set((items[0]?.risks ?? []).map((x) => x.item))], by: 'tier1-bench', at: new Date().toISOString() });
+    const spec = refused.ok ? refused.result : b.hs('launch-spec', [...args, '--receipt', receipt]);
+    const env = { ...spec.env_set, ...viaProxy };
+    for (const [v, ref] of Object.entries(spec.env_from_refs)) {
+      if (ref !== `env:${REF_VAR}`) throw new Error(`unexpected reference for ${v}`);
+      env[v] = DUMMY;
+    }
+    for (const v of spec.env_unset) env[v] = undefined;
+    const r = await b.launch([L], [pi, ...spec.argv.slice(1), PROMPT], env, cwd);
+    if (spec.temp_dir) fs.rmSync(spec.temp_dir, { recursive: true, force: true });
+    const seen = r.seen.ENDPOINT;
+    return {
+      exit: r.exit, requests: seen.length, receipt_needed: !refused.ok,
+      item: spec.launch_items.some((i) => i.item === 'plugin.tools') ? 'carried' : spec.skipped.some((x) => x.item === 'plugin.tools') ? 'skipped' : null,
+      loaded: fs.existsSync(loadedOut) ? fs.readFileSync(loadedOut, 'utf8') : null,
+      skill_reached: seen.some((q) => q.markers.includes(M.skill)),
+      hosts: [...new Set(hosts.slice(from))].sort(),
+    };
+  };
+  const routePkg = (dir, { extensions = true } = {}) => {
+    put(path.join(dir, 'package.json'), { name: 'tools', version: '1.0.0', ...(extensions ? { dependencies: { 'hs-bench-dep': '1.0.0' } } : {}), pi: { extensions: extensions ? ['./ext.js'] : [], skills: ['./skills'], prompts: [], themes: [] } });
+    put(path.join(dir, 'skills', 'notes', 'SKILL.md'), `---\nname: notes\ndescription: A packaged skill. ${M.skill}\n---\nUse it.\n`);
+    if (extensions) {
+      put(path.join(dir, 'ext.js'), `import { writeFileSync } from 'node:fs';\nimport dep from 'hs-bench-dep';\nexport default function () {\n  writeFileSync(${JSON.stringify(loadedOut)}, String(dep));\n}\n`);
+      put(path.join(dir, 'node_modules', 'hs-bench-dep', 'package.json'), { name: 'hs-bench-dep', version: '1.0.0', type: 'module', main: 'index.js' });
+      put(path.join(dir, 'node_modules', 'hs-bench-dep', 'index.js'), 'export default "bundled";\n');
+    }
+  };
+  const routeLayer = (name, { hook = null, strict = false, extensions = true, pkg: withPkg = true } = {}) => {
+    const dir = path.join(b.work, `route-${name}`);
+    if (withPkg) routePkg(path.join(dir, 'packages', 'tools'), { extensions });
+    put(path.join(dir, 'spec.toml'), [...(strict ? ['isolation = "strict"', ''] : []), '[spec]', `name = "route-${name}"`, 'version = "1.0.0"', 'format = "0.2"', '', '[model.roles]', 'primary = "bench-primary"', '',
+      ...(withPkg ? ['[plugin."tools"]', 'source = "packages/tools"', 'format = "pi-package"', ''] : []),
+      ...(hook ? [`[hook.${hook === 'PreToolUse' ? 'guard' : 'after'}]`, `event = "${hook}"`, 'run = { exec = "/bin/true" }', ''] : [])].join('\n'));
+    return dir;
+  };
+  const rf = (n) => { const f = path.join(b.work, `route-folder-${n}`); fs.mkdirSync(f, { recursive: true }); return f; };
+  runs.driver = await routeRun('driver', routeLayer('driver', { hook: 'PostToolUse' }), rf('driver'));
+  runs.refused_guard = await routeRun('refused-guard', routeLayer('guard', { hook: 'PreToolUse' }), rf('guard'));
+  runs.refused_strict = await routeRun('refused-strict', routeLayer('strict', { strict: true }), rf('strict'));
+  runs.strict_ok = await routeRun('strict-ok', routeLayer('strict-ok', { strict: true, extensions: false }), rf('strict-ok'));
+  const pf = rf('planned');
+  const planLayer = routeLayer('planned');
+  const common = ['--harness', 'pi', '--folder', pf, '--bin', pi];
+  const plan = b.hs('plan', [...common, '--layer', planLayer, '--local', local, '--owner', 'tier1', '--mode', 'materialize']);
+  const planFile = path.join(b.work, 'plan.json');
+  put(planFile, plan);
+  const planReceipt = path.join(b.work, 'receipt-plan.json');
+  put(planReceipt, { format: 'hs-receipt/0.2', plan_digest: plan.digest, allows: plan.operations.filter((o) => o.risk.length).map((o) => o.id), by: 'tier1-bench', at: new Date().toISOString() });
+  b.hs('apply', [...common, '--plan', planFile, '--receipt', planReceipt]);
+  runs.planned = { ...(await routeRun('planned', routeLayer('plain', { pkg: false }), pf)), planned: plan.operations.map((o) => o.address_id).sort() };
+  runs.planned_skip = await routeRun('planned-skip', planLayer, pf);
+  b.hs('remove', [...common, '--owner', 'tier1']);
+  runs.removed = await routeRun('removed', routeLayer('plain2', { pkg: false }), pf);
   proxy.close();
   proxy = null;
 
@@ -197,6 +284,12 @@ export default function (pi) {
   const checks = {
     'premise: hs\'s launch with the package reaches the model, its guard logs every shell call, and the package\'s extension loads': A.requests > 0 && A.order.some((l) => l.startsWith('hs ')) && A.order.some((l) => l.startsWith('pkg ')),
     'the guard holds against an answer of { block: false }: the denied command never runs, in either load order': !A.ran.denied && !B.ran.denied,
+    'a package\'s extension acts with no tool call: with hs\'s guard loaded last, it writes a file at load and another before the agent starts, and the guard sees nothing': runs.silent.requests > 0 && runs.silent.silent.at_load && runs.silent.silent.before_agent_start && runs.silent.order.length === 0,
+    'driver: hs\'s launch carries the package under a receipt; its extension loads, importing its bundled dependency, and its skill reaches the model': runs.driver.receipt_needed && runs.driver.item === 'carried' && runs.driver.loaded === 'bundled' && runs.driver.skill_reached,
+    'refused: beside a PreToolUse guard the package with extensions is refused, naming the package and the hook; under strict isolation it is isolation_unmet': runs.refused_guard.refused === 'item_unsupported' && runs.refused_guard.items.includes('plugin.tools') && runs.refused_guard.items.includes('hook.guard') && runs.refused_strict.refused === 'isolation_unmet',
+    'strict_ok: under strict isolation a skills-only package is carried, and its skill reaches the model': runs.strict_ok.item === 'carried' && runs.strict_ok.skill_reached,
+    'planned: plan writes the copy and the settings.json packages member; a start with no -e loads the package; hs\'s launch for it then skips it': JSON.stringify(runs.planned.planned) === JSON.stringify(['hs-run/pipkg.tools', 'settings.json#packages[pipkg.tools]']) && runs.planned.loaded === 'bundled' && runs.planned.skill_reached && runs.planned_skip.item === 'skipped',
+    'removed: after hs remove a start loads neither the extension nor the skill': runs.removed.requests > 0 && runs.removed.loaded === null && !runs.removed.skill_reached,
     'no host is asked for in any run': Object.values(runs).every((r) => r.hosts.length === 0),
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';

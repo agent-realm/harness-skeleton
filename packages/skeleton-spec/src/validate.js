@@ -117,6 +117,38 @@ function nativeProblems(dir, id, route, H) {
       out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${r.field}: ${r.reason}` });
     }
   }
+  // A manifest naming its resources by path (route.manifest_resources): each must stay inside the
+  // package, so the digest binds what loads: no absolute path, no ~, no .. out of it, and no
+  // source a harness would fetch. A leading !, + or - is a filter mark, not part of the path.
+  const MR = route.manifest_resources;
+  if (MR && manifest[MR.key] && typeof manifest[MR.key] === 'object') {
+    for (const kind of MR.kinds) {
+      const list = manifest[MR.key][kind];
+      if (list === undefined) continue;
+      for (const entry of Array.isArray(list) ? list : [list]) {
+        const p = typeof entry === 'string' ? entry.replace(/^[!+-]/, '') : null;
+        const norm = p === null ? null : path.posix.normalize(p);
+        if (p === null || /^[a-z][a-z0-9+.-]*:/i.test(p) || p.startsWith('/') || p.startsWith('~') || norm === '..' || norm.startsWith('../')) {
+          out.push({ code: 'plugin_path_unsupported', message: `${route.manifest}: ${MR.key}.${kind} names a resource outside the package, or a source to fetch; ${MR.reason}` });
+          break;
+        }
+      }
+    }
+  }
+  // Dependencies a harness would need installed (route.bundled_dependencies): each must be in the
+  // package's own node_modules/, as a directory, so the digest binds it.
+  if (route.bundled_dependencies && manifest.dependencies && typeof manifest.dependencies === 'object') {
+    for (const dep of Object.keys(manifest.dependencies)) {
+      let bundled = false;
+      try {
+        const st = fs.lstatSync(path.join(dir, 'node_modules', ...dep.split('/')));
+        bundled = st.isDirectory();
+      } catch {
+        // absent
+      }
+      if (!bundled) out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: dependencies names ${dep}, which is not bundled in node_modules/; ${route.bundled_dependencies}` });
+    }
+  }
   return out;
 }
 

@@ -124,3 +124,89 @@ export function heldElsewhere(item, bound, folder, descriptor) {
   if (cur.blocked) return `${e.file}#${e.key} (${cur.blocked})`;
   return cur.present ? `${e.file}#${e.key} (${e.value})` : null;
 }
+
+// pi's own package format (descriptor, pi_package), delivered whole: the package copied as it is,
+// checked against its digest, which covers every file in it, node_modules included. Whether it has
+// extensions follows pi's rule: a `pi` manifest that lists resources names them; without one, its
+// extensions/ directory [P15:packages; P15:dist/core/package-manager.js collectPackageResources].
+// Each native addon (.node) is named in the risk, which a receipt allows.
+export function nativePackage(item, bound, descriptor) {
+  const N = descriptor.pi_package;
+  const name = item.id.slice('plugin.'.length);
+  const link = treeLink(bound.path);
+  if (link !== null) throw new HsError('write_refused', `${item.id}: the package holds a symlink (${link}); hs copies no tree with one`, [item.id]);
+  let manifest = null;
+  try {
+    manifest = JSON.parse(fs.readFileSync(path.join(bound.path, N.manifest), 'utf8'));
+  } catch {
+    // no manifest: pi's conventional directories
+  }
+  const pi = manifest && typeof manifest.pi === 'object' && manifest.pi !== null ? manifest.pi : null;
+  const listed = pi && N.kinds.some((k) => pi[k] !== undefined);
+  const nonEmpty = (d) => {
+    try {
+      return fs.readdirSync(path.join(bound.path, d)).length > 0;
+    } catch {
+      return false;
+    }
+  };
+  const has = (kind) => (listed ? (Array.isArray(pi[kind]) ? pi[kind].length > 0 : Boolean(pi[kind])) : nonEmpty(kind));
+  const addons = [];
+  const walk = (rel) => {
+    for (const n of fs.readdirSync(path.join(bound.path, rel)).sort()) {
+      const r = rel ? `${rel}/${n}` : n;
+      const st = fs.lstatSync(path.join(bound.path, r));
+      if (st.isDirectory()) walk(r);
+      else if (n.endsWith('.node')) addons.push(r);
+    }
+  };
+  walk('');
+  const extensions = has('extensions');
+  const risk = { item: item.id, layer: item.layer, risk: 'runs-code', sha256: bound.sha256, note: N.reach, ...(addons.length ? { native_addons: addons } : {}) };
+  const parts = N.kinds.filter(has);
+  return {
+    tree: { name: `${N.tree_prefix}${name}`, role: item.id, files: [], entries: [{ rel: '.', source: bound.path, sha256: bound.sha256 }] },
+    extensions, addons, risks: [risk],
+    via: `the pi package as it is${parts.length ? ` (${parts.join(', ')})` : ''}${extensions ? `; ${N.code}` : ''}${addons.length ? `; native addons: ${addons.join(', ')}` : ''}`,
+  };
+}
+
+// Where a plan puts a native package: the copy under hs-run/, and its member of settings.json
+// `packages`.
+export function persistedNative(item, bound, descriptor) {
+  const t = nativePackage(item, bound, descriptor);
+  const address = `${descriptor.persist.root}/${t.tree.name}`;
+  return { ...t, address, element: { file: descriptor.persist.settings_file, key: descriptor.plugins[AGENT_PLUGINS].persist.packages_key, id: t.tree.name, value: `./${address}` } };
+}
+
+// Whether a plan installed the native package at this content, and where the folder holds it at
+// other content (or null), as for a translated package.
+export function installedNative(item, bound, folder, descriptor) {
+  let p;
+  try {
+    p = persistedNative(item, bound, descriptor);
+  } catch {
+    return false;
+  }
+  const ledger = readLedger(folder);
+  const held = (addr, want, current) => {
+    const entry = ledger.addresses[addr];
+    return entry !== undefined && Object.values(entry.owners).some((o) => o.installed === want) && current === want;
+  };
+  const e = p.element;
+  return held(p.address, bound.sha256, handlers.tree.current(folder, descriptor, { path: p.address }).digest)
+    && held(`${e.file}#${e.key}[${e.id}]`, digestOf(e.value), handlers['json-element'].current(folder, descriptor, { file: e.file, key: e.key, id: e.id }).digest);
+}
+export function nativeHeldElsewhere(item, bound, folder, descriptor) {
+  let p;
+  try {
+    p = persistedNative(item, bound, descriptor);
+  } catch {
+    return null;
+  }
+  if (readLedger(folder).addresses[p.address] || fs.existsSync(path.join(folder, p.address))) return p.address;
+  const e = p.element;
+  const cur = handlers['json-element'].current(folder, descriptor, { file: e.file, key: e.key, id: e.id });
+  if (cur.blocked) return `${e.file}#${e.key} (${cur.blocked})`;
+  return cur.present ? `${e.file}#${e.key} (${e.value})` : null;
+}

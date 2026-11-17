@@ -114,6 +114,33 @@ format = "claude-plugin"
   server that needs a secret is an `mcp` item with references.
 - `claude plugin validate` remains Claude Code's own check of the rest of the package.
 
+### pi's own format
+
+On pi a plugin item may also name a pi package
+([pi's packages](https://pi.dev/packages)): extensions, skills, prompts and themes, declared in a
+`pi` manifest in `package.json` or found in its conventional directories.
+
+```toml
+[plugin."tools"]                        # the name in package.json, if it has one
+source = "packages/tools"
+format = "pi-package"
+```
+
+- **Delivered whole:** at launch with `-e`, and under `materialize` as `hs-run/pipkg.<name>/` plus
+  one member of `settings.json`'s `packages`. It is `runs-code`, bound by a digest over every file
+  in it, `node_modules` included. A native addon (`.node`) is named in the risk the receipt allows,
+  and the risk says the code can read the launch's environment, credential variables included, and
+  reach the network.
+- **Its extensions are code in pi's process,** outside hs's hook shim. They can act where no guard
+  sees them: rewrite a tool call's input after a guard has passed it, register tools, change the
+  system prompt, or act with no tool call at all (measured). So a package with extensions is refused
+  beside a blocking hook (`PreToolUse`, `UserPromptSubmit`, `Stop`), naming both, and under strict
+  isolation (`isolation_unmet`). A package of skills, prompts and themes only passes both.
+- **validate refuses** a manifest resource path outside the package or a source to fetch
+  (`plugin_path_unsupported`), and a dependency not bundled in `node_modules/`
+  (`plugin_field_unsupported`): pi installs nothing for a local package, and an extension whose
+  import fails stops pi from starting. With a manifest, its `name` must be the item's.
+
 ## `local.toml`
 
 ```toml

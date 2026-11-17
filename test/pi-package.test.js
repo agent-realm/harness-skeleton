@@ -36,8 +36,10 @@ function kit(root, { name = 'tools', layerName = 'kit', manifest, files = {}, to
     ...pkg,
     [`${base}/ext.js`]: 'export default function () {}\n',
     [`${base}/skills/notes/SKILL.md`]: skillMd('notes'),
-    ...Object.fromEntries(Object.entries(files).map(([k, v]) => [`${base}/${k}`, v])),
+    ...Object.fromEntries(Object.entries(files).filter(([, v]) => v !== undefined).map(([k, v]) => [`${base}/${k}`, v])),
   });
+  // A file given as undefined is left out (the fixture's ext.js, say).
+  for (const [k, v] of Object.entries(files)) if (v === undefined) fs.rmSync(path.join(dir, base, k), { recursive: true, force: true });
   if (strict) fs.writeFileSync(path.join(dir, 'spec.toml'), `isolation = "strict"\n\n${fs.readFileSync(path.join(dir, 'spec.toml'), 'utf8')}`);
   return dir;
 }
@@ -158,6 +160,60 @@ test('materialize: the copy in hs-run/ and a packages member; a launch skips it;
     write(s.folder, 'settings.json', JSON.stringify({ packages: ['./hs-run/pipkg.tools'] }));
     const r = s.call('launch-spec', { layers: [k], headless: true });
     assert.match(r.error.message, /the folder holds this package at other content/);
+  } finally {
+    s.done();
+  }
+});
+
+// Whether a package has extensions, read as pi's own loader reads it (descriptor, pi_package;
+// plugins.js nativePackage): a manifest field counts only as a list of strings; with none, the four
+// conventional directories, if any exists; with none of those, the package itself.
+test('extensions by pi\'s loader rule: the package itself when nothing is listed and no directory exists; a listed or conventional skills-only package has none', () => {
+  const s = box();
+  try {
+    const guarded = (layerName, manifest, files) => s.call('launch-spec', { layers: [kit(s.root, { layerName, manifest, files, toml: GUARD })], headless: true });
+    // No list, none of the four directories, a root index.js: the package itself is the extension.
+    let r = guarded('itself', { name: 'tools' }, { 'index.js': 'export default function () {}\n', 'ext.js': undefined, skills: undefined });
+    assert.equal(r.error?.code, 'item_unsupported', 'the package itself loads as an extension');
+    const strict = s.call('launch-spec', { layers: [kit(s.root, { layerName: 'itself-strict', manifest: { name: 'tools' }, files: { 'index.js': 'x', 'ext.js': undefined, skills: undefined }, strict: true })], headless: true });
+    assert.equal(strict.error?.code, 'isolation_unmet');
+    // A listed skills-only package, a root index.js beside it: nothing but the skills loads.
+    r = launch(s, { layers: [kit(s.root, { layerName: 'listed', manifest: SKILLS_ONLY(), files: { 'index.js': 'x' }, toml: GUARD })] });
+    assert.equal(r.ok, true);
+    // No list, a skills/ directory: the conventional directories, no extensions/; the root index.js does not load.
+    r = launch(s, { layers: [kit(s.root, { layerName: 'conventional', manifest: { name: 'tools' }, files: { 'index.js': 'x' }, toml: GUARD })] });
+    assert.equal(r.ok, true);
+    // An empty extensions/ directory still stops the fallback to the package itself.
+    const k = kit(s.root, { layerName: 'empty-ext', manifest: { name: 'tools' }, files: { 'index.js': 'x' }, toml: GUARD });
+    fs.rmSync(path.join(k, 'packages/tools/skills'), { recursive: true, force: true });
+    fs.mkdirSync(path.join(k, 'packages/tools/extensions'));
+    r = launch(s, { layers: [k] });
+    assert.equal(r.ok, true);
+  } finally {
+    s.done();
+  }
+});
+
+test('validate: a pi block that is not an object, or a resource field that is not a list of paths, is refused', () => {
+  const s = box();
+  try {
+    for (const [i, manifest] of [{ name: 'tools', pi: 'x' }, { name: 'tools', pi: { skills: 'skills' } }, { name: 'tools', pi: { extensions: null } }, { name: 'tools', pi: { extensions: ['./ext.js', 3] } }].entries()) {
+      const p = errors(kit(s.root, { layerName: `shape${i}`, manifest }));
+      assert.ok(p.some((x) => x.code === 'plugin_field_unsupported' && /is not (an object|a list of paths); pi keeps a resource field only as a list of strings/.test(x.message)), JSON.stringify(manifest.pi));
+    }
+  } finally {
+    s.done();
+  }
+});
+
+test('validate: a resource pattern beyond * and ?, or with a .. segment, is refused; * and ? pass', () => {
+  const s = box();
+  try {
+    for (const [i, entry] of ['{..,x}/*.js', '[.][.]/*.js', '.[.]/*.js', './{.,..}/*.js', '{../,}*.js', 'x/{..,y}/../*.js', 'x/../ext.js', 'ext(1).js', 'a\\b.js'].entries()) {
+      const p = errors(kit(s.root, { layerName: `g${i}`, manifest: { name: 'tools', pi: { extensions: [entry] } } }));
+      assert.ok(p.some((x) => x.code === 'plugin_path_unsupported' && /a pattern beyond \* and \?/.test(x.message)), entry);
+    }
+    assert.deepEqual(errors(kit(s.root, { layerName: 'star', manifest: { name: 'tools', pi: { extensions: ['./*.js', 'ex?.js'] } } })), []);
   } finally {
     s.done();
   }

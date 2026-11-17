@@ -63,7 +63,11 @@ export default Object.freeze({
       mechanism: 'native',
       components: ['extensions', 'skills', 'prompts', 'themes'],
       manifest: 'package.json',
-      manifest_resources: { key: 'pi', kinds: ['extensions', 'skills', 'prompts', 'themes'], reason: 'pi would load from outside what the digest binds [P15:packages]' },
+      manifest_resources: {
+        key: 'pi', kinds: ['extensions', 'skills', 'prompts', 'themes'],
+        reason: 'pi would load from outside what the digest binds: it expands * and ? and more glob syntax in an entry [P15:packages; P15:dist/core/package-manager.js]',
+        shape: 'pi keeps a resource field only as a list of strings and a pi block only as an object, and would read the package\'s conventional directories instead [P15:dist/core/pi-manifest.js readPiManifest]',
+      },
       bundled_dependencies: 'pi installs nothing for a local package, and an extension whose import fails stops pi from starting (tier 1, pi-package-surface)',
       refused_with: ['item_unsupported: a package with extensions beside a blocking hook (PreToolUse, UserPromptSubmit, Stop)', 'isolation_unmet: a package with extensions under strict isolation'],
       readiness: 'untested',

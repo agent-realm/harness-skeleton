@@ -136,10 +136,18 @@ format = "pi-package"
   system prompt, or act with no tool call at all (measured). So a package with extensions is refused
   beside a blocking hook (`PreToolUse`, `UserPromptSubmit`, `Stop`), naming both, and under strict
   isolation (`isolation_unmet`). A package of skills, prompts and themes only passes both.
-- **validate refuses** a manifest resource path outside the package or a source to fetch
-  (`plugin_path_unsupported`), and a dependency not bundled in `node_modules/`
-  (`plugin_field_unsupported`): pi installs nothing for a local package, and an extension whose
-  import fails stops pi from starting. With a manifest, its `name` must be the item's.
+- **Extensions are counted as pi counts them.** A `pi` manifest field counts only as a list of
+  paths; without one, the four conventional directories count, if any exists (even empty); with
+  none of those, pi loads the package itself as an extension.
+- **validate refuses:**
+  - a `pi` block that is not an object, or a resource field that is not a list of paths, which pi
+    would drop (`plugin_field_unsupported`);
+  - a resource path outside the package, a source to fetch, a `..` segment, or a pattern using more
+    than `*` and `?` (`plugin_path_unsupported`);
+  - a dependency not bundled in `node_modules/` (`plugin_field_unsupported`): pi installs nothing for
+    a local package, and an extension whose import fails stops pi from starting.
+
+  With a manifest, its `name` must be the item's.
 
 ## `local.toml`
 

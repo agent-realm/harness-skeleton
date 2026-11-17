@@ -39,6 +39,14 @@
 //   planned     after plan and apply, a start through hs's launch for a plain layer: it loads from
 //               the folder's settings.json packages; hs's launch for the package skips it
 //   removed     after remove, a start: it does not load
+// And how pi reads a package's manifest, shape by shape, against what hs makes of the same package
+// beside a PreToolUse guard (each module creates a file when it loads):
+//   itself      package.json with a name only, a root index.js, none of the four directories
+//   dropped     pi.skills given as a string, with an extensions/ file
+//   listed      pi.skills as a list, a root index.js beside it (control: nothing but skills loads)
+//   nulled      pi.extensions null, with an extensions/ file
+//   empty       no list, an empty extensions/ directory, a root index.js (control)
+//   glob        pi.extensions ["{..,x}/*.js"], a module in the package's parent directory
 // Names and booleans only.
 
 import fs from 'node:fs';
@@ -276,6 +284,34 @@ export default function (pi) {
   runs.planned_skip = await routeRun('planned-skip', planLayer, pf);
   b.hs('remove', [...common, '--owner', 'tier1']);
   runs.removed = await routeRun('removed', routeLayer('plain2', { pkg: false }), pf);
+
+  // Manifest shapes: what pi loads from the package, and what hs makes of it beside a guard.
+  const shapeOut = (n) => path.join(b.work, `shape-${n}.loaded`);
+  const module = (n) => `import { writeFileSync } from 'node:fs';\nwriteFileSync(${JSON.stringify(shapeOut(n))}, 'x');\nexport default function () {}\n`;
+  const shapes = {
+    itself: { manifest: { name: 'tools' }, files: { 'index.js': module('itself') } },
+    dropped: { manifest: { name: 'tools', pi: { skills: 'skills' } }, files: { 'extensions/x.js': module('dropped'), 'skills/notes/SKILL.md': `---\nname: notes\ndescription: d\n---\nx\n` } },
+    listed: { manifest: { name: 'tools', pi: { skills: ['skills'] } }, files: { 'index.js': module('listed'), 'skills/notes/SKILL.md': `---\nname: notes\ndescription: d\n---\nx\n` } },
+    nulled: { manifest: { name: 'tools', pi: { extensions: null } }, files: { 'extensions/x.js': module('nulled') } },
+    empty: { manifest: { name: 'tools' }, files: { 'index.js': module('empty') }, dirs: ['extensions'] },
+    glob: { manifest: { name: 'tools', pi: { extensions: ['{..,x}/*.js'] } }, files: {}, outside: { 'outside.js': module('glob') } },
+  };
+  runs.shapes = {};
+  for (const [n, sh] of Object.entries(shapes)) {
+    const layerDir = path.join(b.work, `shape-${n}`);
+    const pkgDir = path.join(layerDir, 'packages', 'tools');
+    put(path.join(pkgDir, 'package.json'), sh.manifest);
+    for (const [rel, c] of Object.entries(sh.files)) put(path.join(pkgDir, rel), c);
+    for (const d of sh.dirs ?? []) fs.mkdirSync(path.join(pkgDir, d), { recursive: true });
+    for (const [rel, c] of Object.entries(sh.outside ?? {})) put(path.join(layerDir, 'packages', rel), c);
+    put(path.join(layerDir, 'spec.toml'), ['[spec]', `name = "shape-${n}"`, 'version = "1.0.0"', 'format = "0.2"', '', '[plugin."tools"]', 'source = "packages/tools"', 'format = "pi-package"', '',
+      '[hook.guard]', 'event = "PreToolUse"', 'run = { exec = "/bin/true" }', ''].join('\n'));
+    const hsr = b.hsCall('launch-spec', ['--harness', 'pi', '--folder', rf(`shape-${n}`), '--layer', layerDir, '--bin', pi, '--headless']);
+    fs.rmSync(shapeOut(n), { force: true });
+    const r = await run(`shape-${n}`, { packages: [pkgDir], script: false });
+    runs.shapes[n] = { pi_loaded_code: fs.existsSync(shapeOut(n)), pi_requests: r.requests, hs: hsr.ok ? 'carried' : hsr.error.code, hosts: r.hosts };
+  }
+  runs.shapes.hosts = Object.values(runs.shapes).flatMap((x) => x.hosts ?? []);
   proxy.close();
   proxy = null;
 
@@ -290,6 +326,8 @@ export default function (pi) {
     'strict_ok: under strict isolation a skills-only package is carried, and its skill reaches the model': runs.strict_ok.item === 'carried' && runs.strict_ok.skill_reached,
     'planned: plan writes the copy and the settings.json packages member; a start with no -e loads the package; hs\'s launch for it then skips it': JSON.stringify(runs.planned.planned) === JSON.stringify(['hs-run/pipkg.tools', 'settings.json#packages[pipkg.tools]']) && runs.planned.loaded === 'bundled' && runs.planned.skill_reached && runs.planned_skip.item === 'skipped',
     'removed: after hs remove a start loads neither the extension nor the skill': runs.removed.requests > 0 && runs.removed.loaded === null && !runs.removed.skill_reached,
+    'shapes: hs refuses beside a guard every package that pi loads code from, whatever its manifest\'s shape: the package itself, a dropped field, a null field, and a pattern reaching outside it': ['itself', 'dropped', 'nulled', 'glob'].every((n) => runs.shapes[n].pi_loaded_code && runs.shapes[n].hs !== 'carried' && runs.shapes[n].hs !== 'receipt_required'),
+    'shapes (controls): a listed skills-only package and an empty extensions/ directory load no code in pi, and hs carries them beside a guard': ['listed', 'empty'].every((n) => !runs.shapes[n].pi_loaded_code && runs.shapes[n].pi_requests > 0 && runs.shapes[n].hs === 'receipt_required'),
     'no host is asked for in any run': Object.values(runs).every((r) => r.hosts.length === 0),
   };
   const verdict = !checks[Object.keys(checks)[0]] ? 'inconclusive: the premise failed' : Object.values(checks).every(Boolean) ? 'pass' : 'fail';

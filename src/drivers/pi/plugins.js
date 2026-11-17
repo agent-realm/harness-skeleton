@@ -127,8 +127,12 @@ export function heldElsewhere(item, bound, folder, descriptor) {
 
 // pi's own package format (descriptor, pi_package), delivered whole: the package copied as it is,
 // checked against its digest, which covers every file in it, node_modules included. Whether it has
-// extensions follows pi's rule: a `pi` manifest that lists resources names them; without one, its
-// extensions/ directory [P15:packages; P15:dist/core/package-manager.js collectPackageResources].
+// extensions follows pi's own loader rule [P15:dist/core/pi-manifest.js readPiManifest;
+// P15:dist/core/package-manager.js collectPackageResources, resolveLocalExtensionSource]:
+// - a `pi` manifest field counts only when it is a list of strings, and any such field means only
+//   the listed entries load;
+// - otherwise the conventional directories load, if any of the four exists (even empty);
+// - otherwise pi loads the package itself as an extension (its root index), so it has extensions.
 // Each native addon (.node) is named in the risk, which a receipt allows.
 export function nativePackage(item, bound, descriptor) {
   const N = descriptor.pi_package;
@@ -141,8 +145,10 @@ export function nativePackage(item, bound, descriptor) {
   } catch {
     // no manifest: pi's conventional directories
   }
-  const pi = manifest && typeof manifest.pi === 'object' && manifest.pi !== null ? manifest.pi : null;
-  const listed = pi && N.kinds.some((k) => pi[k] !== undefined);
+  const pi = manifest && typeof manifest.pi === 'object' && manifest.pi !== null && !Array.isArray(manifest.pi) ? manifest.pi : null;
+  const kept = Object.fromEntries(N.kinds.filter((k) => Array.isArray(pi?.[k]) && pi[k].every((x) => typeof x === 'string')).map((k) => [k, pi[k]]));
+  const listed = Object.keys(kept).length > 0;
+  const present = N.kinds.filter((k) => fs.existsSync(path.join(bound.path, k)));
   const nonEmpty = (d) => {
     try {
       return fs.readdirSync(path.join(bound.path, d)).length > 0;
@@ -150,7 +156,9 @@ export function nativePackage(item, bound, descriptor) {
       return false;
     }
   };
-  const has = (kind) => (listed ? (Array.isArray(pi[kind]) ? pi[kind].length > 0 : Boolean(pi[kind])) : nonEmpty(kind));
+  // With no list and none of the four directories, the package itself is the extension.
+  const itself = !listed && present.length === 0;
+  const has = (kind) => (listed ? (kept[kind] ?? []).length > 0 : itself ? kind === 'extensions' : present.includes(kind) && nonEmpty(kind));
   const addons = [];
   const walk = (rel) => {
     for (const n of fs.readdirSync(path.join(bound.path, rel)).sort()) {

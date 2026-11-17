@@ -275,7 +275,14 @@ require = "required"
     - **pi's own package format** (`format = "pi-package"`, milestone 8.5) is delivered whole: copied as it is, with `-e` at launch, and under `materialize` as `hs-run/pipkg.<name>/` plus a member of `settings.json`'s `packages`. It is `runs-code`, bound by a digest over every file in it, `node_modules` included. A native addon (`.node`) is named in the risk, and the risk says the code can read the launch's environment, credential variables included, and reach the network.
       - **Its extensions are code in pi's process,** outside the hook shim. Measured (section 10): pi runs handlers in extension load order, so a later extension rewrites a tool call's input after a guard has passed it. A package's own tools reach `tool_call`. Its extension can change the system prompt, add skills at runtime that survive `--no-skills`, read the launch's environment, and act with no tool call at all, writing files at load and before the agent starts, which no guard sees. Load order is no fix: loaded first, a guard sees a call's final input, but not what the code does without a call.
       - So **a package with extensions is refused beside a blocking hook** (`PreToolUse`, `UserPromptSubmit`, `Stop`) as `item_unsupported`, naming the package and the hook, **and under strict isolation** as `isolation_unmet`. Beside notifying hooks it is carried with a note. A package of skills, prompts and themes only (files the digest binds) passes both.
-      - `validate` refuses a manifest resource path outside the package or a source to fetch (`plugin_path_unsupported`), and a dependency not bundled in `node_modules/` (`plugin_field_unsupported`): pi installs nothing for a local package, and an extension whose import fails stops pi from starting (measured). With a manifest, its `name` must be the item's.
+      - **Whether a package has extensions** is read by pi's own loader rule (the 1.5.2 package: `dist/core/pi-manifest.js` `readPiManifest`; `dist/core/package-manager.js` `collectPackageResources`, `resolveLocalExtensionSource`). A `pi` manifest field counts only as a list of strings, and any such field means only the listed entries load. Without one, the four conventional directories load, if any exists, even empty. With none of those, pi loads the package itself as an extension, from its root index. Measured shape by shape (section 10).
+      - `validate` refuses what pi would read differently from the manifest, or reach outside the package with:
+        - a `pi` block that is not an object, or a resource field that is not a list of strings, which pi drops (`plugin_field_unsupported`);
+        - a resource path outside the package, a source to fetch, a `..` segment, or a pattern beyond `*` and `?` (`plugin_path_unsupported`). pi expands an entry's glob, braces and classes included, and keeps its `..` segments, so such a pattern reaches outside what the digest binds (measured);
+        - a dependency not bundled in `node_modules/` (`plugin_field_unsupported`): pi installs nothing for a local package, and an extension whose import fails stops pi from starting (measured).
+
+        With a manifest, its `name` must be the item's.
+      - A refusal checks the packages of the spec being launched. Outside strict isolation, a package an earlier plan put in the folder's `packages` loads beside a later spec's hooks, as the folder's own extensions do.
   - **On Codex** (since milestone 6a.15), the format is read natively, and a plugin loads only from the cache in the data folder, `plugins/cache/<marketplace>/<plugin>/<version>/`, when enabled [CX §10]. Under `materialize` a plan installs the package as a tree at `plugins/cache/harness-skeleton/<name>/hs/`, under the plan's receipt. The package is `runs-code` when it holds a skill or a stdio server, and `sends-data` when it holds a remote server. Each launch through `launch-spec` enables every package a plan installed at this content, with one inline table: `-c plugins={"<name>@harness-skeleton"={enabled=true}}`. Codex splits an override's key on every `.`, without quoting, and deep-merges the override into the config's tables (source, rust-v0.160.0). So the inline table keeps the folder's other plugin entries and takes a dotted name, where a quoted dotted key would not load. `config.toml` is never written (section 7.5), so **a bare `codex` start in the folder does not load the plugin**, and the plan says so. A package not installed at this content is refused at launch as `item_unsupported`, as it is under `overlay`, where nothing is written.
     - **What else Codex reads** from a package of this format (rust-v0.160.0, `core-plugins/src/agent_plugin_manifest.rs`, `manifest/manifest_cache.rs`, `loader.rs`, `agent_plugin_mcp_overlay.rs`):
       - `extensions["com.openai"]` in `plugin.json` or, when it is absent, `.codex-plugin/plugin.json`, for apps, hooks, an onboarding skill and an interface;
@@ -1242,7 +1249,16 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - after `remove`, nothing loads;
   - no host is asked for.
 
-  *Run 2026-11-17 on a bench: pass on pi 1.5.2 (nine checks; three before the route's runs). The model was scripted throughout; no run needed real model turns.*
+  Then manifest shapes. Each of six packages is passed to pi by hand, and hs's `launch-spec` is asked for the same package beside a guard:
+  - the package itself (a name only, a root `index.js`, none of the four directories);
+  - a skills field given as a string, beside `extensions/`;
+  - a null extensions field;
+  - a pattern `{..,x}/*.js`;
+  - two controls: a listed skills-only package with a root `index.js`, and an empty `extensions/`.
+
+  Judged: every package pi loads code from is refused by hs, and the controls load no code and are carried.
+
+  *Run 2026-11-17 on a bench: pass on pi 1.5.2. The model was scripted throughout; no run needed real model turns.*
 - **The isolation known limits, and switches that close them** (tier 1, `conformance/tier1/isolation-canaries.mjs`, OpenCode and pi, question 7): material the spec never named that reaches a launched agent anyway.
   - **Canaries** in a scratch HOME, with the working directory two levels below it: a skill in `~/.agents/skills`, an `AGENTS.md` in a parent of the working directory, a skill in that parent's `.agents/skills`, and the working directory's own `AGENTS.md`.
   - **Carriers** that a switch must not break: the spec's skill and its `AGENTS.md`. Each launch is hs's own `launch-spec` for that spec, then the same launch with a candidate switch added.

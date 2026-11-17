@@ -104,6 +104,12 @@ extensions is refused beside a blocking hook, naming both, and under strict isol
 dependency must be bundled in its `node_modules/`, which the digest covers; a native addon is named
 in the receipt's risk ([the spec format](../reference/spec-format.md#pis-own-format)).
 
+Whether a package has extensions is read as pi reads it: a `pi` manifest field counts only as a
+list of paths; without one, the four conventional directories count, if any exists; with none of
+those, pi loads the package itself as an extension. A refusal checks only the packages of the spec
+being launched. Outside strict isolation, a package an earlier plan put in the folder's
+`packages` still loads beside a later spec's hooks, as the folder's own extensions do.
+
 ## Strict isolation
 
 With `isolation = "strict"` at the top of a layer, only the instructions and skills the spec names

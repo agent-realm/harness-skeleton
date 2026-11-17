@@ -71,6 +71,9 @@ export function capabilities(descriptor) {
         versions: r.versions, mechanism: r.mechanism, components: r.components, readiness: r.readiness,
         refuses: [
           ...(r.keeps_literal === false ? ['plugin_placeholder_literal: ${…} text the format keeps literal'] : []),
+          ...(r.manifest_resources ? [`plugin_path_unsupported: a ${r.manifest} resource path outside the package, or a source to fetch`] : []),
+          ...(r.bundled_dependencies ? [`plugin_field_unsupported: a dependency not bundled in node_modules/`] : []),
+          ...(r.refused_with ?? []),
           ...(r.expands ? [`plugin_placeholder_literal: $ or a leading ! in ${r.expands.dollar.join(', ')}, and a leading ~ in ${r.expands.tilde.join(', ')}, which ${descriptor.name} would change`] : []),
           ...(r.cwd === 'root' ? ['plugin_cwd_unsupported: a stdio server working directory other than the plugin root'] : []),
           ...(r.acts_on_paths?.length ? [`plugin_path_unsupported: ${r.acts_on_paths.join(', ')} in the package`] : []),

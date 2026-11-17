@@ -271,7 +271,18 @@ require = "required"
     - **At launch** the package goes into the temp dir and is passed with `-e`, under the launch receipt: `runs-code` when it holds a skill or a stdio server, `sends-data` for each remote server. `PLUGIN_DATA` is then a directory in the temp dir, not kept across launches, and the launch says so under `unverified`.
     - **Under `materialize`** the package is a tree at `hs-run/plugin.<name>/`, and a plan adds one member to `settings.json`'s `packages`, the exact string `./hs-run/plugin.<name>`, through the `json-element` handler. Only that member's span is written, and every other byte of the array and the file stays as it was. A start loads the package from there, the same way (measured). `PLUGIN_DATA` is `hs-run/plugin-data/<name>/`, kept across updates [AP §9.1]. A launch skips a package a plan installed at this content; under strict isolation it names it again with `-e` from the folder, as it names a plan-installed skill again. A duplicate of the member already in the array refuses the plan, and a member the user added is `unowned_conflict`, as any unowned item is.
     - **`remove`** takes out the tree and the member. It keeps the plugin's data, which holds what its servers wrote, not what a plan installed, and says where (`plugin_data`, and a note: "plugin data kept at …"). `remove --purge-data` deletes it.
-    - **`claude-plugin` on pi** is refused as `item_unsupported`: pi has no loader for the `.claude-plugin` layout, and a route carrying only its skills would present the item as whole while dropping the rest. `describe` lists it under `refused_formats`. pi's own package format is not delivered in this build: its extensions run in pi's process, outside the hook shim, and it waits on a design of its own.
+    - **`claude-plugin` on pi** is refused as `item_unsupported`: pi has no loader for the `.claude-plugin` layout, and a route carrying only its skills would present the item as whole while dropping the rest. `describe` lists it under `refused_formats`.
+    - **pi's own package format** (`format = "pi-package"`, milestone 8.5) is delivered whole: copied as it is, with `-e` at launch, and under `materialize` as `hs-run/pipkg.<name>/` plus a member of `settings.json`'s `packages`. It is `runs-code`, bound by a digest over every file in it, `node_modules` included. A native addon (`.node`) is named in the risk, and the risk says the code can read the launch's environment, credential variables included, and reach the network.
+      - **Its extensions are code in pi's process,** outside the hook shim. Measured (section 10): pi runs handlers in extension load order, so a later extension rewrites a tool call's input after a guard has passed it. A package's own tools reach `tool_call`. Its extension can change the system prompt, add skills at runtime that survive `--no-skills`, read the launch's environment, and act with no tool call at all, writing files at load and before the agent starts, which no guard sees. Load order is no fix: loaded first, a guard sees a call's final input, but not what the code does without a call.
+      - So **a package with extensions is refused beside a blocking hook** (`PreToolUse`, `UserPromptSubmit`, `Stop`) as `item_unsupported`, naming the package and the hook, **and under strict isolation** as `isolation_unmet`. Beside notifying hooks it is carried with a note. A package of skills, prompts and themes only (files the digest binds) passes both.
+      - **Whether a package has extensions** is read by pi's own loader rule (the 1.5.2 package: `dist/core/pi-manifest.js` `readPiManifest`; `dist/core/package-manager.js` `collectPackageResources`, `resolveLocalExtensionSource`). A `pi` manifest field counts only as a list of strings, and any such field means only the listed entries load. Without one, the four conventional directories load, if any exists, even empty. With none of those, pi loads the package itself as an extension, from its root index. Measured shape by shape (section 10).
+      - `validate` refuses what pi would read differently from the manifest, or reach outside the package with:
+        - a `pi` block that is not an object, or a resource field that is not a list of strings, which pi drops (`plugin_field_unsupported`);
+        - a resource path outside the package, a source to fetch, a `..` segment, or a pattern beyond `*` and `?` (`plugin_path_unsupported`). pi expands an entry's glob, braces and classes included, and keeps its `..` segments, so such a pattern reaches outside what the digest binds (measured);
+        - a dependency not bundled in `node_modules/` (`plugin_field_unsupported`): pi installs nothing for a local package, and an extension whose import fails stops pi from starting (measured).
+
+        With a manifest, its `name` must be the item's.
+      - A refusal checks the packages of the spec being launched. Outside strict isolation, a package an earlier plan put in the folder's `packages` loads beside a later spec's hooks, as the folder's own extensions do.
   - **On Codex** (since milestone 6a.15), the format is read natively, and a plugin loads only from the cache in the data folder, `plugins/cache/<marketplace>/<plugin>/<version>/`, when enabled [CX §10]. Under `materialize` a plan installs the package as a tree at `plugins/cache/harness-skeleton/<name>/hs/`, under the plan's receipt. The package is `runs-code` when it holds a skill or a stdio server, and `sends-data` when it holds a remote server. Each launch through `launch-spec` enables every package a plan installed at this content, with one inline table: `-c plugins={"<name>@harness-skeleton"={enabled=true}}`. Codex splits an override's key on every `.`, without quoting, and deep-merges the override into the config's tables (source, rust-v0.160.0). So the inline table keeps the folder's other plugin entries and takes a dotted name, where a quoted dotted key would not load. `config.toml` is never written (section 7.5), so **a bare `codex` start in the folder does not load the plugin**, and the plan says so. A package not installed at this content is refused at launch as `item_unsupported`, as it is under `overlay`, where nothing is written.
     - **What else Codex reads** from a package of this format (rust-v0.160.0, `core-plugins/src/agent_plugin_manifest.rs`, `manifest/manifest_cache.rs`, `loader.rs`, `agent_plugin_mcp_overlay.rs`):
       - `extensions["com.openai"]` in `plugin.json` or, when it is absent, `.codex-plugin/plugin.json`, for apps, hooks, an onboarding skill and an interface;
@@ -1215,6 +1226,39 @@ Tiers stay: 0 static, 1 harness without a model, 2 scripted model, 3 real model.
   - no host is asked for.
 
   *Run 2026-11-12 on a bench: pass on pi 1.5.2 (nine checks).*
+- **pi packages beside hs's guard, and hs's route for them** (tier 1, `conformance/tier1/pi-package-surface.mjs`, milestone 8.5): first, a package passed by hand with `-e` beside hs's launch, whose own launch carries a `PreToolUse` guard on every tool. The package's extension logs what it sees, rewrites a command marked `MUTATEME`, answers `{ block: false }` to one marked `DENYME`, registers a tool, changes the system prompt, adds a skill at runtime, and records whether the endpoint key variable is set (a dummy, presence only). The model is scripted. Judged:
+  - the guard logs every shell call, and the package's extension loads (premise);
+  - the guard holds against `{ block: false }` in either load order: the denied command never runs;
+  - with hs's guard loaded last, a package writes a file at load and another before the agent starts, and the guard sees nothing.
+
+  Recorded:
+  - handlers run in `-e` order;
+  - loaded after hs, the package's rewrite runs a command the guard never saw; loaded before, the guard sees the final input;
+  - the package's tool reaches `tool_call`;
+  - the system prompt change reaches the model;
+  - a runtime skill reaches it even under `--no-skills`;
+  - the key variable is visible;
+  - an unbundled dependency stops pi from starting, and a bundled one loads offline;
+  - pi writes nothing into the folder beyond its own files.
+
+  Then hs's own route. Judged:
+  - a package with an extension (importing a bundled dependency) and a skill, beside a `PostToolUse` hook, is carried under a receipt, and both load;
+  - beside a `PreToolUse` guard it is refused, naming both, and under strict it is `isolation_unmet`;
+  - a skills-only package passes strict;
+  - after `plan` and `apply`, a start with no `-e` loads it from `settings.json` `packages`, and hs's launch skips it;
+  - after `remove`, nothing loads;
+  - no host is asked for.
+
+  Then manifest shapes. Each of six packages is passed to pi by hand, and hs's `launch-spec` is asked for the same package beside a guard:
+  - the package itself (a name only, a root `index.js`, none of the four directories);
+  - a skills field given as a string, beside `extensions/`;
+  - a null extensions field;
+  - a pattern `{..,x}/*.js`;
+  - two controls: a listed skills-only package with a root `index.js`, and an empty `extensions/`.
+
+  Judged: every package pi loads code from is refused by hs, and the controls load no code and are carried.
+
+  *Run 2026-11-17 on a bench: pass on pi 1.5.2. The model was scripted throughout; no run needed real model turns.*
 - **The isolation known limits, and switches that close them** (tier 1, `conformance/tier1/isolation-canaries.mjs`, OpenCode and pi, question 7): material the spec never named that reaches a launched agent anyway.
   - **Canaries** in a scratch HOME, with the working directory two levels below it: a skill in `~/.agents/skills`, an `AGENTS.md` in a parent of the working directory, a skill in that parent's `.agents/skills`, and the working directory's own `AGENTS.md`.
   - **Carriers** that a switch must not break: the spec's skill and its `AGENTS.md`. Each launch is hs's own `launch-spec` for that spec, then the same launch with a candidate switch added.
@@ -1370,6 +1414,7 @@ The decisions that shaped this note, by date.
 | 2026-11-10 | plugins on Codex: the package goes into the plugin cache under `materialize` and is enabled per launch by one inline `-c plugins` table; `config.toml` is not written, and a bare `codex` start does not load the plugin (section 5.7) |
 | 2026-11-10 | plugins: a plugin item's id is its package's name, and its `source` a directory in its layer, bound in the spec digest; the Claude Code translation is delivered at launch, one `--plugin-dir` per package, under the launch receipt (sections 5.7, 7.5) |
 | 2026-11-10 | plugins under `materialize` on Claude Code: a directory marketplace as a generated tree in `hs-run/` and two `settings.json` keys; Claude Code keeps its own plugin records, which hs never writes (section 5.7) |
+| 2026-11-17 | plugins on pi (milestone 8.5): pi's own package format is delivered whole, `runs-code` bound by a digest over its whole tree with native addons named. A package with extensions is refused beside a blocking hook and under strict isolation, since its code acts in pi's process where no guard sees it (measured); a package of skills, prompts and themes passes. Dependencies must be bundled (sections 5.7, 10) |
 | 2026-11-12 | plugins on pi (milestone 8.4): an Agent Plugins package is translated into one generated pi package: a manifest declaring only its skills and hs's extension, which registers its servers and works out the plugin root and data from where it sits; at launch with `-e`, under `materialize` as `hs-run/plugin.<name>/` and an exact-string member of `settings.json` `packages`. A plugin's data is kept on `remove`, deleted only with `--purge-data`. `claude-plugin` is refused on pi; pi's own package format waits on a design of its own (sections 5.7, 7.5, 10) |
 | 2026-11-12 | pi: `launch-spec` takes an optional `cwd`; with it, a pi launch passes `--session-dir` with pi's own group path for that directory, so a project's `sessionDir` cannot move the session out of the folder and the layout is unchanged. The encoding is a pi internal, named in `describe` and pinned to the 1.5 line by a tier 1 run. The folder's own `sessionDir` is left as it is (sections 7.5, 8, 10) |
 | 2026-11-12 | question 7: strict isolation is opt-in, `isolation = "strict"`, and pure. Only the spec's instructions and skills reach the agent: the folder's own are kept out too, and the project's `AGENTS.md` is never added back. OpenCode and pi close their escapes by measured switches, and pi refuses what the folder holds that no switch keeps out. Claude Code and Codex refuse it, naming each path. pi's project `sessionDir` is a named known limit (sections 8, 10) |

@@ -1,0 +1,402 @@
+{
+  "check": "tier 1: what a pi package's extension can do beside hs's launch extension and guard, ahead of delivering pi packages (design note v0.2 §5.6, §5.7, §8)",
+  "at": "2026-11-17T20:33:29.083Z",
+  "evidence": {
+    "harness": "1.5.2",
+    "node": "v24.18.0",
+    "os": "Linux 6.8.0-147-generic x64",
+    "hs_commit": "ade2276"
+  },
+  "runs": {
+    "after": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 5,
+      "order": [
+        "hs bash allowed",
+        "pkg bash allowed",
+        "hs bash DENYME",
+        "hs bash MUTATEME",
+        "pkg bash MUTATEME",
+        "hs pkg_echo -",
+        "pkg pkg_echo -"
+      ],
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "unmutated": false,
+        "mutated": true
+      },
+      "prompt_marker": true,
+      "skill_marker": true,
+      "echo_offered": true,
+      "echo_result": true,
+      "key": {
+        "key_set": true
+      },
+      "dep": {
+        "missing": false,
+        "bundled": false
+      },
+      "silent": {
+        "at_load": false,
+        "before_agent_start": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "before": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 5,
+      "order": [
+        "pkg bash allowed",
+        "hs bash allowed",
+        "pkg bash DENYME",
+        "hs bash DENYME",
+        "pkg bash MUTATEME",
+        "hs bash MUTATED",
+        "pkg pkg_echo -",
+        "hs pkg_echo -"
+      ],
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "unmutated": false,
+        "mutated": true
+      },
+      "prompt_marker": true,
+      "skill_marker": true,
+      "echo_offered": true,
+      "echo_result": true,
+      "key": {
+        "key_set": true
+      },
+      "dep": {
+        "missing": false,
+        "bundled": false
+      },
+      "silent": {
+        "at_load": false,
+        "before_agent_start": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "noskills": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 5,
+      "order": [
+        "hs bash allowed",
+        "pkg bash allowed",
+        "hs bash DENYME",
+        "hs bash MUTATEME",
+        "pkg bash MUTATEME",
+        "hs pkg_echo -",
+        "pkg pkg_echo -"
+      ],
+      "ran": {
+        "allowed": true,
+        "denied": false,
+        "unmutated": false,
+        "mutated": true
+      },
+      "prompt_marker": true,
+      "skill_marker": true,
+      "echo_offered": true,
+      "echo_result": true,
+      "key": {
+        "key_set": true
+      },
+      "dep": {
+        "missing": false,
+        "bundled": false
+      },
+      "silent": {
+        "at_load": false,
+        "before_agent_start": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "deps": {
+      "exit": 1,
+      "timed_out": false,
+      "requests": 0,
+      "order": [],
+      "ran": {
+        "allowed": false,
+        "denied": false,
+        "unmutated": false,
+        "mutated": false
+      },
+      "prompt_marker": false,
+      "skill_marker": false,
+      "echo_offered": false,
+      "echo_result": false,
+      "key": null,
+      "dep": {
+        "missing": false,
+        "bundled": false
+      },
+      "silent": {
+        "at_load": false,
+        "before_agent_start": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "bundled": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "order": [],
+      "ran": {
+        "allowed": false,
+        "denied": false,
+        "unmutated": false,
+        "mutated": false
+      },
+      "prompt_marker": false,
+      "skill_marker": false,
+      "echo_offered": false,
+      "echo_result": false,
+      "key": null,
+      "dep": {
+        "missing": false,
+        "bundled": true
+      },
+      "silent": {
+        "at_load": false,
+        "before_agent_start": false
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "silent": {
+      "exit": 0,
+      "timed_out": false,
+      "requests": 1,
+      "order": [],
+      "ran": {
+        "allowed": false,
+        "denied": false,
+        "unmutated": false,
+        "mutated": false
+      },
+      "prompt_marker": false,
+      "skill_marker": false,
+      "echo_offered": false,
+      "echo_result": false,
+      "key": null,
+      "dep": {
+        "missing": false,
+        "bundled": true
+      },
+      "silent": {
+        "at_load": true,
+        "before_agent_start": true
+      },
+      "folder_added": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "hosts": []
+    },
+    "driver": {
+      "exit": 0,
+      "requests": 1,
+      "receipt_needed": true,
+      "item": "carried",
+      "loaded": "bundled",
+      "skill_reached": true,
+      "hosts": []
+    },
+    "refused_guard": {
+      "refused": "item_unsupported",
+      "items": [
+        "plugin.tools",
+        "hook.guard"
+      ],
+      "hosts": []
+    },
+    "refused_strict": {
+      "refused": "isolation_unmet",
+      "items": [
+        "plugin.tools"
+      ],
+      "hosts": []
+    },
+    "strict_ok": {
+      "exit": 0,
+      "requests": 1,
+      "receipt_needed": true,
+      "item": "carried",
+      "loaded": null,
+      "skill_reached": true,
+      "hosts": []
+    },
+    "planned": {
+      "exit": 0,
+      "requests": 1,
+      "receipt_needed": false,
+      "item": null,
+      "loaded": "bundled",
+      "skill_reached": true,
+      "hosts": [],
+      "planned": [
+        "hs-run/pipkg.tools",
+        "settings.json#packages[pipkg.tools]"
+      ]
+    },
+    "planned_skip": {
+      "exit": 0,
+      "requests": 1,
+      "receipt_needed": false,
+      "item": "skipped",
+      "loaded": "bundled",
+      "skill_reached": true,
+      "hosts": []
+    },
+    "removed": {
+      "exit": 0,
+      "requests": 1,
+      "receipt_needed": false,
+      "item": null,
+      "loaded": null,
+      "skill_reached": false,
+      "hosts": []
+    },
+    "shapes": {
+      "itself": {
+        "pi_loaded_code": true,
+        "pi_requests": 1,
+        "hs": "item_unsupported",
+        "hosts": []
+      },
+      "dropped": {
+        "pi_loaded_code": true,
+        "pi_requests": 1,
+        "hs": "spec_invalid",
+        "hosts": []
+      },
+      "listed": {
+        "pi_loaded_code": false,
+        "pi_requests": 1,
+        "hs": "receipt_required",
+        "hosts": []
+      },
+      "nulled": {
+        "pi_loaded_code": true,
+        "pi_requests": 1,
+        "hs": "spec_invalid",
+        "hosts": []
+      },
+      "empty": {
+        "pi_loaded_code": false,
+        "pi_requests": 1,
+        "hs": "receipt_required",
+        "hosts": []
+      },
+      "glob": {
+        "pi_loaded_code": true,
+        "pi_requests": 1,
+        "hs": "spec_invalid",
+        "hosts": []
+      },
+      "hosts": []
+    }
+  },
+  "recorded": {
+    "order_after": [
+      "hs bash allowed",
+      "pkg bash allowed",
+      "hs bash DENYME",
+      "hs bash MUTATEME",
+      "pkg bash MUTATEME",
+      "hs pkg_echo -",
+      "pkg pkg_echo -"
+    ],
+    "order_before": [
+      "pkg bash allowed",
+      "hs bash allowed",
+      "pkg bash DENYME",
+      "hs bash DENYME",
+      "pkg bash MUTATEME",
+      "hs bash MUTATED",
+      "pkg pkg_echo -",
+      "hs pkg_echo -"
+    ],
+    "mutation_after_guard_runs": true,
+    "guard_sees_mutation_when_first": true,
+    "package_tool_reaches_guard": true,
+    "package_tool_runs": true,
+    "system_prompt_changed": true,
+    "runtime_skill": {
+      "default": true,
+      "no_skills": true
+    },
+    "key_variable_visible": true,
+    "dependency": {
+      "missing_loaded": false,
+      "missing_run_reached_model": false,
+      "bundled_loaded": true
+    },
+    "folder_added": {
+      "after": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "before": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "noskills": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "deps": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "bundled": [
+        "auth.json",
+        "models-store.json"
+      ],
+      "silent": [
+        "auth.json",
+        "models-store.json"
+      ]
+    }
+  },
+  "checks": {
+    "premise: hs's launch with the package reaches the model, its guard logs every shell call, and the package's extension loads": true,
+    "the guard holds against an answer of { block: false }: the denied command never runs, in either load order": true,
+    "a package's extension acts with no tool call: with hs's guard loaded last, it writes a file at load and another before the agent starts, and the guard sees nothing": true,
+    "driver: hs's launch carries the package under a receipt; its extension loads, importing its bundled dependency, and its skill reaches the model": true,
+    "refused: beside a PreToolUse guard the package with extensions is refused, naming the package and the hook; under strict isolation it is isolation_unmet": true,
+    "strict_ok: under strict isolation a skills-only package is carried, and its skill reaches the model": true,
+    "planned: plan writes the copy and the settings.json packages member; a start with no -e loads the package; hs's launch for it then skips it": true,
+    "removed: after hs remove a start loads neither the extension nor the skill": true,
+    "shapes: hs refuses beside a guard every package that pi loads code from, whatever its manifest's shape: the package itself, a dropped field, a null field, and a pattern reaching outside it": true,
+    "shapes (controls): a listed skills-only package and an empty extensions/ directory load no code in pi, and hs carries them beside a guard": true,
+    "no host is asked for in any run": true
+  },
+  "verdict": "pass"
+}

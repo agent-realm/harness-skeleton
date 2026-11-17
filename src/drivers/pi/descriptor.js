@@ -55,6 +55,24 @@ export default Object.freeze({
   // serve a launch (-e, in the temp dir) and a plan (hs-run/, a member of settings.json `packages`,
   // which a start loads the same way; tier 1, pi-plugin-surface).
   plugins: {
+    // The pi package, as it is (pi_package above). validate checks its manifest's name, keeps its
+    // resource paths inside it, and requires every dependency bundled: pi installs nothing for a
+    // local package, and an extension whose import fails stops pi from starting (tier 1,
+    // pi-package-surface).
+    'pi-package': {
+      mechanism: 'native',
+      components: ['extensions', 'skills', 'prompts', 'themes'],
+      manifest: 'package.json',
+      manifest_resources: {
+        key: 'pi', kinds: ['extensions', 'skills', 'prompts', 'themes'],
+        reason: 'pi would load from outside what the digest binds: it expands * and ? and more glob syntax in an entry [P15:packages; P15:dist/core/package-manager.js]',
+        shape: 'pi keeps a resource field only as a list of strings and a pi block only as an object, and would read the package\'s conventional directories instead [P15:dist/core/pi-manifest.js readPiManifest]',
+      },
+      bundled_dependencies: 'pi installs nothing for a local package, and an extension whose import fails stops pi from starting (tier 1, pi-package-surface)',
+      refused_with: ['item_unsupported: a package with extensions beside a blocking hook (PreToolUse, UserPromptSubmit, Stop)', 'isolation_unmet: a package with extensions under strict isolation'],
+      readiness: 'untested',
+      source: 'P15:packages; P15:extensions; tier 1, pi-package-surface',
+    },
     'agent-plugins': {
       versions: ['1.0.0'],
       mechanism: 'bridged',
@@ -84,6 +102,7 @@ export default Object.freeze({
       persist: { packages_key: 'packages' },
       data: {
         dir: 'hs-run/plugin-data/<name>',
+        tree: 'hs-run/plugin.<name>',
         kept_on_remove: 'kept when a plan\'s item is removed, and across updates [AP §9.1]; deleted only by remove with --purge-data',
         at_launch: 'a launch with no plan behind it gives a directory in its temp dir, which is not kept across launches',
       },
@@ -91,6 +110,24 @@ export default Object.freeze({
       source: 'design note §5.7; P15:packages; P15:dist/core/package-manager.js; tier 1, pi-plugin-surface',
     },
   },
+  // pi's own package format (§5.7, milestone 8.5), delivered whole: no translation, the package
+  // itself is passed with -e or named in settings.json `packages` [P15:packages]. Its extensions
+  // are code in pi's process, outside hs's hook shim. Measured: a later extension can rewrite a tool
+  // call's input after a guard has passed it, a package's own tools reach tool_call, its extension
+  // can change the system prompt, add skills at runtime that survive --no-skills, read the launch's
+  // environment, and act with no tool call at all (write files at load and before the agent starts),
+  // which no guard sees (tier 1, pi-package-surface). So a package with extensions is refused beside
+  // a blocking hook, and under strict isolation.
+  pi_package: {
+    format: 'pi-package',
+    manifest: 'package.json',
+    kinds: ['extensions', 'skills', 'prompts', 'themes'],
+    tree_prefix: 'pipkg.',
+    flag: '-e',
+    code: 'its extensions are code in pi\'s process, outside hs\'s hook shim: they can rewrite a tool call\'s input after a guard has passed it, register tools, change the system prompt, add skills at runtime, and act with no tool call at all, which no guard sees (tier 1, pi-package-surface)',
+    reach: 'its extensions can read the launch\'s environment, credential variables included, and reach the network; hs cannot tell whether they do',
+  },
+
   // Formats pi does not read that this adapter refuses, with the reason (§5.7).
   plugin_formats_refused: {
     'claude-plugin': {

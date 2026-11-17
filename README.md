@@ -59,8 +59,8 @@ That approval is a receipt bound to the plan's digest. Secrets are references
 |---|---|---|---|---|
 | Read the folder: `describe`, `observe --state` | yes | yes | yes (2.x) | yes (1.5) |
 | Drift: `observe` | yes | not yet | not yet | designed |
-| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, hooks (six events), skills, `AGENTS.md` (a system-prompt append), Agent Plugins packages; the session's directory, given `--cwd` |
-| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | primary model, MCP servers, skills, Agent Plugins packages |
+| At launch: `launch-spec` (`overlay`) | model roles, endpoint, login, MCP servers, hooks, status line, skills, Agent Plugins and `claude-plugin` packages | model roles, endpoint, login, MCP servers, hooks; Agent Plugins packages a plan installed | primary model, endpoint, login, MCP servers, hooks (`PreToolUse`, `PostToolUse`), skills, `AGENTS.md` | primary model, endpoint, login, MCP servers, hooks (six events), skills, `AGENTS.md` (a system-prompt append), Agent Plugins packages and pi packages; the session's directory, given `--cwd` |
+| Into a folder the tool owns: `apply` (`materialize`) | model roles, MCP servers, hooks, status line, skills, retention, Agent Plugins and `claude-plugin` packages | skills, Agent Plugins packages | primary model, MCP servers, skills | primary model, MCP servers, skills, Agent Plugins packages and pi packages |
 | Strict isolation: `isolation = "strict"` | refused, naming each path | refused, naming each path | yes | yes |
 | Sessions: `sessions.*` | yes | yes | yes | no |
 
@@ -74,8 +74,10 @@ three harnesses:
 - on Codex, into the folder, enabled by each launch;
 - on pi, at launch and into the folder, translated into a pi package.
 
-Claude Code's own plugin format is delivered whole on Claude Code, and refused, with the reason, on
-Codex and pi. The other native plugin formats are not yet built. Twenty-eight conformance checks
+Native formats are delivered whole on their own harness: Claude Code's on Claude Code, and pi's on
+pi, refused beside a blocking hook or under strict isolation when it carries extensions. Claude
+Code's format is refused, with the reason, on Codex and pi. OpenCode's plugin format is not yet
+built. Twenty-nine conformance checks
 pass on real harnesses; no version range is certified yet.
 
 ## What it is not

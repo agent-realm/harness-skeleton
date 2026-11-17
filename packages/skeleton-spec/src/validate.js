@@ -117,6 +117,53 @@ function nativeProblems(dir, id, route, H) {
       out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${r.field}: ${r.reason}` });
     }
   }
+  // A manifest naming its resources by path (route.manifest_resources): each must stay inside the
+  // package, so the digest binds what loads: no absolute path, no ~, no .. out of it, and no
+  // source a harness would fetch. A leading !, + or - is a filter mark, not part of the path.
+  // The manifest is read as the harness reads it (route.manifest_resources): the key a plain object,
+  // and each resource field a list of strings, which is all the harness keeps; any other shape is
+  // refused, since the harness would drop it and load from elsewhere than the field says.
+  const MR = route.manifest_resources;
+  if (MR && manifest[MR.key] !== undefined) {
+    const block = manifest[MR.key];
+    if (block === null || typeof block !== 'object' || Array.isArray(block)) {
+      out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${MR.key} is not an object; ${MR.shape}` });
+    } else {
+      for (const kind of MR.kinds) {
+        const list = block[kind];
+        if (list === undefined) continue;
+        if (!Array.isArray(list) || !list.every((x) => typeof x === 'string')) {
+          out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: ${MR.key}.${kind} is not a list of paths; ${MR.shape}` });
+          continue;
+        }
+        // Each entry stays inside the package: no absolute path, no ~, no source to fetch, no ..
+        // segment, and no glob syntax but * and ? (braces, classes and groups can reach outside
+        // the package). A leading !, + or - is a filter mark, not part of the path.
+        for (const entry of list) {
+          const p = entry.replace(/^[!+-]/, '');
+          const norm = path.posix.normalize(p);
+          if (/^[a-z][a-z0-9+.-]*:/i.test(p) || p.startsWith('/') || p.startsWith('~') || /[{}[\]()\\]/.test(p) || p.split('/').includes('..') || norm === '..' || norm.startsWith('../')) {
+            out.push({ code: 'plugin_path_unsupported', message: `${route.manifest}: ${MR.key}.${kind} names a resource outside the package, a source to fetch, or a pattern beyond * and ?; ${MR.reason}` });
+            break;
+          }
+        }
+      }
+    }
+  }
+  // Dependencies a harness would need installed (route.bundled_dependencies): each must be in the
+  // package's own node_modules/, as a directory, so the digest binds it.
+  if (route.bundled_dependencies && manifest.dependencies && typeof manifest.dependencies === 'object') {
+    for (const dep of Object.keys(manifest.dependencies)) {
+      let bundled = false;
+      try {
+        const st = fs.lstatSync(path.join(dir, 'node_modules', ...dep.split('/')));
+        bundled = st.isDirectory();
+      } catch {
+        // absent
+      }
+      if (!bundled) out.push({ code: 'plugin_field_unsupported', message: `${route.manifest}: dependencies names ${dep}, which is not bundled in node_modules/; ${route.bundled_dependencies}` });
+    }
+  }
   return out;
 }
 

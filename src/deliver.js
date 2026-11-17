@@ -541,6 +541,8 @@ function pluginData(descriptor, folder, operations, purge) {
   const removed = [];
   for (const op of operations) {
     if (op.action !== 'remove' || op.handler !== 'tree' || !op.item.startsWith('plugin.')) continue;
+    // Only the tree of a plugin that has a data directory (a translated one), never another route's.
+    if (D.tree && op.address_id !== D.tree.replace('<name>', op.item.slice('plugin.'.length))) continue;
     const rel = D.dir.replace('<name>', op.item.slice('plugin.'.length));
     const abs = guard(folder, path.join(folder, rel));
     if (!fs.existsSync(abs)) continue;

@@ -97,6 +97,19 @@ loads.
 headers or url, or a leading `~` in its command, arguments or working directory. `claude-plugin`
 packages are refused on pi: use the Agent Plugins format.
 
+**pi's own packages** (`format = "pi-package"`) are delivered whole: with `-e` at launch, or under
+`hs-run/pipkg.<name>/` and a `packages` member in a folder. A pi package's extensions are code in
+pi's process, outside hs's hook shim, and can act where no guard sees them. So a package with
+extensions is refused beside a blocking hook, naming both, and under strict isolation. Every
+dependency must be bundled in its `node_modules/`, which the digest covers; a native addon is named
+in the receipt's risk ([the spec format](../reference/spec-format.md#pis-own-format)).
+
+Whether a package has extensions is read as pi reads it: a `pi` manifest field counts only as a
+list of paths; without one, the four conventional directories count, if any exists; with none of
+those, pi loads the package itself as an extension. A refusal checks only the packages of the spec
+being launched. Outside strict isolation, a package an earlier plan put in the folder's
+`packages` still loads beside a later spec's hooks, as the folder's own extensions do.
+
 ## Strict isolation
 
 With `isolation = "strict"` at the top of a layer, only the instructions and skills the spec names

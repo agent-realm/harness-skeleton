@@ -27,7 +27,9 @@ The first public cut.
   - on pi 1.5: `describe`, `detect`, `observe --state`, `launch-spec` (the endpoint, the primary
     model, MCP servers, skills, `AGENTS.md` and hooks, through one generated extension), and
     `materialize` (MCP servers, skills, the model); Agent Plugins packages translated into a pi
-    package, at launch and under `materialize`, their data kept on `remove` unless `--purge-data`;
+    package, at launch and under `materialize`, their data kept on `remove` unless `--purge-data`; pi's
+    own packages delivered whole, refused beside a blocking hook or under strict isolation when they
+    carry extensions;
   - `isolation = "strict"`: only the instructions and skills a spec names reach the agent. It is
     kept by switch on OpenCode 2.x and pi 1.5, and refused on Claude Code and Codex as
     `isolation_unmet`, naming each path;
@@ -36,7 +38,7 @@ The first public cut.
   - `@agent-realm/harness-session-adapters`: session readers;
   - `@agent-realm/skeleton-spec`: the spec as code;
   - `@agent-realm/scripted-model`: a scripted model endpoint for tests.
-- **Conformance:** twenty-eight tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
+- **Conformance:** twenty-nine tier 1 checks against Claude Code 2.1.307, Codex 0.160.0, OpenCode 2.2.7 and pi 1.5.2, run on
   disposable benches. The six plugin checks also ran against Claude Code 2.1.321 or
   Codex 0.167.0.
 - **Documentation:** a tutorial, a concepts page with five diagrams, guides (one per task, and
